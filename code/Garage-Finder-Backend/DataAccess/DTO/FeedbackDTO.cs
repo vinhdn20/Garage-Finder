@@ -1,6 +1,6 @@
-﻿namespace Garage_Finder_Backend.Models.Entity
+﻿namespace DataAccess.DTO
 {
-    public class Feedback
+    public class FeedbackDTO
     {
         public int CommentID { get; set; }  
         public int GarageID { get; set; }   
