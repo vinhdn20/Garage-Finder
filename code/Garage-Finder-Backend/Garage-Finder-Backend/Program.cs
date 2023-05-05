@@ -1,4 +1,4 @@
-using Data;
+using System.Data;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,7 +10,6 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 string connString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<GarageFinderDBContext>(options => options.UseSqlServer(connString));
 
 var app = builder.Build();
 

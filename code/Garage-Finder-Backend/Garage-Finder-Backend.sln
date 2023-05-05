@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Garage-Finder-Backend", "Garage-Finder-Backend\Garage-Finder-Backend.csproj", "{D7E48AC3-2EE6-499B-9EF8-BF203D861C40}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Garage-Finder-Backend", "Garage-Finder-Backend\Garage-Finder-Backend.csproj", "{D7E48AC3-2EE6-499B-9EF8-BF203D861C40}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "Services\Services.csproj", "{C46F4873-79A1-407B-B427-F88D7BAA2388}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "Services\Services.csproj", "{C46F4873-79A1-407B-B427-F88D7BAA2388}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data", "Data\Data.csproj", "{C960D860-F298-43B2-918D-ED291E26F208}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GFData", "GFData\GFData.csproj", "{581B96A7-A69C-49A4-B8ED-CD31AD036F60}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{AAE1E213-9311-4684-8C6A-5CCF823CD4FF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +25,14 @@ Global
 		{C46F4873-79A1-407B-B427-F88D7BAA2388}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C46F4873-79A1-407B-B427-F88D7BAA2388}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C46F4873-79A1-407B-B427-F88D7BAA2388}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C960D860-F298-43B2-918D-ED291E26F208}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C960D860-F298-43B2-918D-ED291E26F208}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C960D860-F298-43B2-918D-ED291E26F208}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C960D860-F298-43B2-918D-ED291E26F208}.Release|Any CPU.Build.0 = Release|Any CPU
+		{581B96A7-A69C-49A4-B8ED-CD31AD036F60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{581B96A7-A69C-49A4-B8ED-CD31AD036F60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{581B96A7-A69C-49A4-B8ED-CD31AD036F60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{581B96A7-A69C-49A4-B8ED-CD31AD036F60}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AAE1E213-9311-4684-8C6A-5CCF823CD4FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AAE1E213-9311-4684-8C6A-5CCF823CD4FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AAE1E213-9311-4684-8C6A-5CCF823CD4FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AAE1E213-9311-4684-8C6A-5CCF823CD4FF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

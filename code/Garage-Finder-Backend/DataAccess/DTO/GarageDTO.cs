@@ -1,6 +1,8 @@
-﻿namespace Garage_Finder_Backend.Models.Entity
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace DataAccess.DTO
 {
-    public class Garage
+    public class GarageDTO
     {
         public int GarageID { get; set; }
         public int UserID { get; set; }
