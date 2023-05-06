@@ -7,5 +7,6 @@
         public string Secret { get; set; }
 
         public int ExpirationInHours { get; set; }
+        public int RefreshTokenExpirationInHours { get; set; }
     }
 }

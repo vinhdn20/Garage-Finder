@@ -6,6 +6,9 @@ using System.Security.Claims;
 using Microsoft.Extensions.Options;
 using Garage_Finder_Backend.Models.RequestModels;
 using Garage_Finder_Backend.Models.ResponeModels;
+using Garage_Finder_Backend.Models;
+using DataAccess.DTO;
+using Microsoft.AspNetCore.Identity;
 
 namespace Garage_Finder_Backend.Controllers
 {
@@ -15,6 +18,7 @@ namespace Garage_Finder_Backend.Controllers
         private readonly JwtSettings _jwtSettings;
         private readonly JwtService _jwtService = new JwtService();
         private readonly UserService _userService = new UserService();
+        private string _user = "";
         #endregion
 
         public UserController(IOptionsSnapshot<JwtSettings> jwtSettings)
@@ -33,13 +37,36 @@ namespace Garage_Finder_Backend.Controllers
             if (_userService.ValidateLogin(loginModel.Username, loginModel.Password))
             {
                 var accessToken = _jwtService.GenerateJwt(loginModel.Username, "Member", _jwtSettings);
-                LoginResponseModel loginResponseModel = new LoginResponseModel()
+
+                UsersDTO users = new UsersDTO()
                 {
                     AccessToken = accessToken
                 };
-                return Ok(loginResponseModel);
+
+                var refreshToken = _jwtService.GenerateRefreshToken(_jwtSettings);
+                SetRefreshToken(refreshToken);
+                _user = refreshToken.Token;
+                return Ok(users);
             }
             return NotFound("Not found");
+        }
+
+        [HttpPost]
+        [Route("refresh-token")]
+        public IActionResult RefreshToken()
+        {
+            var refreshToken = Request.Cookies["refreshToken"];
+            //Todo: Check refresh token
+            if (!_user.Equals(refreshToken))
+            {
+                return BadRequest("wrong token");
+            }
+            //Todo: Generate token
+            string token = "";
+            var newRefreshToken = _jwtService.GenerateRefreshToken(_jwtSettings);
+            SetRefreshToken(newRefreshToken);
+
+            return Ok(token);
         }
 
         [HttpGet]
@@ -48,6 +75,17 @@ namespace Garage_Finder_Backend.Controllers
         public IActionResult TestLogin()
         {
             return Ok();
+        }
+
+        private void SetRefreshToken(RefreshToken refreshToken)
+        {
+            var cookiesOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Expires = refreshToken.ExpriresDate
+            };
+
+            Response.Cookies.Append("refreshToken", refreshToken.Token, cookiesOptions);
         }
     }
 }

@@ -1,6 +1,9 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Garage_Finder_Backend.Models;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
+using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace Garage_Finder_Backend.Services.AuthService
@@ -29,6 +32,17 @@ namespace Garage_Finder_Backend.Services.AuthService
             );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        public RefreshToken GenerateRefreshToken(JwtSettings jwtSettings)
+        {
+            var refreshToken = new RefreshToken()
+            {
+                Token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64)),
+                ExpriresDate = DateTime.UtcNow.AddHours(jwtSettings.RefreshTokenExpirationInHours),
+                CreateDate = DateTime.UtcNow
+            };
+            return refreshToken;
         }
     }
 }

@@ -1,18 +1,18 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using DataAccess.DTO;
+using Microsoft.AspNetCore.Identity;
 
-namespace DataAccess.DTO
+namespace Garage_Finder_Backend.Models
 {
-    public class UsersDTO
+    public class Users : IdentityUser
     {
         public int UserID { get; set; }
         public string Name { get; set; }
         public string Birthday { get; set; }
         public string PhoneNumber { get; set; }
         public string EmailAddress { get; set; }
-        public string Password { get; set; }
         public int RoleID { get; set; }
         public RoleNameDTO RoleName { get; set; }
-        
+
         public string AccessToken { get; set; }
     }
 }
