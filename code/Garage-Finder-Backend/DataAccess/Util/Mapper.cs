@@ -23,7 +23,7 @@ namespace DataAccess.Util
                     EmailAddress = users.EmailAddress,
                     Password = users.Password,
                     RoleID = users.RoleID,
-                    roleName = users.RoleName,
+                    //roleName = users.RoleName,
                 };
                 return usersDTO;
             }
@@ -45,7 +45,7 @@ namespace DataAccess.Util
                 EmailAddress = usersDTO.EmailAddress,
                 Password = usersDTO.Password,
                 RoleID = usersDTO.RoleID,
-                RoleName = usersDTO.roleName,
+                //RoleName = usersDTO.roleName,
             };
 
             return users;

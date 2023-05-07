@@ -8,13 +8,15 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using DataAccess.DTO;
 using GFData.Data;
+using Repositories;
+using Repositories.Implements;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
-builder.Services.AddAutoMapper(typeof(Program).Assembly);
+builder.Services.ConfigRepository();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

@@ -21,15 +21,15 @@ namespace Garage_Finder_Backend.Controllers
         private readonly JwtSettings _jwtSettings;
         private readonly JwtService _jwtService = new JwtService();
         private readonly UserService _userService = new UserService();
-        private readonly IMapper _mapper;
-        private readonly IUsersRepository userRepository;
-        private readonly IHttpContextAccessor httpContextAccessor;
+        private readonly IUsersRepository _userRepository;
+        private readonly IHttpContextAccessor _httpContextAccessor;
         #endregion
 
-        public UserController(IOptionsSnapshot<JwtSettings> jwtSettings, IMapper mapper)
+        public UserController(IOptionsSnapshot<JwtSettings> jwtSettings,
+            IUsersRepository usersRepository)
         {
             _jwtSettings = jwtSettings.Value;
-            _mapper = mapper;
+            _userRepository = usersRepository;
         }
         public IActionResult Index()
         {
@@ -40,17 +40,20 @@ namespace Garage_Finder_Backend.Controllers
         [AllowAnonymous]
         public IActionResult LoginAsync([FromBody] LoginModel loginModel)
         {
-            var user = _userService.GetUser(loginModel.Email, loginModel.Password);
-            if (user == null) return NotFound("Not found");
+            try
+            {
+                var usersDTO = _userRepository.Login(loginModel.Email, loginModel.Password);
+                var accessToken = _jwtService.GenerateJwt(usersDTO, _jwtSettings);
+                usersDTO.AccessToken = accessToken;
 
-            var accessToken = _jwtService.GenerateJwt(user, _jwtSettings);
-
-            UsersDTO usersDTO = _mapper.Map<UsersDTO>(user);
-            usersDTO.AccessToken = accessToken;
-
-            var refreshToken = _jwtService.GenerateRefreshToken(_jwtSettings);
-            SetRefreshToken(refreshToken);
-            return Ok(usersDTO);
+                var refreshToken = _jwtService.GenerateRefreshToken(_jwtSettings);
+                SetRefreshToken(refreshToken);
+                return Ok(usersDTO);
+            }
+            catch (Exception ex)
+            {
+                return NotFound("Not found");
+            }
 
         }
         /* [HttpPost("login")]
