@@ -11,6 +11,7 @@ using DataAccess.DTO;
 using Microsoft.AspNetCore.Identity;
 using Services.Models;
 using AutoMapper;
+using Repositories;
 
 namespace Garage_Finder_Backend.Controllers
 {
@@ -21,6 +22,8 @@ namespace Garage_Finder_Backend.Controllers
         private readonly JwtService _jwtService = new JwtService();
         private readonly UserService _userService = new UserService();
         private readonly IMapper _mapper;
+        private readonly IUsersRepository userRepository;
+        private readonly IHttpContextAccessor httpContextAccessor;
         #endregion
 
         public UserController(IOptionsSnapshot<JwtSettings> jwtSettings, IMapper mapper)
@@ -38,7 +41,7 @@ namespace Garage_Finder_Backend.Controllers
         public IActionResult LoginAsync([FromBody] LoginModel loginModel)
         {
             var user = _userService.GetUser(loginModel.Email, loginModel.Password);
-            if(user == null) return NotFound("Not found");
+            if (user == null) return NotFound("Not found");
 
             var accessToken = _jwtService.GenerateJwt(user, _jwtSettings);
 
@@ -50,7 +53,26 @@ namespace Garage_Finder_Backend.Controllers
             return Ok(usersDTO);
 
         }
+        /* [HttpPost("login")]
+         public IActionResult Login(UsersDTO usersDTO)
+         {
+             try
+             {
+                 UsersDTO user = userRepository.Login(usersDTO.EmailAddress, usersDTO.Password);
 
+
+                 return Ok(new
+                 {
+
+                 });
+
+             }
+             catch (Exception e)
+             {
+                 return BadRequest(e.Message);
+             }
+         }
+ */
         [HttpPost]
         [Route("refresh-token")]
         public IActionResult RefreshToken()

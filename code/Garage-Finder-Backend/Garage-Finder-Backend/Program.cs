@@ -36,6 +36,12 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 builder.Services.AddAuthorization();
+/*
+builder.Services.AddDbContext<GFDbContext>(option =>
+{
+    option.UseSqlServer(builder.Configuration.GetConnectionString("GarageFinderDB"));
+});*/
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
