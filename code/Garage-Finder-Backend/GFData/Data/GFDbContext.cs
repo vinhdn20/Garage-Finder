@@ -19,6 +19,7 @@ namespace GFData.Data
         {
             var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
             IConfigurationRoot configuration = builder.Build();
+            var connect = configuration.GetConnectionString("GarageFinderDB");
             optionsBuilder.UseSqlServer(configuration.GetConnectionString("GarageFinderDB"));
         }
         public virtual DbSet<Car>? Cars { get; set; }

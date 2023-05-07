@@ -9,6 +9,8 @@ using Garage_Finder_Backend.Models.ResponeModels;
 using Garage_Finder_Backend.Models;
 using DataAccess.DTO;
 using Microsoft.AspNetCore.Identity;
+using Services.Models;
+using AutoMapper;
 
 namespace Garage_Finder_Backend.Controllers
 {
@@ -18,12 +20,13 @@ namespace Garage_Finder_Backend.Controllers
         private readonly JwtSettings _jwtSettings;
         private readonly JwtService _jwtService = new JwtService();
         private readonly UserService _userService = new UserService();
-        private string _user = "";
+        private readonly IMapper _mapper;
         #endregion
 
-        public UserController(IOptionsSnapshot<JwtSettings> jwtSettings)
+        public UserController(IOptionsSnapshot<JwtSettings> jwtSettings, IMapper mapper)
         {
             _jwtSettings = jwtSettings.Value;
+            _mapper = mapper;
         }
         public IActionResult Index()
         {
@@ -34,21 +37,18 @@ namespace Garage_Finder_Backend.Controllers
         [AllowAnonymous]
         public IActionResult LoginAsync([FromBody] LoginModel loginModel)
         {
-            if (_userService.ValidateLogin(loginModel.Username, loginModel.Password))
-            {
-                var accessToken = _jwtService.GenerateJwt(loginModel.Username, "Member", _jwtSettings);
+            var user = _userService.GetUser(loginModel.Email, loginModel.Password);
+            if(user == null) return NotFound("Not found");
 
-                UsersDTO users = new UsersDTO()
-                {
-                    AccessToken = accessToken
-                };
+            var accessToken = _jwtService.GenerateJwt(user, _jwtSettings);
 
-                var refreshToken = _jwtService.GenerateRefreshToken(_jwtSettings);
-                SetRefreshToken(refreshToken);
-                _user = refreshToken.Token;
-                return Ok(users);
-            }
-            return NotFound("Not found");
+            UsersDTO usersDTO = _mapper.Map<UsersDTO>(user);
+            usersDTO.AccessToken = accessToken;
+
+            var refreshToken = _jwtService.GenerateRefreshToken(_jwtSettings);
+            SetRefreshToken(refreshToken);
+            return Ok(usersDTO);
+
         }
 
         [HttpPost]
@@ -57,10 +57,10 @@ namespace Garage_Finder_Backend.Controllers
         {
             var refreshToken = Request.Cookies["refreshToken"];
             //Todo: Check refresh token
-            if (!_user.Equals(refreshToken))
-            {
-                return BadRequest("wrong token");
-            }
+            //if (!_user.Equals(refreshToken))
+            //{
+            //    return BadRequest("wrong token");
+            //}
             //Todo: Generate token
             string token = "";
             var newRefreshToken = _jwtService.GenerateRefreshToken(_jwtSettings);
@@ -74,6 +74,7 @@ namespace Garage_Finder_Backend.Controllers
         [Authorize(Roles = "Member")]
         public IActionResult TestLogin()
         {
+            var emailAddress = User.FindFirstValue(ClaimTypes.Name);
             return Ok();
         }
 

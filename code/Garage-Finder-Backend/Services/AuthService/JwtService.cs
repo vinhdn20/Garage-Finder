@@ -1,6 +1,7 @@
-﻿using Garage_Finder_Backend.Models;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
+﻿using GFData.Models.Entity;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
+using Services.Models;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -10,12 +11,13 @@ namespace Garage_Finder_Backend.Services.AuthService
 {
     public class JwtService
     {
-        public string GenerateJwt(string userName, string role, JwtSettings jwtSettings)
+        public string GenerateJwt(Users user, JwtSettings jwtSettings)
         {
             var claims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, userName),
-                    new Claim(ClaimTypes.Role, role)
+                    new Claim(ClaimTypes.Name, user.EmailAddress),
+                    new Claim(ClaimTypes.Role, user.RoleName.NameRole),
+                    new Claim("user", JsonConvert.SerializeObject(user))
                 };
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret));
 
