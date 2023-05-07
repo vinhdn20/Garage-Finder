@@ -91,7 +91,7 @@ namespace DataAccess.DAO
             }
         }
 
-        public void UpdateMember(Users user)
+        public void UpdateUser(Users user)
         {
             try
             {

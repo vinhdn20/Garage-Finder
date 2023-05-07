@@ -39,7 +39,7 @@ namespace DataAccess.DAO
             {
                 using (var context = new GFDbContext())
                 {
-                    p = context.RoleNames.SingleOrDefault(x => x.RoleID == Id);
+                    p = context.RoleName.SingleOrDefault(x => x.RoleID == Id);
                 }
             }
             catch (Exception e)
