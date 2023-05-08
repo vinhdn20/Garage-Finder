@@ -36,8 +36,8 @@ namespace DataAccess.DAO
             {
                 using (var context = new GFDbContext())
                 {
-                    p = context.Users.Include(m => m.RoleName).ToList();
-
+                    //p = context.Users.Include(m => m.RoleName).ToList();
+                    p = context.Users.ToList();
                     if (p == null)
                     {
                         throw new Exception("No Users!");
@@ -60,7 +60,8 @@ namespace DataAccess.DAO
                 if (password.Equals("")) throw new Exception("Password must not be empty");
                 using (var context = new GFDbContext())
                 {
-                    p = context.Users.Include(m => m.RoleName).SingleOrDefault(x => x.EmailAddress == email && x.Password == password);
+                    //p = context.Users.Include(m => m.RoleName).SingleOrDefault(x => x.EmailAddress == email && x.Password == password);
+                    p = context.Users.SingleOrDefault(x => x.EmailAddress == email && x.Password == password);
 
                     if (p == null)
                     {
@@ -91,7 +92,7 @@ namespace DataAccess.DAO
             }
         }
 
-        public void UpdateMember(Users user)
+        public void UpdateUser(Users user)
         {
             try
             {

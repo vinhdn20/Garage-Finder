@@ -28,7 +28,7 @@ namespace GFData.Data
         public virtual DbSet<Orders>? Orders { get; set; }
         public virtual DbSet<Service>? Services { get; set; }
         public virtual DbSet<Users>? Users { get; set; }
-        public virtual DbSet<RoleName>? RoleNames { get; set; }
+        public virtual DbSet<RoleName>? RoleName { get; set; }
 
     }
 }

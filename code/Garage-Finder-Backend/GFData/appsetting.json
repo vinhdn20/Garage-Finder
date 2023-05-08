@@ -1,5 +1,0 @@
-{
-  "ConnectionStrings": {
-    "GarageFinderDB": "Server=GIOSS;Uid=sa;Pwd=123;Database=A3;Trusted_Connection=True"
-  }
-}

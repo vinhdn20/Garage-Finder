@@ -12,6 +12,6 @@ namespace GFData.Models.Entity
         public string EmailAddress { get; set; }
         public string Password { get; set; }
         public int RoleID { get; set; }
-        public RoleName RoleName { get; set; }
+        //public RoleName RoleName { get; set; }
     }
 }

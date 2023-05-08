@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using GFData.Models.Entity;
+using System.ComponentModel.DataAnnotations;
 
 namespace DataAccess.DTO
 {
@@ -11,6 +12,8 @@ namespace DataAccess.DTO
         public string EmailAddress { get; set; }
         public string Password { get; set; }
         public int RoleID { get; set; }
-        public RoleNameDTO RoleName { get; set; }
+        public RoleName roleName { get; set; }
+        
+        public string AccessToken { get; set; }
     }
 }
