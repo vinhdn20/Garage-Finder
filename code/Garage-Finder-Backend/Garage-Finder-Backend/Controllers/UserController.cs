@@ -5,13 +5,10 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Microsoft.Extensions.Options;
 using Garage_Finder_Backend.Models.RequestModels;
-using Garage_Finder_Backend.Models.ResponeModels;
-using Garage_Finder_Backend.Models;
 using DataAccess.DTO;
-using Microsoft.AspNetCore.Identity;
-using Services.Models;
-using AutoMapper;
 using Repositories;
+using Newtonsoft.Json;
+using GFData.Models.Entity;
 
 namespace Garage_Finder_Backend.Controllers
 {
@@ -22,14 +19,15 @@ namespace Garage_Finder_Backend.Controllers
         private readonly JwtService _jwtService = new JwtService();
         private readonly UserService _userService = new UserService();
         private readonly IUsersRepository _userRepository;
-        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IRefreshTokenRepository _refreshTokenRepository;
         #endregion
 
         public UserController(IOptionsSnapshot<JwtSettings> jwtSettings,
-            IUsersRepository usersRepository)
+            IUsersRepository usersRepository, IRefreshTokenRepository refreshTokenRepository)
         {
             _jwtSettings = jwtSettings.Value;
             _userRepository = usersRepository;
+            _refreshTokenRepository = refreshTokenRepository;
         }
         public IActionResult Index()
         {
@@ -46,7 +44,8 @@ namespace Garage_Finder_Backend.Controllers
                 var accessToken = _jwtService.GenerateJwt(usersDTO, _jwtSettings);
                 usersDTO.AccessToken = accessToken;
 
-                var refreshToken = _jwtService.GenerateRefreshToken(_jwtSettings);
+                var refreshToken = _jwtService.GenerateRefreshToken(_jwtSettings, usersDTO.UserID);
+                _refreshTokenRepository.AddOrUpdateToken(refreshToken);
                 SetRefreshToken(refreshToken);
                 return Ok(usersDTO);
             }
@@ -56,42 +55,45 @@ namespace Garage_Finder_Backend.Controllers
             }
 
         }
-        /* [HttpPost("login")]
-         public IActionResult Login(UsersDTO usersDTO)
-         {
-             try
-             {
-                 UsersDTO user = userRepository.Login(usersDTO.EmailAddress, usersDTO.Password);
 
-
-                 return Ok(new
-                 {
-
-                 });
-
-             }
-             catch (Exception e)
-             {
-                 return BadRequest(e.Message);
-             }
-         }
- */
         [HttpPost]
         [Route("refresh-token")]
         public IActionResult RefreshToken()
         {
-            var refreshToken = Request.Cookies["refreshToken"];
-            //Todo: Check refresh token
-            //if (!_user.Equals(refreshToken))
-            //{
-            //    return BadRequest("wrong token");
-            //}
-            //Todo: Generate token
-            string token = "";
-            var newRefreshToken = _jwtService.GenerateRefreshToken(_jwtSettings);
-            SetRefreshToken(newRefreshToken);
+            try
+            {
+                var refreshToken = Request.Cookies["refreshToken"];
+                var jsonUser = User.FindFirstValue("user");
+                var user = JsonConvert.DeserializeObject<UsersDTO>(jsonUser);
+                var userRefreshToken = _refreshTokenRepository.GetRefreshToken(user.UserID);
+                for (int i = 0; i < userRefreshToken.Count; i++)
+                {
+                    if (userRefreshToken[i].Token.Equals(refreshToken))
+                    {
+                        if (userRefreshToken[i].ExpiresDate < DateTime.UtcNow)
+                        {
+                            return Unauthorized("Token expires");
+                        }
+                        else
+                        {
+                            var usersDTO = JsonConvert.DeserializeObject<UsersDTO>(User.FindFirstValue("user"));
+                            string token = _jwtService.GenerateJwt(usersDTO, _jwtSettings);
+                            var newRefreshToken = _jwtService.GenerateRefreshToken(_jwtSettings,usersDTO.UserID);
+                            newRefreshToken.TokenID = userRefreshToken[i].TokenID;
+                            _refreshTokenRepository.AddOrUpdateToken(newRefreshToken);
+                            SetRefreshToken(newRefreshToken);
 
-            return Ok(token);
+                            return Ok(token);
+                        }
+                    }
+                }
+                return Unauthorized("Invalid refresh token");
+                
+            }
+            catch (Exception)
+            {
+                return BadRequest("Refresh token not found");
+            }
         }
 
         [HttpGet]
@@ -103,12 +105,12 @@ namespace Garage_Finder_Backend.Controllers
             return Ok();
         }
 
-        private void SetRefreshToken(RefreshToken refreshToken)
+        private void SetRefreshToken(RefreshTokenDTO refreshToken)
         {
             var cookiesOptions = new CookieOptions
             {
                 HttpOnly = true,
-                Expires = refreshToken.ExpriresDate
+                Expires = refreshToken.ExpiresDate
             };
 
             Response.Cookies.Append("refreshToken", refreshToken.Token, cookiesOptions);

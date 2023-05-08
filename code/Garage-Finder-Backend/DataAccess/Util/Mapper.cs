@@ -50,5 +50,45 @@ namespace DataAccess.Util
 
             return users;
         }
+
+        public static RefreshTokenDTO mapToDTO(RefreshToken refreshToken)
+        {
+            if (refreshToken != null)
+            {
+                RefreshTokenDTO refreshTokenDTO = new RefreshTokenDTO
+                {
+                    TokenID = refreshToken.TokenID,
+                    UserID = refreshToken.UserID,
+                    Token = refreshToken.Token,
+                    ExpiresDate = refreshToken.ExpiresDate,
+                    CreateDate = refreshToken.CreateDate
+                };
+                return refreshTokenDTO;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public static RefreshToken mapToEntity(RefreshTokenDTO refreshTokenDTO)
+        {
+            if (refreshTokenDTO != null)
+            {
+                RefreshToken refreshToken = new RefreshToken
+                {
+                    TokenID = refreshTokenDTO.TokenID,
+                    UserID = refreshTokenDTO.UserID,
+                    Token = refreshTokenDTO.Token,
+                    ExpiresDate = refreshTokenDTO.ExpiresDate,
+                    CreateDate = refreshTokenDTO.CreateDate
+                };
+                return refreshToken;
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }

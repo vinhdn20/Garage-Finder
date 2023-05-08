@@ -1,15 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Services.Models
+namespace GFData.Models.Entity
 {
     public class RefreshToken
     {
+        [Key]
+        public int TokenID { get; set; }
+        public int UserID { get; set; }
         public string Token { get; set; }
+        public DateTime ExpiresDate { get; set; }
         public DateTime CreateDate { get; set; }
-        public DateTime ExpriresDate { get; set; }
     }
 }

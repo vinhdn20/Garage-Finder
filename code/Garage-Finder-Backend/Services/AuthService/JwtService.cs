@@ -2,7 +2,6 @@
 using GFData.Models.Entity;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
-using Services.Models;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -37,13 +36,26 @@ namespace Garage_Finder_Backend.Services.AuthService
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        public RefreshToken GenerateRefreshToken(JwtSettings jwtSettings)
+        public RefreshTokenDTO GenerateRefreshToken(JwtSettings jwtSettings, int userID)
+        {
+            var refreshToken = new RefreshTokenDTO()
+            {
+                Token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64)),
+                ExpiresDate = DateTime.UtcNow.AddHours(jwtSettings.RefreshTokenExpirationInHours),
+                CreateDate = DateTime.UtcNow,
+                UserID = userID
+            };
+            return refreshToken;
+        }
+
+        public RefreshToken GenerateRefreshToken(DateTime expriresDate, int userID)
         {
             var refreshToken = new RefreshToken()
             {
                 Token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64)),
-                ExpriresDate = DateTime.UtcNow.AddHours(jwtSettings.RefreshTokenExpirationInHours),
-                CreateDate = DateTime.UtcNow
+                ExpiresDate = expriresDate,
+                CreateDate = DateTime.UtcNow,
+                UserID = userID
             };
             return refreshToken;
         }
