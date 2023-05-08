@@ -13,6 +13,7 @@ namespace Repositories
         public static void ConfigRepository(this IServiceCollection services)
         {
             services.AddScoped<IUsersRepository, UsersRepository>();
+            services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
         }
     }
 }

@@ -30,5 +30,7 @@ namespace GFData.Data
         public virtual DbSet<Users>? Users { get; set; }
         public virtual DbSet<RoleName>? RoleName { get; set; }
 
+        public virtual DbSet<RefreshToken>? RefreshToken { get; set; }
+
     }
 }
