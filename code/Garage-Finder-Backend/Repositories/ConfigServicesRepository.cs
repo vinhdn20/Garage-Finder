@@ -14,6 +14,7 @@ namespace Repositories
         {
             services.AddScoped<IUsersRepository, UsersRepository>();
             services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
+            services.AddScoped<IRoleNameRepository, RoleNameRepository>();
         }
     }
 }

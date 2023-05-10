@@ -11,12 +11,12 @@ namespace Garage_Finder_Backend.Services.AuthService
 {
     public class JwtService
     {
-        public string GenerateJwt(UsersDTO user, JwtSettings jwtSettings)
+        public string GenerateJwt(UsersDTO user,RoleNameDTO roleName, JwtSettings jwtSettings)
         {
             var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, user.EmailAddress),
-                    new Claim(ClaimTypes.Role, "Member"),
+                    new Claim(ClaimTypes.Role, roleName.NameRole),
                     new Claim("user", JsonConvert.SerializeObject(user))
                 };
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret));

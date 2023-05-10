@@ -17,17 +17,19 @@ namespace Garage_Finder_Backend.Controllers
         #region Properties
         private readonly JwtSettings _jwtSettings;
         private readonly JwtService _jwtService = new JwtService();
-        private readonly UserService _userService = new UserService();
         private readonly IUsersRepository _userRepository;
         private readonly IRefreshTokenRepository _refreshTokenRepository;
+        private readonly IRoleNameRepository _roleNameRepository;
         #endregion
 
         public UserController(IOptionsSnapshot<JwtSettings> jwtSettings,
-            IUsersRepository usersRepository, IRefreshTokenRepository refreshTokenRepository)
+            IUsersRepository usersRepository, IRefreshTokenRepository refreshTokenRepository,
+            IRoleNameRepository roleNameRepository)
         {
             _jwtSettings = jwtSettings.Value;
             _userRepository = usersRepository;
             _refreshTokenRepository = refreshTokenRepository;
+            _roleNameRepository = roleNameRepository;
         }
         public IActionResult Index()
         {
@@ -36,12 +38,13 @@ namespace Garage_Finder_Backend.Controllers
         [HttpPost]
         [Route("login")]
         [AllowAnonymous]
-        public IActionResult LoginAsync([FromBody] LoginModel loginModel)
+        public IActionResult LoginAsync([FromBody] UsersDTO userDTO)
         {
             try
             {
-                var usersDTO = _userRepository.Login(loginModel.Email, loginModel.Password);
-                var accessToken = _jwtService.GenerateJwt(usersDTO, _jwtSettings);
+                var usersDTO = _userRepository.Login(userDTO.EmailAddress, userDTO.Password);
+                var roleName = _roleNameRepository.GetUserRole(userDTO.UserID);
+                var accessToken = _jwtService.GenerateJwt(usersDTO,roleName, _jwtSettings);
                 usersDTO.AccessToken = accessToken;
 
                 var refreshToken = _jwtService.GenerateRefreshToken(_jwtSettings, usersDTO.UserID);
@@ -77,7 +80,8 @@ namespace Garage_Finder_Backend.Controllers
                         else
                         {
                             var usersDTO = JsonConvert.DeserializeObject<UsersDTO>(User.FindFirstValue("user"));
-                            string token = _jwtService.GenerateJwt(usersDTO, _jwtSettings);
+                            var roleName = _roleNameRepository.GetUserRole(usersDTO.UserID);
+                            string token = _jwtService.GenerateJwt(usersDTO,roleName, _jwtSettings);
                             var newRefreshToken = _jwtService.GenerateRefreshToken(_jwtSettings,usersDTO.UserID);
                             newRefreshToken.TokenID = userRefreshToken[i].TokenID;
                             _refreshTokenRepository.AddOrUpdateToken(newRefreshToken);
