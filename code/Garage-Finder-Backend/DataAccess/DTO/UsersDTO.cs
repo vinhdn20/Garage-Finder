@@ -12,7 +12,7 @@ namespace DataAccess.DTO
         public string EmailAddress { get; set; }
         public string Password { get; set; }
         public int RoleID { get; set; }
-        public RoleName roleName { get; set; }
+        public RoleNameDTO roleName { get; set; }
         
         public string AccessToken { get; set; }
     }

@@ -1,6 +1,7 @@
 ﻿using DataAccess.DAO;
 using DataAccess.DTO;
 using DataAccess.Util;
+using Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +25,11 @@ namespace Repositories.Implements
         public UsersDTO Login(string email, string password)
         {
             return Mapper.mapToDTO(UsersDAO.Instance.FindUserByEmailPassword(email, password));
+        }
+
+        public void Register(UsersDTO user)
+        {
+            UsersDAO.Instance.SaveUser(Mapper.mapToEntity(user));
         }
 
         public void Update(UsersDTO users)

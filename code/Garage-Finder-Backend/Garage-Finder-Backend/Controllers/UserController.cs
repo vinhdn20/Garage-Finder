@@ -6,9 +6,9 @@ using System.Security.Claims;
 using Microsoft.Extensions.Options;
 using Garage_Finder_Backend.Models.RequestModels;
 using DataAccess.DTO;
-using Repositories;
 using Newtonsoft.Json;
 using GFData.Models.Entity;
+using Repositories.Interfaces;
 
 namespace Garage_Finder_Backend.Controllers
 {
@@ -38,14 +38,15 @@ namespace Garage_Finder_Backend.Controllers
         [HttpPost]
         [Route("login")]
         [AllowAnonymous]
-        public IActionResult LoginAsync([FromBody] UsersDTO userDTO)
+        public IActionResult LoginAsync([FromBody] UsersDTO userLoginDTO)
         {
             try
             {
-                var usersDTO = _userRepository.Login(userDTO.EmailAddress, userDTO.Password);
-                var roleName = _roleNameRepository.GetUserRole(userDTO.UserID);
+                var usersDTO = _userRepository.Login(userLoginDTO.EmailAddress, userLoginDTO.Password);
+                var roleName = _roleNameRepository.GetUserRole(usersDTO.RoleID);
                 var accessToken = _jwtService.GenerateJwt(usersDTO,roleName, _jwtSettings);
                 usersDTO.AccessToken = accessToken;
+                usersDTO.roleName = roleName;
 
                 var refreshToken = _jwtService.GenerateRefreshToken(_jwtSettings, usersDTO.UserID);
                 _refreshTokenRepository.AddOrUpdateToken(refreshToken);
@@ -57,6 +58,22 @@ namespace Garage_Finder_Backend.Controllers
                 return NotFound("Not found");
             }
 
+        }
+
+        [HttpPost]
+        [Route("register")]
+        [AllowAnonymous]
+        public IActionResult Register([FromBody] UsersDTO userDTO)
+        {
+            try
+            {
+                _userRepository.Register(userDTO);
+                return Ok();
+            }
+            catch (Exception)
+            {
+                return BadRequest("Register faile");
+            }
         }
 
         [HttpPost]
@@ -102,7 +119,7 @@ namespace Garage_Finder_Backend.Controllers
 
         [HttpGet]
         [Route("test")]
-        [Authorize(Roles = "Member")]
+        [Authorize]
         public IActionResult TestLogin()
         {
             var emailAddress = User.FindFirstValue(ClaimTypes.Name);
