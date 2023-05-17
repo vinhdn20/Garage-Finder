@@ -72,7 +72,21 @@ namespace DataAccess.DAO
                 throw new Exception(e.Message);
             }
         }
-
+        public void SaveCar(Car p)
+        {
+            try
+            {
+                using (var context = new GFDbContext())
+                {
+                    context.Cars.Add(p);
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
         public void DeleteCar(int id)
         {
             try

@@ -14,6 +14,11 @@ namespace Repositories
         {
             services.AddScoped<IUsersRepository, UsersRepository>();
             services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
+            services.AddScoped<ICarRepository, CarRepository>();
+            services.AddScoped<IServiceRepository, ServiceRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<IOrderDetailRepository, OrderDetailRepository>();
+
         }
     }
 }

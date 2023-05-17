@@ -90,5 +90,127 @@ namespace DataAccess.Util
                 return null;
             }
         }
+
+        public static CarDTO mapToDTO(Car cars)
+        {
+            if (cars != null)
+            {
+                CarDTO carDTO = new CarDTO
+                {
+                    CarID = cars.CarID,
+                    Brand = cars.Brand,
+                    Color = cars.Color,
+                    LicensePlates = cars.LicensePlates,
+                    Type = cars.Type,
+                    UserID = cars.UserID
+                };
+                return carDTO;
+            }
+            else
+            {
+                return null;
+            }
+
+        }
+        public static Car mapToEntity(CarDTO carDTO)
+        {
+            Car car = new Car
+            {
+                CarID = carDTO.CarID,
+                Brand = carDTO.Brand,
+                Color = carDTO.Color,
+                LicensePlates = carDTO.LicensePlates,
+                Type = carDTO.Type,
+                UserID = carDTO.UserID,
+            };
+
+            return car;
+        }
+
+        public static OrdersDTO mapToDTO(Orders order)
+        {
+            OrdersDTO orderDTO = new OrdersDTO
+            {
+                OrderID = order.OrderID,
+                CarID = order.CarID,
+                GarageID = order.GarageID,
+                TimeCreate = order.TimeCreate,
+                TimeUpdate = order.TimeUpdate,
+                Status = order.Status,
+                //orderDetail = order.orderDetail,
+            };
+            return orderDTO;
+        }
+
+        public static Orders mapToEntity(OrdersDTO orderDTO)
+        {
+            Orders order = new Orders
+            {
+                OrderID = orderDTO.OrderID,
+                CarID = orderDTO.CarID,
+                GarageID = orderDTO.GarageID,
+                TimeCreate = orderDTO.TimeCreate,
+                TimeUpdate = orderDTO.TimeUpdate,
+                Status = orderDTO.Status,
+                OrderDetail = mapToEntity(orderDTO.OrderDetail)
+            };
+            return order;
+        }
+
+        public static OrderDetail mapToEntity(OrderDetailDTO orderDetailDTO)
+        {
+            OrderDetail orderDetail = new OrderDetail
+            {
+                OrderDetailID = orderDetailDTO.OrderDetailID,
+                OrderID = orderDetailDTO.OrderID,
+                ServiceID = orderDetailDTO.ServiceID,
+                NameService = orderDetailDTO.NameService,
+                Cost = orderDetailDTO.Cost,
+                Note = orderDetailDTO.Note
+            };
+
+            return orderDetail;
+        }
+        public static OrderDetailDTO mapToDTO(OrderDetail orderDetail)
+        {
+            OrderDetailDTO orderDetailDTO = orderDetail == null ? null : new OrderDetailDTO
+            {
+                OrderDetailID = orderDetail.OrderDetailID,
+                OrderID = orderDetail.OrderID,
+                ServiceID = orderDetail.ServiceID,
+                NameService = orderDetail.NameService,
+                Cost = orderDetail.Cost,
+                Note = orderDetail.Note
+            };
+
+            return orderDetailDTO;
+        }
+
+        public static Service mapToEntity(ServiceDTO serviceDTO)
+        {
+            Service service = new Service
+            {
+                ServiceID= serviceDTO.ServiceID,
+                NameService = serviceDTO.NameService,
+                GarageID = serviceDTO.GarageID,
+                Cost = serviceDTO.Cost, 
+                Note = serviceDTO.Note,
+            };
+            return service;
+        }
+
+        public static ServiceDTO mapToDTO(Service service)
+        {
+            ServiceDTO serviceDTO = new ServiceDTO
+            {
+                ServiceID = service.ServiceID,
+                NameService = service.NameService,
+                GarageID = service.GarageID,
+                Cost = service.Cost,
+                Note = service.Note,
+            };
+            return serviceDTO;
+        }
     }
 }
+

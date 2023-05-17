@@ -1,6 +1,8 @@
-﻿using GFData.Models.Entity;
+﻿ using DataAccess.DTO;
+using GFData.Models.Entity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Repositories;
 
 namespace Garage_Finder_Backend.Controllers
 {
@@ -8,22 +10,84 @@ namespace Garage_Finder_Backend.Controllers
     [ApiController]
     public class CarController : ControllerBase
     {
-        public static List<Car> cars = new List<Car>();
+        private readonly ICarRepository carRepository;
 
-        [HttpGet]
+        public CarController(ICarRepository carRepository)
+        {
+            this.carRepository = carRepository;
+        }
+
+        [HttpGet("GetAll")]
         public IActionResult GetAll()
         {
-            return Ok(cars);
-        }
-        [HttpPost]
-        public IActionResult Create(Car car)
-        {
-            var carss = new Car();
+            try
+            {
+                return Ok(carRepository.GetCars());
+            }
+            catch (Exception e)
             {
 
+                return BadRequest(e.Message);
             }
-            cars.Add(carss);
-            return Ok(cars);
+        }
+        [HttpGet("GetByUser/{id}")]
+        public IActionResult GetUserId(int id)
+        {
+            try
+            {
+                return Ok(carRepository.GetCarsByUser(id));
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpPost("Add")]
+        public IActionResult Add(CarDTO car)
+        {
+            try
+            {
+                carRepository.SaveCar(car);
+
+                return Ok("SUCCESS");
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpPut("Update")]
+        public IActionResult Update(CarDTO car)
+        {
+            try
+            {
+                carRepository.UpdateCar(car);
+                return Ok("SUCCESS");
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpDelete("Delete/{id}")]
+        public IActionResult Delete(int id)
+        {
+            try
+            {
+                carRepository.DeleteCar(id);
+                return Ok("SUCCESS");
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(e.Message);
+            }
         }
     }
 }
