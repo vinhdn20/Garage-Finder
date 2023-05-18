@@ -35,7 +35,7 @@ namespace DataAccess.DAO
             {
                 using (var context = new GFDbContext())
                 {
-                    listServices = context.Services.Include(p => p.Category).ToList();
+                    listServices = context.Service.Include(p => p.Category).ToList();
                 }
             }
             catch (Exception e)
@@ -52,7 +52,7 @@ namespace DataAccess.DAO
             {
                 using (var context = new GFDbContext())
                 {
-                    p = context.Services.Include(p => p.Category).SingleOrDefault(x => x.ServiceID == serviceID);
+                    p = context.Service.Include(p => p.Category).SingleOrDefault(x => x.ServiceID == serviceID);
                 }
             }
             catch (Exception e)
@@ -68,7 +68,7 @@ namespace DataAccess.DAO
             {
                 using (var context = new GFDbContext())
                 {
-                    context.Services.Add(p);
+                    context.Service.Add(p);
                     context.SaveChanges();
                 }
             }
@@ -100,8 +100,8 @@ namespace DataAccess.DAO
             {
                 using (var context = new GFDbContext())
                 {
-                    var pDelete = context.Services.SingleOrDefault(x => x.ServiceID == id);
-                    context.Services.Remove(pDelete);
+                    var pDelete = context.Service.SingleOrDefault(x => x.ServiceID == id);
+                    context.Service.Remove(pDelete);
                     context.SaveChanges();
                 }
             }

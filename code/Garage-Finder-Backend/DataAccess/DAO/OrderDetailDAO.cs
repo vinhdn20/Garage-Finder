@@ -34,7 +34,7 @@ namespace DataAccess.DAO
             try
             {
                 var db = new GFDbContext();
-                orderDetails = db.OrderDetails.ToList();
+                orderDetails = db.OrderDetail.ToList();
             }
             catch (Exception e)
             {
@@ -49,7 +49,7 @@ namespace DataAccess.DAO
             try
             {
                 var db = new GFDbContext();
-                orderDetail = db.OrderDetails.Include(c => c.Service).SingleOrDefault(c => c.OrderID == id);
+                orderDetail = db.OrderDetail.Include(c => c.Service).SingleOrDefault(c => c.OrderID == id);
             }
             catch (Exception e)
             {
@@ -63,7 +63,7 @@ namespace DataAccess.DAO
             try
             {
                 var db = new GFDbContext();
-                db.OrderDetails.Add(orderDetail);
+                db.OrderDetail.Add(orderDetail);
                 db.SaveChanges();
             }
             catch (Exception e)
@@ -81,7 +81,7 @@ namespace DataAccess.DAO
                 {
                     var db = new GFDbContext();
                     //db.Entry<OrderDetail>(orderDetail).State = EntityState.Modified;
-                    db.OrderDetails.Update(orderDetail);
+                    db.OrderDetail.Update(orderDetail);
                     db.SaveChanges();
                 }
                 else
@@ -103,7 +103,7 @@ namespace DataAccess.DAO
                 if (_orderDetail != null)
                 {
                     var db = new GFDbContext();
-                    db.OrderDetails.Remove(_orderDetail);
+                    db.OrderDetail.Remove(_orderDetail);
                     db.SaveChanges();
                 }
                 else

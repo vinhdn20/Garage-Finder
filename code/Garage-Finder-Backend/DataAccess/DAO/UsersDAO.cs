@@ -37,7 +37,7 @@ namespace DataAccess.DAO
                 using (var context = new GFDbContext())
                 {
                     //p = context.Users.Include(m => m.RoleName).ToList();
-                    p = context.Users.ToList();
+                    p = context.User.ToList();
                     if (p == null)
                     {
                         throw new Exception("No Users!");
@@ -61,7 +61,7 @@ namespace DataAccess.DAO
                 using (var context = new GFDbContext())
                 {
                     //p = context.Users.Include(m => m.RoleName).SingleOrDefault(x => x.EmailAddress == email && x.Password == password);
-                    p = context.Users.SingleOrDefault(x => x.EmailAddress == email && x.Password == password);
+                    p = context.User.SingleOrDefault(x => x.EmailAddress == email && x.Password == password);
 
                     if (p == null)
                     {
@@ -82,7 +82,7 @@ namespace DataAccess.DAO
             {
                 using (var context = new GFDbContext())
                 {
-                    context.Users.Add(user);
+                    context.User.Add(user);
                     context.SaveChanges();
                 }
             }

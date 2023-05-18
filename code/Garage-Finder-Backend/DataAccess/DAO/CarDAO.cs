@@ -33,7 +33,7 @@ namespace DataAccess.DAO
             {
                 using (var context = new GFDbContext())
                 {
-                    listCategories = context.Cars.ToList();
+                    listCategories = context.Car.ToList();
                 }
             }
             catch (Exception e)
@@ -48,7 +48,7 @@ namespace DataAccess.DAO
             try
             {
                 var db = new GFDbContext();
-                db.Cars.Add(car);
+                db.Car.Add(car);
                 db.SaveChanges();
             }
             catch (Exception e)
@@ -78,7 +78,7 @@ namespace DataAccess.DAO
             {
                 using (var context = new GFDbContext())
                 {
-                    context.Cars.Add(p);
+                    context.Car.Add(p);
                     context.SaveChanges();
                 }
             }
@@ -93,8 +93,8 @@ namespace DataAccess.DAO
             {
                 using (var context = new GFDbContext())
                 {
-                    var cDelete = context.Cars.SingleOrDefault(x => x.CarID == id);
-                    context.Cars.Remove(cDelete);
+                    var cDelete = context.Car.SingleOrDefault(x => x.CarID == id);
+                    context.Car.Remove(cDelete);
                     context.SaveChanges();
                 }
             }
