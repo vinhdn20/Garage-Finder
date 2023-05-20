@@ -11,6 +11,7 @@ namespace DataAccess.DTO
         public float Cost { get; set; }
         public string Note { get; set; }
         public virtual ServiceDTO Service { get; set; }
+        public int CategoryID { get; set; }
 
     }
 }

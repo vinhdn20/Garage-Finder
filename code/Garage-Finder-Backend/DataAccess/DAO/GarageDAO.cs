@@ -35,7 +35,7 @@ namespace DataAccess.DAO
             {
                 using (var context = new GFDbContext())
                 {
-                    p = context.Garages.Include(m => m.GarageID).ToList();
+                    p = context.Garage.Include(m => m.GarageID).ToList();
 
                     if (p == null)
                     {
@@ -56,7 +56,7 @@ namespace DataAccess.DAO
             {
                 using (var context = new GFDbContext())
                 {
-                    context.Garages.Add(garage);
+                    context.Garage.Add(garage);
                     context.SaveChanges();
                 }
             }

@@ -34,7 +34,7 @@ namespace DataAccess.DAO
             {
                 using (var context = new GFDbContext())
                 {
-                    context.Feedbacks.Add(feedback);
+                    context.Feedback.Add(feedback);
                     context.SaveChanges();
                 }
             }

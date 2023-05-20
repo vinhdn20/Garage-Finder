@@ -21,13 +21,13 @@ namespace GFData.Data
             IConfigurationRoot configuration = builder.Build();
             optionsBuilder.UseSqlServer(configuration.GetConnectionString("GarageFinderDB"));
         }
-        public virtual DbSet<Car>? Cars { get; set; }
-        public virtual DbSet<Feedback>? Feedbacks { get; set; }
-        public virtual DbSet<Garage>? Garages { get; set; }
-        public virtual DbSet<OrderDetail>? OrderDetails { get; set; }
+        public virtual DbSet<Car>? Car { get; set; }
+        public virtual DbSet<Feedback>? Feedback { get; set; }
+        public virtual DbSet<Garage>? Garage { get; set; }
+        public virtual DbSet<OrderDetail>? OrderDetail { get; set; }
         public virtual DbSet<Orders>? Orders { get; set; }
-        public virtual DbSet<Service>? Services { get; set; }
-        public virtual DbSet<Users>? Users { get; set; }
+        public virtual DbSet<Service>? Service { get; set; }
+        public virtual DbSet<Users>? User { get; set; }
         public virtual DbSet<RoleName>? RoleName { get; set; }
 
         public virtual DbSet<RefreshToken>? RefreshToken { get; set; }
