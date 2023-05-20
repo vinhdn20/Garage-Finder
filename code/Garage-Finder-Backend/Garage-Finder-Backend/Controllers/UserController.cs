@@ -6,9 +6,9 @@ using System.Security.Claims;
 using Microsoft.Extensions.Options;
 using Garage_Finder_Backend.Models.RequestModels;
 using DataAccess.DTO;
-using Repositories;
 using Newtonsoft.Json;
 using GFData.Models.Entity;
+using Repositories.Interfaces;
 
 namespace Garage_Finder_Backend.Controllers
 {
@@ -17,17 +17,19 @@ namespace Garage_Finder_Backend.Controllers
         #region Properties
         private readonly JwtSettings _jwtSettings;
         private readonly JwtService _jwtService = new JwtService();
-        private readonly UserService _userService = new UserService();
         private readonly IUsersRepository _userRepository;
         private readonly IRefreshTokenRepository _refreshTokenRepository;
+        private readonly IRoleNameRepository _roleNameRepository;
         #endregion
 
         public UserController(IOptionsSnapshot<JwtSettings> jwtSettings,
-            IUsersRepository usersRepository, IRefreshTokenRepository refreshTokenRepository)
+            IUsersRepository usersRepository, IRefreshTokenRepository refreshTokenRepository,
+            IRoleNameRepository roleNameRepository)
         {
             _jwtSettings = jwtSettings.Value;
             _userRepository = usersRepository;
             _refreshTokenRepository = refreshTokenRepository;
+            _roleNameRepository = roleNameRepository;
         }
         public IActionResult Index()
         {
@@ -36,13 +38,15 @@ namespace Garage_Finder_Backend.Controllers
         [HttpPost]
         [Route("login")]
         [AllowAnonymous]
-        public IActionResult LoginAsync([FromBody] LoginModel loginModel)
+        public IActionResult LoginAsync([FromBody] UsersDTO userLoginDTO)
         {
             try
             {
-                var usersDTO = _userRepository.Login(loginModel.Email, loginModel.Password);
-                var accessToken = _jwtService.GenerateJwt(usersDTO, _jwtSettings);
+                var usersDTO = _userRepository.Login(userLoginDTO.EmailAddress, userLoginDTO.Password);
+                var roleName = _roleNameRepository.GetUserRole(usersDTO.RoleID);
+                var accessToken = _jwtService.GenerateJwt(usersDTO,roleName, _jwtSettings);
                 usersDTO.AccessToken = accessToken;
+                usersDTO.roleName = roleName;
 
                 var refreshToken = _jwtService.GenerateRefreshToken(_jwtSettings, usersDTO.UserID);
                 _refreshTokenRepository.AddOrUpdateToken(refreshToken);
@@ -54,6 +58,22 @@ namespace Garage_Finder_Backend.Controllers
                 return NotFound("Not found");
             }
 
+        }
+
+        [HttpPost]
+        [Route("register")]
+        [AllowAnonymous]
+        public IActionResult Register([FromBody] UsersDTO userDTO)
+        {
+            try
+            {
+                _userRepository.Register(userDTO);
+                return Ok();
+            }
+            catch (Exception)
+            {
+                return BadRequest("Register faile");
+            }
         }
 
         [HttpPost]
@@ -77,7 +97,8 @@ namespace Garage_Finder_Backend.Controllers
                         else
                         {
                             var usersDTO = JsonConvert.DeserializeObject<UsersDTO>(User.FindFirstValue("user"));
-                            string token = _jwtService.GenerateJwt(usersDTO, _jwtSettings);
+                            var roleName = _roleNameRepository.GetUserRole(usersDTO.UserID);
+                            string token = _jwtService.GenerateJwt(usersDTO,roleName, _jwtSettings);
                             var newRefreshToken = _jwtService.GenerateRefreshToken(_jwtSettings,usersDTO.UserID);
                             newRefreshToken.TokenID = userRefreshToken[i].TokenID;
                             _refreshTokenRepository.AddOrUpdateToken(newRefreshToken);
@@ -98,7 +119,7 @@ namespace Garage_Finder_Backend.Controllers
 
         [HttpGet]
         [Route("test")]
-        [Authorize(Roles = "Member")]
+        [Authorize]
         public IActionResult TestLogin()
         {
             var emailAddress = User.FindFirstValue(ClaimTypes.Name);

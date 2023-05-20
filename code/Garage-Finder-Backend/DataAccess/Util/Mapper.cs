@@ -10,6 +10,7 @@ namespace DataAccess.Util
 {
     public class Mapper
     {
+        #region MapUser
         public static UsersDTO mapToDTO(Users users)
         {
             if (users != null)
@@ -51,6 +52,8 @@ namespace DataAccess.Util
             return users;
         }
 
+        #endregion
+        #region MapRefreshToken
         public static RefreshTokenDTO mapToDTO(RefreshToken refreshToken)
         {
             if (refreshToken != null)
@@ -106,11 +109,23 @@ namespace DataAccess.Util
                 };
                 return carDTO;
             }
+        }
+
+        public static RoleNameDTO mapToDTO(RoleName roleName)
+        {
+            if(roleName != null)
+            {
+                RoleNameDTO roleNameDTO = new RoleNameDTO
+                {
+                    RoleID = roleName.RoleID,
+                    NameRole = roleName.NameRole,
+                };
+                return roleNameDTO;
+            }
             else
             {
                 return null;
             }
-
         }
         public static Car mapToEntity(CarDTO carDTO)
         {

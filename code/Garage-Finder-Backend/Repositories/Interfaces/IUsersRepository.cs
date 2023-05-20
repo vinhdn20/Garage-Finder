@@ -5,11 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Repositories
+namespace Repositories.Interfaces
 {
     public interface IUsersRepository
     {
         UsersDTO Login(string email, string password);
+        void Register(UsersDTO user);
         void Add(UsersDTO user);
         void Update(UsersDTO user);
         List<UsersDTO> GetAll();
