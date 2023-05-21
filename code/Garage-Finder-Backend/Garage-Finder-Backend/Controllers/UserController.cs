@@ -69,7 +69,7 @@ namespace Garage_Finder_Backend.Controllers
         {
             var url = "https://accounts.google.com/o/oauth2/v2/auth?" +
                 "client_id=905743272860-1ob54jg8gffqdirppk90d41vf9atmh7o.apps.googleusercontent.com" +
-                "&redirect_uri=https://localhost:7200/login-gg-infor" +
+                "&redirect_uri=https://localhost:49153/login-gg-infor" +
                 "&response_type=code" +
                 "&scope=https://www.googleapis.com/auth/userinfo.profile";
             return Redirect(url);
@@ -83,7 +83,7 @@ namespace Garage_Finder_Backend.Controllers
             var client = new RestClient();
             var request = new RestRequest($"https://oauth2.googleapis.com/token?" +
                 $"client_id=905743272860-1ob54jg8gffqdirppk90d41vf9atmh7o.apps.googleusercontent.com" +
-                $"&redirect_uri=https://localhost:7200/login-gg-infor" +
+                $"&redirect_uri=https://localhost:49153/login-gg-infor" +
                 $"&grant_type=authorization_code" +
                 $"&code={code}" +
                 $"&client_secret=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", Method.Post);
