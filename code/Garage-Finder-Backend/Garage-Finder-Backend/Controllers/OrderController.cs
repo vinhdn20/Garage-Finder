@@ -1,7 +1,7 @@
 ﻿using DataAccess.DTO;
 using Microsoft.AspNetCore.Mvc;
-using Repositories;
 using Repositories.Implements;
+using Repositories.Interfaces;
 
 namespace Garage_Finder_Backend.Controllers
 {

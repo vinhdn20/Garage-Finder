@@ -10,7 +10,6 @@ namespace DataAccess.Util
 {
     public class Mapper
     {
-        #region MapUser
         public static UsersDTO mapToDTO(Users users)
         {
             if (users != null)
@@ -52,8 +51,6 @@ namespace DataAccess.Util
             return users;
         }
 
-        #endregion
-        #region MapRefreshToken
         public static RefreshTokenDTO mapToDTO(RefreshToken refreshToken)
         {
             if (refreshToken != null)
@@ -94,26 +91,30 @@ namespace DataAccess.Util
             }
         }
 
-        public static CarDTO mapToDTO(Car cars)
+        public static CarDTO mapToDTO(Car car)
         {
-            if (cars != null)
+            if (car != null)
             {
                 CarDTO carDTO = new CarDTO
                 {
-                    CarID = cars.CarID,
-                    Brand = cars.Brand,
-                    Color = cars.Color,
-                    LicensePlates = cars.LicensePlates,
-                    Type = cars.Type,
-                    UserID = cars.UserID
+                    CarID = car.CarID,
+                    Brand = car.Brand,
+                    Color = car.Color,
+                    LicensePlates = car.LicensePlates,
+                    Type = car.Type,
+                    UserID = car.UserID
                 };
                 return carDTO;
+            }
+            else
+            {
+                return null;
             }
         }
 
         public static RoleNameDTO mapToDTO(RoleName roleName)
         {
-            if(roleName != null)
+            if (roleName != null)
             {
                 RoleNameDTO roleNameDTO = new RoleNameDTO
                 {
@@ -205,10 +206,10 @@ namespace DataAccess.Util
         {
             Service service = new Service
             {
-                ServiceID= serviceDTO.ServiceID,
+                ServiceID = serviceDTO.ServiceID,
                 NameService = serviceDTO.NameService,
                 GarageID = serviceDTO.GarageID,
-                Cost = serviceDTO.Cost, 
+                Cost = serviceDTO.Cost,
                 Note = serviceDTO.Note,
             };
             return service;
@@ -226,6 +227,63 @@ namespace DataAccess.Util
             };
             return serviceDTO;
         }
+
+        public static Category mapToEntity(CategoryDTO categoryDTO)
+        {
+            Category category = new Category
+            {
+                CategoryID = categoryDTO.CategoryID,
+                CategoryName = categoryDTO.CategoryName
+            };
+            return category;
+        }
+        public static CategoryDTO mapToDTO(Category category)
+        {
+            CategoryDTO categoryDTO = new CategoryDTO
+            {
+                CategoryID = category.CategoryID,
+                CategoryName = category.CategoryName
+            };
+            return categoryDTO;
+        }
+
+        public static GarageDTO mapToDTO(Garage garage)
+        {
+            if (garage != null)
+            {
+                GarageDTO garageDTO = new GarageDTO
+                {
+                    GarageID=garage.GarageID,
+                    GarageName=garage.GarageName,
+                    Address = garage.Address,
+                    EmailAddress = garage.EmailAddress,
+                    OwnerName = garage.OwnerName,
+                    PhoneNumber = garage.PhoneNumber,
+                    UserID = garage.UserID,
+                };
+                return garageDTO;
+            }
+            else
+            {
+                return null;
+            }
+
+        }
+
+        public static Garage mapToEntity(GarageDTO garageDTO)
+        {
+            Garage garage = new Garage
+            {
+                GarageID = garageDTO.GarageID,
+                GarageName = garageDTO.GarageName,
+                Address = garageDTO.Address,
+                EmailAddress = garageDTO.EmailAddress,
+                OwnerName = garageDTO.OwnerName,
+                PhoneNumber = garageDTO.PhoneNumber,
+                UserID = garageDTO.UserID,
+            };
+
+            return garage;
+        }
     }
 }
-
