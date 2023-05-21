@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace GFData.Models.Entity
 {
-    public class Category
+    public class FavoriteList
     {
         [Key]
-        public int CategoryID { get; set; }
-        public string CategoryName { get; set; }
-        public virtual ICollection<Service>? Services { get; set; }
+        public int FavoriteID { get; set; }
+        public int UserID { get; set; }
+        public int GarageID { get; set; }
     }
 }

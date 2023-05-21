@@ -1,17 +1,23 @@
 ﻿using GFData.Data;
 using GFData.Models.Entity;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace DataAccess.DAO
 {
-    public class CarDAO
+    public class CategoryDAO
     {
-        private static CarDAO instance = null;
+        private static CategoryDAO instance = null;
         private static readonly object iLock = new object();
-        public CarDAO()
+        public CategoryDAO()
         {
 
         }
-        public static CarDAO Instance
+
+        public static CategoryDAO Instance
         {
             get
             {
@@ -19,36 +25,36 @@ namespace DataAccess.DAO
                 {
                     if (instance == null)
                     {
-                        instance = new CarDAO();
+                        instance = new CategoryDAO();
                     }
                     return instance;
                 }
             }
         }
 
-        public List<Car> GetCars()
+        public List<Category> GetCategories()
         {
-            var listCars = new List<Car>();
+            var listCategories = new List<Category>();
             try
             {
                 using (var context = new GFDbContext())
                 {
-                    listCars = context.Car.ToList();
+                    listCategories = context.Category.ToList();
                 }
             }
             catch (Exception e)
             {
                 throw new Exception(e.Message);
             }
-            return listCars;
+            return listCategories;
         }
 
-        public void Add(Car car)
+        public void Add(Category category)
         {
             try
             {
                 var db = new GFDbContext();
-                db.Car.Add(car);
+                db.Category.Add(category);
                 db.SaveChanges();
             }
             catch (Exception e)
@@ -57,13 +63,13 @@ namespace DataAccess.DAO
             }
         }
 
-        public void Update(Car c)
+        public void Update(Category c)
         {
             try
             {
                 using (var context = new GFDbContext())
                 {
-                    context.Entry<Car>(c).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                    context.Entry<Category>(c).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
                     context.SaveChanges();
                 }
             }
@@ -72,29 +78,15 @@ namespace DataAccess.DAO
                 throw new Exception(e.Message);
             }
         }
-        public void SaveCar(Car p)
+
+        public void DeleteCategory(int id)
         {
             try
             {
                 using (var context = new GFDbContext())
                 {
-                    context.Car.Add(p);
-                    context.SaveChanges();
-                }
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-        }
-        public void DeleteCar(int id)
-        {
-            try
-            {
-                using (var context = new GFDbContext())
-                {
-                    var cDelete = context.Car.SingleOrDefault(x => x.CarID == id);
-                    context.Car.Remove(cDelete);
+                    var cDelete = context.Category.SingleOrDefault(x => x.CategoryID == id);
+                    context.Category.Remove(cDelete);
                     context.SaveChanges();
                 }
             }

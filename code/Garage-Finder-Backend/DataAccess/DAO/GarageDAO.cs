@@ -28,6 +28,23 @@ namespace DataAccess.DAO
             }
         }
 
+        public List<Garage> GetGarages()
+        {
+            var listGarage = new List<Garage>();
+            try
+            {
+                using (var context = new GFDbContext())
+                {
+                    listGarage = context.Garage.ToList();
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            return listGarage;
+        }
+
         public List<Garage> FindAll()
         {
             var p = new List<Garage>();
@@ -73,6 +90,23 @@ namespace DataAccess.DAO
                 using (var context = new GFDbContext())
                 {
                     context.Entry<Garage>(garage).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        public void DeleteGarage(int id)
+        {
+            try
+            {
+                using (var context = new GFDbContext())
+                {
+                    var cDelete = context.Garage.SingleOrDefault(x => x.GarageID == id);
+                    context.Garage.Remove(cDelete);
                     context.SaveChanges();
                 }
             }
