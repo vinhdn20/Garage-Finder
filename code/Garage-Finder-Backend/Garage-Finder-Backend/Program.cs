@@ -16,6 +16,7 @@ builder.Services.AddSwaggerGen();
 //builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme) // Sets the default scheme to cookies
 //            .AddCookie();
 var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>();
+Console.WriteLine("JWT Issuer:" + jwtSettings.Issuer);
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
 
 builder.Services
