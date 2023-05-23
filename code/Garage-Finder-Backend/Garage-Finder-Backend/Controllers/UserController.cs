@@ -137,14 +137,12 @@ namespace Garage_Finder_Backend.Controllers
             }
         }
 
-        //[HttpGet]
-        //[Route("test")]
-        //[Authorize]
-        //public IActionResult TestLogin()
-        //{
-        //    var emailAddress = User.FindFirstValue(ClaimTypes.Name);
-        //    return Ok(emailAddress);
-        //}
+        [HttpGet]
+        [Route("test")]
+        public IActionResult TestLogin()
+        {
+            return Ok("WebOk");
+        }
 
         private void SetRefreshToken(RefreshTokenDTO refreshToken)
         {
