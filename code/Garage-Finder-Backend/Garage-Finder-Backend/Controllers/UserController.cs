@@ -75,26 +75,26 @@ namespace Garage_Finder_Backend.Controllers
             return Redirect(url);
         }
 
-        [HttpGet("{code}/{scope}")]
-        [Route("login-gg-infor")]
-        [AllowAnonymous]
-        public async Task<IActionResult> AfterLoginGGAsync(string code, string scope)
-        {
-            var client = new RestClient();
-            var request = new RestRequest($"https://oauth2.googleapis.com/token?" +
-                $"client_id=905743272860-1ob54jg8gffqdirppk90d41vf9atmh7o.apps.googleusercontent.com" +
-                $"&redirect_uri=http://localhost:49156/login-gg-infor" +
-                $"&grant_type=authorization_code" +
-                $"&code={code}" +
-                $"&client_secret=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", Method.Post);
-            RestResponse response = await client.ExecuteAsync(request);
-            dynamic obj = JsonConvert.DeserializeObject(response.Content);
-            string id_token = obj.id_token;
-            request = new RestRequest($"https://oauth2.googleapis.com/tokeninfo?id_token={id_token}");
-            response = await client.ExecuteAsync(request);
+        //[HttpGet("{code}/{scope}")]
+        //[Route("login-gg-infor")]
+        //[AllowAnonymous]
+        //public async Task<IActionResult> AfterLoginGGAsync(string code, string scope)
+        //{
+        //    var client = new RestClient();
+        //    var request = new RestRequest($"https://oauth2.googleapis.com/token?" +
+        //        $"client_id=905743272860-1ob54jg8gffqdirppk90d41vf9atmh7o.apps.googleusercontent.com" +
+        //        $"&redirect_uri=http://localhost:49156/login-gg-infor" +
+        //        $"&grant_type=authorization_code" +
+        //        $"&code={code}" +
+        //        $"&client_secret=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", Method.Post);
+        //    RestResponse response = await client.ExecuteAsync(request);
+        //    dynamic obj = JsonConvert.DeserializeObject(response.Content);
+        //    string id_token = obj.id_token;
+        //    request = new RestRequest($"https://oauth2.googleapis.com/tokeninfo?id_token={id_token}");
+        //    response = await client.ExecuteAsync(request);
 
-            return Ok(response.Content);
-        }
+        //    return Ok(response.Content);
+        //}
 
         [HttpPost]
         [Route("refresh-token")]
