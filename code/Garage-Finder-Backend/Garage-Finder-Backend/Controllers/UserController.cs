@@ -4,12 +4,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Microsoft.Extensions.Options;
-using Garage_Finder_Backend.Models.RequestModels;
-using DataAccess.DTO;
 using Newtonsoft.Json;
-using GFData.Models.Entity;
 using Repositories.Interfaces;
-using RestSharp;
+using DataAccess.DTO;
 
 namespace Garage_Finder_Backend.Controllers
 {
@@ -62,38 +59,83 @@ namespace Garage_Finder_Backend.Controllers
 
         }
 
-        [HttpGet]
+        //[HttpGet]
+        //[Route("login-gg")]
+        //[AllowAnonymous]
+        //public async Task<IActionResult> LoginByGoogleAsync()
+        //{
+        //    var url = "https://accounts.google.com/o/oauth2/v2/auth?" +
+        //        "client_id=905743272860-1ob54jg8gffqdirppk90d41vf9atmh7o.apps.googleusercontent.com" +
+        //        "&redirect_uri=https://localhost:7200/login-gg-infor" +
+        //        "&response_type=code" +
+        //        "&scope=https://www.googleapis.com/auth/userinfo.profile";
+        //    return Redirect(url);
+        //}
+
+        //[HttpGet()]
+        //[Route("login-gg-infor")]
+        //[AllowAnonymous]
+        //public async Task<IActionResult> AfterLoginGGAsync(string code, string scope)
+        //{
+        //    var client = new RestClient();
+        //    var request = new RestRequest($"https://oauth2.googleapis.com/token?" +
+        //        $"client_id=905743272860-1ob54jg8gffqdirppk90d41vf9atmh7o.apps.googleusercontent.com" +
+        //        $"&redirect_uri=https://localhost:7200/login-gg-infor" +
+        //        $"&grant_type=authorization_code" +
+        //        $"&code={code}" +
+        //        $"&client_secret=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", Method.Post);
+        //    RestResponse response = await client.ExecuteAsync(request);
+        //    dynamic obj = JsonConvert.DeserializeObject(response.Content);
+        //    string id_token = obj.id_token;
+        //    request = new RestRequest($"https://oauth2.googleapis.com/tokeninfo?id_token={id_token}");
+        //    response = await client.ExecuteAsync(request);
+
+        //    return Ok(response.Content);
+        //}
+
+        [HttpPost]
         [Route("login-gg")]
         [AllowAnonymous]
-        public async Task<IActionResult> LoginByGoogleAsync()
+        public IActionResult LoginGGAsync(string email)
         {
-            var url = "https://accounts.google.com/o/oauth2/v2/auth?" +
-                "client_id=905743272860-1ob54jg8gffqdirppk90d41vf9atmh7o.apps.googleusercontent.com" +
-                "&redirect_uri=https://localhost:7200/login-gg-infor" +
-                "&response_type=code" +
-                "&scope=https://www.googleapis.com/auth/userinfo.profile";
-            return Redirect(url);
-        }
+            try
+            {
+                var usersDTO = _userRepository.GetAll().Find(x => x.EmailAddress.Equals(email));
+                if(usersDTO != null)
+                {
+                    var roleName = _roleNameRepository.GetUserRole(usersDTO.RoleID);
+                    var accessToken = _jwtService.GenerateJwt(usersDTO, roleName, _jwtSettings);
+                    usersDTO.AccessToken = accessToken;
+                    usersDTO.roleName = roleName;
 
-        [HttpGet("{code}/{scope}")]
-        [Route("login-gg-infor")]
-        [AllowAnonymous]
-        public async Task<IActionResult> AfterLoginGGAsync(string code, string scope)
-        {
-            var client = new RestClient();
-            var request = new RestRequest($"https://oauth2.googleapis.com/token?" +
-                $"client_id=905743272860-1ob54jg8gffqdirppk90d41vf9atmh7o.apps.googleusercontent.com" +
-                $"&redirect_uri=https://localhost:7200/login-gg-infor" +
-                $"&grant_type=authorization_code" +
-                $"&code={code}" +
-                $"&client_secret=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", Method.Post);
-            RestResponse response = await client.ExecuteAsync(request);
-            dynamic obj = JsonConvert.DeserializeObject(response.Content);
-            string id_token = obj.id_token;
-            request = new RestRequest($"https://oauth2.googleapis.com/tokeninfo?id_token={id_token}");
-            response = await client.ExecuteAsync(request);
+                    var refreshToken = _jwtService.GenerateRefreshToken(_jwtSettings, usersDTO.UserID);
+                    _refreshTokenRepository.AddOrUpdateToken(refreshToken);
+                    SetRefreshToken(refreshToken);
+                    return Ok(usersDTO);
+                }
+                else
+                {
+                    var userDTO = new UsersDTO()
+                    {
+                        EmailAddress = email,
+                        RoleID = Constants.ROLE_CAR
+                    };
+                    _userRepository.Register(userDTO);
+                    var roleName = _roleNameRepository.GetUserRole(usersDTO.RoleID);
+                    var accessToken = _jwtService.GenerateJwt(usersDTO, roleName, _jwtSettings);
+                    usersDTO.AccessToken = accessToken;
+                    usersDTO.roleName = roleName;
 
-            return Ok(response.Content);
+                    var refreshToken = _jwtService.GenerateRefreshToken(_jwtSettings, usersDTO.UserID);
+                    _refreshTokenRepository.AddOrUpdateToken(refreshToken);
+                    SetRefreshToken(refreshToken);
+                    return Ok(userDTO);
+                }
+            }
+            catch (Exception ex)
+            {
+                return NotFound("Not found");
+            }
         }
 
         [HttpPost]
