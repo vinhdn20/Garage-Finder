@@ -13,7 +13,6 @@ namespace Repositories.Interfaces
         void Add(GarageDTO garage);
         void Update(GarageDTO garage);
         List<GarageDTO> GetGarages();
-        List<GarageDTO> GetGaragesByUser(int id);
         void DeleteGarage(int id);
     }
 }

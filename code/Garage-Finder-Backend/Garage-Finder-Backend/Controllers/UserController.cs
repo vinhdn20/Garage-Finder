@@ -75,7 +75,7 @@ namespace Garage_Finder_Backend.Controllers
             return Redirect(url);
         }
 
-        [HttpGet("{code}/{scope}")]
+      /*  [HttpGet("{code}/{scope}")]
         [Route("login-gg-infor")]
         [AllowAnonymous]
         public async Task<IActionResult> AfterLoginGGAsync(string code, string scope)
@@ -94,7 +94,7 @@ namespace Garage_Finder_Backend.Controllers
             response = await client.ExecuteAsync(request);
 
             return Ok(response.Content);
-        }
+        }*/
 
         [HttpPost]
         [Route("refresh-token")]
