@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GFData.Models.Entity
 {
@@ -6,12 +7,17 @@ namespace GFData.Models.Entity
     {
         [Key]
         public int OrderDetailID { get; set; }
-        public int OrderID { get; set; }
-        public int ServiceID { get; set; }
         public string NameService { get; set; }
         public double Cost { get; set; }
         public string Note { get; set; }
-        public virtual Service Service { get; set; }
+
+        //[ForeignKey("OrderID")]
+        public int OrderID { get; set; }
+        public Orders Orders { get; set; }
+
+        //[ForeignKey("ServiceID")]
+        public int ServiceID { get; set; }
+        public Service Service { get; set; }
 
     }
 }

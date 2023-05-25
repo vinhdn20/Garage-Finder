@@ -22,6 +22,9 @@ namespace Repositories
             services.AddScoped<IRoleNameRepository, RoleNameRepository>();
             services.AddScoped<IGarageRepository, GarageRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<IFavoriteListRepository, FavoriteListRepository>();
+            services.AddScoped<IFeedbackRepository, FeedbackRepository>();
+
         }
     }
 }
