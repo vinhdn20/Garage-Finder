@@ -168,7 +168,7 @@ namespace DataAccess.Util
                 TimeCreate = orderDTO.TimeCreate,
                 TimeUpdate = orderDTO.TimeUpdate,
                 Status = orderDTO.Status,
-                OrderDetail = mapToEntity(orderDTO.OrderDetail)
+                //OrderDetail = mapToEntity(orderDTO.OrderDetail);
             };
             return order;
         }
@@ -259,7 +259,6 @@ namespace DataAccess.Util
                     EmailAddress = garage.EmailAddress,
                     OwnerName = garage.OwnerName,
                     PhoneNumber = garage.PhoneNumber,
-                    UserID = garage.UserID,
                 };
                 return garageDTO;
             }
@@ -280,10 +279,75 @@ namespace DataAccess.Util
                 EmailAddress = garageDTO.EmailAddress,
                 OwnerName = garageDTO.OwnerName,
                 PhoneNumber = garageDTO.PhoneNumber,
-                UserID = garageDTO.UserID,
             };
 
             return garage;
+        }
+        public static FavoriteList mapToEntity(FavoriteListDTO favoriteListDTO)
+        {
+            FavoriteList favoriteList = new FavoriteList
+            {
+                FavoriteID = favoriteListDTO.FavoriteID,
+                UserID = favoriteListDTO.UserID,
+                GarageID = favoriteListDTO.GarageID,
+
+            };
+
+            return favoriteList;
+        }
+
+        public static FavoriteListDTO mapToDTO(FavoriteList favoriteList)
+        {
+            if (favoriteList != null)
+            {
+                FavoriteListDTO favoriteListDTO = new FavoriteListDTO
+                {
+                    FavoriteID = favoriteList.FavoriteID,
+                    UserID = favoriteList.UserID,
+                    GarageID = favoriteList.GarageID,
+                };
+                return favoriteListDTO;
+            }
+            else
+            {
+                return null;
+            }
+
+        }
+
+        public static FeedbackDTO mapToDTO(Feedback feedback)
+        {
+            if (feedback != null)
+            {
+                FeedbackDTO feedbackDTO = new FeedbackDTO
+                {
+                    FeedbackID = feedback.FeedbackID,
+                    GarageID = feedback.GarageID,
+                    UserID = feedback.UserID,
+                    Star = feedback.Star,
+                    Content = feedback.Content,
+                };
+                return feedbackDTO;
+            }
+            else
+            {
+                return null;
+            }
+
+        }
+
+        public static Feedback mapToEntity(FeedbackDTO feedbackDTO)
+        {
+            Feedback feedback = new Feedback
+            {
+                FeedbackID = feedbackDTO.FeedbackID,
+                GarageID = feedbackDTO.GarageID,
+                UserID = feedbackDTO.UserID,
+                Star  =  feedbackDTO.Star,
+                Content  = feedbackDTO.Content,
+            };
+
+            return feedback;
         }
     }
 }

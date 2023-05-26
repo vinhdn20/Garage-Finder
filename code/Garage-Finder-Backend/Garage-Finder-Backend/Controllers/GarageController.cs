@@ -26,19 +26,6 @@ namespace Garage_Finder_Backend.Controllers
                 return BadRequest(e.Message);
             }
         }
-        [HttpGet("GetByUser/{id}")]
-        public IActionResult GetUserId(int id)
-        {
-            try
-            {
-                return Ok(garageRepository.GetGaragesByUser(id));
-            }
-            catch (Exception e)
-            {
-
-                return BadRequest(e.Message);
-            }
-        }
 
         [HttpPost("Add")]
         public IActionResult Add(GarageDTO garage)
@@ -84,6 +71,34 @@ namespace Garage_Finder_Backend.Controllers
 
                 return BadRequest(e.Message);
             }
+        }
+
+
+        [HttpGet("GetByKeyWord")]
+        public IActionResult SearchGarage(string? keyword, string? location)
+        {
+            // Lấy danh sách garage từ nguồn dữ liệu
+            var garages = garageRepository.GetGarages();
+
+            // Áp dụng các bộ lọc
+            if (!string.IsNullOrEmpty(keyword) && string.IsNullOrEmpty(location))
+            {
+                garages = garages.Where(g => g.GarageName.Contains(keyword)).ToList();
+            }
+
+            if (string.IsNullOrEmpty(keyword) && !string.IsNullOrEmpty(location))
+            {
+                garages = garages.Where(g => g.Address.Contains(location)).ToList();
+            }
+
+            if (!string.IsNullOrEmpty(keyword) && !string.IsNullOrEmpty(location))
+            {
+                garages = garages.Where(g => g.GarageName.Contains(keyword) || g.Address.Contains(location)).ToList();
+            }
+
+
+            // Trả về kết quả
+            return Ok(garages);
         }
     }
 }

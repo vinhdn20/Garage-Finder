@@ -89,7 +89,7 @@ namespace DataAccess.DAO
             {
                 using (var context = new GFDbContext())
                 {
-                    context.Entry<Garage>(garage).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                    context.Entry<Garage>(garage).State = EntityState.Modified;
                     context.SaveChanges();
                 }
             }

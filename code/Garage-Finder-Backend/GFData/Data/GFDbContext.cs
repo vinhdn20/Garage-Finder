@@ -1,25 +1,30 @@
 ﻿using GFData.Models.Entity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GFData.Data
 {
     public class GFDbContext : DbContext
     {
-        public GFDbContext()
+        public GFDbContext()    
         {
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+            //var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+            var environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            var builder = new ConfigurationBuilder()
+                            .SetBasePath(Directory.GetCurrentDirectory())
+                            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                            .AddJsonFile($"appsettings.{environmentName}.json", optional: true, reloadOnChange: true); 
             IConfigurationRoot configuration = builder.Build();
             optionsBuilder.UseSqlServer(configuration.GetConnectionString("GarageFinderDB"));
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
         }
 
         public virtual DbSet<Category> Category { get; set; }
@@ -28,11 +33,10 @@ namespace GFData.Data
         public virtual DbSet<Garage>? Garage { get; set; }
         public virtual DbSet<OrderDetail>? OrderDetail { get; set; }
         public virtual DbSet<Orders>? Orders { get; set; }
-        public virtual DbSet<Service>? Service { get; set; }
+        public virtual DbSet<Service>? Service { get; set; }    
         public virtual DbSet<Users>? User { get; set; }
         public virtual DbSet<RoleName>? RoleName { get; set; }
-
         public virtual DbSet<RefreshToken>? RefreshToken { get; set; }
-
+        public virtual DbSet<FavoriteList>? FavoriteList { get; set; }
     }
 }

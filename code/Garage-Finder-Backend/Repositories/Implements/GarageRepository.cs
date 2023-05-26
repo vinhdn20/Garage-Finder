@@ -32,11 +32,6 @@ namespace Repositories.Implements
             GarageDAO.Instance.UpdateGarage(Mapper.mapToEntity(garage));
         }
 
-        public List<GarageDTO> GetGaragesByUser(int id)
-        {
-            return GarageDAO.Instance.GetGarages().Where(c => c.UserID == id).Select(p => Mapper.mapToDTO(p)).ToList();
-        }
-
         public void DeleteGarage(int id)
         {
             GarageDAO.Instance.DeleteGarage(id);

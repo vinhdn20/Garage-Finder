@@ -1,18 +1,22 @@
 ﻿using GFData.Data;
 using GFData.Models.Entity;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace DataAccess.DAO
 {
-    public class FeedbackDAO
+    public class FavoriteListDAO
     {
-        private static FeedbackDAO instance = null;
+        private static FavoriteListDAO instance = null;
         private static readonly object iLock = new object();
-        public FeedbackDAO()
+        public FavoriteListDAO()
         {
 
         }
-
-        public static FeedbackDAO Instance
+        public static FavoriteListDAO Instance
         {
             get
             {
@@ -20,37 +24,36 @@ namespace DataAccess.DAO
                 {
                     if (instance == null)
                     {
-                        instance = new FeedbackDAO();
+                        instance = new FavoriteListDAO();
                     }
                     return instance;
                 }
             }
         }
-
-        public List<Feedback> GetList()
+        public List<FavoriteList> GetList()
         {
-            var feedbacks = new List<Feedback>();
+            var favoriteList = new List<FavoriteList>();
             try
             {
                 using (var context = new GFDbContext())
                 {
-                    feedbacks = context.Feedback.ToList();
+                    favoriteList = context.FavoriteList.ToList();
                 }
             }
             catch (Exception e)
             {
                 throw new Exception(e.Message);
             }
-            return feedbacks;
+            return favoriteList;
         }
 
-        public void SaveFeedback(Feedback feedback)
+        public void SaveList(FavoriteList favoriteList)
         {
             try
             {
                 using (var context = new GFDbContext())
                 {
-                    context.Feedback.Add(feedback);
+                    context.FavoriteList.Add(favoriteList);
                     context.SaveChanges();
                 }
             }
@@ -60,13 +63,14 @@ namespace DataAccess.DAO
             }
         }
 
-        public void UpdateFeedback(Feedback feedback)
+        public void Delete(int id)
         {
             try
             {
                 using (var context = new GFDbContext())
                 {
-                    context.Entry<Feedback>(feedback).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                    var cDelete = context.FavoriteList.SingleOrDefault(x => x.FavoriteID == id);
+                    context.FavoriteList.Remove(cDelete);
                     context.SaveChanges();
                 }
             }
@@ -75,6 +79,5 @@ namespace DataAccess.DAO
                 throw new Exception(e.Message);
             }
         }
-
     }
 }

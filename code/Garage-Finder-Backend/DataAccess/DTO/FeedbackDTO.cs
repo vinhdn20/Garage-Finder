@@ -2,7 +2,7 @@
 {
     public class FeedbackDTO
     {
-        public int CommentID { get; set; }  
+        public int FeedbackID { get; set; }  
         public int GarageID { get; set; }   
         public int UserID { get; set; }
         public int Star { get; set; }
