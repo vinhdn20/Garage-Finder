@@ -9,8 +9,8 @@ namespace Repositories.Interfaces
 {
     public interface IOrderRepository
     {
-        IEnumerable<OrdersDTO> GetAllOrders();
-        IEnumerable<OrdersDTO> GetAllOrdersByUserId(int id);
+        List<OrdersDTO> GetAllOrders();
+        List<OrdersDTO> GetAllOrdersByUserId(int id);
         OrdersDTO GetOrderById(int id);
         void Add(OrdersDTO order);
         void Update(OrdersDTO order);
