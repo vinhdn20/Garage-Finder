@@ -7,19 +7,11 @@ namespace GFData.Models.Entity
     {
         [Key]
         public int ServiceID { get; set; }
+        public int GarageID { get; set; }
         public string NameService { get; set; }
+        public int CategoryID { get; set; }
         public double Cost { get; set; }
         public string Note { get; set; }
-
-
-        //[ForeignKey("GarageID")]
-        public int GarageID { get; set; }
-        public Garage Garage { get; set; }
-
-        //[ForeignKey("CategoryID")]
-        public int CategoryID { get; set; }
-        public Category Category { get; set; }
-
-        public ICollection<OrderDetail> OrderDetails { get; set; }
+        public virtual Category? Category { get; set; }
     }
 }

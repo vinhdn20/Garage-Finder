@@ -12,12 +12,9 @@ namespace GFData.Models.Entity
     {
         [Key]
         public int TokenID { get; set; }
+        public int UserID { get; set; }
         public string Token { get; set; }
         public DateTime ExpiresDate { get; set; }
         public DateTime CreateDate { get; set; }
-
-        //[ForeignKey("UserID")]
-        public int UserID { get; set; }
-        public Users Users { get; set; }
     }
 }

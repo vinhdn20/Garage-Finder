@@ -12,11 +12,7 @@ namespace GFData.Models.Entity
     {
         [Key]
         public int FavoriteID { get; set; }
-        //[ForeignKey("UserID")]
         public int UserID { get; set; }
-        public Users User { get; set; }
-        //[ForeignKey("GarageID")]
         public int GarageID { get; set; }
-        public Garage Garage { get; set; }
     }
 }

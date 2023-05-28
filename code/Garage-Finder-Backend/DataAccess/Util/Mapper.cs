@@ -22,7 +22,7 @@ namespace DataAccess.Util
                     PhoneNumber = users.PhoneNumber,
                     EmailAddress = users.EmailAddress,
                     Password = users.Password,
-                    RoleID = users.RoleID,
+                    RoleID = users.RoleName.RoleID,
                     //roleName = users.RoleName,
                 };
                 return usersDTO;
@@ -150,6 +150,7 @@ namespace DataAccess.Util
                 OrderID = order.OrderID,
                 CarID = order.CarID,
                 GarageID = order.GarageID,
+                ServiceID = order.ServiceID,
                 TimeCreate = order.TimeCreate,
                 TimeUpdate = order.TimeUpdate,
                 Status = order.Status,
@@ -165,41 +166,13 @@ namespace DataAccess.Util
                 OrderID = orderDTO.OrderID,
                 CarID = orderDTO.CarID,
                 GarageID = orderDTO.GarageID,
+                ServiceID = orderDTO.ServiceID,
                 TimeCreate = orderDTO.TimeCreate,
                 TimeUpdate = orderDTO.TimeUpdate,
                 Status = orderDTO.Status,
                 //OrderDetail = mapToEntity(orderDTO.OrderDetail);
             };
             return order;
-        }
-
-        public static OrderDetail mapToEntity(OrderDetailDTO orderDetailDTO)
-        {
-            OrderDetail orderDetail = new OrderDetail
-            {
-                OrderDetailID = orderDetailDTO.OrderDetailID,
-                OrderID = orderDetailDTO.OrderID,
-                ServiceID = orderDetailDTO.ServiceID,
-                NameService = orderDetailDTO.NameService,
-                Cost = orderDetailDTO.Cost,
-                Note = orderDetailDTO.Note
-            };
-
-            return orderDetail;
-        }
-        public static OrderDetailDTO mapToDTO(OrderDetail orderDetail)
-        {
-            OrderDetailDTO orderDetailDTO = orderDetail == null ? null : new OrderDetailDTO
-            {
-                OrderDetailID = orderDetail.OrderDetailID,
-                OrderID = orderDetail.OrderID,
-                ServiceID = orderDetail.ServiceID,
-                NameService = orderDetail.NameService,
-                Cost = orderDetail.Cost,
-                Note = orderDetail.Note
-            };
-
-            return orderDetailDTO;
         }
 
         public static Service mapToEntity(ServiceDTO serviceDTO)
@@ -257,7 +230,7 @@ namespace DataAccess.Util
                     GarageName=garage.GarageName,
                     Address = garage.Address,
                     EmailAddress = garage.EmailAddress,
-                    OwnerName = garage.OwnerName,
+                    UserID = garage.UserID,
                     PhoneNumber = garage.PhoneNumber,
                 };
                 return garageDTO;
@@ -277,7 +250,7 @@ namespace DataAccess.Util
                 GarageName = garageDTO.GarageName,
                 Address = garageDTO.Address,
                 EmailAddress = garageDTO.EmailAddress,
-                OwnerName = garageDTO.OwnerName,
+                UserID = garageDTO.UserID,
                 PhoneNumber = garageDTO.PhoneNumber,
             };
 

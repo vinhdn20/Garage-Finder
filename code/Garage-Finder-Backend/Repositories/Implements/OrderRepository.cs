@@ -21,13 +21,12 @@ namespace Repositories.Implements
         {
             OrdersDAO.Instance.Delete(id);
         }
-
-        public IEnumerable<OrdersDTO> GetAllOrders()
+        public List<OrdersDTO> GetAllOrders()
         {
             return OrdersDAO.Instance.GetList().Select(p => Mapper.mapToDTO(p)).ToList();
         }
 
-        public IEnumerable<OrdersDTO> GetAllOrdersByUserId(int id)
+        public List<OrdersDTO> GetAllOrdersByUserId(int id)
         {
             return OrdersDAO.Instance.GetList().Where(c => c.CarID == id).Select(p => Mapper.mapToDTO(p)).ToList();
         }

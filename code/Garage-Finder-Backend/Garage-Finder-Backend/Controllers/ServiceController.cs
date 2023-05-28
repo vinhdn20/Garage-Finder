@@ -10,13 +10,11 @@ namespace Garage_Finder_Backend.Controllers
     {
         private readonly IServiceRepository serviceRepository;
         private readonly IOrderRepository orderRepository;
-        private readonly IOrderDetailRepository orderDetailRepository;
 
-        public ServiceController(IServiceRepository serviceRepository, IOrderRepository orderRepository, IOrderDetailRepository orderDetailRepository)
+        public ServiceController(IServiceRepository serviceRepository, IOrderRepository orderRepository)
         {
             this.serviceRepository = serviceRepository;
             this.orderRepository = orderRepository;
-            this.orderDetailRepository = orderDetailRepository;
         }
 
         [HttpGet("GetAll")]
@@ -99,16 +97,16 @@ namespace Garage_Finder_Backend.Controllers
             {
                 serviceRepository.DeleteService(id);
 
-                IEnumerable<OrdersDTO> orderList = orderRepository.GetAllOrders();
+               /* IEnumerable<OrdersDTO> orderList = orderRepository.GetAllOrders();
 
                 foreach (OrdersDTO order in orderList)
                 {
-                    order.OrderDetail = orderDetailRepository.GetOrderDetailByOrderID(order.OrderID);
+                    order.OrderID = orderDetailRepository.GetOrderDetailByOrderID(order.OrderID);
                     if (order.OrderDetail == null)
                     {
                         orderRepository.Delete(order.OrderID);
                     }
-                }
+                }*/
 
                 return Ok("SUCCESS");
             }

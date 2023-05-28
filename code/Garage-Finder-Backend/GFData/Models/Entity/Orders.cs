@@ -7,22 +7,12 @@ namespace GFData.Models.Entity
     {
         [Key]
         public int OrderID { get; set; }
+        public int CarID { get; set; }
+        public int GarageID { get; set; }
+        public int ServiceID { get; set; }
         public DateTime TimeCreate { get; set; }
         public DateTime TimeUpdate { get; set; }
         public string Status { get; set; }
-        //[NotMapped]
-        //public Users User { get; set; }
-        //[NotMapped]
-        //public OrderDetail OrderDetail { get; set; }
-
-        //[ForeignKey("GarageID")]
-        public int GarageID { get; set; }
-        public Garage Garage { get; set; }
-
-        //[ForeignKey("CarID")]
-        public int CarID { get; set; }
-        public Car Car { get; set; }
-
-        public ICollection<OrderDetail> OrderDetail { get; set; }
+        public virtual Category? Category { get; set; }
     }
 }

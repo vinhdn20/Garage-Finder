@@ -18,7 +18,6 @@ namespace Repositories
             services.AddScoped<ICarRepository, CarRepository>();
             services.AddScoped<IServiceRepository, ServiceRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
-            services.AddScoped<IOrderDetailRepository, OrderDetailRepository>();
             services.AddScoped<IRoleNameRepository, RoleNameRepository>();
             services.AddScoped<IGarageRepository, GarageRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();

@@ -49,9 +49,12 @@ namespace GFData.Migrations
                     b.Property<int>("UserID")
                         .HasColumnType("int");
 
+                    b.Property<int?>("UsersUserID")
+                        .HasColumnType("int");
+
                     b.HasKey("CarID");
 
-                    b.HasIndex("UserID");
+                    b.HasIndex("UsersUserID");
 
                     b.ToTable("Car");
                 });
@@ -89,10 +92,6 @@ namespace GFData.Migrations
 
                     b.HasKey("FavoriteID");
 
-                    b.HasIndex("GarageID");
-
-                    b.HasIndex("UserID");
-
                     b.ToTable("FavoriteList");
                 });
 
@@ -119,10 +118,6 @@ namespace GFData.Migrations
 
                     b.HasKey("FeedbackID");
 
-                    b.HasIndex("GarageID");
-
-                    b.HasIndex("UserID");
-
                     b.ToTable("Feedback");
                 });
 
@@ -146,54 +141,16 @@ namespace GFData.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("OwnerName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("UserID")
+                        .HasColumnType("int");
+
                     b.HasKey("GarageID");
 
                     b.ToTable("Garage");
-                });
-
-            modelBuilder.Entity("GFData.Models.Entity.OrderDetail", b =>
-                {
-                    b.Property<int>("OrderDetailID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderDetailID"), 1L, 1);
-
-                    b.Property<double>("Cost")
-                        .HasColumnType("float");
-
-                    b.Property<string>("NameService")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Note")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("OrderID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OrdersOrderID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ServiceID")
-                        .HasColumnType("int");
-
-                    b.HasKey("OrderDetailID");
-
-                    b.HasIndex("OrdersOrderID");
-
-                    b.HasIndex("ServiceID");
-
-                    b.ToTable("OrderDetail");
                 });
 
             modelBuilder.Entity("GFData.Models.Entity.Orders", b =>
@@ -207,7 +164,13 @@ namespace GFData.Migrations
                     b.Property<int>("CarID")
                         .HasColumnType("int");
 
+                    b.Property<int?>("CategoryID")
+                        .HasColumnType("int");
+
                     b.Property<int>("GarageID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ServiceID")
                         .HasColumnType("int");
 
                     b.Property<string>("Status")
@@ -222,7 +185,7 @@ namespace GFData.Migrations
 
                     b.HasKey("OrderID");
 
-                    b.HasIndex("CarID");
+                    b.HasIndex("CategoryID");
 
                     b.HasIndex("GarageID");
 
@@ -250,12 +213,7 @@ namespace GFData.Migrations
                     b.Property<int>("UserID")
                         .HasColumnType("int");
 
-                    b.Property<int>("UsersUserID")
-                        .HasColumnType("int");
-
                     b.HasKey("TokenID");
-
-                    b.HasIndex("UsersUserID");
 
                     b.ToTable("RefreshToken");
                 });
@@ -354,100 +312,24 @@ namespace GFData.Migrations
 
             modelBuilder.Entity("GFData.Models.Entity.Car", b =>
                 {
-                    b.HasOne("GFData.Models.Entity.Users", "User")
+                    b.HasOne("GFData.Models.Entity.Users", null)
                         .WithMany("Cars")
-                        .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("GFData.Models.Entity.FavoriteList", b =>
-                {
-                    b.HasOne("GFData.Models.Entity.Garage", "Garage")
-                        .WithMany()
-                        .HasForeignKey("GarageID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("GFData.Models.Entity.Users", "User")
-                        .WithMany()
-                        .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Garage");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("GFData.Models.Entity.Feedback", b =>
-                {
-                    b.HasOne("GFData.Models.Entity.Garage", "Garage")
-                        .WithMany()
-                        .HasForeignKey("GarageID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("GFData.Models.Entity.Users", "User")
-                        .WithMany()
-                        .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Garage");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("GFData.Models.Entity.OrderDetail", b =>
-                {
-                    b.HasOne("GFData.Models.Entity.Orders", "Orders")
-                        .WithMany("OrderDetail")
-                        .HasForeignKey("OrdersOrderID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("GFData.Models.Entity.Service", "Service")
-                        .WithMany("OrderDetails")
-                        .HasForeignKey("ServiceID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Orders");
-
-                    b.Navigation("Service");
+                        .HasForeignKey("UsersUserID");
                 });
 
             modelBuilder.Entity("GFData.Models.Entity.Orders", b =>
                 {
-                    b.HasOne("GFData.Models.Entity.Car", "Car")
-                        .WithMany("Orders")
-                        .HasForeignKey("CarID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("GFData.Models.Entity.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryID");
 
-                    b.HasOne("GFData.Models.Entity.Garage", "Garage")
+                    b.HasOne("GFData.Models.Entity.Garage", null)
                         .WithMany("Orders")
                         .HasForeignKey("GarageID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Car");
-
-                    b.Navigation("Garage");
-                });
-
-            modelBuilder.Entity("GFData.Models.Entity.RefreshToken", b =>
-                {
-                    b.HasOne("GFData.Models.Entity.Users", "Users")
-                        .WithMany()
-                        .HasForeignKey("UsersUserID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Users");
+                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("GFData.Models.Entity.Service", b =>
@@ -458,15 +340,13 @@ namespace GFData.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("GFData.Models.Entity.Garage", "Garage")
+                    b.HasOne("GFData.Models.Entity.Garage", null)
                         .WithMany("Services")
                         .HasForeignKey("GarageID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Category");
-
-                    b.Navigation("Garage");
                 });
 
             modelBuilder.Entity("GFData.Models.Entity.Users", b =>
@@ -480,11 +360,6 @@ namespace GFData.Migrations
                     b.Navigation("RoleName");
                 });
 
-            modelBuilder.Entity("GFData.Models.Entity.Car", b =>
-                {
-                    b.Navigation("Orders");
-                });
-
             modelBuilder.Entity("GFData.Models.Entity.Category", b =>
                 {
                     b.Navigation("Services");
@@ -495,16 +370,6 @@ namespace GFData.Migrations
                     b.Navigation("Orders");
 
                     b.Navigation("Services");
-                });
-
-            modelBuilder.Entity("GFData.Models.Entity.Orders", b =>
-                {
-                    b.Navigation("OrderDetail");
-                });
-
-            modelBuilder.Entity("GFData.Models.Entity.Service", b =>
-                {
-                    b.Navigation("OrderDetails");
                 });
 
             modelBuilder.Entity("GFData.Models.Entity.Users", b =>
