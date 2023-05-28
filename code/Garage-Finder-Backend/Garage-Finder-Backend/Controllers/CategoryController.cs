@@ -10,12 +10,10 @@ namespace Garage_Finder_Backend.Controllers
     {
         private readonly ICategoryRepository categoryRepository;
         private readonly IOrderRepository orderRepository;
-        private readonly IOrderDetailRepository orderDetailRepository;
 
-        public CategoryController(ICategoryRepository categoryRepository, IOrderDetailRepository orderDetailRepository, IOrderRepository orderRepository)
+        public CategoryController(ICategoryRepository categoryRepository, IOrderRepository orderRepository)
         {
             this.categoryRepository = categoryRepository;
-            this.orderDetailRepository = orderDetailRepository;
             this.orderRepository = orderRepository;
         }
 
