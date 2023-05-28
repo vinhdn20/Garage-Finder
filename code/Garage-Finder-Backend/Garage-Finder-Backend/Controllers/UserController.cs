@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using Repositories.Interfaces;
 using DataAccess.DTO;
 using RestSharp;
+using Garage_Finder_Backend.Models.RequestModels;
 
 namespace Garage_Finder_Backend.Controllers
 {
@@ -38,11 +39,11 @@ namespace Garage_Finder_Backend.Controllers
         [HttpPost]
         [Route("login")]
         [AllowAnonymous]
-        public IActionResult LoginAsync([FromBody] UsersDTO userLoginDTO)
+        public IActionResult LoginAsync([FromBody] LoginModel loginModel)
         {
             try
             {
-                var usersDTO = _userRepository.Login(userLoginDTO.EmailAddress, userLoginDTO.Password);
+                var usersDTO = _userRepository.Login(loginModel.Email, loginModel.Password);
                 var roleName = _roleNameRepository.GetUserRole(usersDTO.RoleID);
                 var accessToken = _jwtService.GenerateJwt(usersDTO, roleName, _jwtSettings);
                 usersDTO.AccessToken = accessToken;
@@ -59,40 +60,6 @@ namespace Garage_Finder_Backend.Controllers
             }
 
         }
-
-        //[HttpGet]
-        //[Route("login-gg")]
-        //[AllowAnonymous]
-        //public async Task<IActionResult> LoginByGoogleAsync()
-        //{
-        //    var url = "https://accounts.google.com/o/oauth2/v2/auth?" +
-        //        "client_id=905743272860-1ob54jg8gffqdirppk90d41vf9atmh7o.apps.googleusercontent.com" +
-        //        "&redirect_uri=https://localhost:7200/login-gg-infor" +
-        //        "&response_type=code" +
-        //        "&scope=https://www.googleapis.com/auth/userinfo.profile";
-        //    return Redirect(url);
-        //}
-
-        //[HttpGet()]
-        //[Route("login-gg-infor")]
-        //[AllowAnonymous]
-        //public async Task<IActionResult> AfterLoginGGAsync(string code, string scope)
-        //{
-        //    var client = new RestClient();
-        //    var request = new RestRequest($"https://oauth2.googleapis.com/token?" +
-        //        $"client_id=905743272860-1ob54jg8gffqdirppk90d41vf9atmh7o.apps.googleusercontent.com" +
-        //        $"&redirect_uri=https://localhost:7200/login-gg-infor" +
-        //        $"&grant_type=authorization_code" +
-        //        $"&code={code}" +
-        //        $"&client_secret=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", Method.Post);
-        //    RestResponse response = await client.ExecuteAsync(request);
-        //    dynamic obj = JsonConvert.DeserializeObject(response.Content);
-        //    string id_token = obj.id_token;
-        //    request = new RestRequest($"https://oauth2.googleapis.com/tokeninfo?id_token={id_token}");
-        //    response = await client.ExecuteAsync(request);
-
-        //    return Ok(response.Content);
-        //}
 
         [HttpPost]
         [Route("login-gg")]
@@ -185,15 +152,6 @@ namespace Garage_Finder_Backend.Controllers
             }
         }
 
-        //[HttpGet]
-        //[Route("test")]
-        //[Authorize]
-        //public IActionResult TestLogin()
-        //{
-        //    var emailAddress = User.FindFirstValue(ClaimTypes.Name);
-        //    return Ok(emailAddress);
-        //}
-
         private void SetRefreshToken(RefreshTokenDTO refreshToken)
         {
             var cookiesOptions = new CookieOptions
@@ -229,8 +187,6 @@ namespace Garage_Finder_Backend.Controllers
                 return BadRequest("Register faile");
             }
         }
-
-
         #endregion
     }
 }
