@@ -27,22 +27,23 @@ namespace DataAccess.DAO
                 }
             }
         }
-
-        public IEnumerable<Orders> GetList()
+        public List<Orders> GetList()
         {
-            List<Orders> orders;
+            var listOrders = new List<Orders>();
             try
             {
-                var db = new GFDbContext();
-                orders = db.Orders.Include(o => o.OrderDetail).ToList();
+                using (var context = new GFDbContext())
+                {
+                    listOrders = context.Orders.ToList();
+                }
             }
             catch (Exception e)
             {
                 throw new Exception(e.Message);
             }
-            return orders;
+            return listOrders;
         }
-
+        
         public Orders GetById(int id)
         {
             Orders order = null;

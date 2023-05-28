@@ -22,21 +22,19 @@ namespace GFData.Data
             optionsBuilder.UseSqlServer(configuration.GetConnectionString("GarageFinderDB"));
         }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
-        }
-
-        public virtual DbSet<Category> Category { get; set; }
+        public virtual DbSet<Category>? Category { get; set; }
         public virtual DbSet<Car>? Car { get; set; }
         public virtual DbSet<Feedback>? Feedback { get; set; }
         public virtual DbSet<Garage>? Garage { get; set; }
-        public virtual DbSet<OrderDetail>? OrderDetail { get; set; }
         public virtual DbSet<Orders>? Orders { get; set; }
         public virtual DbSet<Service>? Service { get; set; }    
         public virtual DbSet<Users>? User { get; set; }
         public virtual DbSet<RoleName>? RoleName { get; set; }
         public virtual DbSet<RefreshToken>? RefreshToken { get; set; }
         public virtual DbSet<FavoriteList>? FavoriteList { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder optionsBuilder)
+        {
+        }
     }
 }

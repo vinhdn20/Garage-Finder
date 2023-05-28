@@ -12,7 +12,6 @@ namespace GFData.Models.Entity
         public string PhoneNumber { get; set; }
         public string EmailAddress { get; set; }
         public string Password { get; set; }
-        //[ForeignKey("RoleID")]
         public int RoleID { get; set; }
 
         public RoleName RoleName { get; set; }
