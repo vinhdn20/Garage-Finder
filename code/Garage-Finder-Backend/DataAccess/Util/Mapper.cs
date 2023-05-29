@@ -22,7 +22,7 @@ namespace DataAccess.Util
                     PhoneNumber = users.PhoneNumber,
                     EmailAddress = users.EmailAddress,
                     Password = users.Password,
-                    RoleID = users.RoleName.RoleID,
+                    RoleID = users.RoleID,
                     //roleName = users.RoleName,
                 };
                 return usersDTO;

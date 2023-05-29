@@ -215,10 +215,25 @@ namespace Garage_Finder_Backend.Controllers
         [HttpPost]
         [Route("register")]
         [AllowAnonymous]
-        public IActionResult Register([FromBody] UsersDTO userDTO)
+        public IActionResult Register([FromBody] UserRegister registerUser)
         {
             try
             {
+                UsersDTO userDTO = new UsersDTO();
+                userDTO.Name = registerUser.Name;
+                userDTO.Birthday = registerUser.BirthDay;
+                userDTO.PhoneNumber = registerUser.PhoneNumber;
+                userDTO.EmailAddress = registerUser.EmailAddress;
+                userDTO.Password = registerUser.Password;
+                if(registerUser.RoleID != 0)
+                {
+                    userDTO.RoleID = registerUser.RoleID;
+                }
+                else
+                {
+                    userDTO.RoleID = 1;
+                }
+
                 _userRepository.Register(userDTO);
                 return Ok();
             }
