@@ -13,6 +13,6 @@ namespace GFData.Models.Entity
         public DateTime TimeCreate { get; set; }
         public DateTime TimeUpdate { get; set; }
         public string Status { get; set; }
-        public virtual Category? Category { get; set; }
+        public virtual Categorys? Category { get; set; }
     }
 }

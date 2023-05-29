@@ -13,6 +13,8 @@ namespace GFData.Models.Entity
         public string PhoneNumber { get; set; }
         public ICollection<Orders> Orders { get; set; }
         public ICollection<Service> Services { get; set; }
+        public ICollection<FavoriteList> FavoriteList { get; set; }
+        public ICollection<Feedback> Feedbacks { get; set; }
 
     }
 }

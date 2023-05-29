@@ -201,16 +201,16 @@ namespace DataAccess.Util
             return serviceDTO;
         }
 
-        public static Category mapToEntity(CategoryDTO categoryDTO)
+        public static Categorys mapToEntity(CategoryDTO categoryDTO)
         {
-            Category category = new Category
+            Categorys category = new Categorys
             {
                 CategoryID = categoryDTO.CategoryID,
                 CategoryName = categoryDTO.CategoryName
             };
             return category;
         }
-        public static CategoryDTO mapToDTO(Category category)
+        public static CategoryDTO mapToDTO(Categorys category)
         {
             CategoryDTO categoryDTO = new CategoryDTO
             {

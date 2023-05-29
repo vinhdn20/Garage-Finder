@@ -22,7 +22,7 @@ namespace GFData.Data
             optionsBuilder.UseSqlServer(configuration.GetConnectionString("GarageFinderDB"));
         }
 
-        public virtual DbSet<Category>? Category { get; set; }
+        public virtual DbSet<Categorys>? Category { get; set; }
         public virtual DbSet<Car>? Car { get; set; }
         public virtual DbSet<Feedback>? Feedback { get; set; }
         public virtual DbSet<Garage>? Garage { get; set; }

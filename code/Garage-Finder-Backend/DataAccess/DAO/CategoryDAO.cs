@@ -32,9 +32,9 @@ namespace DataAccess.DAO
             }
         }
 
-        public List<Category> GetCategories()
+        public List<Categorys> GetCategories()
         {
-            var listCategories = new List<Category>();
+            var listCategories = new List<Categorys>();
             try
             {
                 using (var context = new GFDbContext())
@@ -49,7 +49,7 @@ namespace DataAccess.DAO
             return listCategories;
         }
 
-        public void Add(Category category)
+        public void Add(Categorys category)
         {
             try
             {
@@ -63,13 +63,13 @@ namespace DataAccess.DAO
             }
         }
 
-        public void Update(Category c)
+        public void Update(Categorys c)
         {
             try
             {
                 using (var context = new GFDbContext())
                 {
-                    context.Entry<Category>(c).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                    context.Entry<Categorys>(c).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
                     context.SaveChanges();
                 }
             }
