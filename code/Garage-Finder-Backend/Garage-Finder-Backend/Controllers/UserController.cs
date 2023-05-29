@@ -7,6 +7,8 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Repositories.Interfaces;
 using DataAccess.DTO;
+using RestSharp;
+using Garage_Finder_Backend.Models.RequestModels;
 
 namespace Garage_Finder_Backend.Controllers
 {
@@ -37,11 +39,11 @@ namespace Garage_Finder_Backend.Controllers
         [HttpPost]
         [Route("login")]
         [AllowAnonymous]
-        public IActionResult LoginAsync([FromBody] UsersDTO userLoginDTO)
+        public IActionResult LoginAsync([FromBody] LoginModel loginModel)
         {
             try
             {
-                var usersDTO = _userRepository.Login(userLoginDTO.EmailAddress, userLoginDTO.Password);
+                var usersDTO = _userRepository.Login(loginModel.Email, loginModel.Password);
                 var roleName = _roleNameRepository.GetUserRole(usersDTO.RoleID);
                 var accessToken = _jwtService.GenerateJwt(usersDTO, roleName, _jwtSettings);
                 usersDTO.AccessToken = accessToken;
@@ -93,19 +95,21 @@ namespace Garage_Finder_Backend.Controllers
         //    return Ok(response.Content);
         //}
 
-        [HttpPost]
-        [Route("login-gg")]
-        [AllowAnonymous]
-        public IActionResult LoginGGAsync(string email)
+        public async Task<IActionResult> LoginGGAsync(string accessToken)
         {
             try
             {
+                var client = new RestClient();
+                var request = new RestRequest($"https://www.googleapis.com/oauth2/v3/userinfo?access_token={accessToken}");
+                RestResponse response = await client.ExecuteAsync(request);
+                dynamic obj = JsonConvert.DeserializeObject(response.Content);
+                string email = obj.email;
                 var usersDTO = _userRepository.GetAll().Find(x => x.EmailAddress.Equals(email));
-                if(usersDTO != null)
+                if (usersDTO != null)
                 {
                     var roleName = _roleNameRepository.GetUserRole(usersDTO.RoleID);
-                    var accessToken = _jwtService.GenerateJwt(usersDTO, roleName, _jwtSettings);
-                    usersDTO.AccessToken = accessToken;
+                    var gfAccessToken = _jwtService.GenerateJwt(usersDTO, roleName, _jwtSettings);
+                    usersDTO.AccessToken = gfAccessToken;
                     usersDTO.roleName = roleName;
 
                     var refreshToken = _jwtService.GenerateRefreshToken(_jwtSettings, usersDTO.UserID);
@@ -122,8 +126,8 @@ namespace Garage_Finder_Backend.Controllers
                     };
                     _userRepository.Register(userDTO);
                     var roleName = _roleNameRepository.GetUserRole(usersDTO.RoleID);
-                    var accessToken = _jwtService.GenerateJwt(usersDTO, roleName, _jwtSettings);
-                    usersDTO.AccessToken = accessToken;
+                    var gfAccessToken = _jwtService.GenerateJwt(usersDTO, roleName, _jwtSettings);
+                    usersDTO.AccessToken = gfAccessToken;
                     usersDTO.roleName = roleName;
 
                     var refreshToken = _jwtService.GenerateRefreshToken(_jwtSettings, usersDTO.UserID);
