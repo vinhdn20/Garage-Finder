@@ -7,6 +7,8 @@ namespace GFData.Models.Entity
     {
         [Key]
         public int CarID { get; set; }
+
+        [ForeignKey("User")]
         public int UserID { get; set; }
         public string LicensePlates { get; set; }
         public string Brand { get; set; }
@@ -14,5 +16,6 @@ namespace GFData.Models.Entity
         public string Type { get; set; }
 
         public Users User { get; set; }
+        public ICollection<Orders> Orders { get; set; }
     }
 }

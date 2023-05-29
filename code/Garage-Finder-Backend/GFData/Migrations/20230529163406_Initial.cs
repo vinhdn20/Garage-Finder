@@ -10,7 +10,7 @@ namespace GFData.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Categorys",
+                name: "Category",
                 columns: table => new
                 {
                     CategoryID = table.Column<int>(type: "int", nullable: false)
@@ -19,7 +19,7 @@ namespace GFData.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Categorys", x => x.CategoryID);
+                    table.PrimaryKey("PK_Category", x => x.CategoryID);
                 });
 
             migrationBuilder.CreateTable(
@@ -46,15 +46,14 @@ namespace GFData.Migrations
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     EmailAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    RoleID = table.Column<int>(type: "int", nullable: false),
-                    RoleNameRoleID = table.Column<int>(type: "int", nullable: false)
+                    RoleID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_User", x => x.UserID);
                     table.ForeignKey(
-                        name: "FK_User_RoleName_RoleNameRoleID",
-                        column: x => x.RoleNameRoleID,
+                        name: "FK_User_RoleName_RoleID",
+                        column: x => x.RoleID,
                         principalTable: "RoleName",
                         principalColumn: "RoleID",
                         onDelete: ReferentialAction.Cascade);
@@ -93,17 +92,17 @@ namespace GFData.Migrations
                     GarageName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     EmailAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UsersUserID = table.Column<int>(type: "int", nullable: true)
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Garage", x => x.GarageID);
                     table.ForeignKey(
-                        name: "FK_Garage_User_UsersUserID",
-                        column: x => x.UsersUserID,
+                        name: "FK_Garage_User_UserID",
+                        column: x => x.UserID,
                         principalTable: "User",
-                        principalColumn: "UserID");
+                        principalColumn: "UserID",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -115,15 +114,14 @@ namespace GFData.Migrations
                     UserID = table.Column<int>(type: "int", nullable: false),
                     Token = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ExpiresDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UsersUserID = table.Column<int>(type: "int", nullable: false)
+                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_RefreshToken", x => x.TokenID);
                     table.ForeignKey(
-                        name: "FK_RefreshToken_User_UsersUserID",
-                        column: x => x.UsersUserID,
+                        name: "FK_RefreshToken_User_UserID",
+                        column: x => x.UserID,
                         principalTable: "User",
                         principalColumn: "UserID",
                         onDelete: ReferentialAction.Cascade);
@@ -136,8 +134,7 @@ namespace GFData.Migrations
                     FavoriteID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserID = table.Column<int>(type: "int", nullable: false),
-                    GarageID = table.Column<int>(type: "int", nullable: false),
-                    UsersUserID = table.Column<int>(type: "int", nullable: true)
+                    GarageID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -146,13 +143,13 @@ namespace GFData.Migrations
                         name: "FK_FavoriteList_Garage_GarageID",
                         column: x => x.GarageID,
                         principalTable: "Garage",
-                        principalColumn: "GarageID",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "GarageID");
                     table.ForeignKey(
-                        name: "FK_FavoriteList_User_UsersUserID",
-                        column: x => x.UsersUserID,
+                        name: "FK_FavoriteList_User_UserID",
+                        column: x => x.UserID,
                         principalTable: "User",
-                        principalColumn: "UserID");
+                        principalColumn: "UserID",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -164,8 +161,7 @@ namespace GFData.Migrations
                     GarageID = table.Column<int>(type: "int", nullable: false),
                     UserID = table.Column<int>(type: "int", nullable: false),
                     Star = table.Column<int>(type: "int", nullable: false),
-                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UsersUserID = table.Column<int>(type: "int", nullable: true)
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -177,40 +173,10 @@ namespace GFData.Migrations
                         principalColumn: "GarageID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Feedback_User_UsersUserID",
-                        column: x => x.UsersUserID,
+                        name: "FK_Feedback_User_UserID",
+                        column: x => x.UserID,
                         principalTable: "User",
                         principalColumn: "UserID");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Orders",
-                columns: table => new
-                {
-                    OrderID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CarID = table.Column<int>(type: "int", nullable: false),
-                    GarageID = table.Column<int>(type: "int", nullable: false),
-                    ServiceID = table.Column<int>(type: "int", nullable: false),
-                    TimeCreate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    TimeUpdate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CategoryID = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Orders", x => x.OrderID);
-                    table.ForeignKey(
-                        name: "FK_Orders_Categorys_CategoryID",
-                        column: x => x.CategoryID,
-                        principalTable: "Categorys",
-                        principalColumn: "CategoryID");
-                    table.ForeignKey(
-                        name: "FK_Orders_Garage_GarageID",
-                        column: x => x.GarageID,
-                        principalTable: "Garage",
-                        principalColumn: "GarageID",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -231,7 +197,7 @@ namespace GFData.Migrations
                     table.ForeignKey(
                         name: "FK_Service_Category_CategoryID",
                         column: x => x.CategoryID,
-                        principalTable: "Categorys",
+                        principalTable: "Category",
                         principalColumn: "CategoryID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -240,6 +206,39 @@ namespace GFData.Migrations
                         principalTable: "Garage",
                         principalColumn: "GarageID",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Orders",
+                columns: table => new
+                {
+                    OrderID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CarID = table.Column<int>(type: "int", nullable: false),
+                    GarageID = table.Column<int>(type: "int", nullable: false),
+                    ServiceID = table.Column<int>(type: "int", nullable: false),
+                    TimeCreate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TimeUpdate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Orders", x => x.OrderID);
+                    table.ForeignKey(
+                        name: "FK_Orders_Car_CarID",
+                        column: x => x.CarID,
+                        principalTable: "Car",
+                        principalColumn: "CarID");
+                    table.ForeignKey(
+                        name: "FK_Orders_Garage_GarageID",
+                        column: x => x.GarageID,
+                        principalTable: "Garage",
+                        principalColumn: "GarageID");
+                    table.ForeignKey(
+                        name: "FK_Orders_Service_ServiceID",
+                        column: x => x.ServiceID,
+                        principalTable: "Service",
+                        principalColumn: "ServiceID");
                 });
 
             migrationBuilder.CreateIndex(
@@ -253,9 +252,9 @@ namespace GFData.Migrations
                 column: "GarageID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FavoriteList_UsersUserID",
+                name: "IX_FavoriteList_UserID",
                 table: "FavoriteList",
-                column: "UsersUserID");
+                column: "UserID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Feedback_GarageID",
@@ -263,19 +262,19 @@ namespace GFData.Migrations
                 column: "GarageID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Feedback_UsersUserID",
+                name: "IX_Feedback_UserID",
                 table: "Feedback",
-                column: "UsersUserID");
+                column: "UserID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Garage_UsersUserID",
+                name: "IX_Garage_UserID",
                 table: "Garage",
-                column: "UsersUserID");
+                column: "UserID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Orders_CategoryID",
+                name: "IX_Orders_CarID",
                 table: "Orders",
-                column: "CategoryID");
+                column: "CarID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Orders_GarageID",
@@ -283,9 +282,14 @@ namespace GFData.Migrations
                 column: "GarageID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RefreshToken_UsersUserID",
+                name: "IX_Orders_ServiceID",
+                table: "Orders",
+                column: "ServiceID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RefreshToken_UserID",
                 table: "RefreshToken",
-                column: "UsersUserID");
+                column: "UserID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Service_CategoryID",
@@ -298,16 +302,13 @@ namespace GFData.Migrations
                 column: "GarageID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_User_RoleNameRoleID",
+                name: "IX_User_RoleID",
                 table: "User",
-                column: "RoleNameRoleID");
+                column: "RoleID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Car");
-
             migrationBuilder.DropTable(
                 name: "FavoriteList");
 
@@ -321,10 +322,13 @@ namespace GFData.Migrations
                 name: "RefreshToken");
 
             migrationBuilder.DropTable(
+                name: "Car");
+
+            migrationBuilder.DropTable(
                 name: "Service");
 
             migrationBuilder.DropTable(
-                name: "Categorys");
+                name: "Category");
 
             migrationBuilder.DropTable(
                 name: "Garage");

@@ -1,6 +1,7 @@
 ﻿using GFData.Models.Entity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using System.Reflection.Emit;
 
 namespace GFData.Data
 {
@@ -35,6 +36,36 @@ namespace GFData.Data
 
         protected override void OnModelCreating(ModelBuilder optionsBuilder)
         {
+            base.OnModelCreating(optionsBuilder);
+            optionsBuilder.Entity<FavoriteList>()
+            .HasOne(p => p.Garage)
+            .WithMany(u => u.FavoriteList)
+            .HasForeignKey(c => c.GarageID)
+            .OnDelete(DeleteBehavior.NoAction);
+
+            optionsBuilder.Entity<Feedback>()
+            .HasOne(p => p.User)
+            .WithMany(u => u.Feedbacks)
+            .HasForeignKey(c => c.UserID)
+            .OnDelete(DeleteBehavior.NoAction);
+
+            optionsBuilder.Entity<Orders>()
+            .HasOne(p => p.Car)
+            .WithMany(u => u.Orders)
+            .HasForeignKey(c => c.CarID)
+            .OnDelete(DeleteBehavior.NoAction);
+
+            optionsBuilder.Entity<Orders>()
+            .HasOne(p => p.Garage)
+            .WithMany(u => u.Orders)
+            .HasForeignKey(c => c.GarageID)
+            .OnDelete(DeleteBehavior.NoAction);
+
+            optionsBuilder.Entity<Orders>()
+            .HasOne(p => p.Service)
+            .WithMany(u => u.Orders)
+            .HasForeignKey(c => c.ServiceID)
+            .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }
