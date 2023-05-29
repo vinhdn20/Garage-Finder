@@ -7,6 +7,8 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Repositories.Interfaces;
 using DataAccess.DTO;
+using RestSharp;
+using Garage_Finder_Backend.Models.RequestModels;
 
 namespace Garage_Finder_Backend.Controllers
 {
@@ -37,11 +39,11 @@ namespace Garage_Finder_Backend.Controllers
         [HttpPost]
         [Route("login")]
         [AllowAnonymous]
-        public IActionResult LoginAsync([FromBody] UsersDTO userLoginDTO)
+        public IActionResult LoginAsync([FromBody] LoginModel loginModel)
         {
             try
             {
-                var usersDTO = _userRepository.Login(userLoginDTO.EmailAddress, userLoginDTO.Password);
+                var usersDTO = _userRepository.Login(loginModel.Email, loginModel.Password);
                 var roleName = _roleNameRepository.GetUserRole(usersDTO.RoleID);
                 var accessToken = _jwtService.GenerateJwt(usersDTO, roleName, _jwtSettings);
                 usersDTO.AccessToken = accessToken;
