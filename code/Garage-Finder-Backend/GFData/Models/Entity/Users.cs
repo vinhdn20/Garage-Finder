@@ -17,5 +17,9 @@ namespace GFData.Models.Entity
         public RoleName RoleName { get; set; }
 
         public ICollection<Car> Cars { get; set; }
+        public ICollection<Garage> Garages { get; set; }
+        public ICollection<RefreshToken> RefreshTokens { get; set; }
+        public ICollection<FavoriteList> FavoriteList { get; set;}
+        public ICollection<Feedback> Feedbacks { get; set; }
     }
 }

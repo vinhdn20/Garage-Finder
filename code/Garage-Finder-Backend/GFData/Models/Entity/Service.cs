@@ -12,6 +12,6 @@ namespace GFData.Models.Entity
         public int CategoryID { get; set; }
         public double Cost { get; set; }
         public string Note { get; set; }
-        public virtual Category? Category { get; set; }
+        public virtual Categorys? Category { get; set; }
     }
 }

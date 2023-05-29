@@ -16,5 +16,6 @@ namespace GFData.Models.Entity
         public string Token { get; set; }
         public DateTime ExpiresDate { get; set; }
         public DateTime CreateDate { get; set; }
+        public Users Users { get; set; }
     }
 }

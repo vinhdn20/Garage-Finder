@@ -12,5 +12,7 @@ namespace GFData.Models.Entity
         public string Brand { get; set; }
         public string Color { get; set; }
         public string Type { get; set; }
+
+        public Users User { get; set; }
     }
 }

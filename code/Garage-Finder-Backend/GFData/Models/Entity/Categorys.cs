@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace GFData.Models.Entity
 {
-    public class Category
+    public class Categorys
     {
         [Key]
         public int CategoryID { get; set; }
