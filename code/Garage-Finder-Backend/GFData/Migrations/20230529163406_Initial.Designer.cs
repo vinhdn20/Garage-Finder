@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GFData.Migrations
 {
     [DbContext(typeof(GFDbContext))]
-    [Migration("20230529150948_Initial")]
+    [Migration("20230529163406_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -89,14 +89,11 @@ namespace GFData.Migrations
                     b.Property<int>("UserID")
                         .HasColumnType("int");
 
-                    b.Property<int?>("UsersUserID")
-                        .HasColumnType("int");
-
                     b.HasKey("FavoriteID");
 
                     b.HasIndex("GarageID");
 
-                    b.HasIndex("UsersUserID");
+                    b.HasIndex("UserID");
 
                     b.ToTable("FavoriteList");
                 });
@@ -122,14 +119,11 @@ namespace GFData.Migrations
                     b.Property<int>("UserID")
                         .HasColumnType("int");
 
-                    b.Property<int?>("UsersUserID")
-                        .HasColumnType("int");
-
                     b.HasKey("FeedbackID");
 
                     b.HasIndex("GarageID");
 
-                    b.HasIndex("UsersUserID");
+                    b.HasIndex("UserID");
 
                     b.ToTable("Feedback");
                 });
@@ -161,12 +155,9 @@ namespace GFData.Migrations
                     b.Property<int>("UserID")
                         .HasColumnType("int");
 
-                    b.Property<int?>("UsersUserID")
-                        .HasColumnType("int");
-
                     b.HasKey("GarageID");
 
-                    b.HasIndex("UsersUserID");
+                    b.HasIndex("UserID");
 
                     b.ToTable("Garage");
                 });
@@ -180,9 +171,6 @@ namespace GFData.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderID"), 1L, 1);
 
                     b.Property<int>("CarID")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("CategoryID")
                         .HasColumnType("int");
 
                     b.Property<int>("GarageID")
@@ -203,9 +191,11 @@ namespace GFData.Migrations
 
                     b.HasKey("OrderID");
 
-                    b.HasIndex("CategoryID");
+                    b.HasIndex("CarID");
 
                     b.HasIndex("GarageID");
+
+                    b.HasIndex("ServiceID");
 
                     b.ToTable("Orders");
                 });
@@ -231,12 +221,9 @@ namespace GFData.Migrations
                     b.Property<int>("UserID")
                         .HasColumnType("int");
 
-                    b.Property<int>("UsersUserID")
-                        .HasColumnType("int");
-
                     b.HasKey("TokenID");
 
-                    b.HasIndex("UsersUserID");
+                    b.HasIndex("UserID");
 
                     b.ToTable("RefreshToken");
                 });
@@ -323,12 +310,9 @@ namespace GFData.Migrations
                     b.Property<int>("RoleID")
                         .HasColumnType("int");
 
-                    b.Property<int>("RoleNameRoleID")
-                        .HasColumnType("int");
-
                     b.HasKey("UserID");
 
-                    b.HasIndex("RoleNameRoleID");
+                    b.HasIndex("RoleID");
 
                     b.ToTable("User");
                 });
@@ -346,15 +330,21 @@ namespace GFData.Migrations
 
             modelBuilder.Entity("GFData.Models.Entity.FavoriteList", b =>
                 {
-                    b.HasOne("GFData.Models.Entity.Garage", null)
+                    b.HasOne("GFData.Models.Entity.Garage", "Garage")
                         .WithMany("FavoriteList")
                         .HasForeignKey("GarageID")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("GFData.Models.Entity.Users", "User")
+                        .WithMany("FavoriteList")
+                        .HasForeignKey("UserID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("GFData.Models.Entity.Users", null)
-                        .WithMany("FavoriteList")
-                        .HasForeignKey("UsersUserID");
+                    b.Navigation("Garage");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("GFData.Models.Entity.Feedback", b =>
@@ -365,42 +355,62 @@ namespace GFData.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("GFData.Models.Entity.Users", null)
+                    b.HasOne("GFData.Models.Entity.Users", "User")
                         .WithMany("Feedbacks")
-                        .HasForeignKey("UsersUserID");
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("GFData.Models.Entity.Garage", b =>
                 {
-                    b.HasOne("GFData.Models.Entity.Users", null)
+                    b.HasOne("GFData.Models.Entity.Users", "User")
                         .WithMany("Garages")
-                        .HasForeignKey("UsersUserID");
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("GFData.Models.Entity.Orders", b =>
                 {
-                    b.HasOne("GFData.Models.Entity.Categorys", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryID");
-
-                    b.HasOne("GFData.Models.Entity.Garage", null)
+                    b.HasOne("GFData.Models.Entity.Car", "Car")
                         .WithMany("Orders")
-                        .HasForeignKey("GarageID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("CarID")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.Navigation("Category");
+                    b.HasOne("GFData.Models.Entity.Garage", "Garage")
+                        .WithMany("Orders")
+                        .HasForeignKey("GarageID")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("GFData.Models.Entity.Service", "Service")
+                        .WithMany("Orders")
+                        .HasForeignKey("ServiceID")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Car");
+
+                    b.Navigation("Garage");
+
+                    b.Navigation("Service");
                 });
 
             modelBuilder.Entity("GFData.Models.Entity.RefreshToken", b =>
                 {
-                    b.HasOne("GFData.Models.Entity.Users", "Users")
+                    b.HasOne("GFData.Models.Entity.Users", "User")
                         .WithMany("RefreshTokens")
-                        .HasForeignKey("UsersUserID")
+                        .HasForeignKey("UserID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Users");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("GFData.Models.Entity.Service", b =>
@@ -423,12 +433,17 @@ namespace GFData.Migrations
             modelBuilder.Entity("GFData.Models.Entity.Users", b =>
                 {
                     b.HasOne("GFData.Models.Entity.RoleName", "RoleName")
-                        .WithMany()
-                        .HasForeignKey("RoleNameRoleID")
+                        .WithMany("Users")
+                        .HasForeignKey("RoleID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("RoleName");
+                });
+
+            modelBuilder.Entity("GFData.Models.Entity.Car", b =>
+                {
+                    b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("GFData.Models.Entity.Categorys", b =>
@@ -445,6 +460,16 @@ namespace GFData.Migrations
                     b.Navigation("Orders");
 
                     b.Navigation("Services");
+                });
+
+            modelBuilder.Entity("GFData.Models.Entity.RoleName", b =>
+                {
+                    b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("GFData.Models.Entity.Service", b =>
+                {
+                    b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("GFData.Models.Entity.Users", b =>

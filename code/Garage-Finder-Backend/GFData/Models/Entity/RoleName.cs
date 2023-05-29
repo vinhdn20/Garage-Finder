@@ -12,5 +12,6 @@ namespace GFData.Models.Entity
         [Key]
         public int RoleID { get; set; }
         public string NameRole { get; set; }
+        public ICollection<Users> Users { get; set; }
     }
 }
