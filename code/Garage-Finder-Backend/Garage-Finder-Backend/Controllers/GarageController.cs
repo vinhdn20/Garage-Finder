@@ -74,7 +74,7 @@ namespace Garage_Finder_Backend.Controllers
         }
 
 
-        [HttpGet("GetByKeyWord")]
+     /*   [HttpGet("GetByKeyWord")]
         public IActionResult SearchGarage(string? keyword, string? location)
         {
             // Lấy danh sách garage từ nguồn dữ liệu
@@ -99,6 +99,6 @@ namespace Garage_Finder_Backend.Controllers
 
             // Trả về kết quả
             return Ok(garages);
-        }
+        }*/
     }
 }
