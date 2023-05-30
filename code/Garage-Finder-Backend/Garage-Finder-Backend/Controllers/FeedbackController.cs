@@ -13,7 +13,12 @@ namespace Garage_Finder_Backend.Controllers
     {
         private readonly IFeedbackRepository feedbackRepository;
 
-        [HttpGet("GetByUser/{id}")]
+        public FeedbackController(IFeedbackRepository feedbackRepository)
+        {
+            this.feedbackRepository = feedbackRepository;
+        }
+
+        [HttpGet("GetByGarage/{id}")]
         public IActionResult GetUserId(int id)
         {
             try
