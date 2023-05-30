@@ -12,6 +12,8 @@ namespace GFData.Models.Entity
         public string PhoneNumber { get; set; }
         public string EmailAddress { get; set; }
         public string Password { get; set; }
+        public string Status { get; set; }
+        public string LinkImage { get; set; }
         
         [ForeignKey("RoleName")]
         public int RoleID { get; set; }
@@ -23,5 +25,8 @@ namespace GFData.Models.Entity
         public ICollection<RefreshToken> RefreshTokens { get; set; }
         public ICollection<FavoriteList> FavoriteList { get; set; }
         public ICollection<Feedback> Feedbacks { get; set; }
+        public ICollection<Invoices> Invoices { get; set; }
+
+        public ICollection<Notification> Notifications { get; set; }
     }
 }
