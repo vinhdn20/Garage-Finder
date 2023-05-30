@@ -22,7 +22,8 @@ namespace GFData.Models.Entity
         public ICollection<Service> Services { get; set; }
         public ICollection<FavoriteList> FavoriteList { get; set; }
         public ICollection<Feedback> Feedbacks { get; set; }
-
+        public ICollection<GarageBrand> GarageBrands { get; set; }
+        public ICollection<GarageInfo> GarageInfos { get; set; }
         public Users User { get; set; }
     }
 }

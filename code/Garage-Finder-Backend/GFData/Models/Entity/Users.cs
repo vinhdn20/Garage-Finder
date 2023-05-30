@@ -28,5 +28,6 @@ namespace GFData.Models.Entity
         public ICollection<Invoices> Invoices { get; set; }
 
         public ICollection<Notification> Notifications { get; set; }
+        public ICollection<GarageInfo> GarageInfos { get; set; }
     }
 }
