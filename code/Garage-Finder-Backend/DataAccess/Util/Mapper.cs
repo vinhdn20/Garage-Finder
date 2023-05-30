@@ -98,11 +98,12 @@ namespace DataAccess.Util
                 CarDTO carDTO = new CarDTO
                 {
                     CarID = car.CarID,
-                    Brand = car.Brand,
+                    BrandID = car.BrandID,
                     Color = car.Color,
                     LicensePlates = car.LicensePlates,
-                    Type = car.Type,
-                    UserID = car.UserID
+                    TypeCar = car.TypeCar,
+                    UserID = car.UserID,
+                    LinkImages = car.LinkImages,
                 };
                 return carDTO;
             }
@@ -133,11 +134,12 @@ namespace DataAccess.Util
             Car car = new Car
             {
                 CarID = carDTO.CarID,
-                Brand = carDTO.Brand,
+                BrandID = carDTO.BrandID,
                 Color = carDTO.Color,
                 LicensePlates = carDTO.LicensePlates,
-                Type = carDTO.Type,
+                TypeCar = carDTO.TypeCar,
                 UserID = carDTO.UserID,
+                LinkImages = carDTO.LinkImages,
             };
 
             return car;
