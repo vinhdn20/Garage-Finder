@@ -15,5 +15,6 @@ namespace GFData.Models.Entity
         public string Note { get; set; }
 
         public ICollection<Car> Cars { get; set; }
+        public ICollection<GarageBrand> GarageBrands { get; set; }
     }
 }
