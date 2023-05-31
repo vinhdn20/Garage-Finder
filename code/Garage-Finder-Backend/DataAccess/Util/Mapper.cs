@@ -1,4 +1,5 @@
-﻿using DataAccess.DTO;
+﻿using DataAccess.DAO;
+using DataAccess.DTO;
 using GFData.Models.Entity;
 using System;
 using System.Collections.Generic;
@@ -23,7 +24,8 @@ namespace DataAccess.Util
                     EmailAddress = users.EmailAddress,
                     Password = users.Password,
                     RoleID = users.RoleID,
-                    //roleName = users.RoleName,
+                    Status = users.Status,
+                    LinkImage = users.LinkImage
                 };
                 return usersDTO;
             }
@@ -45,7 +47,8 @@ namespace DataAccess.Util
                 EmailAddress = usersDTO.EmailAddress,
                 Password = usersDTO.Password,
                 RoleID = usersDTO.RoleID,
-                //RoleName = usersDTO.roleName,
+                Status = usersDTO.Status,
+                LinkImage = usersDTO.LinkImage
             };
 
             return users;
@@ -333,6 +336,44 @@ namespace DataAccess.Util
             };
 
             return feedback;
+        }
+
+        public static SubscribeDTO mapToDTO(Subscribe subscribe)
+        {
+            if (subscribe != null)
+            {
+                SubscribeDTO subscribeDTO = new SubscribeDTO
+                {
+                    SubscribeID = subscribe.SubscribeID,
+                    Content = subscribe.Content,
+                    Price = subscribe.Price,
+                    Period = subscribe.Period
+                };
+                return subscribeDTO;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public static Subscribe mapToEntity(SubscribeDTO subscribeDTO)
+        {
+            if (subscribeDTO != null)
+            {
+                Subscribe subscribe = new Subscribe
+                {
+                    SubscribeID = subscribeDTO.SubscribeID,
+                    Content = subscribeDTO.Content,
+                    Price = subscribeDTO.Price,
+                    Period = subscribeDTO.Period
+                };
+                return subscribe;
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

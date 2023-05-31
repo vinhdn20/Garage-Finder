@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Repositories;
+using Microsoft.AspNetCore.Hosting;
+using Garage_Finder_Backend;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,7 +24,11 @@ builder.Services.ConfigRepository();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+<<<<<<< HEAD
 
+=======
+builder.Services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
+>>>>>>> 0f6d917 (add automapper)
 var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>();
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
 
