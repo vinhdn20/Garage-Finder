@@ -95,7 +95,7 @@ namespace Garage_Finder_Backend.Controllers
 
         //    return Ok(response.Content);
         //}
-        [HttpGet("login-gg")]
+        [HttpPost("login-gg")]
         [AllowAnonymous]
         public async Task<IActionResult> LoginGGAsync(string accessToken)
         {
