@@ -230,7 +230,7 @@ namespace Garage_Finder_Backend.Controllers
                 }
                 else
                 {
-                    userDTO.RoleID = 1;
+                    userDTO.RoleID = 2;
                 }
 
                 _userRepository.Register(userDTO);
