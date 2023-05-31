@@ -234,6 +234,11 @@ namespace DataAccess.Util
                     EmailAddress = garage.EmailAddress,
                     UserID = garage.UserID,
                     PhoneNumber = garage.PhoneNumber,
+                    Status = garage.Status,
+                    OpenTime = garage.OpenTime,
+                    Logo = garage.Logo,
+                    Imagies = garage.Imagies,
+                    Location = garage.Location,
                 };
                 return garageDTO;
             }
@@ -254,6 +259,11 @@ namespace DataAccess.Util
                 EmailAddress = garageDTO.EmailAddress,
                 UserID = garageDTO.UserID,
                 PhoneNumber = garageDTO.PhoneNumber,
+                Status = garageDTO.Status,
+                OpenTime = garageDTO.OpenTime,
+                Logo = garageDTO.Logo,
+                Imagies = garageDTO.Imagies,
+                Location = garageDTO.Location,
             };
 
             return garage;
