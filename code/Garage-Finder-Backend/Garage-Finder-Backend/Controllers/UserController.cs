@@ -12,7 +12,9 @@ using Garage_Finder_Backend.Models.RequestModels;
 
 namespace Garage_Finder_Backend.Controllers
 {
-    public class UserController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class UserController : ControllerBase
     {
         #region Properties
         private readonly JwtSettings _jwtSettings;
@@ -31,13 +33,12 @@ namespace Garage_Finder_Backend.Controllers
             _refreshTokenRepository = refreshTokenRepository;
             _roleNameRepository = roleNameRepository;
         }
-        public IActionResult Index()
-        {
-            return View();
-        }
+        //public IActionResult Index()
+        //{
+        //    return View();
+        //}
         #region Login/Logout
-        [HttpPost]
-        [Route("login")]
+        [HttpPost("login")]
         [AllowAnonymous]
         public IActionResult LoginAsync([FromBody] LoginModel loginModel)
         {
@@ -94,7 +95,8 @@ namespace Garage_Finder_Backend.Controllers
 
         //    return Ok(response.Content);
         //}
-
+        [HttpGet("login-gg")]
+        [AllowAnonymous]
         public async Task<IActionResult> LoginGGAsync(string accessToken)
         {
             try
@@ -142,8 +144,7 @@ namespace Garage_Finder_Backend.Controllers
             }
         }
 
-        [HttpPost]
-        [Route("refresh-token")]
+        [HttpPost("refresh-token")]
         public IActionResult RefreshToken()
         {
             try
@@ -203,8 +204,7 @@ namespace Garage_Finder_Backend.Controllers
             Response.Cookies.Append("refreshToken", refreshToken.Token, cookiesOptions);
         }
 
-        [HttpGet]
-        [Route("logout")]
+        [HttpGet("logout")]
         [Authorize]
         public IActionResult Logout()
         {
@@ -212,8 +212,7 @@ namespace Garage_Finder_Backend.Controllers
         }
         #endregion
         #region Register
-        [HttpPost]
-        [Route("register")]
+        [HttpPost("register")]
         [AllowAnonymous]
         public IActionResult Register([FromBody] UserRegister registerUser)
         {
