@@ -220,7 +220,7 @@ namespace Garage_Finder_Backend.Controllers
             {
                 UsersDTO userDTO = new UsersDTO();
                 userDTO.Name = registerUser.Name;
-                userDTO.Birthday = registerUser.BirthDay;
+                //userDTO.Birthday = registerUser.BirthDay;
                 userDTO.PhoneNumber = registerUser.PhoneNumber;
                 userDTO.EmailAddress = registerUser.EmailAddress;
                 userDTO.Password = registerUser.Password;
