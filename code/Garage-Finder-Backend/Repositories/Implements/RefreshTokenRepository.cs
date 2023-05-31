@@ -1,6 +1,8 @@
-﻿using DataAccess.DAO;
+﻿using AutoMapper;
+using DataAccess.DAO;
 using DataAccess.DTO;
 using DataAccess.Util;
+using GFData.Models.Entity;
 using Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -12,17 +14,23 @@ using System.Threading.Tasks;
 
 namespace Repositories.Implements
 {
-    internal class RefreshTokenRepository : IRefreshTokenRepository
+
+    public class RefreshTokenRepository : IRefreshTokenRepository
     {
+        private readonly IMapper _mapper;
+        public RefreshTokenRepository(IMapper mapper)
+        {
+            _mapper = mapper;
+        }
         public void AddOrUpdateToken(RefreshTokenDTO refreshToken)
         {
-            RefreshTokenDAO.Instance.AddOrUpdateRefreshToken(Mapper.mapToEntity(refreshToken));
+            RefreshTokenDAO.Instance.AddOrUpdateRefreshToken(_mapper.Map<RefreshTokenDTO, RefreshToken>(refreshToken));
         }
 
         public List<RefreshTokenDTO> GetRefreshToken(int userID)
         {
             List<RefreshTokenDTO> refreshTokens = new List<RefreshTokenDTO>();
-            RefreshTokenDAO.Instance.GetRefreshTokenByUserID(userID).ForEach(x => refreshTokens.Add(Mapper.mapToDTO(x)));
+            RefreshTokenDAO.Instance.GetRefreshTokenByUserID(userID).ForEach(x => refreshTokens.Add(_mapper.Map<RefreshToken, RefreshTokenDTO>(x)));
             return refreshTokens;
         }
     }

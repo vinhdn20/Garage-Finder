@@ -1,6 +1,8 @@
-﻿using DataAccess.DAO;
+﻿using AutoMapper;
+using DataAccess.DAO;
 using DataAccess.DTO;
 using DataAccess.Util;
+using GFData.Models.Entity;
 using Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -10,11 +12,16 @@ using System.Threading.Tasks;
 
 namespace Repositories.Implements
 {
-    internal class RoleNameRepository : IRoleNameRepository
+    public class RoleNameRepository : IRoleNameRepository
     {
+        private readonly IMapper _mapper;
+        public RoleNameRepository(IMapper mapper)
+        {
+            _mapper = mapper;
+        }
         public RoleNameDTO GetUserRole(int userId)
         {
-            return Mapper.mapToDTO(RoleDAO.Instance.FindById(userId));
+            return _mapper.Map<RoleName, RoleNameDTO>(RoleDAO.Instance.FindById(userId));
         }
     }
 }
