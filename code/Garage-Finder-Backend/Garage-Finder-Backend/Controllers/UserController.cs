@@ -57,7 +57,7 @@ namespace Garage_Finder_Backend.Controllers
             }
             catch (Exception ex)
             {
-                return NotFound("Not found" + ex.Message);
+                return NotFound(ex.Message);
             }
 
         }
@@ -140,7 +140,7 @@ namespace Garage_Finder_Backend.Controllers
             }
             catch (Exception ex)
             {
-                return NotFound("Not found: "+ ex.Message);
+                return NotFound(ex.Message);
             }
         }
 
@@ -180,7 +180,7 @@ namespace Garage_Finder_Backend.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest("Refresh token not found" + ex.Message);
+                return BadRequest(ex.Message);
             }
         }
 
@@ -238,7 +238,7 @@ namespace Garage_Finder_Backend.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest("Register faile" + ex.Message);
+                return BadRequest(ex.Message);
             }
         }
 
