@@ -57,7 +57,7 @@ namespace Garage_Finder_Backend.Controllers
             }
             catch (Exception ex)
             {
-                return NotFound("Not found");
+                return NotFound(ex.Message);
             }
 
         }
@@ -140,7 +140,7 @@ namespace Garage_Finder_Backend.Controllers
             }
             catch (Exception ex)
             {
-                return NotFound("Not found");
+                return NotFound(ex.Message);
             }
         }
 
@@ -178,9 +178,9 @@ namespace Garage_Finder_Backend.Controllers
                 return Unauthorized("Invalid refresh token");
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return BadRequest("Refresh token not found");
+                return BadRequest(ex.Message);
             }
         }
 
@@ -236,9 +236,9 @@ namespace Garage_Finder_Backend.Controllers
                 _userRepository.Register(userDTO);
                 return Ok();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return BadRequest("Register faile");
+                return BadRequest(ex.Message);
             }
         }
 
