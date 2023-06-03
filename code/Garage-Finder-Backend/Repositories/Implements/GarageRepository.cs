@@ -1,6 +1,7 @@
-﻿using DataAccess.DAO;
+﻿using AutoMapper;
+using DataAccess.DAO;
 using DataAccess.DTO;
-using DataAccess.Util;
+using GFData.Models.Entity;
 using Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -12,24 +13,29 @@ namespace Repositories.Implements
 {
     public class GarageRepository : IGarageRepository
     {
+        private readonly IMapper _mapper;
+        public GarageRepository(IMapper mapper)
+        {
+            _mapper = mapper;
+        }
         public void Add(GarageDTO garage)
         {
-            GarageDAO.Instance.SaveGarage(Mapper.mapToEntity(garage));
+            GarageDAO.Instance.SaveGarage(_mapper.Map<GarageDTO, Garage>(garage));
         }
 
         public List<GarageDTO> GetGarages()
         {
-            return GarageDAO.Instance.GetGarages().Select(p => Mapper.mapToDTO(p)).ToList();
+            return GarageDAO.Instance.GetGarages().Select(p => _mapper.Map<Garage, GarageDTO>(p)).ToList();
         }
 
         public void SaveGarage(GarageDTO p)
         {
-            GarageDAO.Instance.SaveGarage(Mapper.mapToEntity(p));
+            GarageDAO.Instance.SaveGarage(_mapper.Map<GarageDTO, Garage>(p));
         }
 
         public void Update(GarageDTO garage)
         {
-            GarageDAO.Instance.UpdateGarage(Mapper.mapToEntity(garage));
+            GarageDAO.Instance.UpdateGarage(_mapper.Map<GarageDTO, Garage>(garage));
         }
 
         public void DeleteGarage(int id)

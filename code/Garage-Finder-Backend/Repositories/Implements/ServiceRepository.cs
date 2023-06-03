@@ -1,6 +1,7 @@
-﻿using DataAccess.DAO;
+﻿using AutoMapper;
+using DataAccess.DAO;
 using DataAccess.DTO;
-using DataAccess.Util;
+using GFData.Models.Entity;
 using Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,11 @@ namespace Repositories.Implements
 {
     public class ServiceRepository : IServiceRepository
     {
+        private readonly IMapper _mapper;
+        public ServiceRepository(IMapper mapper)
+        {
+            _mapper = mapper;
+        }
         public void DeleteService(int id)
         {
             ServiceDAO.Instance.DeleteService(id);
@@ -19,25 +25,25 @@ namespace Repositories.Implements
 
         public ServiceDTO GetServiceById(int id)
         {
-            return Mapper.mapToDTO(ServiceDAO.Instance.FindServiceById(id));
+            return _mapper.Map<Service, ServiceDTO>(ServiceDAO.Instance.FindServiceById(id));
         }
         public List<ServiceDTO> GetServices()
         {
-            return ServiceDAO.Instance.GetServices().Select(p => Mapper.mapToDTO(p)).ToList();
+            return ServiceDAO.Instance.GetServices().Select(p => _mapper.Map<Service, ServiceDTO>(p)).ToList();
         }
         public List<ServiceDTO> GetServicesByCategory(int id)
         {
-            return ServiceDAO.Instance.GetServices().Where(c => c.CategoryID == id).Select(p => Mapper.mapToDTO(p)).ToList();
+            return ServiceDAO.Instance.GetServices().Where(c => c.CategoryID == id).Select(p => _mapper.Map<Service, ServiceDTO>(p)).ToList();
         }
 
         public void SaveService(ServiceDTO p)
         {
-            ServiceDAO.Instance.SaveService(Mapper.mapToEntity(p));
+            ServiceDAO.Instance.SaveService(_mapper.Map<ServiceDTO, Service>(p));
         }
 
         public void UpdateService(ServiceDTO p)
         {
-            ServiceDAO.Instance.UpdateService(Mapper.mapToEntity(p));
+            ServiceDAO.Instance.UpdateService(_mapper.Map<ServiceDTO, Service>(p));
         }
     }
 }

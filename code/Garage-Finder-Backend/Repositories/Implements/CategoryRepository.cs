@@ -1,6 +1,7 @@
-﻿using DataAccess.DAO;
+﻿using AutoMapper;
+using DataAccess.DAO;
 using DataAccess.DTO;
-using DataAccess.Util;
+using GFData.Models.Entity;
 using Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -12,9 +13,14 @@ namespace Repositories.Implements
 {
     public class CategoryRepository : ICategoryRepository
     {
+        private readonly IMapper _mapper;
+        public CategoryRepository(IMapper mapper)
+        {
+            _mapper = mapper;
+        }
         public void Add(CategoryDTO categoryDTO)
         {
-            CategoryDAO.Instance.Add(Mapper.mapToEntity(categoryDTO));
+            CategoryDAO.Instance.Add(_mapper.Map<CategoryDTO, Categorys>(categoryDTO));
         }
 
         public void Delete(int id)
@@ -24,12 +30,12 @@ namespace Repositories.Implements
 
         public List<CategoryDTO> GetCategory()
         {
-            return CategoryDAO.Instance.GetCategories().Select(m => Mapper.mapToDTO(m)).ToList();
+            return CategoryDAO.Instance.GetCategories().Select(m => _mapper.Map<Categorys, CategoryDTO>(m)).ToList();
         }
 
         public void Update(CategoryDTO categoryDTO)
         {
-            CategoryDAO.Instance.Update(Mapper.mapToEntity(categoryDTO));
+            CategoryDAO.Instance.Update(_mapper.Map<CategoryDTO, Categorys>(categoryDTO));
         }
     }
 }

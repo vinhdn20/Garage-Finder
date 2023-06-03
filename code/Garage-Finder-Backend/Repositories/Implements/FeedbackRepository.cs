@@ -1,6 +1,6 @@
-﻿using DataAccess.DAO;
+﻿using AutoMapper;
+using DataAccess.DAO;
 using DataAccess.DTO;
-using DataAccess.Util;
 using GFData.Models.Entity;
 using Repositories.Interfaces;
 using System;
@@ -13,20 +13,25 @@ namespace Repositories.Implements
 {
     public class FeedbackRepository : IFeedbackRepository
     {
+        private readonly IMapper _mapper;
+        public FeedbackRepository(IMapper mapper)
+        {
+            _mapper = mapper;
+        }
         public List<FeedbackDTO> GetListByGarage(int id)
         {
-            return FeedbackDAO.Instance.GetList().Where(c => c.GarageID == id).Select(p => Mapper.mapToDTO(p)).ToList();
+            return FeedbackDAO.Instance.GetList().Where(c => c.GarageID == id).Select(p => _mapper.Map<Feedback, FeedbackDTO>(p)).ToList();
         }
 
 
         public void Add(FeedbackDTO feedback)
         {
-            FeedbackDAO.Instance.SaveFeedback(Mapper.mapToEntity(feedback));
+            FeedbackDAO.Instance.SaveFeedback(_mapper.Map<FeedbackDTO, Feedback>(feedback));
         }
 
         public void Update(FeedbackDTO feedback)
         {
-            FeedbackDAO.Instance.UpdateFeedback(Mapper.mapToEntity(feedback));
+            FeedbackDAO.Instance.UpdateFeedback(_mapper.Map<FeedbackDTO, Feedback>(feedback));
         }
     }
 }

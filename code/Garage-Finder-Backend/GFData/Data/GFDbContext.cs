@@ -23,6 +23,8 @@ namespace GFData.Data
             optionsBuilder.UseSqlServer(configuration.GetConnectionString("GarageFinderDB"));
         }
 
+
+        public virtual DbSet<Brand>? Brand { get; set; }
         public virtual DbSet<Categorys>? Category { get; set; }
         public virtual DbSet<Car>? Car { get; set; }
         public virtual DbSet<Feedback>? Feedback { get; set; }
@@ -65,6 +67,12 @@ namespace GFData.Data
             .HasOne(p => p.Service)
             .WithMany(u => u.Orders)
             .HasForeignKey(c => c.ServiceID)
+            .OnDelete(DeleteBehavior.NoAction);
+
+            optionsBuilder.Entity<GarageInfo>()
+            .HasOne(p => p.User)
+            .WithMany(u => u.GarageInfos)
+            .HasForeignKey(c => c.UserID)
             .OnDelete(DeleteBehavior.NoAction);
         }
     }

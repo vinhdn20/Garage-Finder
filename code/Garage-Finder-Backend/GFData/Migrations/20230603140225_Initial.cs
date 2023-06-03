@@ -10,6 +10,20 @@ namespace GFData.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Brand",
+                columns: table => new
+                {
+                    BrandID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    BrandName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Note = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Brand", x => x.BrandID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Category",
                 columns: table => new
                 {
@@ -36,16 +50,33 @@ namespace GFData.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Subscribe",
+                columns: table => new
+                {
+                    SubscribeID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Price = table.Column<double>(type: "float", nullable: false),
+                    Period = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Subscribe", x => x.SubscribeID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "User",
                 columns: table => new
                 {
                     UserID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Birthday = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Birthday = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     EmailAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LinkImage = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RoleID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -67,13 +98,20 @@ namespace GFData.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserID = table.Column<int>(type: "int", nullable: false),
                     LicensePlates = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Brand = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BrandID = table.Column<int>(type: "int", nullable: false),
                     Color = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    TypeCar = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LinkImages = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Car", x => x.CarID);
+                    table.ForeignKey(
+                        name: "FK_Car_Brand_BrandID",
+                        column: x => x.BrandID,
+                        principalTable: "Brand",
+                        principalColumn: "BrandID",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Car_User_UserID",
                         column: x => x.UserID,
@@ -92,13 +130,71 @@ namespace GFData.Migrations
                     GarageName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     EmailAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    OpenTime = table.Column<double>(type: "float", nullable: true),
+                    CloseTime = table.Column<double>(type: "float", nullable: true),
+                    Logo = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Imagies = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LatAddress = table.Column<double>(type: "float", nullable: true),
+                    LngAddress = table.Column<double>(type: "float", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Garage", x => x.GarageID);
                     table.ForeignKey(
                         name: "FK_Garage_User_UserID",
+                        column: x => x.UserID,
+                        principalTable: "User",
+                        principalColumn: "UserID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Invoices",
+                columns: table => new
+                {
+                    InvoicesID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SubscribeID = table.Column<int>(type: "int", nullable: false),
+                    UserID = table.Column<int>(type: "int", nullable: false),
+                    DateCreate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ExpirationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UsersUserID = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Invoices", x => x.InvoicesID);
+                    table.ForeignKey(
+                        name: "FK_Invoices_Subscribe_SubscribeID",
+                        column: x => x.SubscribeID,
+                        principalTable: "Subscribe",
+                        principalColumn: "SubscribeID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Invoices_User_UsersUserID",
+                        column: x => x.UsersUserID,
+                        principalTable: "User",
+                        principalColumn: "UserID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Notification",
+                columns: table => new
+                {
+                    NotificationID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserID = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Notification", x => x.NotificationID);
+                    table.ForeignKey(
+                        name: "FK_Notification_User_UserID",
                         column: x => x.UserID,
                         principalTable: "User",
                         principalColumn: "UserID",
@@ -180,6 +276,57 @@ namespace GFData.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "GarageBrand",
+                columns: table => new
+                {
+                    BrID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    BrandID = table.Column<int>(type: "int", nullable: false),
+                    GarageID = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GarageBrand", x => x.BrID);
+                    table.ForeignKey(
+                        name: "FK_GarageBrand_Brand_BrandID",
+                        column: x => x.BrandID,
+                        principalTable: "Brand",
+                        principalColumn: "BrandID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_GarageBrand_Garage_GarageID",
+                        column: x => x.GarageID,
+                        principalTable: "Garage",
+                        principalColumn: "GarageID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "GarageInfo",
+                columns: table => new
+                {
+                    InfoID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserID = table.Column<int>(type: "int", nullable: false),
+                    GarageID = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GarageInfo", x => x.InfoID);
+                    table.ForeignKey(
+                        name: "FK_GarageInfo_Garage_GarageID",
+                        column: x => x.GarageID,
+                        principalTable: "Garage",
+                        principalColumn: "GarageID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_GarageInfo_User_UserID",
+                        column: x => x.UserID,
+                        principalTable: "User",
+                        principalColumn: "UserID");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Service",
                 columns: table => new
                 {
@@ -188,8 +335,7 @@ namespace GFData.Migrations
                     GarageID = table.Column<int>(type: "int", nullable: false),
                     NameService = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CategoryID = table.Column<int>(type: "int", nullable: false),
-                    Cost = table.Column<double>(type: "float", nullable: false),
-                    Note = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Note = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -219,7 +365,11 @@ namespace GFData.Migrations
                     ServiceID = table.Column<int>(type: "int", nullable: false),
                     TimeCreate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     TimeUpdate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    TimeAppointment = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LinkFile = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ImageLink = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -240,6 +390,11 @@ namespace GFData.Migrations
                         principalTable: "Service",
                         principalColumn: "ServiceID");
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Car_BrandID",
+                table: "Car",
+                column: "BrandID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Car_UserID",
@@ -269,6 +424,41 @@ namespace GFData.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Garage_UserID",
                 table: "Garage",
+                column: "UserID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GarageBrand_BrandID",
+                table: "GarageBrand",
+                column: "BrandID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GarageBrand_GarageID",
+                table: "GarageBrand",
+                column: "GarageID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GarageInfo_GarageID",
+                table: "GarageInfo",
+                column: "GarageID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GarageInfo_UserID",
+                table: "GarageInfo",
+                column: "UserID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Invoices_SubscribeID",
+                table: "Invoices",
+                column: "SubscribeID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Invoices_UsersUserID",
+                table: "Invoices",
+                column: "UsersUserID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Notification_UserID",
+                table: "Notification",
                 column: "UserID");
 
             migrationBuilder.CreateIndex(
@@ -316,16 +506,34 @@ namespace GFData.Migrations
                 name: "Feedback");
 
             migrationBuilder.DropTable(
+                name: "GarageBrand");
+
+            migrationBuilder.DropTable(
+                name: "GarageInfo");
+
+            migrationBuilder.DropTable(
+                name: "Invoices");
+
+            migrationBuilder.DropTable(
+                name: "Notification");
+
+            migrationBuilder.DropTable(
                 name: "Orders");
 
             migrationBuilder.DropTable(
                 name: "RefreshToken");
 
             migrationBuilder.DropTable(
+                name: "Subscribe");
+
+            migrationBuilder.DropTable(
                 name: "Car");
 
             migrationBuilder.DropTable(
                 name: "Service");
+
+            migrationBuilder.DropTable(
+                name: "Brand");
 
             migrationBuilder.DropTable(
                 name: "Category");
