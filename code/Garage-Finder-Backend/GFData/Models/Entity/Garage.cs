@@ -14,10 +14,12 @@ namespace GFData.Models.Entity
         public string EmailAddress { get; set; }
         public string PhoneNumber { get; set; }
         public string Status { get; set; }
-        public string OpenTime { get; set; }
+        public double OpenTime { get; set; }
+        public double CloseTime { get; set; }
         public string Logo { get; set; }
-        public string Imagies { get; set; }
-        public string Location { get; set; }        
+        public string? Imagies { get; set; }
+        public double LatAddress { get; set; }
+        public double LngAddress { get; set; }
         public ICollection<Orders> Orders { get; set; }
         public ICollection<Service> Services { get; set; }
         public ICollection<FavoriteList> FavoriteList { get; set; }

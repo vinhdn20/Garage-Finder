@@ -187,7 +187,7 @@ namespace DataAccess.Util
                 ServiceID = serviceDTO.ServiceID,
                 NameService = serviceDTO.NameService,
                 GarageID = serviceDTO.GarageID,
-                Cost = serviceDTO.Cost,
+                //Cost = serviceDTO.Cost,
                 Note = serviceDTO.Note,
             };
             return service;
@@ -200,7 +200,7 @@ namespace DataAccess.Util
                 ServiceID = service.ServiceID,
                 NameService = service.NameService,
                 GarageID = service.GarageID,
-                Cost = service.Cost,
+                //Cost = service.Cost,
                 Note = service.Note,
             };
             return serviceDTO;
@@ -238,10 +238,10 @@ namespace DataAccess.Util
                     UserID = garage.UserID,
                     PhoneNumber = garage.PhoneNumber,
                     Status = garage.Status,
-                    OpenTime = garage.OpenTime,
+                    //OpenTime = garage.OpenTime,
                     Logo = garage.Logo,
                     Imagies = garage.Imagies,
-                    Location = garage.Location,
+                    //Location = garage.Location,
                 };
                 return garageDTO;
             }
@@ -263,10 +263,10 @@ namespace DataAccess.Util
                 UserID = garageDTO.UserID,
                 PhoneNumber = garageDTO.PhoneNumber,
                 Status = garageDTO.Status,
-                OpenTime = garageDTO.OpenTime,
+                //OpenTime = garageDTO.OpenTime,
                 Logo = garageDTO.Logo,
                 Imagies = garageDTO.Imagies,
-                Location = garageDTO.Location,
+                //Location = garageDTO.Location,
             };
 
             return garage;
