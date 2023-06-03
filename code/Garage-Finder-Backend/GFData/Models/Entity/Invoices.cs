@@ -18,7 +18,7 @@ namespace GFData.Models.Entity
         public int UserID { get; set; }
         public DateTime DateCreate { get; set; }
         public DateTime ExpirationDate { get; set; }
-        public string Note { get; set; }
+        public string? Note { get; set; }
 
         public Subscribe Subscribe { get; set; }
         public Users Users { get; set; }
