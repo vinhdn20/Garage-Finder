@@ -7,13 +7,15 @@ namespace GFData.Models.Entity
     {
         [Key]
         public int UserID { get; set; }
-        public string Name { get; set; }
-        public string Birthday { get; set; }
-        public string PhoneNumber { get; set; }
+        public string? Name { get; set; }
+        public string? Birthday { get; set; }
+        public string? PhoneNumber { get; set; }
+        [Required]
         public string EmailAddress { get; set; }
+        [Required]
         public string Password { get; set; }
         public string Status { get; set; }
-        public string LinkImage { get; set; }
+        public string? LinkImage { get; set; }
         
         [ForeignKey("RoleName")]
         public int RoleID { get; set; }
