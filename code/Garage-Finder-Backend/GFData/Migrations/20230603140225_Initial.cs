@@ -70,13 +70,13 @@ namespace GFData.Migrations
                 {
                     UserID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Birthday = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Birthday = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     EmailAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LinkImage = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LinkImage = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RoleID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -131,11 +131,13 @@ namespace GFData.Migrations
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     EmailAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    OpenTime = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Logo = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Imagies = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Location = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    OpenTime = table.Column<double>(type: "float", nullable: true),
+                    CloseTime = table.Column<double>(type: "float", nullable: true),
+                    Logo = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Imagies = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LatAddress = table.Column<double>(type: "float", nullable: true),
+                    LngAddress = table.Column<double>(type: "float", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -158,7 +160,7 @@ namespace GFData.Migrations
                     UserID = table.Column<int>(type: "int", nullable: false),
                     DateCreate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ExpirationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Note = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UsersUserID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -333,8 +335,7 @@ namespace GFData.Migrations
                     GarageID = table.Column<int>(type: "int", nullable: false),
                     NameService = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CategoryID = table.Column<int>(type: "int", nullable: false),
-                    Cost = table.Column<double>(type: "float", nullable: false),
-                    Note = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Note = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -364,11 +365,11 @@ namespace GFData.Migrations
                     ServiceID = table.Column<int>(type: "int", nullable: false),
                     TimeCreate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     TimeUpdate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    TimeAppointment = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LinkFile = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ImageLink = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    TimeAppointment = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LinkFile = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ImageLink = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
