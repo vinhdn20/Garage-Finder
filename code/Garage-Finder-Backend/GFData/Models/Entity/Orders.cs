@@ -15,11 +15,11 @@ namespace GFData.Models.Entity
         public int ServiceID { get; set; }
         public DateTime TimeCreate { get; set; }
         public DateTime TimeUpdate { get; set; }
-        public DateTime TimeAppointment { get; set; }
-        public string Status { get; set; }
+        public DateTime? TimeAppointment { get; set; }
+        public string? Status { get; set; }
         public string? Content { get; set; }
-        public string LinkFile { get; set; }
-        public string ImageLink { get; set; }
+        public string? LinkFile { get; set; }
+        public string? ImageLink { get; set; }
 
         public virtual Service? Service { get; set; }
         public Car Car { get; set; }

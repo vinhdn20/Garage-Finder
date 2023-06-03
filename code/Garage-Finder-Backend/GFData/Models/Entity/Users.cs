@@ -14,7 +14,7 @@ namespace GFData.Models.Entity
         public string EmailAddress { get; set; }
         [Required]
         public string Password { get; set; }
-        public string Status { get; set; }
+        public string? Status { get; set; }
         public string? LinkImage { get; set; }
         
         [ForeignKey("RoleName")]

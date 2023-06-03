@@ -164,6 +164,9 @@ namespace GFData.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<double?>("CloseTime")
+                        .HasColumnType("float");
+
                     b.Property<string>("EmailAddress")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -173,27 +176,25 @@ namespace GFData.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Imagies")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Location")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<double?>("LatAddress")
+                        .HasColumnType("float");
+
+                    b.Property<double?>("LngAddress")
+                        .HasColumnType("float");
 
                     b.Property<string>("Logo")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("OpenTime")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<double?>("OpenTime")
+                        .HasColumnType("float");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Status")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("UserID")
@@ -267,7 +268,6 @@ namespace GFData.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Note")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("SubscribeID")
@@ -326,28 +326,24 @@ namespace GFData.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Content")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("GarageID")
                         .HasColumnType("int");
 
                     b.Property<string>("ImageLink")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LinkFile")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ServiceID")
                         .HasColumnType("int");
 
                     b.Property<string>("Status")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("TimeAppointment")
+                    b.Property<DateTime?>("TimeAppointment")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("TimeCreate")
@@ -423,9 +419,6 @@ namespace GFData.Migrations
                     b.Property<int>("CategoryID")
                         .HasColumnType("int");
 
-                    b.Property<double>("Cost")
-                        .HasColumnType("float");
-
                     b.Property<int>("GarageID")
                         .HasColumnType("int");
 
@@ -434,7 +427,6 @@ namespace GFData.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Note")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ServiceID");
@@ -479,7 +471,6 @@ namespace GFData.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserID"), 1L, 1);
 
                     b.Property<string>("Birthday")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("EmailAddress")
@@ -487,11 +478,9 @@ namespace GFData.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LinkImage")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
@@ -499,14 +488,12 @@ namespace GFData.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("RoleID")
                         .HasColumnType("int");
 
                     b.Property<string>("Status")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("UserID");
