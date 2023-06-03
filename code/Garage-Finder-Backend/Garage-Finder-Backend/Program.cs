@@ -24,15 +24,9 @@ builder.Services.ConfigRepository();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-<<<<<<< HEAD
-<<<<<<< HEAD
 
-=======
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
->>>>>>> 0f6d917 (add automapper)
-=======
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
->>>>>>> f5d7b45b04c2d6c26af8a14c68f432f7856976e1
 var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>();
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
 
