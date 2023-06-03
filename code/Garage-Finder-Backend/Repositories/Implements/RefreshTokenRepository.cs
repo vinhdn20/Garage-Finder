@@ -33,5 +33,10 @@ namespace Repositories.Implements
             RefreshTokenDAO.Instance.GetRefreshTokenByUserID(userID).ForEach(x => refreshTokens.Add(_mapper.Map<RefreshToken, RefreshTokenDTO>(x)));
             return refreshTokens;
         }
+
+        public void DeleteRefreshToken(int userID)
+        {
+            RefreshTokenDAO.Instance.DeleteRefreshTokenByUserID(userID);
+        }
     }
 }

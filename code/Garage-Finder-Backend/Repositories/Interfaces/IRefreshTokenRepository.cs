@@ -11,5 +11,6 @@ namespace Repositories.Interfaces
     {
         void AddOrUpdateToken(RefreshTokenDTO refreshToken);
         List<RefreshTokenDTO> GetRefreshToken(int userID);
+        void DeleteRefreshToken(int userID);
     }
 }
