@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using DataAccess.DAO;
 using DataAccess.DTO;
-using DataAccess.Util;
 using GFData.Models.Entity;
 using Repositories.Interfaces;
 using System;
