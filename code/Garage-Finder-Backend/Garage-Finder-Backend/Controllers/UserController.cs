@@ -208,6 +208,23 @@ namespace Garage_Finder_Backend.Controllers
         [Authorize]
         public IActionResult Logout()
         {
+            try
+            {
+                var jsonUser = User.FindFirstValue("user");
+                var user = JsonConvert.DeserializeObject<UsersDTO>(jsonUser);
+                _refreshTokenRepository.DeleteRefreshToken(user.UserID);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }            
+        }
+
+        [HttpGet]
+        [Route("forgot")]
+        public IActionResult ForgotPassword()
+        {
             return Ok();
         }
         #endregion
@@ -241,8 +258,6 @@ namespace Garage_Finder_Backend.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
-
         #endregion
     }
 }

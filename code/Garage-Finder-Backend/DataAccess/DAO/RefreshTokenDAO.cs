@@ -93,10 +93,26 @@ namespace DataAccess.DAO
                     db.SaveChanges();
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                throw new Exception(e.Message);
+            }
+        }
 
-                throw;
+        public void DeleteRefreshTokenByUserID(int userID)
+        {
+            try
+            {
+                using (var context = new GFDbContext())
+                {
+                    var cDelete = context.RefreshToken.SingleOrDefault(x => x.UserID == userID);
+                    context.RefreshToken.Remove(cDelete);
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
             }
         }
     }

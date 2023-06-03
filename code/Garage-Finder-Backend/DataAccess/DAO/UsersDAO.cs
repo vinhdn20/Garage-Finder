@@ -76,6 +76,29 @@ namespace DataAccess.DAO
             return p;
         }
 
+        public Users FindUserByEmail(string email)
+        {
+            var p = new Users();
+            try
+            {
+                if (email.Equals("")) throw new Exception("Email must not be empty");
+                using (var context = new GFDbContext())
+                {
+                    p = context.User.SingleOrDefault(x => x.EmailAddress == email);
+
+                    if (p == null)
+                    {
+                        throw new Exception("Wrong username");
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            return p;
+        }
+
         public void SaveUser(Users user)
         {
             try
