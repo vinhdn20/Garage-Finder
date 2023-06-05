@@ -25,6 +25,7 @@ namespace Services.PhoneVerifyService
         {
             try
             {
+                phoneNumber = ChangePhoneToVNPhone(phoneNumber);
                 var verification = await VerificationResource.CreateAsync(
                     to: phoneNumber,
                     channel: "sms",
@@ -46,6 +47,7 @@ namespace Services.PhoneVerifyService
         {
             try
             {
+                phoneNumber = ChangePhoneToVNPhone(phoneNumber);
                 var verification = await VerificationCheckResource.CreateAsync(
                     to: phoneNumber,
                     code: verificationCode,
@@ -64,6 +66,11 @@ namespace Services.PhoneVerifyService
             {
                 throw new Exception(ex.Message);
             }
+        }
+
+        private string ChangePhoneToVNPhone(string phoneNumber)
+        {
+            return "+84" + phoneNumber.Substring(1);
         }
     }
 }
