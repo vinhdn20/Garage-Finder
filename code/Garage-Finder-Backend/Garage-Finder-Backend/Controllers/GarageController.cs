@@ -1,4 +1,5 @@
 ﻿using DataAccess.DTO;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Repositories.Interfaces;
 
@@ -28,6 +29,7 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpPost("Add")]
+        [Authorize]
         public IActionResult Add(GarageDTO garage)
         {
             try

@@ -12,6 +12,7 @@ namespace GFData.Models.Entity
         public string? Birthday { get; set; }
         public string PhoneNumber { get; set; }
         [Required]
+        [EmailAddress]
         public string EmailAddress { get; set; }
         [Required]
         public string Password { get; set; }
