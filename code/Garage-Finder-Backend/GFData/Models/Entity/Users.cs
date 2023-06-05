@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GFData.Models.Entity
@@ -9,7 +10,7 @@ namespace GFData.Models.Entity
         public int UserID { get; set; }
         public string? Name { get; set; }
         public string? Birthday { get; set; }
-        public string? PhoneNumber { get; set; }
+        public string PhoneNumber { get; set; }
         [Required]
         public string EmailAddress { get; set; }
         [Required]

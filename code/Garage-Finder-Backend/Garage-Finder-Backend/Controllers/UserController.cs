@@ -9,6 +9,8 @@ using Repositories.Interfaces;
 using DataAccess.DTO;
 using RestSharp;
 using Garage_Finder_Backend.Models.RequestModels;
+using Services.GgService;
+using Services.PhoneVerifyService;
 
 namespace Garage_Finder_Backend.Controllers
 {
@@ -22,21 +24,27 @@ namespace Garage_Finder_Backend.Controllers
         private readonly IUsersRepository _userRepository;
         private readonly IRefreshTokenRepository _refreshTokenRepository;
         private readonly IRoleNameRepository _roleNameRepository;
+        private readonly IPhoneVerifyService _phoneVerifyService;
         #endregion
 
         public UserController(IOptionsSnapshot<JwtSettings> jwtSettings,
             IUsersRepository usersRepository, IRefreshTokenRepository refreshTokenRepository,
-            IRoleNameRepository roleNameRepository)
+            IRoleNameRepository roleNameRepository, IPhoneVerifyService phoneVerifyService)
         {
             _jwtSettings = jwtSettings.Value;
             _userRepository = usersRepository;
             _refreshTokenRepository = refreshTokenRepository;
             _roleNameRepository = roleNameRepository;
+            _phoneVerifyService = phoneVerifyService;
         }
-        //public IActionResult Index()
-        //{
-        //    return View();
-        //}
+
+        [HttpGet("get")]
+        [AllowAnonymous]
+        public IActionResult Get()
+        {
+            UsersDTO user = new UsersDTO();
+            return Ok(user);
+        }
         #region Login/Logout
         [HttpPost("login")]
         [AllowAnonymous]
@@ -62,50 +70,14 @@ namespace Garage_Finder_Backend.Controllers
 
         }
 
-        //[HttpGet]
-        //[Route("login-gg")]
-        //[AllowAnonymous]
-        //public async Task<IActionResult> LoginByGoogleAsync()
-        //{
-        //    var url = "https://accounts.google.com/o/oauth2/v2/auth?" +
-        //        "client_id=905743272860-1ob54jg8gffqdirppk90d41vf9atmh7o.apps.googleusercontent.com" +
-        //        "&redirect_uri=https://localhost:7200/login-gg-infor" +
-        //        "&response_type=code" +
-        //        "&scope=https://www.googleapis.com/auth/userinfo.profile";
-        //    return Redirect(url);
-        //}
-
-        //[HttpGet()]
-        //[Route("login-gg-infor")]
-        //[AllowAnonymous]
-        //public async Task<IActionResult> AfterLoginGGAsync(string code, string scope)
-        //{
-        //    var client = new RestClient();
-        //    var request = new RestRequest($"https://oauth2.googleapis.com/token?" +
-        //        $"client_id=905743272860-1ob54jg8gffqdirppk90d41vf9atmh7o.apps.googleusercontent.com" +
-        //        $"&redirect_uri=https://localhost:7200/login-gg-infor" +
-        //        $"&grant_type=authorization_code" +
-        //        $"&code={code}" +
-        //        $"&client_secret=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", Method.Post);
-        //    RestResponse response = await client.ExecuteAsync(request);
-        //    dynamic obj = JsonConvert.DeserializeObject(response.Content);
-        //    string id_token = obj.id_token;
-        //    request = new RestRequest($"https://oauth2.googleapis.com/tokeninfo?id_token={id_token}");
-        //    response = await client.ExecuteAsync(request);
-
-        //    return Ok(response.Content);
-        //}
         [HttpPost("login-gg")]
         [AllowAnonymous]
         public async Task<IActionResult> LoginGGAsync(string accessToken)
         {
             try
             {
-                var client = new RestClient();
-                var request = new RestRequest($"https://www.googleapis.com/oauth2/v3/userinfo?access_token={accessToken}");
-                RestResponse response = await client.ExecuteAsync(request);
-                dynamic obj = JsonConvert.DeserializeObject(response.Content);
-                string email = obj.email;
+                dynamic objUserInfor = GoogleService.GetUserInforByAccessTokenAsync(accessToken);
+                string email = objUserInfor.email;
                 var usersDTO = _userRepository.GetAll().Find(x => x.EmailAddress.Equals(email));
                 if (usersDTO != null)
                 {
@@ -184,15 +156,6 @@ namespace Garage_Finder_Backend.Controllers
             }
         }
 
-        //[HttpGet]
-        //[Route("test")]
-        //[Authorize]
-        //public IActionResult TestLogin()
-        //{
-        //    var emailAddress = User.FindFirstValue(ClaimTypes.Name);
-        //    return Ok(emailAddress);
-        //}
-
         private void SetRefreshToken(RefreshTokenDTO refreshToken)
         {
             var cookiesOptions = new CookieOptions
@@ -221,13 +184,46 @@ namespace Garage_Finder_Backend.Controllers
             }            
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("forgot")]
-        public IActionResult ForgotPassword()
+        public IActionResult ForgotPassword([FromBody] ForgotPassModel forgotPassModel)
         {
-            return Ok();
+            try
+            {
+                if(_phoneVerifyService.VerifyPhoneNumber(forgotPassModel.verifyCode, forgotPassModel.phoneNumber).Result)
+                {
+                    var userDTO = _userRepository.GetUsersByPhone(forgotPassModel.phoneNumber);
+                    userDTO.Password = forgotPassModel.newPassword;
+                    _userRepository.Update(userDTO);
+                    return Ok();
+                }
+                return StatusCode(500, "Can't verify code");
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
-        #endregion
+
+        [HttpPost]
+        [Route("sendPhoneCode")]
+        public IActionResult SendPhoneCode([FromBody] string phoneNumber)
+        {
+            try
+            {
+                if (_phoneVerifyService.SendCodeAsync(phoneNumber).Result)
+                {
+                    return Ok();
+                }
+                return StatusCode(500, "Can't send code");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+        #endregion  
         #region Register
         [HttpPost("register")]
         [AllowAnonymous]
@@ -237,7 +233,7 @@ namespace Garage_Finder_Backend.Controllers
             {
                 UsersDTO userDTO = new UsersDTO();
                 userDTO.Name = registerUser.Name;
-                userDTO.Birthday = "2023/12/31";
+                userDTO.Birthday = registerUser.BirthDay;
                 userDTO.PhoneNumber = registerUser.PhoneNumber;
                 userDTO.EmailAddress = registerUser.EmailAddress;
                 userDTO.Password = registerUser.Password;

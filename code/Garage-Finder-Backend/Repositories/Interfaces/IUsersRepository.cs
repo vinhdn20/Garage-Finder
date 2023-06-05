@@ -10,7 +10,8 @@ namespace Repositories.Interfaces
     public interface IUsersRepository
     {
         UsersDTO Login(string email, string password);
-        UsersDTO GetUsers(string email);
+        UsersDTO GetUsersByEmail(string email);
+        UsersDTO GetUsersByPhone(string phone);
         void Register(UsersDTO user);
         void Add(UsersDTO user);
         void Update(UsersDTO user);

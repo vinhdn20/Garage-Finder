@@ -99,6 +99,29 @@ namespace DataAccess.DAO
             return p;
         }
 
+        public Users FindUserByPhone(string phone)
+        {
+            var p = new Users();
+            try
+            {
+                if (phone.Equals("")) throw new Exception("Email must not be empty");
+                using (var context = new GFDbContext())
+                {
+                    p = context.User.SingleOrDefault(x => x.PhoneNumber == phone);
+
+                    if (p == null)
+                    {
+                        throw new Exception("Wrong phoneNumber");
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            return p;
+        }
+
         public void SaveUser(Users user)
         {
             try

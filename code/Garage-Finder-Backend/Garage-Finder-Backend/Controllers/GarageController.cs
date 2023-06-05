@@ -33,7 +33,6 @@ namespace Garage_Finder_Backend.Controllers
             try
             {
                 garageRepository.SaveGarage(garage);
-
                 return Ok("SUCCESS");
             }
             catch (Exception e)
