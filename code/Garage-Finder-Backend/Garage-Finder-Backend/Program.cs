@@ -5,6 +5,10 @@ using System.Text;
 using Repositories;
 using Microsoft.AspNetCore.Hosting;
 using Garage_Finder_Backend;
+using Twilio;
+using GFData.Models.Entity;
+using Services.PhoneVerifyService;
+using System.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,7 +29,6 @@ builder.Services.ConfigRepository();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
 var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>();
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
@@ -54,11 +57,14 @@ builder.Services
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddAuthorization();
-/*
-builder.Services.AddDbContext<GFDbContext>(option =>
-{
-    option.UseSqlServer(builder.Configuration.GetConnectionString("GarageFinderDB"));
-});*/
+builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
+
+var accountSid = builder.Configuration["Twilio:AccountSID"];
+var authToken = builder.Configuration["Twilio:AuthToken"];
+TwilioClient.Init(accountSid, authToken);
+builder.Services.Configure<TwilioVerifySettings>(builder.Configuration.GetSection("Twilio"));
+
+builder.Services.AddTransient<IPhoneVerifyService, TwilioService>();
 
 var app = builder.Build();
 
