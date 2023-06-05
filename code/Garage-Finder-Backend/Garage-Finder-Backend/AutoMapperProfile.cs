@@ -40,7 +40,6 @@ namespace Garage_Finder_Backend
             CreateMap<Subscribe, SubscribeDTO>();
             CreateMap<UsersDTO, Users>();
             CreateMap<Users, UsersDTO>();
-
         }
     }
 }

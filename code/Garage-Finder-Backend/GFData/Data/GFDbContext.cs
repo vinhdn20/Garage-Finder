@@ -1,5 +1,6 @@
 ﻿using GFData.Models.Entity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.Configuration;
 using System.Reflection.Emit;
 
@@ -29,6 +30,7 @@ namespace GFData.Data
         public virtual DbSet<Car>? Car { get; set; }
         public virtual DbSet<Feedback>? Feedback { get; set; }
         public virtual DbSet<Garage>? Garage { get; set; }
+        public virtual DbSet<GarageBrand>? GarageBrand { get; set; }
         public virtual DbSet<Orders>? Orders { get; set; }
         public virtual DbSet<Service>? Service { get; set; }    
         public virtual DbSet<Users>? User { get; set; }
@@ -74,6 +76,9 @@ namespace GFData.Data
             .WithMany(u => u.GarageInfos)
             .HasForeignKey(c => c.UserID)
             .OnDelete(DeleteBehavior.NoAction);
+
+            optionsBuilder.Entity<Service>().Property(p => p.ServiceID).ValueGeneratedOnAdd()
+            .Metadata.SetBeforeSaveBehavior(PropertySaveBehavior.Ignore);
         }
     }
 }

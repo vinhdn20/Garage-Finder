@@ -10,6 +10,6 @@ namespace DataAccess.DTO
         public int CategoryID { get; set; }
         public double Cost { get; set; }
         public string Note { get; set; }
-        public virtual CategoryDTO? Category { get; set; }
+        //public virtual CategoryDTO? Category { get; set; }
     }
 }

@@ -13,6 +13,7 @@ namespace GFData.Models.Entity
         public string GarageName { get; set; }
         public string Address { get; set; }
         [Required]
+        [EmailAddress]
         public string EmailAddress { get; set; }
         [Required]
         public string PhoneNumber { get; set; }
