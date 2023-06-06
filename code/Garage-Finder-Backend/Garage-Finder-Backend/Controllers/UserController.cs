@@ -39,10 +39,11 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpGet("get")]
-        [AllowAnonymous]
+        [Authorize]
         public IActionResult Get()
         {
-            UsersDTO user = new UsersDTO();
+            var user = GetUserFromToken();
+            
             return Ok(user);
         }
         #region Login/Logout
@@ -54,9 +55,10 @@ namespace Garage_Finder_Backend.Controllers
             {
                 var usersDTO = _userRepository.Login(loginModel.Email, loginModel.Password);
                 var roleName = _roleNameRepository.GetUserRole(usersDTO.RoleID);
+                usersDTO.roleName = roleName;
                 var accessToken = _jwtService.GenerateJwt(usersDTO, roleName, _jwtSettings);
                 usersDTO.AccessToken = accessToken;
-                usersDTO.roleName = roleName;
+
 
                 var refreshToken = _jwtService.GenerateRefreshToken(_jwtSettings, usersDTO.UserID);
                 _refreshTokenRepository.AddOrUpdateToken(refreshToken);
@@ -122,8 +124,7 @@ namespace Garage_Finder_Backend.Controllers
             try
             {
                 var refreshToken = Request.Cookies["refreshToken"];
-                var jsonUser = User.FindFirstValue("user");
-                var user = JsonConvert.DeserializeObject<UsersDTO>(jsonUser);
+                var user = GetUserFromToken();
                 var userRefreshToken = _refreshTokenRepository.GetRefreshToken(user.UserID);
                 for (int i = 0; i < userRefreshToken.Count; i++)
                 {
@@ -173,8 +174,7 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
-                var jsonUser = User.FindFirstValue("user");
-                var user = JsonConvert.DeserializeObject<UsersDTO>(jsonUser);
+                var user = GetUserFromToken();
                 _refreshTokenRepository.DeleteRefreshToken(user.UserID);
                 return Ok();
             }
@@ -255,5 +255,12 @@ namespace Garage_Finder_Backend.Controllers
             }
         }
         #endregion
+
+        private UsersDTO GetUserFromToken()
+        {
+            var jsonUser = User.FindFirstValue("user");
+            var user = JsonConvert.DeserializeObject<UsersDTO>(jsonUser);
+            return user;
+        }
     }
 }
