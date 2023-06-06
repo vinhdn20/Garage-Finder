@@ -101,5 +101,27 @@ namespace Garage_Finder_Backend.Controllers
             // Trả về kết quả
             return Ok(garages);
         }
+
+        [HttpPost("GetByPage")]
+        public IActionResult GetByPage(PageDTO p) 
+        {
+            var garages = garageRepository.GetByPage(p);
+            return Ok(garages);
+        }
+
+        [HttpGet("GetByUser/{id}")]
+        public IActionResult GetByUser(int id)
+        {
+            try
+            {
+                return Ok(garageRepository.GetGarageByUser(id));
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(e.Message);
+            }
+        }
+
     }
 }

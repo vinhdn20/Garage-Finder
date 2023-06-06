@@ -42,5 +42,16 @@ namespace Repositories.Implements
         {
             GarageDAO.Instance.DeleteGarage(id);
         }
+        public List<GarageDTO> GetByPage(PageDTO p) 
+        { 
+            int pageSize = 3;
+            var garages = GarageDAO.Instance.GetGarages().Select(p => _mapper.Map<Garage, GarageDTO>(p)).Skip((p.pageNumber - 1)*p.pageSize).Take(p.pageSize).ToList();
+            return garages;
+        }
+
+        public List<GarageDTO> GetGarageByUser(int id)
+        {
+            return GarageDAO.Instance.GetGarages().Where(c => c.UserID == id).Select(p => _mapper.Map<Garage, GarageDTO>(p)).ToList();
+        }
     }
 }
