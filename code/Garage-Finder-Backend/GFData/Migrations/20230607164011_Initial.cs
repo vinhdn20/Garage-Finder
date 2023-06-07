@@ -72,9 +72,9 @@ namespace GFData.Migrations
                     UserID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     EmailAddress = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LinkImage = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RoleID = table.Column<int>(type: "int", nullable: false)
@@ -507,7 +507,8 @@ namespace GFData.Migrations
                 name: "IX_User_PhoneNumber_EmailAddress",
                 table: "User",
                 columns: new[] { "PhoneNumber", "EmailAddress" },
-                unique: true);
+                unique: true,
+                filter: "[PhoneNumber] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_User_RoleID",
