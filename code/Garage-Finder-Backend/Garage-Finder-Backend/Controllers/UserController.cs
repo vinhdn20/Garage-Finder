@@ -11,6 +11,9 @@ using RestSharp;
 using Garage_Finder_Backend.Models.RequestModels;
 using Services.GgService;
 using Services.PhoneVerifyService;
+using Services.StorageApi;
+using Azure.Storage.Blobs;
+using System.Net.Mail;
 
 namespace Garage_Finder_Backend.Controllers
 {
@@ -25,17 +28,21 @@ namespace Garage_Finder_Backend.Controllers
         private readonly IRefreshTokenRepository _refreshTokenRepository;
         private readonly IRoleNameRepository _roleNameRepository;
         private readonly IPhoneVerifyService _phoneVerifyService;
+        private readonly IStorageCloud _storageCloud;
+        public readonly IConfiguration _configuration;
         #endregion
 
         public UserController(IOptionsSnapshot<JwtSettings> jwtSettings,
             IUsersRepository usersRepository, IRefreshTokenRepository refreshTokenRepository,
-            IRoleNameRepository roleNameRepository, IPhoneVerifyService phoneVerifyService)
+            IRoleNameRepository roleNameRepository, IPhoneVerifyService phoneVerifyService, IStorageCloud storageCloud, IConfiguration configuration)
         {
             _jwtSettings = jwtSettings.Value;
             _userRepository = usersRepository;
             _refreshTokenRepository = refreshTokenRepository;
             _roleNameRepository = roleNameRepository;
             _phoneVerifyService = phoneVerifyService;
+            _storageCloud = storageCloud;
+            _configuration = configuration;
         }
 
         [HttpGet("get")]
@@ -45,6 +52,31 @@ namespace Garage_Finder_Backend.Controllers
             var user = GetUserFromToken();
             
             return Ok(user);
+        }
+        [HttpPost("update")]
+        [Authorize]
+        public IActionResult Update([FromBody] UserUpdateDTO usersDTO)
+        {
+            try
+            {
+                var user = GetUserFromToken();
+                var userUpdate = new UsersDTO()
+                {
+                    UserID = user.UserID,
+                    Name = usersDTO.Name,
+                    PhoneNumber = usersDTO.PhoneNumber,
+                    EmailAddress = usersDTO.EmailAddress,
+                    Password = usersDTO.Password,
+                    LinkImage = usersDTO.LinkImage,
+                    RoleID = user.RoleID
+                };
+                _userRepository.Update(userUpdate);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
         #region Login/Logout
         [HttpPost("login")]
@@ -165,7 +197,7 @@ namespace Garage_Finder_Backend.Controllers
                 HttpOnly = true,
                 Expires = refreshToken.ExpiresDate
             };
-
+            
             Response.Cookies.Append("refreshToken", refreshToken.Token, cookiesOptions);
         }
 
@@ -255,6 +287,22 @@ namespace Garage_Finder_Backend.Controllers
             }
         }
         #endregion
+
+        [HttpGet]
+        [Route("getSASUriForUpload")]
+        public IActionResult GetSASUri()
+        {
+            try
+            {
+                var sasUri = _storageCloud.CreateSASContainerUri();
+
+                return Ok(sasUri);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
 
         private UsersDTO GetUserFromToken()
         {

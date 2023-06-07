@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GFData.Models.Entity
 {
+    [Index(nameof(PhoneNumber), nameof(EmailAddress), IsUnique = true)]
     public class Users
     {
         [Key]
