@@ -98,7 +98,8 @@ namespace Garage_Finder_Backend.Controllers
                     var userDTO = new UsersDTO()
                     {
                         EmailAddress = email,
-                        RoleID = Constants.ROLE_CAR
+                        RoleID = Constants.ROLE_CAR,
+                        Name = objUserInfor.given_name
                     };
                     _userRepository.Register(userDTO);
                     var roleName = _roleNameRepository.GetUserRole(usersDTO.RoleID);
@@ -233,7 +234,6 @@ namespace Garage_Finder_Backend.Controllers
             {
                 UsersDTO userDTO = new UsersDTO();
                 userDTO.Name = registerUser.Name;
-                userDTO.Birthday = registerUser.BirthDay;
                 userDTO.PhoneNumber = registerUser.PhoneNumber;
                 userDTO.EmailAddress = registerUser.EmailAddress;
                 userDTO.Password = registerUser.Password;

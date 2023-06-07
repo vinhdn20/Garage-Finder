@@ -9,7 +9,6 @@ namespace GFData.Models.Entity
         [Key]
         public int UserID { get; set; }
         public string? Name { get; set; }
-        public string? Birthday { get; set; }
         public string PhoneNumber { get; set; }
         [Required]
         [EmailAddress]
