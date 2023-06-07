@@ -78,7 +78,7 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
-                dynamic objUserInfor = GoogleService.GetUserInforByAccessTokenAsync(accessToken);
+                dynamic objUserInfor = GoogleService.GetUserInforByAccessTokenAsync(accessToken).Result;
                 string email = objUserInfor.email;
                 var usersDTO = _userRepository.GetAll().Find(x => x.EmailAddress.Equals(email));
                 if (usersDTO != null)
