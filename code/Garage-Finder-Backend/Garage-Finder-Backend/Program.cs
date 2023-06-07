@@ -3,12 +3,10 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Repositories;
-using Microsoft.AspNetCore.Hosting;
 using Garage_Finder_Backend;
 using Twilio;
-using GFData.Models.Entity;
 using Services.PhoneVerifyService;
-using System.Configuration;
+using Services.StorageApi;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -58,6 +56,7 @@ builder.Services
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddAuthorization();
 builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
+builder.Services.AddSingleton<IStorageCloud, AzureBlob>();
 
 var accountSid = builder.Configuration["Twilio:AccountSID"];
 var authToken = builder.Configuration["Twilio:AuthToken"];
@@ -65,7 +64,6 @@ TwilioClient.Init(accountSid, authToken);
 builder.Services.Configure<TwilioVerifySettings>(builder.Configuration.GetSection("Twilio"));
 
 builder.Services.AddTransient<IPhoneVerifyService, TwilioService>();
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

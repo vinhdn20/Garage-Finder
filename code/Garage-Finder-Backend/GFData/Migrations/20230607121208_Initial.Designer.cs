@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GFData.Migrations
 {
     [DbContext(typeof(GFDbContext))]
-    [Migration("20230603150631_Update-nullable")]
-    partial class Updatenullable
+    [Migration("20230607121208_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -34,6 +34,9 @@ namespace GFData.Migrations
 
                     b.Property<string>("BrandName")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageLink")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Note")
@@ -60,7 +63,7 @@ namespace GFData.Migrations
 
                     b.Property<string>("LicensePlates")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LinkImages")
                         .HasColumnType("nvarchar(max)");
@@ -74,6 +77,9 @@ namespace GFData.Migrations
                     b.HasKey("CarID");
 
                     b.HasIndex("BrandID");
+
+                    b.HasIndex("LicensePlates")
+                        .IsUnique();
 
                     b.HasIndex("UserID");
 
@@ -167,7 +173,7 @@ namespace GFData.Migrations
 
                     b.Property<string>("EmailAddress")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("GarageName")
                         .IsRequired()
@@ -190,7 +196,7 @@ namespace GFData.Migrations
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");
@@ -201,6 +207,9 @@ namespace GFData.Migrations
                     b.HasKey("GarageID");
 
                     b.HasIndex("UserID");
+
+                    b.HasIndex("PhoneNumber", "EmailAddress")
+                        .IsUnique();
 
                     b.ToTable("Garage");
                 });
@@ -468,12 +477,9 @@ namespace GFData.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserID"), 1L, 1);
 
-                    b.Property<string>("Birthday")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("EmailAddress")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LinkImage")
                         .HasColumnType("nvarchar(max)");
@@ -486,7 +492,8 @@ namespace GFData.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("RoleID")
                         .HasColumnType("int");
@@ -497,6 +504,9 @@ namespace GFData.Migrations
                     b.HasKey("UserID");
 
                     b.HasIndex("RoleID");
+
+                    b.HasIndex("PhoneNumber", "EmailAddress")
+                        .IsUnique();
 
                     b.ToTable("User");
                 });

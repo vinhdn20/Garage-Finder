@@ -16,7 +16,8 @@ namespace GFData.Migrations
                     BrandID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     BrandName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Note = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ImageLink = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -71,9 +72,8 @@ namespace GFData.Migrations
                     UserID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Birthday = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    EmailAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    EmailAddress = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LinkImage = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -97,11 +97,11 @@ namespace GFData.Migrations
                     CarID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserID = table.Column<int>(type: "int", nullable: false),
-                    LicensePlates = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LicensePlates = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     BrandID = table.Column<int>(type: "int", nullable: false),
-                    Color = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TypeCar = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LinkImages = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Color = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TypeCar = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LinkImages = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -129,8 +129,8 @@ namespace GFData.Migrations
                     UserID = table.Column<int>(type: "int", nullable: false),
                     GarageName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    EmailAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    EmailAddress = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     OpenTime = table.Column<double>(type: "float", nullable: true),
                     CloseTime = table.Column<double>(type: "float", nullable: true),
@@ -397,6 +397,12 @@ namespace GFData.Migrations
                 column: "BrandID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Car_LicensePlates",
+                table: "Car",
+                column: "LicensePlates",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Car_UserID",
                 table: "Car",
                 column: "UserID");
@@ -420,6 +426,12 @@ namespace GFData.Migrations
                 name: "IX_Feedback_UserID",
                 table: "Feedback",
                 column: "UserID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Garage_PhoneNumber_EmailAddress",
+                table: "Garage",
+                columns: new[] { "PhoneNumber", "EmailAddress" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Garage_UserID",
@@ -490,6 +502,12 @@ namespace GFData.Migrations
                 name: "IX_Service_GarageID",
                 table: "Service",
                 column: "GarageID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_User_PhoneNumber_EmailAddress",
+                table: "User",
+                columns: new[] { "PhoneNumber", "EmailAddress" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_User_RoleID",

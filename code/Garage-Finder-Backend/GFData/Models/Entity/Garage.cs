@@ -1,8 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GFData.Models.Entity
 {
+    [Index(nameof(PhoneNumber), nameof(EmailAddress), IsUnique = true)]
     public class Garage
     {
         [Key]
