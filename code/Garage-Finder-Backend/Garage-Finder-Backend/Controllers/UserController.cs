@@ -85,6 +85,14 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
+                if(string.IsNullOrEmpty(loginModel.Password))
+                {
+                    return BadRequest("Password is empty");
+                }
+                if (string.IsNullOrEmpty(loginModel.Email))
+                {
+                    return BadRequest("Email is empty");
+                }
                 var usersDTO = _userRepository.Login(loginModel.Email, loginModel.Password);
                 var roleName = _roleNameRepository.GetUserRole(usersDTO.RoleID);
                 usersDTO.roleName = roleName;

@@ -486,11 +486,9 @@ namespace GFData.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("RoleID")
@@ -504,7 +502,8 @@ namespace GFData.Migrations
                     b.HasIndex("RoleID");
 
                     b.HasIndex("PhoneNumber", "EmailAddress")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[PhoneNumber] IS NOT NULL");
 
                     b.ToTable("User");
                 });
