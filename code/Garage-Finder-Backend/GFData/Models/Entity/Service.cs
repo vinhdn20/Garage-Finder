@@ -13,6 +13,7 @@ namespace GFData.Models.Entity
         [ForeignKey("Category")]
         public int CategoryID { get; set; }
         public string? Note { get; set; }
+        public double? Cost { get; set; }
         public virtual Categorys? Category { get; set; }
         public ICollection<Orders> Orders { get; set; }
     }

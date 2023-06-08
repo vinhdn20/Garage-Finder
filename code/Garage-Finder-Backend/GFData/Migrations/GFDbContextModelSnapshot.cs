@@ -169,9 +169,8 @@ namespace GFData.Migrations
                     b.Property<string>("CloseTime")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("DistrictsID")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("DistrictsID")
+                        .HasColumnType("int");
 
                     b.Property<string>("EmailAddress")
                         .IsRequired()
@@ -200,9 +199,8 @@ namespace GFData.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("ProvinceID")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("ProvinceID")
+                        .HasColumnType("int");
 
                     b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");
@@ -431,6 +429,9 @@ namespace GFData.Migrations
 
                     b.Property<int>("CategoryID")
                         .HasColumnType("int");
+
+                    b.Property<double?>("Cost")
+                        .HasColumnType("float");
 
                     b.Property<int>("GarageID")
                         .HasColumnType("int");

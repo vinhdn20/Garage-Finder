@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GFData.Migrations
 {
     [DbContext(typeof(GFDbContext))]
-    [Migration("20230608131843_Initial")]
+    [Migration("20230608154325_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -171,9 +171,8 @@ namespace GFData.Migrations
                     b.Property<string>("CloseTime")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("DistrictsID")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("DistrictsID")
+                        .HasColumnType("int");
 
                     b.Property<string>("EmailAddress")
                         .IsRequired()
@@ -202,9 +201,8 @@ namespace GFData.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("ProvinceID")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("ProvinceID")
+                        .HasColumnType("int");
 
                     b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");
@@ -433,6 +431,9 @@ namespace GFData.Migrations
 
                     b.Property<int>("CategoryID")
                         .HasColumnType("int");
+
+                    b.Property<double?>("Cost")
+                        .HasColumnType("float");
 
                     b.Property<int>("GarageID")
                         .HasColumnType("int");
