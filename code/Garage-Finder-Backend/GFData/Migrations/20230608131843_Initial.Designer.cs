@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GFData.Migrations
 {
     [DbContext(typeof(GFDbContext))]
-    [Migration("20230608023856_Initial")]
+    [Migration("20230608131843_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -168,8 +168,8 @@ namespace GFData.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<TimeSpan?>("CloseTime")
-                        .HasColumnType("time");
+                    b.Property<string>("CloseTime")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DistrictsID")
                         .IsRequired()
@@ -195,8 +195,8 @@ namespace GFData.Migrations
                     b.Property<string>("Logo")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<TimeSpan?>("OpenTime")
-                        .HasColumnType("time");
+                    b.Property<string>("OpenTime")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
