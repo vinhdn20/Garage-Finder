@@ -134,7 +134,7 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpGet("GetByFilter")]
-        public IActionResult GetByFilter(string id)
+        public IActionResult GetByFilter(int id)
         {
             try
             {

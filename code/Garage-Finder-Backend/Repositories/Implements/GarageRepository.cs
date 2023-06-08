@@ -38,7 +38,7 @@ namespace Repositories.Implements
             GarageDAO.Instance.UpdateGarage(_mapper.Map<GarageDTO, Garage>(garage));
         }
 
-        public List<GarageDTO> FilterByCity(string provinceID) 
+        public List<GarageDTO> FilterByCity(int provinceID) 
         {
             var garages = GarageDAO.Instance.GetGarages().Where(c => c.ProvinceID == provinceID).Select(p => _mapper.Map<Garage, GarageDTO>(p)).ToList();
             return garages;
