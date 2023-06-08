@@ -13,8 +13,8 @@ namespace DataAccess.DTO
         public string EmailAddress { get; set; }
         public string? PhoneNumber { get; set; }
         public string? Status { get; set; }
-        public TimeSpan? OpenTime { get; set; }
-        public TimeSpan? CloseTime { get; set; }
+        public string? OpenTime { get; set; }
+        public string? CloseTime { get; set; }
         public string? Logo { get; set; }
         public string? Imagies { get; set; }
         public double? LatAddress { get; set; }
