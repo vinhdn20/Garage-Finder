@@ -16,5 +16,6 @@ namespace Repositories.Interfaces
         void DeleteGarage(int id);
         public List<GarageDTO> GetByPage(PageDTO p);
         public List<GarageDTO> GetGarageByUser(int id);
+        public List<GarageDTO> FilterByCity(int provinceID);
     }
 }

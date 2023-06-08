@@ -132,5 +132,19 @@ namespace Garage_Finder_Backend.Controllers
             var user = JsonConvert.DeserializeObject<UsersDTO>(jsonUser);
             return user;
         }
+
+        [HttpGet("GetByFilter")]
+        public IActionResult GetByFilter(int id)
+        {
+            try
+            {
+                return Ok(garageRepository.FilterByCity(id));
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(e.Message);
+            }
+        }
     }
 }
