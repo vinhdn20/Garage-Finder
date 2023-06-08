@@ -166,8 +166,8 @@ namespace GFData.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<TimeSpan?>("CloseTime")
-                        .HasColumnType("time");
+                    b.Property<string>("CloseTime")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DistrictsID")
                         .IsRequired()
@@ -193,8 +193,8 @@ namespace GFData.Migrations
                     b.Property<string>("Logo")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<TimeSpan?>("OpenTime")
-                        .HasColumnType("time");
+                    b.Property<string>("OpenTime")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
