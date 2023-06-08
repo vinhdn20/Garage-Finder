@@ -38,13 +38,18 @@ namespace Repositories.Implements
             GarageDAO.Instance.UpdateGarage(_mapper.Map<GarageDTO, Garage>(garage));
         }
 
+        public List<GarageDTO> FilterByCity(string provinceID) 
+        {
+            var garages = GarageDAO.Instance.GetGarages().Where(c => c.ProvinceID == provinceID).Select(p => _mapper.Map<Garage, GarageDTO>(p)).ToList();
+            return garages;
+        }
+
         public void DeleteGarage(int id)
         {
             GarageDAO.Instance.DeleteGarage(id);
         }
         public List<GarageDTO> GetByPage(PageDTO p) 
         { 
-            int pageSize = 3;
             var garages = GarageDAO.Instance.GetGarages().Select(p => _mapper.Map<Garage, GarageDTO>(p)).Skip((p.pageNumber - 1)*p.pageSize).Take(p.pageSize).ToList();
             return garages;
         }
