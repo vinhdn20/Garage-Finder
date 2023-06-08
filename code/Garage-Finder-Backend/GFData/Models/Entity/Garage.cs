@@ -14,8 +14,8 @@ namespace GFData.Models.Entity
         [Required]
         public string GarageName { get; set; }
         public string AddressDetail { get; set; }
-        public string ProvinceID { get; set; }
-        public string DistrictsID { get; set; }
+        public int ProvinceID { get; set; }
+        public int DistrictsID { get; set; }
         [Required]
         [EmailAddress]
         public string EmailAddress { get; set; }

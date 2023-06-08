@@ -129,8 +129,8 @@ namespace GFData.Migrations
                     UserID = table.Column<int>(type: "int", nullable: false),
                     GarageName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     AddressDetail = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ProvinceID = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DistrictsID = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ProvinceID = table.Column<int>(type: "int", nullable: false),
+                    DistrictsID = table.Column<int>(type: "int", nullable: false),
                     EmailAddress = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -337,7 +337,8 @@ namespace GFData.Migrations
                     GarageID = table.Column<int>(type: "int", nullable: false),
                     NameService = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CategoryID = table.Column<int>(type: "int", nullable: false),
-                    Note = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Cost = table.Column<double>(type: "float", nullable: true)
                 },
                 constraints: table =>
                 {
