@@ -13,15 +13,17 @@ namespace GFData.Models.Entity
         public int UserID { get; set; }
         [Required]
         public string GarageName { get; set; }
-        public string Address { get; set; }
+        public string AddressDetail { get; set; }
+        public string ProvinceID { get; set; }
+        public string DistrictsID { get; set; }
         [Required]
         [EmailAddress]
         public string EmailAddress { get; set; }
         [Required]
         public string PhoneNumber { get; set; }
         public string? Status { get; set; }
-        public double? OpenTime { get; set; }
-        public double? CloseTime { get; set; }
+        public TimeSpan? OpenTime { get; set; }
+        public TimeSpan? CloseTime { get; set; }
         public string? Logo { get; set; }
         public string? Imagies { get; set; }
         public double? LatAddress { get; set; }

@@ -89,12 +89,12 @@ namespace Garage_Finder_Backend.Controllers
 
             if (string.IsNullOrEmpty(keyword) && !string.IsNullOrEmpty(location))
             {
-                garages = garages.Where(g => g.Address.Contains(location)).ToList();
+                garages = garages.Where(g => g.AddressDetail.Contains(location)).ToList();
             }
 
             if (!string.IsNullOrEmpty(keyword) && !string.IsNullOrEmpty(location))
             {
-                garages = garages.Where(g => g.GarageName.Contains(keyword) || g.Address.Contains(location)).ToList();
+                garages = garages.Where(g => g.GarageName.Contains(keyword) || g.AddressDetail.Contains(location)).ToList();
             }
 
 
