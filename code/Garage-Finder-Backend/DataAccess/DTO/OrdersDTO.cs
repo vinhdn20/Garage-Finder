@@ -13,7 +13,7 @@ namespace DataAccess.DTO
         public DateTime TimeAppointment { get; set; }
         public string Status { get; set; }
         public string Content { get; set; }
-        public string LinkFile { get; set; }
-        public string ImageLink { get; set; }
+        public List<string> FileOrders { get; set; }
+        public List<string> ImageOrders { get; set; }
     }
 }

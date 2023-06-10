@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GFData.Migrations
 {
     [DbContext(typeof(GFDbContext))]
-    [Migration("20230608154325_Initial")]
+    [Migration("20230610154126_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -64,9 +64,6 @@ namespace GFData.Migrations
                     b.Property<string>("LicensePlates")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("LinkImages")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TypeCar")
                         .HasColumnType("nvarchar(max)");
@@ -154,6 +151,28 @@ namespace GFData.Migrations
                     b.HasIndex("UserID");
 
                     b.ToTable("Feedback");
+                });
+
+            modelBuilder.Entity("GFData.Models.Entity.FileOrders", b =>
+                {
+                    b.Property<int>("FileId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FileId"), 1L, 1);
+
+                    b.Property<string>("FileLink")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("OrderID")
+                        .HasColumnType("int");
+
+                    b.HasKey("FileId");
+
+                    b.HasIndex("OrderID");
+
+                    b.ToTable("FileOrders");
                 });
 
             modelBuilder.Entity("GFData.Models.Entity.Garage", b =>
@@ -266,6 +285,53 @@ namespace GFData.Migrations
                     b.ToTable("GarageInfo");
                 });
 
+            modelBuilder.Entity("GFData.Models.Entity.ImageCar", b =>
+                {
+                    b.Property<int>("ImageId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ImageId"), 1L, 1);
+
+                    b.Property<int>("CarID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ImageLink")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ImageId");
+
+                    b.HasIndex("CarID");
+
+                    b.ToTable("ImageCar");
+                });
+
+            modelBuilder.Entity("GFData.Models.Entity.ImageOrders", b =>
+                {
+                    b.Property<int>("ImageID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ImageID"), 1L, 1);
+
+                    b.Property<string>("ImageLink")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("OrderID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ordersOrderID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ImageID");
+
+                    b.HasIndex("ordersOrderID");
+
+                    b.ToTable("ImageOrders");
+                });
+
             modelBuilder.Entity("GFData.Models.Entity.Invoices", b =>
                 {
                     b.Property<int>("InvoicesID")
@@ -343,12 +409,6 @@ namespace GFData.Migrations
 
                     b.Property<int>("GarageID")
                         .HasColumnType("int");
-
-                    b.Property<string>("ImageLink")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LinkFile")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ServiceID")
                         .HasColumnType("int");
@@ -574,6 +634,17 @@ namespace GFData.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("GFData.Models.Entity.FileOrders", b =>
+                {
+                    b.HasOne("GFData.Models.Entity.Orders", "Orders")
+                        .WithMany("FileOrders")
+                        .HasForeignKey("OrderID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Orders");
+                });
+
             modelBuilder.Entity("GFData.Models.Entity.Garage", b =>
                 {
                     b.HasOne("GFData.Models.Entity.Users", "User")
@@ -621,6 +692,28 @@ namespace GFData.Migrations
                     b.Navigation("Garage");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("GFData.Models.Entity.ImageCar", b =>
+                {
+                    b.HasOne("GFData.Models.Entity.Car", "Car")
+                        .WithMany("ImageCars")
+                        .HasForeignKey("CarID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Car");
+                });
+
+            modelBuilder.Entity("GFData.Models.Entity.ImageOrders", b =>
+                {
+                    b.HasOne("GFData.Models.Entity.Orders", "orders")
+                        .WithMany("ImageOrders")
+                        .HasForeignKey("ordersOrderID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("orders");
                 });
 
             modelBuilder.Entity("GFData.Models.Entity.Invoices", b =>
@@ -728,6 +821,8 @@ namespace GFData.Migrations
 
             modelBuilder.Entity("GFData.Models.Entity.Car", b =>
                 {
+                    b.Navigation("ImageCars");
+
                     b.Navigation("Orders");
                 });
 
@@ -749,6 +844,13 @@ namespace GFData.Migrations
                     b.Navigation("Orders");
 
                     b.Navigation("Services");
+                });
+
+            modelBuilder.Entity("GFData.Models.Entity.Orders", b =>
+                {
+                    b.Navigation("FileOrders");
+
+                    b.Navigation("ImageOrders");
                 });
 
             modelBuilder.Entity("GFData.Models.Entity.RoleName", b =>

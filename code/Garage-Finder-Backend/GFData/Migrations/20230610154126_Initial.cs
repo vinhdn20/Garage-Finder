@@ -100,8 +100,7 @@ namespace GFData.Migrations
                     LicensePlates = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     BrandID = table.Column<int>(type: "int", nullable: false),
                     Color = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TypeCar = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LinkImages = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    TypeCar = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -222,6 +221,26 @@ namespace GFData.Migrations
                         column: x => x.UserID,
                         principalTable: "User",
                         principalColumn: "UserID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ImageCar",
+                columns: table => new
+                {
+                    ImageId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CarID = table.Column<int>(type: "int", nullable: false),
+                    ImageLink = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ImageCar", x => x.ImageId);
+                    table.ForeignKey(
+                        name: "FK_ImageCar_Car_CarID",
+                        column: x => x.CarID,
+                        principalTable: "Car",
+                        principalColumn: "CarID",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -370,9 +389,7 @@ namespace GFData.Migrations
                     TimeUpdate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     TimeAppointment = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Content = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LinkFile = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ImageLink = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -392,6 +409,47 @@ namespace GFData.Migrations
                         column: x => x.ServiceID,
                         principalTable: "Service",
                         principalColumn: "ServiceID");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "FileOrders",
+                columns: table => new
+                {
+                    FileId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    OrderID = table.Column<int>(type: "int", nullable: false),
+                    FileLink = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FileOrders", x => x.FileId);
+                    table.ForeignKey(
+                        name: "FK_FileOrders_Orders_OrderID",
+                        column: x => x.OrderID,
+                        principalTable: "Orders",
+                        principalColumn: "OrderID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ImageOrders",
+                columns: table => new
+                {
+                    ImageID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    OrderID = table.Column<int>(type: "int", nullable: false),
+                    ImageLink = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ordersOrderID = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ImageOrders", x => x.ImageID);
+                    table.ForeignKey(
+                        name: "FK_ImageOrders_Orders_ordersOrderID",
+                        column: x => x.ordersOrderID,
+                        principalTable: "Orders",
+                        principalColumn: "OrderID",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -431,6 +489,11 @@ namespace GFData.Migrations
                 column: "UserID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_FileOrders_OrderID",
+                table: "FileOrders",
+                column: "OrderID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Garage_PhoneNumber_EmailAddress",
                 table: "Garage",
                 columns: new[] { "PhoneNumber", "EmailAddress" },
@@ -460,6 +523,16 @@ namespace GFData.Migrations
                 name: "IX_GarageInfo_UserID",
                 table: "GarageInfo",
                 column: "UserID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ImageCar_CarID",
+                table: "ImageCar",
+                column: "CarID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ImageOrders_ordersOrderID",
+                table: "ImageOrders",
+                column: "ordersOrderID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Invoices_SubscribeID",
@@ -528,10 +601,19 @@ namespace GFData.Migrations
                 name: "Feedback");
 
             migrationBuilder.DropTable(
+                name: "FileOrders");
+
+            migrationBuilder.DropTable(
                 name: "GarageBrand");
 
             migrationBuilder.DropTable(
                 name: "GarageInfo");
+
+            migrationBuilder.DropTable(
+                name: "ImageCar");
+
+            migrationBuilder.DropTable(
+                name: "ImageOrders");
 
             migrationBuilder.DropTable(
                 name: "Invoices");
@@ -540,10 +622,10 @@ namespace GFData.Migrations
                 name: "Notification");
 
             migrationBuilder.DropTable(
-                name: "Orders");
+                name: "RefreshToken");
 
             migrationBuilder.DropTable(
-                name: "RefreshToken");
+                name: "Orders");
 
             migrationBuilder.DropTable(
                 name: "Subscribe");

@@ -18,11 +18,12 @@ namespace GFData.Models.Entity
         public DateTime? TimeAppointment { get; set; }
         public string? Status { get; set; }
         public string? Content { get; set; }
-        public string? LinkFile { get; set; }
-        public string? ImageLink { get; set; }
 
         public virtual Service? Service { get; set; }
         public Car Car { get; set; }
         public Garage Garage { get; set; }
+
+        public ICollection<ImageOrders> ImageOrders { get; set; }
+        public ICollection<FileOrders> FileOrders { get; set; }
     }
 }
