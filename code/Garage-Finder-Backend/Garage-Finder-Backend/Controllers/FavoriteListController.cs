@@ -1,8 +1,11 @@
 ﻿using DataAccess.DTO;
 using GFData.Models.Entity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Repositories.Interfaces;
+using System.Security.Claims;
 
 namespace Garage_Finder_Backend.Controllers
 {
@@ -17,12 +20,21 @@ namespace Garage_Finder_Backend.Controllers
             this.favoriteListRepository = favoriteListRepository;
         }
 
+        private UsersDTO GetUserFromToken()
+        {
+            var jsonUser = User.FindFirstValue("user");
+            var user = JsonConvert.DeserializeObject<UsersDTO>(jsonUser);
+            return user;
+        }
+
         [HttpGet("GetByUser/{id}")]
-        public IActionResult GetUserId(int id)
+        [Authorize]
+        public IActionResult GetUserId()
         {
             try
             {
-                return Ok(favoriteListRepository.GetListByUser(id));
+                var user = GetUserFromToken();
+                return Ok(favoriteListRepository.GetListByUser(user.UserID));
             }
             catch (Exception e)
             {
@@ -32,10 +44,13 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpPost("Add")]
+        [Authorize]
         public IActionResult Add(FavoriteListDTO favoriteList)
         {
             try
             {
+                var user = GetUserFromToken();
+                favoriteList.UserID = user.UserID;
                 favoriteListRepository.Add(favoriteList);
 
                 return Ok("SUCCESS");

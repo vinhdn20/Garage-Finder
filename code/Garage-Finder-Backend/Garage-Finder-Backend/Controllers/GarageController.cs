@@ -31,12 +31,14 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpPost("Add")]
-        [Authorize]
+        //[Authorize]
         public IActionResult Add(GarageDTO garage)
         {
             try
             {
                 garageRepository.SaveGarage(garage);
+                //var garageDTO = garageRepository.SaveGarage(garage);
+
                 return Ok("SUCCESS");
             }
             catch (Exception e)

@@ -19,7 +19,7 @@ namespace DataAccess.DTO
         public string? Imagies { get; set; }
         public double? LatAddress { get; set; }
         public double? LngAddress { get; set; }
-        public ServiceDTO ServiceDTO { get; set; }
-        public GarageBrandDTO GarageBrandDTO { get; set; }
+        public CategoryDTO[]? Services { get; set; }
+        public GarageBrandDTO[]? Brands { get; set; }
     }
 }
