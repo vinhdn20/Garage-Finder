@@ -126,6 +126,19 @@ namespace Garage_Finder_Backend.Controllers
                 return BadRequest(e.Message);
             }
         }
+        [HttpGet("GetByID/{id}")]
+        public IActionResult GetById(int id)
+        {
+            try
+            {
+                return Ok(garageRepository.GetGaragesByID(id));
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(e.Message);
+            }
+        }
         private UsersDTO GetUserFromToken()
         {
             var jsonUser = User.FindFirstValue("user");
