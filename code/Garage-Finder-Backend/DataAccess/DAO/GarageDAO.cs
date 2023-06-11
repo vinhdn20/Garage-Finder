@@ -67,7 +67,7 @@ namespace DataAccess.DAO
             return p;
         }
 
-        public void SaveGarage(Garage garage)
+        public Garage SaveGarage(Garage garage)
         {
             try
             {
@@ -76,6 +76,7 @@ namespace DataAccess.DAO
                     context.Garage.Add(garage);
                     context.SaveChanges();
                 }
+                return garage;
             }
             catch (Exception e)
             {

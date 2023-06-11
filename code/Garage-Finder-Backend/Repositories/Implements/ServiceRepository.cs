@@ -33,7 +33,7 @@ namespace Repositories.Implements
         }
         public List<ServiceDTO> GetServicesByCategory(int id)
         {
-            return ServiceDAO.Instance.GetServices().Where(c => c.CategoryID == id).Select(p => _mapper.Map<Service, ServiceDTO>(p)).ToList();
+            return ServiceDAO.Instance.GetServices().Where(c => c.CategoryGarageID == id).Select(p => _mapper.Map<Service, ServiceDTO>(p)).ToList();
         }
 
         public void SaveService(ServiceDTO p)

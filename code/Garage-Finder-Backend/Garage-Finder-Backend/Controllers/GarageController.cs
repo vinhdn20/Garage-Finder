@@ -1,7 +1,9 @@
 ﻿using DataAccess.DTO;
+using DataAccess.DTO.RequestDTO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using NuGet.DependencyResolver;
 using Repositories.Interfaces;
 using System.Security.Claims;
 
@@ -12,9 +14,13 @@ namespace Garage_Finder_Backend.Controllers
     public class GarageController : Controller
     {
         private readonly IGarageRepository garageRepository;
-        public GarageController(IGarageRepository garageRepository)
+        private readonly IGarageBrandRepository garageBrandRepository;
+        private readonly ICategoryGarageRepository categoryGarageRepository;
+        public GarageController(IGarageRepository garageRepository, IGarageBrandRepository garageBrandRepository, ICategoryGarageRepository categoryGarageRepository)
         {
             this.garageRepository = garageRepository;
+            this.garageBrandRepository = garageBrandRepository;
+            this.categoryGarageRepository = categoryGarageRepository;
         }
         [HttpGet("GetAll")]
         public IActionResult GetAll()
@@ -31,14 +37,36 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpPost("Add")]
-        //[Authorize]
-        public IActionResult Add(GarageDTO garage)
+        [Authorize]
+        public IActionResult Add(AddGarageDTO addGarage)
         {
             try
             {
-                garageRepository.SaveGarage(garage);
-                //var garageDTO = garageRepository.SaveGarage(garage);
+                var user = GetUserFromToken();
+                addGarage.UserID = user.UserID;
+                var garageDTO = garageRepository.Add(addGarage);
 
+                var listGarageBrand = new List<GarageBrandDTO>();
+                foreach (var brand in addGarage.Brands)
+                {
+                    listGarageBrand.Add(new GarageBrandDTO()
+                    {
+                        GarageID = garageDTO.GarageID,
+                        BrandID = brand.BrandID
+                    });
+                }
+                listGarageBrand.ForEach(x => garageBrandRepository.Add(x));
+
+                var listCategory = new List<CategoryGarageDTO>();
+                foreach (var cate in addGarage.Categories)
+                {
+                    listCategory.Add(new CategoryGarageDTO()
+                    {
+                        CategoryID = cate.CategoryID,
+                        GarageID = garageDTO.GarageID
+                    });
+                }
+                listCategory.ForEach(x => categoryGarageRepository.Add(x));
                 return Ok("SUCCESS");
             }
             catch (Exception e)
@@ -127,6 +155,37 @@ namespace Garage_Finder_Backend.Controllers
 
                 return BadRequest(e.Message);
             }
+        }
+        [HttpPost("AddBrandForGarage")]
+        [Authorize]
+        public IActionResult AddBrandForGarage([FromBody]GarageBrandDTO garageBrandDTO)
+        {
+            try
+            {
+                garageBrandRepository.Add(garageBrandDTO);
+                return Ok("SUCCESS");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost("AddCategoryForGarage")]
+        [Authorize]
+        public IActionResult AddCategoryForGarage([FromBody] CategoryGarageDTO categoryGarageDTO)
+        {
+            try
+            {
+                categoryGarageRepository.Add(categoryGarageDTO);
+                return Ok("SUCCESS");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         }
         [HttpGet("GetByID/{id}")]
         public IActionResult GetById(int id)
