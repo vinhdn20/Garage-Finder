@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DataAccess.DAO;
 using DataAccess.DTO;
+using DataAccess.DTO.RequestDTO;
 using GFData.Models.Entity;
 using Repositories.Interfaces;
 using System;
@@ -18,9 +19,12 @@ namespace Repositories.Implements
         {
             _mapper = mapper;
         }
-        public void Add(GarageDTO garage)
+        public GarageDTO Add(AddGarageDTO garage)
         {
-            GarageDAO.Instance.SaveGarage(_mapper.Map<GarageDTO, Garage>(garage));
+            var garargeDTO = _mapper.Map<AddGarageDTO, GarageDTO>(garage);
+            var garageAdded= GarageDAO.Instance.SaveGarage(_mapper.Map<GarageDTO, Garage>(garargeDTO));
+            garargeDTO = _mapper.Map<Garage, GarageDTO>(garageAdded);
+            return garargeDTO;
         }
 
         public List<GarageDTO> GetGarages()

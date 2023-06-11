@@ -35,7 +35,7 @@ namespace DataAccess.DAO
             {
                 using (var context = new GFDbContext())
                 {
-                    listServices = context.Service.Include(p => p.Category).ToList();
+                    listServices = context.Service.Include(p => p.CategoryGarage).ToList();
                 }
             }
             catch (Exception e)
@@ -52,7 +52,7 @@ namespace DataAccess.DAO
             {
                 using (var context = new GFDbContext())
                 {
-                    p = context.Service.Include(p => p.Category).SingleOrDefault(x => x.ServiceID == serviceID);
+                    p = context.Service.Include(p => p.CategoryGarage).SingleOrDefault(x => x.ServiceID == serviceID);
                 }
             }
             catch (Exception e)

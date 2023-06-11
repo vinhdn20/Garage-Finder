@@ -37,6 +37,10 @@ namespace GFData.Data
         public virtual DbSet<RoleName>? RoleName { get; set; }
         public virtual DbSet<RefreshToken>? RefreshToken { get; set; }
         public virtual DbSet<FavoriteList>? FavoriteList { get; set; }
+        public virtual DbSet<ImageCar>? ImageCar { get; set; }
+        public virtual DbSet<ImageOrders>? ImageOrders { get; set; }
+        public virtual DbSet<FileOrders>? FileOrders { get; set; }
+        public virtual DbSet<CategoryGarage>? CategoryGarage { get; set; }
 
         protected override void OnModelCreating(ModelBuilder optionsBuilder)
         {

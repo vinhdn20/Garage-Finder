@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DataAccess.DTO;
+using DataAccess.DTO.RequestDTO;
 using GFData.Models.Entity;
 
 namespace Garage_Finder_Backend
@@ -40,6 +41,18 @@ namespace Garage_Finder_Backend
             CreateMap<Subscribe, SubscribeDTO>();
             CreateMap<UsersDTO, Users>();
             CreateMap<Users, UsersDTO>();
+            CreateMap<ImageCarDTO, ImageCar>();
+            CreateMap<ImageCar, ImageCarDTO>();
+            CreateMap<FileOrders, FileOrdersDTO>();
+            CreateMap<FileOrdersDTO, FileOrders>();
+            CreateMap<ImageOrders, ImageOrdersDTO>();
+            CreateMap<ImageOrdersDTO, ImageOrders>();
+
+            CreateMap<GarageDTO, AddGarageDTO>();
+            CreateMap<AddGarageDTO, GarageDTO>();
+
+            CreateMap<CategoryGarage, CategoryGarageDTO>();
+            CreateMap<CategoryGarageDTO, CategoryGarage>();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using DataAccess.DTO;
+using DataAccess.DTO.RequestDTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +10,7 @@ namespace Repositories.Interfaces
 {
     public interface IGarageRepository
     {
-        void SaveGarage(GarageDTO p);
-        void Add(GarageDTO garage);
+        GarageDTO Add(AddGarageDTO garage);
         void Update(GarageDTO garage);
         List<GarageDTO> GetGarages();
         void DeleteGarage(int id);

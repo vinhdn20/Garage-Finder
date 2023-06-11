@@ -26,6 +26,7 @@ namespace Repositories
             services.AddScoped<IFeedbackRepository, FeedbackRepository>();
             services.AddScoped<IBrandRepository, BrandRepository>();
             services.AddScoped<IGarageBrandRepository, GarageBrandRepository>();
+            services.AddScoped<ICategoryGarageRepository, CategoryGarageRepository>();
         }
     }
 }
