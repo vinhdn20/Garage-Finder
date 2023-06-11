@@ -1,5 +1,6 @@
 ﻿using DataAccess.DTO;
 using DataAccess.DTO.RequestDTO;
+using GFData.Models.Entity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -135,7 +136,7 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpPost("GetByPage")]
-        public IActionResult GetByPage(PageDTO p) 
+        public IActionResult GetByPage(PageDTO p)
         {
             var garages = garageRepository.GetByPage(p);
             return Ok(garages);
@@ -158,7 +159,7 @@ namespace Garage_Finder_Backend.Controllers
         }
         [HttpPost("AddBrandForGarage")]
         [Authorize]
-        public IActionResult AddBrandForGarage([FromBody]GarageBrandDTO garageBrandDTO)
+        public IActionResult AddBrandForGarage([FromBody] GarageBrandDTO garageBrandDTO)
         {
             try
             {
@@ -184,8 +185,6 @@ namespace Garage_Finder_Backend.Controllers
             {
                 return BadRequest(ex.Message);
             }
-        }
-
         }
         [HttpGet("GetByID/{id}")]
         public IActionResult GetById(int id)
