@@ -34,7 +34,8 @@ namespace Repositories.Implements
 
         public List<OrdersDTO> GetAllOrdersByUserId(int id)
         {
-            return OrdersDAO.Instance.GetList().Where(c => c.CarID == id).Select(p => _mapper.Map<Orders, OrdersDTO>(p)).ToList();
+            //return OrdersDAO.Instance.GetList().Where(c => c.CarID == id).Select(p => _mapper.Map<Orders, OrdersDTO>(p)).ToList();
+            return OrdersDAO.Instance.GetListByUserID(id).Select(p => _mapper.Map<Orders, OrdersDTO>(p)).ToList();
         }
 
         public OrdersDTO GetOrderById(int id)

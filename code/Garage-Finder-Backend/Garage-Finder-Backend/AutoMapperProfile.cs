@@ -40,6 +40,12 @@ namespace Garage_Finder_Backend
             CreateMap<Subscribe, SubscribeDTO>();
             CreateMap<UsersDTO, Users>();
             CreateMap<Users, UsersDTO>();
+            CreateMap<ImageCarDTO, ImageCar>();
+            CreateMap<ImageCar, ImageCarDTO>();
+            CreateMap<FileOrders, FileOrdersDTO>();
+            CreateMap<FileOrdersDTO, FileOrders>();
+            CreateMap<ImageOrders, ImageOrdersDTO>();
+            CreateMap<ImageOrdersDTO, ImageOrders>();
         }
     }
 }

@@ -50,8 +50,7 @@ namespace DataAccess.DAO
             {
                 using (var context = new GFDbContext())
                 {
-                    var listCars = (from car in context.Car
-                                join imageCar in context.ImageCar on car.CarID equals imageCar.CarID into imageCars                                
+                    var listCars = (from car in context.Car                           
                                 select new Car
                                 {
                                     CarID = car.CarID,
@@ -59,7 +58,9 @@ namespace DataAccess.DAO
                                     LicensePlates = car.LicensePlates,
                                     BrandID = car.BrandID,
                                     Color = car.Color,
-                                    TypeCar = car.TypeCar
+                                    TypeCar = car.TypeCar,
+                                    ImageCars = context.ImageCar.Where(imageCar => car.CarID == imageCar.CarID).ToList(),
+                                    Orders = context.Orders.Where(orders => car.CarID == orders.CarID).ToList(),
                                 });
                     return new List<Car>(listCars);
                 }
