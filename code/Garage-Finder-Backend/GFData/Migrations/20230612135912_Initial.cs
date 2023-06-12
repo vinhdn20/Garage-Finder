@@ -38,6 +38,30 @@ namespace GFData.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Garage",
+                columns: table => new
+                {
+                    GarageID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    GarageName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AddressDetail = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ProvinceID = table.Column<int>(type: "int", nullable: false),
+                    DistrictsID = table.Column<int>(type: "int", nullable: false),
+                    EmailAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    OpenTime = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CloseTime = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Logo = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LatAddress = table.Column<double>(type: "float", nullable: true),
+                    LngAddress = table.Column<double>(type: "float", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Garage", x => x.GarageID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "RoleName",
                 columns: table => new
                 {
@@ -66,6 +90,78 @@ namespace GFData.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CategoryGarage",
+                columns: table => new
+                {
+                    CategoryGarageID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    GarageID = table.Column<int>(type: "int", nullable: false),
+                    CategoryID = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CategoryGarage", x => x.CategoryGarageID);
+                    table.ForeignKey(
+                        name: "FK_CategoryGarage_Category_CategoryID",
+                        column: x => x.CategoryID,
+                        principalTable: "Category",
+                        principalColumn: "CategoryID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CategoryGarage_Garage_GarageID",
+                        column: x => x.GarageID,
+                        principalTable: "Garage",
+                        principalColumn: "GarageID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "GarageBrand",
+                columns: table => new
+                {
+                    BrID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    BrandID = table.Column<int>(type: "int", nullable: false),
+                    GarageID = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GarageBrand", x => x.BrID);
+                    table.ForeignKey(
+                        name: "FK_GarageBrand_Brand_BrandID",
+                        column: x => x.BrandID,
+                        principalTable: "Brand",
+                        principalColumn: "BrandID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_GarageBrand_Garage_GarageID",
+                        column: x => x.GarageID,
+                        principalTable: "Garage",
+                        principalColumn: "GarageID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ImageGarage",
+                columns: table => new
+                {
+                    ImageID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    GarageID = table.Column<int>(type: "int", nullable: false),
+                    ImageLink = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ImageGarage", x => x.ImageID);
+                    table.ForeignKey(
+                        name: "FK_ImageGarage_Garage_GarageID",
+                        column: x => x.GarageID,
+                        principalTable: "Garage",
+                        principalColumn: "GarageID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "User",
                 columns: table => new
                 {
@@ -87,6 +183,35 @@ namespace GFData.Migrations
                         column: x => x.RoleID,
                         principalTable: "RoleName",
                         principalColumn: "RoleID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Service",
+                columns: table => new
+                {
+                    ServiceID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    GarageID = table.Column<int>(type: "int", nullable: false),
+                    NameService = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CategoryGarageID = table.Column<int>(type: "int", nullable: false),
+                    Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Cost = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CategorysCategoryID = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Service", x => x.ServiceID);
+                    table.ForeignKey(
+                        name: "FK_Service_Category_CategorysCategoryID",
+                        column: x => x.CategorysCategoryID,
+                        principalTable: "Category",
+                        principalColumn: "CategoryID");
+                    table.ForeignKey(
+                        name: "FK_Service_CategoryGarage_CategoryGarageID",
+                        column: x => x.CategoryGarageID,
+                        principalTable: "CategoryGarage",
+                        principalColumn: "CategoryGarageID",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -120,35 +245,80 @@ namespace GFData.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Garage",
+                name: "FavoriteList",
                 columns: table => new
                 {
-                    GarageID = table.Column<int>(type: "int", nullable: false)
+                    FavoriteID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserID = table.Column<int>(type: "int", nullable: false),
-                    GarageName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AddressDetail = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ProvinceID = table.Column<int>(type: "int", nullable: false),
-                    DistrictsID = table.Column<int>(type: "int", nullable: false),
-                    EmailAddress = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    OpenTime = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CloseTime = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Logo = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Imagies = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LatAddress = table.Column<double>(type: "float", nullable: true),
-                    LngAddress = table.Column<double>(type: "float", nullable: true)
+                    GarageID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Garage", x => x.GarageID);
+                    table.PrimaryKey("PK_FavoriteList", x => x.FavoriteID);
                     table.ForeignKey(
-                        name: "FK_Garage_User_UserID",
+                        name: "FK_FavoriteList_Garage_GarageID",
+                        column: x => x.GarageID,
+                        principalTable: "Garage",
+                        principalColumn: "GarageID");
+                    table.ForeignKey(
+                        name: "FK_FavoriteList_User_UserID",
                         column: x => x.UserID,
                         principalTable: "User",
                         principalColumn: "UserID",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Feedback",
+                columns: table => new
+                {
+                    FeedbackID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    GarageID = table.Column<int>(type: "int", nullable: false),
+                    UserID = table.Column<int>(type: "int", nullable: false),
+                    Star = table.Column<int>(type: "int", nullable: false),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Feedback", x => x.FeedbackID);
+                    table.ForeignKey(
+                        name: "FK_Feedback_Garage_GarageID",
+                        column: x => x.GarageID,
+                        principalTable: "Garage",
+                        principalColumn: "GarageID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Feedback_User_UserID",
+                        column: x => x.UserID,
+                        principalTable: "User",
+                        principalColumn: "UserID");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "GarageInfo",
+                columns: table => new
+                {
+                    InfoID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserID = table.Column<int>(type: "int", nullable: false),
+                    GarageID = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GarageInfo", x => x.InfoID);
+                    table.ForeignKey(
+                        name: "FK_GarageInfo_Garage_GarageID",
+                        column: x => x.GarageID,
+                        principalTable: "Garage",
+                        principalColumn: "GarageID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_GarageInfo_User_UserID",
+                        column: x => x.UserID,
+                        principalTable: "User",
+                        principalColumn: "UserID");
                 });
 
             migrationBuilder.CreateTable(
@@ -241,164 +411,6 @@ namespace GFData.Migrations
                         column: x => x.CarID,
                         principalTable: "Car",
                         principalColumn: "CarID",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "CategoryGarage",
-                columns: table => new
-                {
-                    CategoryGarageID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    GarageID = table.Column<int>(type: "int", nullable: false),
-                    CategoryID = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CategoryGarage", x => x.CategoryGarageID);
-                    table.ForeignKey(
-                        name: "FK_CategoryGarage_Category_CategoryID",
-                        column: x => x.CategoryID,
-                        principalTable: "Category",
-                        principalColumn: "CategoryID",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_CategoryGarage_Garage_GarageID",
-                        column: x => x.GarageID,
-                        principalTable: "Garage",
-                        principalColumn: "GarageID",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "FavoriteList",
-                columns: table => new
-                {
-                    FavoriteID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserID = table.Column<int>(type: "int", nullable: false),
-                    GarageID = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_FavoriteList", x => x.FavoriteID);
-                    table.ForeignKey(
-                        name: "FK_FavoriteList_Garage_GarageID",
-                        column: x => x.GarageID,
-                        principalTable: "Garage",
-                        principalColumn: "GarageID");
-                    table.ForeignKey(
-                        name: "FK_FavoriteList_User_UserID",
-                        column: x => x.UserID,
-                        principalTable: "User",
-                        principalColumn: "UserID",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Feedback",
-                columns: table => new
-                {
-                    FeedbackID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    GarageID = table.Column<int>(type: "int", nullable: false),
-                    UserID = table.Column<int>(type: "int", nullable: false),
-                    Star = table.Column<int>(type: "int", nullable: false),
-                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Feedback", x => x.FeedbackID);
-                    table.ForeignKey(
-                        name: "FK_Feedback_Garage_GarageID",
-                        column: x => x.GarageID,
-                        principalTable: "Garage",
-                        principalColumn: "GarageID",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Feedback_User_UserID",
-                        column: x => x.UserID,
-                        principalTable: "User",
-                        principalColumn: "UserID");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "GarageBrand",
-                columns: table => new
-                {
-                    BrID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    BrandID = table.Column<int>(type: "int", nullable: false),
-                    GarageID = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_GarageBrand", x => x.BrID);
-                    table.ForeignKey(
-                        name: "FK_GarageBrand_Brand_BrandID",
-                        column: x => x.BrandID,
-                        principalTable: "Brand",
-                        principalColumn: "BrandID",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_GarageBrand_Garage_GarageID",
-                        column: x => x.GarageID,
-                        principalTable: "Garage",
-                        principalColumn: "GarageID",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "GarageInfo",
-                columns: table => new
-                {
-                    InfoID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserID = table.Column<int>(type: "int", nullable: false),
-                    GarageID = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_GarageInfo", x => x.InfoID);
-                    table.ForeignKey(
-                        name: "FK_GarageInfo_Garage_GarageID",
-                        column: x => x.GarageID,
-                        principalTable: "Garage",
-                        principalColumn: "GarageID",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_GarageInfo_User_UserID",
-                        column: x => x.UserID,
-                        principalTable: "User",
-                        principalColumn: "UserID");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Service",
-                columns: table => new
-                {
-                    ServiceID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    GarageID = table.Column<int>(type: "int", nullable: false),
-                    NameService = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CategoryGarageID = table.Column<int>(type: "int", nullable: false),
-                    Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Cost = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CategorysCategoryID = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Service", x => x.ServiceID);
-                    table.ForeignKey(
-                        name: "FK_Service_Category_CategorysCategoryID",
-                        column: x => x.CategorysCategoryID,
-                        principalTable: "Category",
-                        principalColumn: "CategoryID");
-                    table.ForeignKey(
-                        name: "FK_Service_CategoryGarage_CategoryGarageID",
-                        column: x => x.CategoryGarageID,
-                        principalTable: "CategoryGarage",
-                        principalColumn: "CategoryGarageID",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -529,17 +541,6 @@ namespace GFData.Migrations
                 column: "OrderID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Garage_PhoneNumber_EmailAddress",
-                table: "Garage",
-                columns: new[] { "PhoneNumber", "EmailAddress" },
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Garage_UserID",
-                table: "Garage",
-                column: "UserID");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_GarageBrand_BrandID",
                 table: "GarageBrand",
                 column: "BrandID");
@@ -563,6 +564,11 @@ namespace GFData.Migrations
                 name: "IX_ImageCar_CarID",
                 table: "ImageCar",
                 column: "CarID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ImageGarage_GarageID",
+                table: "ImageGarage",
+                column: "GarageID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ImageOrders_OrderID",
@@ -648,6 +654,9 @@ namespace GFData.Migrations
                 name: "ImageCar");
 
             migrationBuilder.DropTable(
+                name: "ImageGarage");
+
+            migrationBuilder.DropTable(
                 name: "ImageOrders");
 
             migrationBuilder.DropTable(
@@ -675,19 +684,19 @@ namespace GFData.Migrations
                 name: "Brand");
 
             migrationBuilder.DropTable(
+                name: "User");
+
+            migrationBuilder.DropTable(
                 name: "CategoryGarage");
+
+            migrationBuilder.DropTable(
+                name: "RoleName");
 
             migrationBuilder.DropTable(
                 name: "Category");
 
             migrationBuilder.DropTable(
                 name: "Garage");
-
-            migrationBuilder.DropTable(
-                name: "User");
-
-            migrationBuilder.DropTable(
-                name: "RoleName");
         }
     }
 }

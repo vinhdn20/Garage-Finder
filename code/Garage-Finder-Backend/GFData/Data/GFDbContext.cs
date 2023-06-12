@@ -41,6 +41,8 @@ namespace GFData.Data
         public virtual DbSet<ImageOrders>? ImageOrders { get; set; }
         public virtual DbSet<FileOrders>? FileOrders { get; set; }
         public virtual DbSet<CategoryGarage>? CategoryGarage { get; set; }
+        public virtual DbSet<ImageGarage>? ImageGarage { get; set; }
+        public virtual DbSet<GarageInfo>? GarageInfo { get; set; }  
 
         protected override void OnModelCreating(ModelBuilder optionsBuilder)
         {

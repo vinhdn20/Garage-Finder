@@ -35,12 +35,74 @@ namespace DataAccess.DAO
             {
                 using (var context = new GFDbContext())
                 {
-                    listGarage = context.Garage.ToList();
+                    listGarage = (from garage in context.Garage
+                                 select new Garage
+                                 {
+                                     GarageID = garage.GarageID,
+                                     AddressDetail = garage.AddressDetail,
+                                     OpenTime = garage.OpenTime,
+                                     CloseTime = garage.CloseTime,
+                                     DistrictsID = garage.DistrictsID,
+                                     EmailAddress = garage.EmailAddress,
+                                     GarageName = garage.GarageName,
+                                     LatAddress = garage.LatAddress,
+                                     LngAddress = garage.LngAddress,
+                                     Logo = garage.Logo,
+                                     PhoneNumber = garage.PhoneNumber,
+                                     ProvinceID = garage.ProvinceID,
+                                     Status = garage.Status,
+                                     ImageGarages = (from imageGarage in context.ImageGarage
+                                                     where imageGarage.GarageID == garage.GarageID
+                                                     select imageGarage).ToList(),
+                                     CategoryGarages = context.CategoryGarage.Where(x => x.GarageID == garage.GarageID).ToList(),
+                                     GarageBrands = context.GarageBrand.Where(x => x.GarageID == garage.GarageID).ToList()
+                                 }).ToList();
                 }
             }
             catch (Exception e)
             {
                 throw new Exception(e.Message);
+            }
+            return listGarage;
+        }
+
+        public List<Garage> GetByUserID(int userID)
+        {
+            var listGarage = new List<Garage>();
+            try
+            {
+                using (var context = new GFDbContext())
+                {
+                    listGarage = (from garage in context.Garage
+                                  join gInfor in context.GarageInfo on garage.GarageID equals gInfor.GarageID
+                                  where gInfor.UserID == userID
+                                  select new Garage
+                                  {
+                                      GarageID = garage.GarageID,
+                                      AddressDetail = garage.AddressDetail,
+                                      OpenTime = garage.OpenTime,
+                                      CloseTime = garage.CloseTime,
+                                      DistrictsID = garage.DistrictsID,
+                                      EmailAddress = garage.EmailAddress,
+                                      GarageName = garage.GarageName,
+                                      LatAddress = garage.LatAddress,
+                                      LngAddress = garage.LngAddress,
+                                      Logo = garage.Logo,
+                                      PhoneNumber = garage.PhoneNumber,
+                                      ProvinceID = garage.ProvinceID,
+                                      Status = garage.Status,
+                                      ImageGarages = (from imageGarage in context.ImageGarage
+                                                      where imageGarage.GarageID == garage.GarageID
+                                                      select imageGarage).ToList(),
+                                      CategoryGarages = context.CategoryGarage.Where(x => x.GarageID == garage.GarageID).ToList(),
+                                      GarageBrands = context.GarageBrand.Where(x => x.GarageID == garage.GarageID).ToList()
+                                  }).ToList();
+                                  
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
             }
             return listGarage;
         }

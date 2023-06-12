@@ -4,13 +4,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GFData.Models.Entity
 {
-    [Index(nameof(PhoneNumber), nameof(EmailAddress), IsUnique = true)]
     public class Garage
     {
         [Key]
         public int GarageID { get; set; }
-        [ForeignKey("User")]
-        public int UserID { get; set; }
+        //[ForeignKey("User")]
+        //public int UserID { get; set; }
         [Required]
         public string GarageName { get; set; }
         public string AddressDetail { get; set; }
@@ -25,7 +24,6 @@ namespace GFData.Models.Entity
         public string? OpenTime { get; set; }
         public string? CloseTime { get; set; }
         public string? Logo { get; set; }
-        public string? Imagies { get; set; }
         public double? LatAddress { get; set; }
         public double? LngAddress { get; set; }
         public ICollection<Orders> Orders { get; set; }
@@ -34,6 +32,7 @@ namespace GFData.Models.Entity
         public ICollection<GarageBrand> GarageBrands { get; set; }
         public ICollection<GarageInfo> GarageInfos { get; set; }
         public ICollection<CategoryGarage> CategoryGarages { get; set; }
-        public Users User { get; set; }
+        public ICollection<ImageGarage> ImageGarages { get; set; }
+        //public Users User { get; set; }
     }
 }

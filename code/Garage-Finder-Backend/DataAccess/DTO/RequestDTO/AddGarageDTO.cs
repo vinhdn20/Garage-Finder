@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Runtime.Serialization;
 
 namespace DataAccess.DTO.RequestDTO
 {
     public class AddGarageDTO
     {
-        public int UserID { get; set; }
         public string GarageName { get; set; }
         public string AddressDetail { get; set; }
         public int ProvinceID { get; set; }
@@ -22,7 +17,11 @@ namespace DataAccess.DTO.RequestDTO
         public string? Imagies { get; set; }
         public double? LatAddress { get; set; }
         public double? LngAddress { get; set; }
-        public List<CategoryDTO> Categories { get; set; }
-        public List<BrandDTO> Brands { get; set; }
+        //public List<CategoryDTO> Categories { get; set; }
+        public List<int> CategoriesID { get; set; }
+        //public List<BrandDTO> Brands { get; set; }
+        public List<int> BrandsID { get; set; }
+        //public List<ImageGarageDTO> ImageGarages { get; set; }
+        public List<string> ImageLink { get; set; }
     }
 }

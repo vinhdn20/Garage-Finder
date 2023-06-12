@@ -31,7 +31,7 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpGet("GetByUser/{id}")]
-        public IActionResult GetUserId(int id)
+        public IActionResult GetUserId([FromBody]int id)
         {
             try
             {
@@ -46,7 +46,7 @@ namespace Garage_Finder_Backend.Controllers
 
 
         [HttpPost("AddOrder")]
-        public IActionResult Add(OrdersDTO newOrder)
+        public IActionResult Add([FromBody] OrdersDTO newOrder)
         {
 
             try
@@ -68,7 +68,7 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpDelete("Delete/{id}")]
-        public IActionResult Delete(int id)
+        public IActionResult Delete([FromBody] int id)
         {
             try
             {
