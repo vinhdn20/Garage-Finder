@@ -13,7 +13,7 @@ namespace DataAccess.DTO.RequestDTO
         public string? Status { get; set; }
         public string? OpenTime { get; set; }
         public string? CloseTime { get; set; }
-        public string? Logo { get; set; }
+        public string? Thumbnail { get; set; }
         public string? Imagies { get; set; }
         public double? LatAddress { get; set; }
         public double? LngAddress { get; set; }
