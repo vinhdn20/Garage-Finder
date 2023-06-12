@@ -52,7 +52,7 @@ namespace GFData.Migrations
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     OpenTime = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CloseTime = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Logo = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Thumbnail = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LatAddress = table.Column<double>(type: "float", nullable: true),
                     LngAddress = table.Column<double>(type: "float", nullable: true)
                 },
