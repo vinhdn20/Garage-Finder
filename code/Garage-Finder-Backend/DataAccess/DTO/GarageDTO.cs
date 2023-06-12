@@ -15,7 +15,7 @@ namespace DataAccess.DTO
         public string? Status { get; set; }
         public string? OpenTime { get; set; }
         public string? CloseTime { get; set; }
-        public string? Logo { get; set; }
+        public string? Thumbnail { get; set; }
         public double? LatAddress { get; set; }
         public double? LngAddress { get; set; }
         public CategoryGarageDTO[]? CategoryGarages { get; set; }

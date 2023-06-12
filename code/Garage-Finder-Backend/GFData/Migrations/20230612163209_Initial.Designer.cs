@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GFData.Migrations
 {
     [DbContext(typeof(GFDbContext))]
-    [Migration("20230612135912_Initial")]
+    [Migration("20230612163209_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -230,9 +230,6 @@ namespace GFData.Migrations
                     b.Property<double?>("LngAddress")
                         .HasColumnType("float");
 
-                    b.Property<string>("Logo")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("OpenTime")
                         .HasColumnType("nvarchar(max)");
 
@@ -244,6 +241,9 @@ namespace GFData.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Thumbnail")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("GarageID");

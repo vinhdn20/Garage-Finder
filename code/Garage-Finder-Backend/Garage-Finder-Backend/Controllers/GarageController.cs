@@ -197,10 +197,15 @@ namespace Garage_Finder_Backend.Controllers
 
         [HttpPost("AddCategoryForGarage")]
         [Authorize]
-        public IActionResult AddCategoryForGarage([FromBody] CategoryGarageDTO categoryGarageDTO)
+        public IActionResult AddCategoryForGarage([FromBody] AddCategoryGarage addCategoryGarageDTO)
         {
             try
             {
+                CategoryGarageDTO categoryGarageDTO = new CategoryGarageDTO()
+                {
+                    GarageID = addCategoryGarageDTO.GarageID,
+                    CategoryID = addCategoryGarageDTO.CategoryID
+                };
                 categoryGarageRepository.Add(categoryGarageDTO);
                 return Ok("SUCCESS");
             }

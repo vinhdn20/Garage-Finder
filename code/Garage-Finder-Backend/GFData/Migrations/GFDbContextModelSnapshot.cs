@@ -228,9 +228,6 @@ namespace GFData.Migrations
                     b.Property<double?>("LngAddress")
                         .HasColumnType("float");
 
-                    b.Property<string>("Logo")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("OpenTime")
                         .HasColumnType("nvarchar(max)");
 
@@ -242,6 +239,9 @@ namespace GFData.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Thumbnail")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("GarageID");
