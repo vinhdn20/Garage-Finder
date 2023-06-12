@@ -17,11 +17,17 @@ namespace Garage_Finder_Backend.Controllers
         private readonly IGarageRepository garageRepository;
         private readonly IGarageBrandRepository garageBrandRepository;
         private readonly ICategoryGarageRepository categoryGarageRepository;
-        public GarageController(IGarageRepository garageRepository, IGarageBrandRepository garageBrandRepository, ICategoryGarageRepository categoryGarageRepository)
+        private readonly IImageGarageRepository imageGarageRepository;
+        private readonly IGarageInforRepository inforRepository;
+        public GarageController(IGarageRepository garageRepository, IGarageBrandRepository garageBrandRepository,
+            ICategoryGarageRepository categoryGarageRepository, IImageGarageRepository  imageGarageRepository,
+            IGarageInforRepository inforRepository)
         {
             this.garageRepository = garageRepository;
             this.garageBrandRepository = garageBrandRepository;
             this.categoryGarageRepository = categoryGarageRepository;
+            this.imageGarageRepository = imageGarageRepository;
+            this.inforRepository = inforRepository;
         }
         [HttpGet("GetAll")]
         public IActionResult GetAll()
@@ -39,35 +45,52 @@ namespace Garage_Finder_Backend.Controllers
 
         [HttpPost("Add")]
         [Authorize]
-        public IActionResult Add(AddGarageDTO addGarage)
+        public IActionResult Add([FromBody] AddGarageDTO addGarage)
         {
             try
             {
                 var user = GetUserFromToken();
-                addGarage.UserID = user.UserID;
                 var garageDTO = garageRepository.Add(addGarage);
 
+                GarageInfoDTO garageInfoDTO = new GarageInfoDTO()
+                {
+                    GarageID = garageDTO.GarageID,
+                    UserID = user.UserID,
+                };
+                inforRepository.Add(garageInfoDTO);
+
                 var listGarageBrand = new List<GarageBrandDTO>();
-                foreach (var brand in addGarage.Brands)
+                foreach (var brand in addGarage.BrandsID)
                 {
                     listGarageBrand.Add(new GarageBrandDTO()
                     {
                         GarageID = garageDTO.GarageID,
-                        BrandID = brand.BrandID
+                        BrandID = brand
                     });
                 }
                 listGarageBrand.ForEach(x => garageBrandRepository.Add(x));
 
                 var listCategory = new List<CategoryGarageDTO>();
-                foreach (var cate in addGarage.Categories)
+                foreach (var cate in addGarage.CategoriesID)
                 {
                     listCategory.Add(new CategoryGarageDTO()
                     {
-                        CategoryID = cate.CategoryID,
+                        CategoryID = cate,
                         GarageID = garageDTO.GarageID
                     });
                 }
                 listCategory.ForEach(x => categoryGarageRepository.Add(x));
+
+                var listImage = new List<ImageGarageDTO>();
+                foreach (var image in addGarage.ImageLink)
+                {
+                    listImage.Add(new ImageGarageDTO()
+                    {
+                        GarageID = garageDTO.GarageID,
+                        ImageLink = image
+                    });
+                }
+                listImage.ForEach(x => imageGarageRepository.AddImageGarage(x));
                 return Ok("SUCCESS");
             }
             catch (Exception e)
@@ -78,7 +101,7 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpPut("Update")]
-        public IActionResult Update(GarageDTO garage)
+        public IActionResult Update([FromBody] GarageDTO garage)
         {
             try
             {
@@ -136,7 +159,7 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpPost("GetByPage")]
-        public IActionResult GetByPage(PageDTO p)
+        public IActionResult GetByPage([FromBody] PageDTO p)
         {
             var garages = garageRepository.GetByPage(p);
             return Ok(garages);
@@ -207,7 +230,7 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpGet("GetByFilter")]
-        public IActionResult GetByFilter(int id)
+        public IActionResult GetByFilter([FromBody] int id)
         {
             try
             {
@@ -217,6 +240,19 @@ namespace Garage_Finder_Backend.Controllers
             {
 
                 return BadRequest(e.Message);
+            }
+        }
+
+        [HttpPost]
+        public IActionResult GetGarageAround([FromBody] FindGarageAroundDTO findGarageAroundDTO)
+        {
+            try
+            {
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
             }
         }
     }

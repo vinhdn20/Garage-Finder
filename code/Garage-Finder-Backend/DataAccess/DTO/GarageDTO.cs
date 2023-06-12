@@ -6,7 +6,6 @@ namespace DataAccess.DTO
     public class GarageDTO
     {
         public int GarageID { get; set; }
-        public int UserID { get; set; }
         public string GarageName { get; set; }
         public string AddressDetail { get; set; }
         public int ProvinceID { get; set; }
@@ -17,10 +16,10 @@ namespace DataAccess.DTO
         public string? OpenTime { get; set; }
         public string? CloseTime { get; set; }
         public string? Logo { get; set; }
-        public string? Imagies { get; set; }
         public double? LatAddress { get; set; }
         public double? LngAddress { get; set; }
         public CategoryGarageDTO[]? CategoryGarages { get; set; }
         public GarageBrandDTO[]? GarageBrands { get; set; }
+        public ImageGarageDTO[] ImageGarages { get; set; }
     }
 }
