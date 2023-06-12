@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using GFData.Models.Entity;
+using System.ComponentModel.DataAnnotations;
 
 namespace DataAccess.DTO
 {
@@ -19,7 +20,7 @@ namespace DataAccess.DTO
         public string? Imagies { get; set; }
         public double? LatAddress { get; set; }
         public double? LngAddress { get; set; }
-        public CategoryDTO[]? Services { get; set; }
-        public GarageBrandDTO[]? Brands { get; set; }
+        public CategoryGarageDTO[]? CategoryGarages { get; set; }
+        public GarageBrandDTO[]? GarageBrands { get; set; }
     }
 }
