@@ -88,6 +88,7 @@ namespace DataAccess.DAO
 
                     if (p == null)
                     {
+                        //disable this exception to allow register new user
                         //throw new Exception("Wrong username");
                     }
                 }
