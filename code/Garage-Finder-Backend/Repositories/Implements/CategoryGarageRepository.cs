@@ -22,5 +22,10 @@ namespace Repositories.Implements
         {
             CategoryGarageDAO.Instance.Add(_mapper.Map<CategoryGarageDTO, CategoryGarage>(categoryGarageDTO));
         }
+
+        public void Remove(int id)
+        {
+            CategoryGarageDAO.Instance.Remove(id);
+        }
     }
 }

@@ -25,7 +25,7 @@ namespace Repositories.Implements
 
         public void Delete(int id)
         {
-            BrandDAO.Instance.Delete(id);
+            GarageBrandDAO.Instance.Delete(id);
         }
 
         public List<GarageBrandDTO> GetBrand()

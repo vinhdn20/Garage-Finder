@@ -85,7 +85,7 @@ namespace DataAccess.DAO
             {
                 using (var context = new GFDbContext())
                 {
-                    var cDelete = context.GarageBrand.SingleOrDefault(x => x.BrandID == id);
+                    var cDelete = context.GarageBrand.SingleOrDefault(x => x.BrID == id);
                     context.GarageBrand.Remove(cDelete);
                     context.SaveChanges();
                 }

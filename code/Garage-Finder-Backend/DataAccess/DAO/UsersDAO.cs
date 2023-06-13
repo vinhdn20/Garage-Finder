@@ -2,6 +2,7 @@
 using GFData.Models.Entity;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using System.Security.Cryptography;
 
 namespace DataAccess.DAO
 {
@@ -108,11 +109,56 @@ namespace DataAccess.DAO
                 if (phone.Equals("")) throw new Exception("Email must not be empty");
                 using (var context = new GFDbContext())
                 {
-                    p = context.User.SingleOrDefault(x => x.PhoneNumber == phone);
+                    p = (from user in context.User
+                         where user.PhoneNumber.Equals(phone)
+                         select new Users
+                         {
+                             UserID = user.UserID,
+                             EmailAddress = user.EmailAddress,
+                             PhoneNumber = user.PhoneNumber,
+                             LinkImage = user.LinkImage,
+                             RoleID = user.RoleID,
+                             RoleName = context.RoleName.Where(x => x.RoleID == user.RoleID).FirstOrDefault(),
+                             Status = user.Status,
+                             Name = user.Name
+                         }).FirstOrDefault();
 
                     if (p == null)
                     {
                         throw new Exception("Wrong phoneNumber");
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            return p;
+        }
+
+        public Users FindUserByID(int id)
+        {
+            var p = new Users();
+            try
+            {
+                using(var context = new GFDbContext())
+                {
+                    p = (from user in context.User
+                        where user.UserID == id
+                        select new Users
+                        {
+                            UserID = user.UserID,
+                            EmailAddress = user.EmailAddress, 
+                            PhoneNumber = user.PhoneNumber,
+                            LinkImage = user.LinkImage,
+                            RoleID = user.RoleID,
+                            RoleName = context.RoleName.Where(x => x.RoleID == user.RoleID).FirstOrDefault(),
+                            Status = user.Status,
+                            Name = user.Name
+                        }).FirstOrDefault();
+                    if (p == null)
+                    {
+                        throw new Exception("Wrong id");
                     }
                 }
             }

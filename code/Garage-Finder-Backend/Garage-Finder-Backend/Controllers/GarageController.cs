@@ -1,4 +1,5 @@
-﻿using DataAccess.DTO;
+﻿using DataAccess.DAO;
+using DataAccess.DTO;
 using DataAccess.DTO.RequestDTO;
 using GFData.Models.Entity;
 using Microsoft.AspNetCore.Authorization;
@@ -101,11 +102,11 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpPut("Update")]
-        public IActionResult Update([FromBody] GarageDTO garage)
+        public IActionResult Update([FromBody] UpdateGarageDTO garageUpdate)
         {
             try
             {
-                garageRepository.Update(garage);
+                garageRepository.Update(garageUpdate);
                 return Ok("SUCCESS");
             }
             catch (Exception e)
@@ -180,13 +181,18 @@ namespace Garage_Finder_Backend.Controllers
                 return BadRequest(e.Message);
             }
         }
-        [HttpPost("AddBrandForGarage")]
+        #region Brand
+
+        [HttpPost("addBrand")]
         [Authorize]
-        public IActionResult AddBrandForGarage([FromBody] GarageBrandDTO garageBrandDTO)
+        public IActionResult AddBrandForGarage([FromBody] List<GarageBrandDTO> garageBrandsDTO)
         {
             try
             {
-                garageBrandRepository.Add(garageBrandDTO);
+                foreach (var garage in garageBrandsDTO)
+                {
+                    garageBrandRepository.Add(garage);
+                }
                 return Ok("SUCCESS");
             }
             catch (Exception ex)
@@ -195,18 +201,42 @@ namespace Garage_Finder_Backend.Controllers
             }
         }
 
-        [HttpPost("AddCategoryForGarage")]
+        [HttpPost("removeBrand")]
         [Authorize]
-        public IActionResult AddCategoryForGarage([FromBody] AddCategoryGarage addCategoryGarageDTO)
+        public IActionResult RemoveBrand([FromBody] List<int> garageBrandIds)
         {
             try
             {
-                CategoryGarageDTO categoryGarageDTO = new CategoryGarageDTO()
+                foreach (var id in garageBrandIds)
                 {
-                    GarageID = addCategoryGarageDTO.GarageID,
-                    CategoryID = addCategoryGarageDTO.CategoryID
-                };
-                categoryGarageRepository.Add(categoryGarageDTO);
+                    garageBrandRepository.Delete(id);
+                }
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        #endregion
+        #region Category
+
+        [HttpPost("addCategoryForGarage")]
+        [Authorize]
+        public IActionResult AddCategoryForGarage([FromBody] List<AddCategoryGarage> addCategoryGarageDTO)
+        {
+            try
+            {
+                foreach (var cate in addCategoryGarageDTO)
+                {
+                    CategoryGarageDTO categoryGarageDTO = new CategoryGarageDTO()
+                    {
+                        GarageID = cate.GarageID,
+                        CategoryID = cate.CategoryID
+                    };
+                    categoryGarageRepository.Add(categoryGarageDTO);
+                }
+                
                 return Ok("SUCCESS");
             }
             catch (Exception ex)
@@ -214,6 +244,66 @@ namespace Garage_Finder_Backend.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPost("removeCategory")]
+        [Authorize]
+        public IActionResult RemoveCategory([FromBody] List<int> ids)
+        {
+            try
+            {
+                foreach (var id in ids)
+                {
+                    categoryGarageRepository.Remove(id);
+                }
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        #endregion
+
+        #region Image
+        [HttpPost("addImage")]
+        [Authorize]
+        public IActionResult AddImage([FromBody] List<ImageGarageDTO> imagesDTO)
+        {
+            try
+            {
+                foreach (var image in imagesDTO)
+                {
+                    imageGarageRepository.AddImageGarage(image);
+                }
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost("removeImage")]
+        [Authorize]
+        public IActionResult RemoveImage([FromBody] List<int> ids)
+        {
+            try
+            {
+                foreach(var id in ids)
+                {
+                    imageGarageRepository.RemoveImageGarage(id);
+                }
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        #endregion
+        #region Search/Filter
+
         [HttpGet("GetByID/{id}")]
         public IActionResult GetById(int id)
         {
@@ -226,12 +316,6 @@ namespace Garage_Finder_Backend.Controllers
 
                 return BadRequest(e.Message);
             }
-        }
-        private UsersDTO GetUserFromToken()
-        {
-            var jsonUser = User.FindFirstValue("user");
-            var user = JsonConvert.DeserializeObject<UsersDTO>(jsonUser);
-            return user;
         }
 
         [HttpGet("GetByFilter")]
@@ -260,5 +344,14 @@ namespace Garage_Finder_Backend.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        #endregion
+        #region Private
+        private UsersDTO GetUserFromToken()
+        {
+            var jsonUser = User.FindFirstValue("user");
+            var user = JsonConvert.DeserializeObject<UsersDTO>(jsonUser);
+            return user;
+        }
+        #endregion
     }
 }

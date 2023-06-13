@@ -10,5 +10,6 @@ namespace Repositories.Interfaces
     public interface IImageGarageRepository
     {
         void AddImageGarage(ImageGarageDTO imageGarageDTO);
+        void RemoveImageGarage(int id);
     }
 }

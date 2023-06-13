@@ -46,5 +46,24 @@ namespace DataAccess.DAO
                 throw new Exception(e.Message);
             }
         }
+
+        public void Remove(int id)
+        {
+            try
+            {
+                var db = new GFDbContext();
+                var image = db.ImageGarage.SingleOrDefault(x => x.ImageID == id);
+                if(image != null)
+                {
+                    db.ImageGarage.Remove(image);
+                    db.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+                throw;
+            }
+        }
     }
 }

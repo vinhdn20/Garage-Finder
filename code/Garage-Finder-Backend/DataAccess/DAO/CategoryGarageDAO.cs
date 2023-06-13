@@ -46,5 +46,24 @@ namespace DataAccess.DAO
                 throw new Exception(e.Message);
             }
         }
+
+        public void Remove(int id)
+        {
+            try
+            {
+                var db = new GFDbContext();
+                var cate = db.CategoryGarage.FirstOrDefault(x => x.CategoryGarageID == id);
+                if (cate != null)
+                {
+                    db.CategoryGarage.Remove(cate);
+                    db.SaveChanges();
+                }
+                
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
     }
 }

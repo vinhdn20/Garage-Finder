@@ -42,9 +42,9 @@ namespace Repositories.Implements
             GarageDAO.Instance.SaveGarage(_mapper.Map<GarageDTO, Garage>(p));
         }
 
-        public void Update(GarageDTO garage)
+        public void Update(UpdateGarageDTO garage)
         {
-            GarageDAO.Instance.UpdateGarage(_mapper.Map<GarageDTO, Garage>(garage));
+            GarageDAO.Instance.UpdateGarage(_mapper.Map<UpdateGarageDTO, Garage>(garage));
         }
 
         public List<GarageDTO> FilterByCity(int provinceID) 

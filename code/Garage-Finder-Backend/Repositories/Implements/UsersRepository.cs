@@ -28,6 +28,11 @@ namespace Repositories.Implements
             return UsersDAO.Instance.FindAll().Select(m => _mapper.Map<Users, UsersDTO>(m)).ToList();
         }
 
+        public UsersDTO GetUserByID(int id)
+        {
+            return _mapper.Map<Users, UsersDTO>(UsersDAO.Instance.FindUserByID(id));
+        }
+
         public UsersDTO GetUsersByEmail(string email)
         {
             return _mapper.Map<Users, UsersDTO>(UsersDAO.Instance.FindUserByEmail(email));
