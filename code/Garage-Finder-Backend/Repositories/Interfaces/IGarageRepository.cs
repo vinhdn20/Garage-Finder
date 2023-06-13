@@ -14,7 +14,7 @@ namespace Repositories.Interfaces
         void Update(UpdateGarageDTO garage);
         List<GarageDTO> GetGarages();
         void DeleteGarage(int id);
-        public List<GarageDTO> GetGaragesByID(int? id);
+        public List<GarageDTO> GetGaragesByID(int id);
         public List<GarageDTO> GetByPage(PageDTO p);
         public List<GarageDTO> GetGarageByUser(int? id);
         public List<GarageDTO> GetGarageByProviceId(int? provinceID);
