@@ -142,6 +142,7 @@ namespace Garage_Finder_Backend.Controllers
                         Name = objUserInfor.given_name
                     };
                     _userRepository.Register(userDTO);
+                    usersDTO = _userRepository.GetAll().Find(x => x.EmailAddress.Equals(email));
                     var roleName = _roleNameRepository.GetUserRole(usersDTO.RoleID);
                     var gfAccessToken = _jwtService.GenerateJwt(usersDTO, roleName, _jwtSettings);
                     usersDTO.AccessToken = gfAccessToken;
