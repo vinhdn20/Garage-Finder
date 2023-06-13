@@ -23,5 +23,10 @@ namespace Repositories.Implements
         {
             ImageGarageDAO.Instance.Add(_mapper.Map<ImageGarageDTO, ImageGarage>(imageGarageDTO));
         }
+
+        public void RemoveImageGarage(int id)
+        {
+            ImageGarageDAO.Instance.Remove(id);
+        }
     }
 }

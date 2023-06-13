@@ -50,7 +50,7 @@ namespace Garage_Finder_Backend.Controllers
         public IActionResult Get()
         {
             var user = GetUserFromToken();
-            
+            user = _userRepository.GetUserByID(user.UserID);
             return Ok(user);
         }
         [HttpPost("update")]

@@ -12,6 +12,7 @@ namespace Repositories.Interfaces
         UsersDTO Login(string email, string password);
         UsersDTO GetUsersByEmail(string email);
         UsersDTO GetUsersByPhone(string phone);
+        UsersDTO GetUserByID(int id);
         void Register(UsersDTO user);
         void Add(UsersDTO user);
         void Update(UsersDTO user);

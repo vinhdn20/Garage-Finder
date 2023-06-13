@@ -10,5 +10,6 @@ namespace Repositories.Interfaces
     public interface ICategoryGarageRepository
     {
         void Add(CategoryGarageDTO categoryGarageDTO);
+        void Remove(int id);
     }
 }
