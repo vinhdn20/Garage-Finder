@@ -179,7 +179,7 @@ namespace Garage_Finder_Backend.Controllers
                         else
                         {
                             var usersDTO = JsonConvert.DeserializeObject<UsersDTO>(User.FindFirstValue("user"));
-                            var roleName = _roleNameRepository.GetUserRole(usersDTO.UserID);
+                            var roleName = _roleNameRepository.GetUserRole(usersDTO.RoleID);
                             string token = _jwtService.GenerateJwt(usersDTO, roleName, _jwtSettings);
                             var newRefreshToken = _jwtService.GenerateRefreshToken(_jwtSettings, usersDTO.UserID);
                             newRefreshToken.TokenID = userRefreshToken[i].TokenID;
