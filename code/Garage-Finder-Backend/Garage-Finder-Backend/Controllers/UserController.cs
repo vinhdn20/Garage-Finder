@@ -273,6 +273,12 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
+                //check when email is exist in database not allow register
+                if (_userRepository.GetUsersByEmail(registerUser.EmailAddress) != null)
+                {
+                    return BadRequest("Email is exist");
+                }
+
                 UsersDTO userDTO = new UsersDTO();
                 userDTO.Name = registerUser.Name;
                 userDTO.PhoneNumber = registerUser.PhoneNumber;
