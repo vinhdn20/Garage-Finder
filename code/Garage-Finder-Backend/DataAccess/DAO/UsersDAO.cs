@@ -88,7 +88,7 @@ namespace DataAccess.DAO
 
                     if (p == null)
                     {
-                        throw new Exception("Wrong username");
+                        //throw new Exception("Wrong username");
                     }
                 }
             }
