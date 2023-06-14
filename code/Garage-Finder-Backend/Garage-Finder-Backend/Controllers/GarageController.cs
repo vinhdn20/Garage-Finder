@@ -21,7 +21,7 @@ namespace Garage_Finder_Backend.Controllers
         private readonly IImageGarageRepository imageGarageRepository;
         private readonly IGarageInforRepository inforRepository;
         public GarageController(IGarageRepository garageRepository, IGarageBrandRepository garageBrandRepository,
-            ICategoryGarageRepository categoryGarageRepository, IImageGarageRepository  imageGarageRepository,
+            ICategoryGarageRepository categoryGarageRepository, IImageGarageRepository imageGarageRepository,
             IGarageInforRepository inforRepository)
         {
             this.garageRepository = garageRepository;
@@ -236,7 +236,7 @@ namespace Garage_Finder_Backend.Controllers
                     };
                     categoryGarageRepository.Add(categoryGarageDTO);
                 }
-                
+
                 return Ok("SUCCESS");
             }
             catch (Exception ex)
@@ -290,7 +290,7 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
-                foreach(var id in ids)
+                foreach (var id in ids)
                 {
                     imageGarageRepository.RemoveImageGarage(id);
                 }
@@ -323,13 +323,55 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
-                return Ok(garageRepository.FilterByCity(id));
+                return Ok(garageRepository.GetGarageByProviceId(id));
             }
             catch (Exception e)
             {
 
                 return BadRequest(e.Message);
             }
+        }
+
+        [HttpPost("GetByFilterV2")]
+        public ActionResult GetGarages([FromBody]FilterGarage filterGarage)
+        {
+            List<GarageDTO> filteredGarages = garageRepository.GetGarages();
+            List<GarageDTO> filteredByProvince = new List<GarageDTO>();
+            List<GarageDTO> filteredByDistricts = new List<GarageDTO>();
+            List<GarageDTO> filteredByCategory = new List<GarageDTO>();
+            List<GarageDTO> filteredByBrand = new List<GarageDTO>();
+
+            if (filterGarage.provinceID is not null)
+            {
+                if(filterGarage.provinceID.Count != 0)
+                    filteredGarages = filteredGarages.Where(x => filterGarage.provinceID.Any(d => d == x.ProvinceID)).ToList();
+            }
+
+            if (filterGarage.districtsID is not null)
+            {
+                if(filterGarage.districtsID.Count != 0)
+                    filteredGarages = filteredGarages.Where(x => filterGarage.districtsID.Any(d => d == x.DistrictsID)).ToList();
+            }
+
+            if(filterGarage.categoriesID is not null)
+            {
+                if (filterGarage.categoriesID.Count != 0)
+                    filteredGarages = filteredGarages.Where(x => filterGarage.categoriesID.Any(i => x.CategoryGarages.Any(c => c.CategoryID == i))).ToList();
+            }
+
+            if(filterGarage.brandsID is not null)
+            {
+                if (filterGarage.brandsID.Count != 0)
+                    filteredGarages = filteredGarages.Where(x => filterGarage.brandsID.Any(i => x.GarageBrands.Any(c => c.BrandID == i))).ToList();
+            }
+
+            if (filterGarage.provinceID is null && filterGarage.districtsID is null &&
+                filterGarage.categoriesID is null && filterGarage.brandsID is null)
+            {
+                filteredGarages = garageRepository.GetGarages();
+            }
+                
+            return Ok(filteredGarages);
         }
 
         [HttpPost]
