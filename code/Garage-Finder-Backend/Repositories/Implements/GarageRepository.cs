@@ -63,7 +63,7 @@ namespace Repositories.Implements
             return garages;
         }
 
-        public List<GarageDTO> GetGarageByUser(int? id)
+        public List<GarageDTO> GetGarageByUser(int id)
         {
             return GarageDAO.Instance.GetByUserID(id).Select(p => _mapper.Map<Garage, GarageDTO>(p)).ToList();
         }
