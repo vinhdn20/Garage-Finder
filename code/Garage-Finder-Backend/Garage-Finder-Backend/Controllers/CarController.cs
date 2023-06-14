@@ -57,10 +57,13 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpPost("Add")]
+        [Authorize]
         public IActionResult Add(CarDTO car)
         {
             try
             {
+                var user = GetUserFromToken();
+                car.UserID = user.UserID;
                 carRepository.SaveCar(car);
 
                 return Ok("SUCCESS");
@@ -73,10 +76,13 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpPut("Update")]
+        [Authorize]
         public IActionResult Update(CarDTO car)
         {
             try
             {
+                var user = GetUserFromToken();
+                car.UserID = user.UserID;
                 carRepository.UpdateCar(car);
                 return Ok("SUCCESS");
             }
@@ -88,6 +94,7 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpDelete("Delete/{id}")]
+        [Authorize]
         public IActionResult Delete(int id)
         {
             try
