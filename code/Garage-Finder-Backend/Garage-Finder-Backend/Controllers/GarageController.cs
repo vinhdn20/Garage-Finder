@@ -318,21 +318,7 @@ namespace Garage_Finder_Backend.Controllers
             }
         }
 
-        [HttpGet("GetByFilter")]
-        public IActionResult GetByFilter([FromBody] int id)
-        {
-            try
-            {
-                return Ok(garageRepository.GetGarageByProviceId(id));
-            }
-            catch (Exception e)
-            {
-
-                return BadRequest(e.Message);
-            }
-        }
-
-        [HttpPost("GetByFilterV2")]
+        [HttpPost("GetByFilter")]
         public ActionResult GetGarages([FromBody]FilterGarage filterGarage)
         {
             List<GarageDTO> filteredGarages = garageRepository.GetGarages();
@@ -374,18 +360,18 @@ namespace Garage_Finder_Backend.Controllers
             return Ok(filteredGarages);
         }
 
-        [HttpPost]
-        public IActionResult GetGarageAround([FromBody] FindGarageAroundDTO findGarageAroundDTO)
-        {
-            try
-            {
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
+        //[HttpPost]
+        //public IActionResult GetGarageAround([FromBody] FindGarageAroundDTO findGarageAroundDTO)
+        //{
+        //    try
+        //    {
+        //        return Ok();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(ex.Message);
+        //    }
+        //}
         #endregion
         #region Private
         private UsersDTO GetUserFromToken()
