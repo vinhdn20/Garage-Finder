@@ -1,4 +1,6 @@
-﻿using DataAccess.DTO;
+﻿using AutoMapper;
+using DataAccess.DTO;
+using DataAccess.DTO.RequestDTO;
 using GFData.Models.Entity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -14,6 +16,8 @@ namespace Garage_Finder_Backend.Controllers
     public class CarController : ControllerBase
     {
         private readonly ICarRepository carRepository;
+        private readonly IImageCarRepository imageCarRepository;
+        private readonly IMapper mapper;
         #region Private
         private UsersDTO GetUserFromToken()
         {
@@ -22,24 +26,26 @@ namespace Garage_Finder_Backend.Controllers
             return user;
         }
         #endregion
-        public CarController(ICarRepository carRepository)
+        public CarController(ICarRepository carRepository, IImageCarRepository imageCarRepository, IMapper mapper)
         {
             this.carRepository = carRepository;
+            this.imageCarRepository = imageCarRepository;
+            this.mapper = mapper;
         }
 
-        [HttpGet("GetAll")]
-        public IActionResult GetAll()
-        {
-            try
-            {
-                return Ok(carRepository.GetCars());
-            }
-            catch (Exception e)
-            {
+        //[HttpGet("GetAll")]
+        //public IActionResult GetAll()
+        //{
+        //    try
+        //    {
+        //        return Ok(carRepository.GetCars());
+        //    }
+        //    catch (Exception e)
+        //    {
 
-                return BadRequest(e.Message);
-            }
-        }
+        //        return BadRequest(e.Message);
+        //    }
+        //}
         [HttpGet("GetByUser")]
         [Authorize]
         public IActionResult GetUserId()
@@ -57,11 +63,25 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpPost("Add")]
-        public IActionResult Add(CarDTO car)
+        [Authorize]
+        public IActionResult Add(AddCarDTO car)
         {
             try
             {
-                carRepository.SaveCar(car);
+                var user = GetUserFromToken();
+                CarDTO carDTO = mapper.Map<AddCarDTO, CarDTO>(car);
+                carDTO.UserID = user.UserID;
+                carDTO = carRepository.SaveCar(carDTO);
+
+                foreach (var link in car.ImageLink)
+                {
+                    ImageCarDTO image = new ImageCarDTO()
+                    {
+                        CarID = carDTO.CarID,
+                        ImageLink = link
+                    };
+                    imageCarRepository.AddImage(image);
+                }
 
                 return Ok("SUCCESS");
             }
@@ -73,11 +93,15 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpPut("Update")]
-        public IActionResult Update(CarDTO car)
+        [Authorize]
+        public IActionResult Update(UpdateCarDTO car)
         {
             try
             {
-                carRepository.UpdateCar(car);
+                var user = GetUserFromToken();
+                CarDTO carDTO = mapper.Map<UpdateCarDTO, CarDTO>(car);
+                carDTO.UserID = user.UserID;
+                carRepository.UpdateCar(carDTO);
                 return Ok("SUCCESS");
             }
             catch (Exception e)
@@ -88,11 +112,51 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpDelete("Delete/{id}")]
+        [Authorize]
         public IActionResult Delete(int id)
         {
             try
             {
                 carRepository.DeleteCar(id);
+                return Ok("SUCCESS");
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpPost("RemoveImageById")]
+        [Authorize]
+        public IActionResult RemoveImage([FromBody] List<int> imageIds)
+        {
+            try
+            {
+                foreach (var id in imageIds)
+                {
+                    imageCarRepository.RemoveImage(id);
+                }
+                return Ok("SUCCESS");
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpPost("AddImageById")]
+        [Authorize]
+        public IActionResult AddImage([FromBody] List<ImageCarDTO> imageIds)
+        {
+            try
+            {
+                foreach (var id in imageIds)
+                {
+                    id.ImageId = 0;
+                    imageCarRepository.AddImage(id);
+                }
                 return Ok("SUCCESS");
             }
             catch (Exception e)

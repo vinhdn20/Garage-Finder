@@ -32,9 +32,12 @@ namespace Repositories.Implements
         {
             return CarDAO.Instance.GetCars().Where(c => c.UserID == id).Select(p => _mapper.Map<Car, CarDTO>(p)).ToList();
         }
-        public void SaveCar(CarDTO p)
+        public CarDTO SaveCar(CarDTO p)
         {
-            CarDAO.Instance.SaveCar(_mapper.Map<CarDTO, Car>(p));
+            Car car = _mapper.Map<CarDTO, Car>(p);
+            CarDAO.Instance.SaveCar(car);
+            p = _mapper.Map<Car, CarDTO>(car);
+            return p;
         }
 
         public void UpdateCar(CarDTO p)

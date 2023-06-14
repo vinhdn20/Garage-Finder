@@ -58,6 +58,9 @@ namespace Garage_Finder_Backend
             CreateMap<ImageGarage, ImageGarageDTO>();
 
             CreateMap<UpdateGarageDTO, Garage>();
+
+            CreateMap<AddCarDTO, CarDTO>();
+            CreateMap<UpdateCarDTO, CarDTO>();
         }
     }
 }
