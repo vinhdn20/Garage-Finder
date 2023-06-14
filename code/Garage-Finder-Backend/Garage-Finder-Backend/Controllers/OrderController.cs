@@ -1,7 +1,10 @@
 ﻿using DataAccess.DTO;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Repositories.Implements;
 using Repositories.Interfaces;
+using System.Security.Claims;
 
 namespace Garage_Finder_Backend.Controllers
 {
@@ -9,7 +12,12 @@ namespace Garage_Finder_Backend.Controllers
     {
         private readonly IOrderRepository orderRepository;
         private readonly IServiceRepository serviceRepository;
-
+        private UsersDTO GetUserFromToken()
+        {
+            var jsonUser = User.FindFirstValue("user");
+            var user = JsonConvert.DeserializeObject<UsersDTO>(jsonUser);
+            return user;
+        }
         public OrderController(IOrderRepository orderRepository, IServiceRepository serviceRepository)
         {
             this.orderRepository = orderRepository;
@@ -30,12 +38,14 @@ namespace Garage_Finder_Backend.Controllers
             }
         }
 
-        [HttpGet("GetByUser/{id}")]
-        public IActionResult GetUserId([FromBody]int id)
+        [HttpGet("GetByUser")]
+        [Authorize]
+        public IActionResult GetUserId()
         {
             try
             {
-                return Ok(orderRepository.GetAllOrdersByUserId(id));
+                var user = GetUserFromToken();
+                return Ok(orderRepository.GetAllOrdersByUserId(user.UserID));
             }
             catch (Exception e)
             {
@@ -55,8 +65,6 @@ namespace Garage_Finder_Backend.Controllers
                 ServiceDTO orderService = serviceRepository.GetServiceById((int)newOrder.ServiceID);
 
                 newOrder.TimeCreate = DateTime.Now;
-                newOrder.ServiceID = orderService.ServiceID;
-                serviceRepository.UpdateService(orderService);
                 orderRepository.Add(newOrder);
 
                 return Ok("SUCCESS");

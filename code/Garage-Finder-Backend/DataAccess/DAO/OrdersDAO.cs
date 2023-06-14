@@ -70,7 +70,8 @@ namespace DataAccess.DAO
                     listOrders = (from order in context.Orders
                                   join car in context.Car on order.CarID equals car.CarID
                                   join user in context.User on car.UserID equals user.UserID
-                                  select new Orders
+                                  where user.UserID == id 
+                                  select new Orders 
                                   {
                                       OrderID = order.OrderID,
                                       CarID = order.CarID,
@@ -83,7 +84,7 @@ namespace DataAccess.DAO
                                       Content = order.Content,
                                       ImageOrders = context.ImageOrders.Where(x => x.OrderID == order.OrderID).ToList(),
                                       FileOrders = context.FileOrders.Where(x => x.OrderID == order.OrderID).ToList(),
-                                  }).ToList();
+                                  } ).ToList();
                 }
             }
             catch (Exception e)
