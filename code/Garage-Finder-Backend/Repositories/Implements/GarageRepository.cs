@@ -47,7 +47,7 @@ namespace Repositories.Implements
             GarageDAO.Instance.UpdateGarage(_mapper.Map<UpdateGarageDTO, Garage>(garage));
         }
 
-        public List<GarageDTO> FilterByCity(int provinceID) 
+        public List<GarageDTO> GetGarageByProviceId(int? provinceID) 
         {
             var garages = GarageDAO.Instance.GetGarages().Where(c => c.ProvinceID == provinceID).Select(p => _mapper.Map<Garage, GarageDTO>(p)).ToList();
             return garages;
@@ -66,6 +66,22 @@ namespace Repositories.Implements
         public List<GarageDTO> GetGarageByUser(int id)
         {
             return GarageDAO.Instance.GetByUserID(id).Select(p => _mapper.Map<Garage, GarageDTO>(p)).ToList();
+        }
+
+        public List<GarageDTO> GetGarageByDistrictsID(int? id)
+        {
+            return GarageDAO.Instance.GetGarages().Where(c => c.DistrictsID == id).Select(p => _mapper.Map<Garage, GarageDTO>(p)).ToList();
+        }
+
+        public List<GarageDTO> GetGarageByCategoryId(int? id)
+        {
+            return GarageDAO.Instance.GetGarages().Where(c => c.CategoryGarages.Any(p => p.CategoryID == id)).Select(p => _mapper.Map<Garage, GarageDTO>(p)).ToList();
+        }
+
+        public List<GarageDTO> GetGarageByBrandId(int? id)
+        {
+            var garages = GarageDAO.Instance.GetGarages().Where(c => c.GarageBrands.Any(p => p.BrandID == id)).Select(p => _mapper.Map<Garage, GarageDTO>(p)).ToList();
+            return garages;
         }
     }
 }
