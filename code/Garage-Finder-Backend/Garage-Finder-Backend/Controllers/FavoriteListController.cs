@@ -27,7 +27,7 @@ namespace Garage_Finder_Backend.Controllers
             return user;
         }
 
-        [HttpGet("GetByUser/{id}")]
+        [HttpGet("GetByUser")]
         [Authorize]
         public IActionResult GetUserId()
         {

@@ -1,8 +1,11 @@
 ﻿using DataAccess.DTO;
 using GFData.Models.Entity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Repositories.Interfaces;
+using System.Security.Claims;
 
 namespace Garage_Finder_Backend.Controllers
 {
@@ -11,7 +14,14 @@ namespace Garage_Finder_Backend.Controllers
     public class CarController : ControllerBase
     {
         private readonly ICarRepository carRepository;
-
+        #region Private
+        private UsersDTO GetUserFromToken()
+        {
+            var jsonUser = User.FindFirstValue("user");
+            var user = JsonConvert.DeserializeObject<UsersDTO>(jsonUser);
+            return user;
+        }
+        #endregion
         public CarController(ICarRepository carRepository)
         {
             this.carRepository = carRepository;
@@ -30,12 +40,14 @@ namespace Garage_Finder_Backend.Controllers
                 return BadRequest(e.Message);
             }
         }
-        [HttpGet("GetByUser/{id}")]
-        public IActionResult GetUserId(int id)
+        [HttpGet("GetByUser")]
+        [Authorize]
+        public IActionResult GetUserId()
         {
+            var user = GetUserFromToken();
             try
             {
-                return Ok(carRepository.GetCarsByUser(id));
+                return Ok(carRepository.GetCarsByUser(user.UserID));
             }
             catch (Exception e)
             {

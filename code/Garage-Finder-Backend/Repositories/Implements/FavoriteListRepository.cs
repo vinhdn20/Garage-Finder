@@ -18,9 +18,9 @@ namespace Repositories.Implements
         {
             _mapper = mapper;
         }
-        public List<FavoriteListDTO> GetListByUser(int id)
+        public List<GarageDTO> GetListByUser(int id)
         {
-            return FavoriteListDAO.Instance.GetList().Where(c => c.UserID == id).Select(p => _mapper.Map<FavoriteList, FavoriteListDTO>(p)).ToList();
+            return FavoriteListDAO.Instance.GetList(id).Select(p => _mapper.Map<Garage, GarageDTO>(p)).ToList();
         }
 
 

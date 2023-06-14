@@ -30,14 +30,16 @@ namespace DataAccess.DAO
                 }
             }
         }
-        public List<FavoriteList> GetList()
+        public List<Garage> GetList(int id)
         {
-            var favoriteList = new List<FavoriteList>();
+            var favoriteList = new List<Garage>();
             try
             {
                 using (var context = new GFDbContext())
                 {
-                    favoriteList = context.FavoriteList.ToList();
+                    favoriteList = (from garage in context.Garage
+                                    join favorite in context.FavoriteList on garage.GarageID equals favorite.GarageID
+                                    where favorite.UserID == id select garage).ToList();
                 }
             }
             catch (Exception e)

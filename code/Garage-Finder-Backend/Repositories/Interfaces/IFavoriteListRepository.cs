@@ -11,6 +11,6 @@ namespace Repositories.Interfaces
     {
         void Add(FavoriteListDTO favoriteList);
         void Delete(int id);
-        List<FavoriteListDTO> GetListByUser(int id);
+        List<GarageDTO> GetListByUser(int id);
     }
 }
