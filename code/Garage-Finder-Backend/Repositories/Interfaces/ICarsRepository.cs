@@ -9,7 +9,7 @@ namespace Repositories.Interfaces
 {
     public interface ICarRepository
     {
-        void SaveCar(CarDTO p);
+        CarDTO SaveCar(CarDTO p);
         List<CarDTO> GetCars();
         List<CarDTO> GetCarsByUser(int id);
         void UpdateCar(CarDTO p);
