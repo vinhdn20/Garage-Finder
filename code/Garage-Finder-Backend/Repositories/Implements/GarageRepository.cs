@@ -32,9 +32,9 @@ namespace Repositories.Implements
             return GarageDAO.Instance.GetGarages().Select(p => _mapper.Map<Garage, GarageDTO>(p)).ToList();
         }
 
-        public List<GarageDTO> GetGaragesByID(int id)
+        public GarageDTO GetGaragesByID(int id)
         {
-            return GarageDAO.Instance.GetGarages().Where(c => c.GarageID == id).Select(p => _mapper.Map<Garage, GarageDTO>(p)).ToList();
+            return GarageDAO.Instance.GetGarages().Where(c => c.GarageID == id).Select(p => _mapper.Map<Garage, GarageDTO>(p)).FirstOrDefault();
         }
 
         public void SaveGarage(GarageDTO p)
