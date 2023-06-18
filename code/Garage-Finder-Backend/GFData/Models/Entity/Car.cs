@@ -5,7 +5,6 @@ using System.Net.Mail;
 
 namespace GFData.Models.Entity
 {
-    [Index(nameof(LicensePlates), IsUnique = true)]
     public class Car
     {
         [Key]

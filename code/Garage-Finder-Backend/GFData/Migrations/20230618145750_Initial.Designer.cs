@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GFData.Migrations
 {
     [DbContext(typeof(GFDbContext))]
-    [Migration("20230618142941_Initial")]
+    [Migration("20230618145750_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -66,7 +66,7 @@ namespace GFData.Migrations
 
                     b.Property<string>("LicensePlates")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TypeCar")
                         .HasColumnType("nvarchar(max)");
@@ -77,9 +77,6 @@ namespace GFData.Migrations
                     b.HasKey("CarID");
 
                     b.HasIndex("BrandID");
-
-                    b.HasIndex("LicensePlates")
-                        .IsUnique();
 
                     b.HasIndex("UserID");
 

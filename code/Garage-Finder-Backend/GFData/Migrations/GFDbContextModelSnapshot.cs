@@ -64,7 +64,7 @@ namespace GFData.Migrations
 
                     b.Property<string>("LicensePlates")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TypeCar")
                         .HasColumnType("nvarchar(max)");
@@ -75,9 +75,6 @@ namespace GFData.Migrations
                     b.HasKey("CarID");
 
                     b.HasIndex("BrandID");
-
-                    b.HasIndex("LicensePlates")
-                        .IsUnique();
 
                     b.HasIndex("UserID");
 
