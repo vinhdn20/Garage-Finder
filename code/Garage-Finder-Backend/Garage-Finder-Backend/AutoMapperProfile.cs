@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DataAccess.DTO;
-using DataAccess.DTO.RequestDTO;
+using DataAccess.DTO.RequestDTO.Car;
+using DataAccess.DTO.RequestDTO.Garage;
 using GFData.Models.Entity;
 
 namespace Garage_Finder_Backend

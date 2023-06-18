@@ -32,7 +32,7 @@ namespace Garage_Finder_Backend.Controllers
         public IActionResult GetUserId()
         {
             try
-            {
+            {   
                 var user = GetUserFromToken();
                 return Ok(favoriteListRepository.GetListByUser(user.UserID));
             }

@@ -15,7 +15,7 @@ namespace DataAccess.DTO
         public string LinkImage { get; set; }
         public int RoleID { get; set; }
         public RoleNameDTO roleName { get; set; }
-        
+
         public string AccessToken { get; set; }
     }
 }

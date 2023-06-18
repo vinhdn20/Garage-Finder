@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using DataAccess.DTO;
-using DataAccess.DTO.RequestDTO;
+using DataAccess.DTO.RequestDTO.Car;
 using GFData.Models.Entity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;

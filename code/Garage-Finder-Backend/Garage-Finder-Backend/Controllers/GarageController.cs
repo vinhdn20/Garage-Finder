@@ -1,6 +1,7 @@
 ﻿using DataAccess.DAO;
 using DataAccess.DTO;
-using DataAccess.DTO.RequestDTO;
+using DataAccess.DTO.RequestDTO.Category;
+using DataAccess.DTO.RequestDTO.Garage;
 using GFData.Models.Entity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

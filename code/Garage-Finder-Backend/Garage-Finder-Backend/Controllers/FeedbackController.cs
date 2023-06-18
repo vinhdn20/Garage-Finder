@@ -19,7 +19,7 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpGet("GetByGarage/{id}")]
-        public IActionResult GetUserId(int id)
+        public IActionResult GetGarageId(int id)
         {
             try
             {

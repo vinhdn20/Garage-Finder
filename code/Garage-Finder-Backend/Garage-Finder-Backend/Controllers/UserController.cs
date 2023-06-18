@@ -8,12 +8,13 @@ using Newtonsoft.Json;
 using Repositories.Interfaces;
 using DataAccess.DTO;
 using RestSharp;
-using Garage_Finder_Backend.Models.RequestModels;
 using Services.GgService;
 using Services.PhoneVerifyService;
 using Services.StorageApi;
 using Azure.Storage.Blobs;
 using System.Net.Mail;
+using DataAccess.DTO.RequestDTO.UserDTO;
+using DataAccess.DTO.RequestDTO.User;
 
 namespace Garage_Finder_Backend.Controllers
 {
@@ -228,7 +229,7 @@ namespace Garage_Finder_Backend.Controllers
 
         [HttpPost]
         [Route("forgot")]
-        public IActionResult ForgotPassword([FromBody] ForgotPassModel forgotPassModel)
+        public IActionResult ForgotPassword([FromBody] ForgotPassDTO forgotPassModel)
         {
             try
             {
