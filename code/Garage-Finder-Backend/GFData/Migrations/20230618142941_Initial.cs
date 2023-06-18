@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace GFData.Migrations
 {
-    public partial class Initital : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -172,7 +172,8 @@ namespace GFData.Migrations
                     EmailAddress = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ProvinceId = table.Column<int>(type: "int", nullable: true),
+                    DistrictId = table.Column<int>(type: "int", nullable: true),
                     AddressDetail = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LinkImage = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RoleID = table.Column<int>(type: "int", nullable: false)
@@ -227,7 +228,8 @@ namespace GFData.Migrations
                     LicensePlates = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     BrandID = table.Column<int>(type: "int", nullable: false),
                     Color = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TypeCar = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    TypeCar = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Avatar = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -397,26 +399,6 @@ namespace GFData.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ImageCar",
-                columns: table => new
-                {
-                    ImageId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CarID = table.Column<int>(type: "int", nullable: false),
-                    ImageLink = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ImageCar", x => x.ImageId);
-                    table.ForeignKey(
-                        name: "FK_ImageCar_Car_CarID",
-                        column: x => x.CarID,
-                        principalTable: "Car",
-                        principalColumn: "CarID",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Orders",
                 columns: table => new
                 {
@@ -563,11 +545,6 @@ namespace GFData.Migrations
                 column: "UserID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ImageCar_CarID",
-                table: "ImageCar",
-                column: "CarID");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_ImageGarage_GarageID",
                 table: "ImageGarage",
                 column: "GarageID");
@@ -651,9 +628,6 @@ namespace GFData.Migrations
 
             migrationBuilder.DropTable(
                 name: "GarageInfo");
-
-            migrationBuilder.DropTable(
-                name: "ImageCar");
 
             migrationBuilder.DropTable(
                 name: "ImageGarage");

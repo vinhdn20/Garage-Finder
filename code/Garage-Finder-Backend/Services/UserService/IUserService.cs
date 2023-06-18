@@ -1,4 +1,5 @@
 ﻿using DataAccess.DTO.RequestDTO.UserDTO;
+using DataAccess.DTO.ResponeModels.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +12,6 @@ namespace Services.UserService
     {
         void UpdateUser(UserUpdateDTO usersDTO, int userID);
         bool SendPhoneCode(string phoneNumber);
+        UserInfor Get(int userId);
     }
 }

@@ -1,5 +1,7 @@
-﻿using DataAccess.DTO;
+﻿using AutoMapper;
+using DataAccess.DTO;
 using DataAccess.DTO.RequestDTO.UserDTO;
+using DataAccess.DTO.ResponeModels.User;
 using Garage_Finder_Backend.Services.AuthService;
 using GFData.Models.Entity;
 using Microsoft.Extensions.Configuration;
@@ -21,24 +23,30 @@ namespace Services.UserService
         private readonly JwtSettings _jwtSettings;
         private readonly JwtService _jwtService = new JwtService();
         private readonly IUsersRepository _userRepository;
-        private readonly IRefreshTokenRepository _refreshTokenRepository;
-        private readonly IRoleNameRepository _roleNameRepository;
         private readonly IPhoneVerifyService _phoneVerifyService;
-        private readonly IStorageCloud _storageCloud;
-        public readonly IConfiguration _configuration;
+        private readonly IMapper _mapper;
         #endregion
 
         public UserService(IOptionsSnapshot<JwtSettings> jwtSettings,
-            IUsersRepository usersRepository, IRefreshTokenRepository refreshTokenRepository,
-            IRoleNameRepository roleNameRepository, IPhoneVerifyService phoneVerifyService, IStorageCloud storageCloud, IConfiguration configuration)
+            IUsersRepository usersRepository, IMapper mapper)
         {
             _jwtSettings = jwtSettings.Value;
             _userRepository = usersRepository;
-            _refreshTokenRepository = refreshTokenRepository;
-            _roleNameRepository = roleNameRepository;
-            _phoneVerifyService = phoneVerifyService;
-            _storageCloud = storageCloud;
-            _configuration = configuration;
+            _mapper = mapper;
+        }
+
+        public UserInfor Get(int userId)
+        {
+            try
+            {
+                var userDTO = _userRepository.GetUserByID(userId);
+                var result = _mapper.Map<UserInfor>(userDTO);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public void UpdateUser(UserUpdateDTO usersDTO, int userID)
@@ -49,7 +57,8 @@ namespace Services.UserService
                 userUpdate.Name = usersDTO.Name;
                 userUpdate.PhoneNumber = usersDTO.PhoneNumber;
                 userUpdate.EmailAddress = usersDTO.EmailAddress;
-                userUpdate.Address = usersDTO.Address;
+                userUpdate.DistrictId = usersDTO.DistrictId;
+                userUpdate.ProvinceId = usersDTO.ProvinceId;
                 userUpdate.AddressDetail = usersDTO.AddressDetail;
                 _userRepository.Update(userUpdate);
             }

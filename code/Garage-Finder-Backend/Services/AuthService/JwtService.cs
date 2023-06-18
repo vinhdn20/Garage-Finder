@@ -1,4 +1,5 @@
 ﻿using DataAccess.DTO;
+using DataAccess.DTO.ResponeModels.User;
 using GFData.Models.Entity;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
@@ -11,7 +12,7 @@ namespace Garage_Finder_Backend.Services.AuthService
 {
     public class JwtService
     {
-        public string GenerateJwt(UsersDTO user,RoleNameDTO roleName, JwtSettings jwtSettings)
+        public string GenerateJwt(UserInfor user,RoleNameDTO roleName, JwtSettings jwtSettings)
         {
             var claims = new List<Claim>
                 {

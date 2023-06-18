@@ -122,7 +122,8 @@ namespace DataAccess.DAO
                              RoleName = context.RoleName.Where(x => x.RoleID == user.RoleID).FirstOrDefault(),
                              Status = user.Status,
                              Name = user.Name,
-                             Address = user.Address,
+                             DistrictId = user.DistrictId,
+                             ProvinceId = user.ProvinceId,
                              AddressDetail = user.AddressDetail,
                          }).FirstOrDefault();
 
@@ -159,7 +160,8 @@ namespace DataAccess.DAO
                             RoleName = context.RoleName.Where(x => x.RoleID == user.RoleID).FirstOrDefault(),
                             Status = user.Status,
                             Name = user.Name,
-                            Address = user.Address,
+                            DistrictId = user.DistrictId,
+                            ProvinceId = user.ProvinceId,
                             AddressDetail = user.AddressDetail,
                         }).FirstOrDefault();
                     if (p == null)
