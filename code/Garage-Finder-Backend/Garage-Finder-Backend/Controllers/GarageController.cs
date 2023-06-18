@@ -133,26 +133,26 @@ namespace Garage_Finder_Backend.Controllers
         }
 
 
-        [HttpGet("GetByKeyWord")]
-        public IActionResult SearchGarage(string? keyword, string? location)
+        [HttpPost("GetByKeyWord")]
+        public IActionResult SearchGarage([FromBody]SearchGarage searchGarage)
         {
             // Lấy danh sách garage từ nguồn dữ liệu
             var garages = garageRepository.GetGarages();
 
             // Áp dụng các bộ lọc
-            if (!string.IsNullOrEmpty(keyword) && string.IsNullOrEmpty(location))
+            if (!string.IsNullOrEmpty(searchGarage.keyword) && searchGarage.provinceID.HasValue && searchGarage.districtsID.HasValue && searchGarage.categoriesID.HasValue)
             {
-                garages = garages.Where(g => g.GarageName.Contains(keyword)).ToList();
+                garages = garages.Where(g => g.GarageName.Contains(searchGarage.keyword)).ToList();
             }
 
-            if (string.IsNullOrEmpty(keyword) && !string.IsNullOrEmpty(location))
+            if (string.IsNullOrEmpty(searchGarage.keyword) && !searchGarage.provinceID.HasValue && !searchGarage.districtsID.HasValue && searchGarage.categoriesID.HasValue)
             {
-                garages = garages.Where(g => g.AddressDetail.Contains(location)).ToList();
+                garages = garages.Where(g => g.ProvinceID == searchGarage.provinceID || g.DistrictsID == searchGarage.districtsID).ToList();
             }
 
-            if (!string.IsNullOrEmpty(keyword) && !string.IsNullOrEmpty(location))
+            if (!string.IsNullOrEmpty(searchGarage.keyword) && searchGarage.provinceID.HasValue && searchGarage.districtsID.HasValue && searchGarage.categoriesID.HasValue)
             {
-                garages = garages.Where(g => g.GarageName.Contains(keyword) || g.AddressDetail.Contains(location)).ToList();
+                garages = garages.Where(x => x.CategoryGarages.Any(c => c.CategoryID == searchGarage.categoriesID)).ToList();
             }
 
 
