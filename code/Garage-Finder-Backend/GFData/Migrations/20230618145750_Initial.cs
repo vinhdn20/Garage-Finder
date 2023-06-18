@@ -225,7 +225,7 @@ namespace GFData.Migrations
                     CarID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserID = table.Column<int>(type: "int", nullable: false),
-                    LicensePlates = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    LicensePlates = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     BrandID = table.Column<int>(type: "int", nullable: false),
                     Color = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TypeCar = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -477,12 +477,6 @@ namespace GFData.Migrations
                 name: "IX_Car_BrandID",
                 table: "Car",
                 column: "BrandID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Car_LicensePlates",
-                table: "Car",
-                column: "LicensePlates",
-                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Car_UserID",
