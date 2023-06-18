@@ -58,5 +58,26 @@ namespace Services.UserService
                 throw new Exception(ex.Message);
             }
         }
+
+        public bool SendPhoneCode(string phoneNumber)
+        {
+            try
+            {
+                var user = _userRepository.GetUsersByPhone(phoneNumber);
+                if(user == null)
+                {
+                    throw new Exception("Can't find phone number");
+                }
+                if (!_phoneVerifyService.SendCodeAsync(phoneNumber).Result)
+                {
+                    return false;
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

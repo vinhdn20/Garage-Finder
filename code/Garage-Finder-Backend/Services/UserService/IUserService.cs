@@ -10,5 +10,6 @@ namespace Services.UserService
     public interface IUserService
     {
         void UpdateUser(UserUpdateDTO usersDTO, int userID);
+        bool SendPhoneCode(string phoneNumber);
     }
 }

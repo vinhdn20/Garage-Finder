@@ -249,7 +249,7 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
-                if (_phoneVerifyService.SendCodeAsync(phoneNumber).Result)
+                if (_userService.SendPhoneCode(phoneNumber))
                 {
                     return Ok();
                 }
