@@ -6,9 +6,8 @@ using Repositories;
 using Garage_Finder_Backend;
 using Twilio;
 using Services.PhoneVerifyService;
-using Services.StorageApi;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
+using Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +24,7 @@ builder.Services.AddCors(options =>
 });
 builder.Services.AddControllers();
 builder.Services.ConfigRepository();
+builder.Services.ConfigServices();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -90,7 +90,6 @@ builder.Services
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddAuthorization();
 builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
-builder.Services.AddSingleton<IStorageCloud, AzureBlob>();
 
 var accountSid = builder.Configuration["Twilio:AccountSID"];
 var authToken = builder.Configuration["Twilio:AuthToken"];
