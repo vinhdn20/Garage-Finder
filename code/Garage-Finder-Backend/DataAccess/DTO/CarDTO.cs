@@ -8,6 +8,6 @@
         public int BrandID { get; set; }   
         public string Color { get; set; }   
         public string TypeCar { get; set; }
-        public List<ImageCarDTO> ImageCars { get; set; }
+        public string Avatar { get; set; }
     }
 }

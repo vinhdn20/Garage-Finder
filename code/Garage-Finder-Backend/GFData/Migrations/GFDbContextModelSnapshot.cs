@@ -53,6 +53,9 @@ namespace GFData.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CarID"), 1L, 1);
 
+                    b.Property<string>("Avatar")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("BrandID")
                         .HasColumnType("int");
 
@@ -293,28 +296,6 @@ namespace GFData.Migrations
                     b.HasIndex("UserID");
 
                     b.ToTable("GarageInfo");
-                });
-
-            modelBuilder.Entity("GFData.Models.Entity.ImageCar", b =>
-                {
-                    b.Property<int>("ImageId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ImageId"), 1L, 1);
-
-                    b.Property<int>("CarID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ImageLink")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ImageId");
-
-                    b.HasIndex("CarID");
-
-                    b.ToTable("ImageCar");
                 });
 
             modelBuilder.Entity("GFData.Models.Entity.ImageGarage", b =>
@@ -743,17 +724,6 @@ namespace GFData.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("GFData.Models.Entity.ImageCar", b =>
-                {
-                    b.HasOne("GFData.Models.Entity.Car", "Car")
-                        .WithMany("ImageCars")
-                        .HasForeignKey("CarID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Car");
-                });
-
             modelBuilder.Entity("GFData.Models.Entity.ImageGarage", b =>
                 {
                     b.HasOne("GFData.Models.Entity.Garage", "Garage")
@@ -879,8 +849,6 @@ namespace GFData.Migrations
 
             modelBuilder.Entity("GFData.Models.Entity.Car", b =>
                 {
-                    b.Navigation("ImageCars");
-
                     b.Navigation("Orders");
                 });
 

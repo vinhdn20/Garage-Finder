@@ -12,6 +12,6 @@ namespace DataAccess.DTO.RequestDTO.Car
         public int BrandID { get; set; }
         public string Color { get; set; }
         public string TypeCar { get; set; }
-        public List<string> ImageLink { get; set; }
+        public string Avatar { get; set; }
     }
 }

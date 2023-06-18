@@ -18,10 +18,10 @@ namespace GFData.Models.Entity
         public int BrandID { get; set; }
         public string? Color { get; set; }
         public string? TypeCar { get; set; }
+        public string? Avatar { get; set; }
 
         public Users User { get; set; }
         public Brand Brand { get; set; }
         public ICollection<Orders> Orders { get; set; }
-        public IEnumerable<ImageCar> ImageCars { get; set; }
     }
 }

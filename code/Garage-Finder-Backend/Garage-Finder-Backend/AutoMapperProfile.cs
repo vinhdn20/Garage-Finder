@@ -48,8 +48,6 @@ namespace Garage_Finder_Backend
             CreateMap<UserInfor,UsersDTO>();
             CreateMap<Users, UserInfor>();
 
-            CreateMap<ImageCarDTO, ImageCar>();
-            CreateMap<ImageCar, ImageCarDTO>();
             CreateMap<FileOrders, FileOrdersDTO>();
             CreateMap<FileOrdersDTO, FileOrders>();
             CreateMap<ImageOrders, ImageOrdersDTO>();

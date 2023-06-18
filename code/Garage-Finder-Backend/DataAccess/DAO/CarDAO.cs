@@ -59,7 +59,7 @@ namespace DataAccess.DAO
                                     BrandID = car.BrandID,
                                     Color = car.Color,
                                     TypeCar = car.TypeCar,
-                                    ImageCars = context.ImageCar.Where(imageCar => car.CarID == imageCar.CarID).ToList(),
+                                    Avatar = car.Avatar,
                                     Orders = context.Orders.Where(orders => car.CarID == orders.CarID).ToList(),
                                 });
                     return new List<Car>(listCars);
