@@ -1,10 +1,10 @@
 using Microsoft.Extensions.DependencyInjection;
 using Repositories.Implements;
 using Repositories.Implements.BrandRepository;
+using Repositories.Implements.CarRepository;
 using Repositories.Implements.CategoryRepository;
-using Repositories.Implements.FavoriteListRepository;
 using Repositories.Implements.FeedbackRepository;
-using Repositories.Implements.GarageRepository;
+using Repositories.Implements.Garage;
 using Repositories.Implements.OrderRepository;
 using Repositories.Implements.ServiceRepository;
 using Repositories.Implements.UserRepository;

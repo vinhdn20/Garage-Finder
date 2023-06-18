@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DataAccess.DAO;
 using DataAccess.DTO;
+using DataAccess.DTO.RequestDTO.Garage;
 using GFData.Models.Entity;
 using Repositories.Interfaces;
 using System;
@@ -20,7 +21,7 @@ namespace Repositories.Implements
         }
         public List<GarageDTO> GetListByUser(int id)
         {
-            return FavoriteListDAO.Instance.GetList(id).Select(p => _mapper.Map<Garage, GarageDTO>(p)).ToList();
+            return FavoriteListDAO.Instance.GetList(id).Select(p => _mapper.Map<GFData.Models.Entity.Garage, GarageDTO>(p)).ToList();
         }
 
 

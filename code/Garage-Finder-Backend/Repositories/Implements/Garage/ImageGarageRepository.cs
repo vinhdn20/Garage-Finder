@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Repositories.Implements.GarageRepository
+namespace Repositories.Implements.Garage 
 {
     public class ImageGarageRepository : IImageGarageRepository
     {

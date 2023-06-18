@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Repositories.Implements.GarageRepository.GarageRepository
+namespace Repositories.Implements.Garage 
 {
     public class GarageBrandRepository : IGarageBrandRepository
     {
