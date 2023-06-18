@@ -15,6 +15,7 @@ using Azure.Storage.Blobs;
 using System.Net.Mail;
 using DataAccess.DTO.RequestDTO.UserDTO;
 using DataAccess.DTO.RequestDTO.User;
+using Services.UserService;
 
 namespace Garage_Finder_Backend.Controllers
 {
@@ -30,12 +31,14 @@ namespace Garage_Finder_Backend.Controllers
         private readonly IRoleNameRepository _roleNameRepository;
         private readonly IPhoneVerifyService _phoneVerifyService;
         private readonly IStorageCloud _storageCloud;
-        public readonly IConfiguration _configuration;
+        private readonly IConfiguration _configuration;
+        private readonly IUserService _userService;
         #endregion
 
         public UserController(IOptionsSnapshot<JwtSettings> jwtSettings,
             IUsersRepository usersRepository, IRefreshTokenRepository refreshTokenRepository,
-            IRoleNameRepository roleNameRepository, IPhoneVerifyService phoneVerifyService, IStorageCloud storageCloud, IConfiguration configuration)
+            IRoleNameRepository roleNameRepository, IPhoneVerifyService phoneVerifyService, IStorageCloud storageCloud,
+            IConfiguration configuration, IUserService userService)
         {
             _jwtSettings = jwtSettings.Value;
             _userRepository = usersRepository;
@@ -44,6 +47,7 @@ namespace Garage_Finder_Backend.Controllers
             _phoneVerifyService = phoneVerifyService;
             _storageCloud = storageCloud;
             _configuration = configuration;
+            _userService = userService;
         }
 
         [HttpGet("get")]
@@ -61,17 +65,7 @@ namespace Garage_Finder_Backend.Controllers
             try
             {
                 var user = GetUserFromToken();
-                var userUpdate = new UsersDTO()
-                {
-                    UserID = user.UserID,
-                    Name = usersDTO.Name,
-                    PhoneNumber = usersDTO.PhoneNumber,
-                    EmailAddress = usersDTO.EmailAddress,
-                    Password = usersDTO.Password,
-                    LinkImage = usersDTO.LinkImage,
-                    RoleID = user.RoleID
-                };
-                _userRepository.Update(userUpdate);
+                _userService.UpdateUser(usersDTO, user.UserID);
                 return Ok();
             }
             catch (Exception ex)

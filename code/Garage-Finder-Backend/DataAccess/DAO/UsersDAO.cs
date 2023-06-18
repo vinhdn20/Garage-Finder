@@ -116,11 +116,14 @@ namespace DataAccess.DAO
                              UserID = user.UserID,
                              EmailAddress = user.EmailAddress,
                              PhoneNumber = user.PhoneNumber,
+                             Password = user.Password,
                              LinkImage = user.LinkImage,
                              RoleID = user.RoleID,
                              RoleName = context.RoleName.Where(x => x.RoleID == user.RoleID).FirstOrDefault(),
                              Status = user.Status,
-                             Name = user.Name
+                             Name = user.Name,
+                             Address = user.Address,
+                             AddressDetail = user.AddressDetail,
                          }).FirstOrDefault();
 
                     if (p == null)
@@ -150,11 +153,14 @@ namespace DataAccess.DAO
                             UserID = user.UserID,
                             EmailAddress = user.EmailAddress, 
                             PhoneNumber = user.PhoneNumber,
+                            Password = user.Password,
                             LinkImage = user.LinkImage,
                             RoleID = user.RoleID,
                             RoleName = context.RoleName.Where(x => x.RoleID == user.RoleID).FirstOrDefault(),
                             Status = user.Status,
-                            Name = user.Name
+                            Name = user.Name,
+                            Address = user.Address,
+                            AddressDetail = user.AddressDetail,
                         }).FirstOrDefault();
                     if (p == null)
                     {
@@ -191,7 +197,7 @@ namespace DataAccess.DAO
             {
                 using (var context = new GFDbContext())
                 {
-                    context.Entry<Users>(user).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                    context.User.Update(user);
                     context.SaveChanges();
                 }
             }
