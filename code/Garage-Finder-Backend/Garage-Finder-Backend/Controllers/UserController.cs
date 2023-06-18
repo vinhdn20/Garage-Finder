@@ -16,6 +16,8 @@ using System.Net.Mail;
 using DataAccess.DTO.RequestDTO.UserDTO;
 using DataAccess.DTO.RequestDTO.User;
 using Services.UserService;
+using AutoMapper;
+using DataAccess.DTO.ResponeModels.User;
 
 namespace Garage_Finder_Backend.Controllers
 {
@@ -33,12 +35,13 @@ namespace Garage_Finder_Backend.Controllers
         private readonly IStorageCloud _storageCloud;
         private readonly IConfiguration _configuration;
         private readonly IUserService _userService;
+        private readonly IMapper _mapper;
         #endregion
 
         public UserController(IOptionsSnapshot<JwtSettings> jwtSettings,
             IUsersRepository usersRepository, IRefreshTokenRepository refreshTokenRepository,
             IRoleNameRepository roleNameRepository, IPhoneVerifyService phoneVerifyService, IStorageCloud storageCloud,
-            IConfiguration configuration, IUserService userService)
+            IConfiguration configuration, IUserService userService, IMapper mapper)
         {
             _jwtSettings = jwtSettings.Value;
             _userRepository = usersRepository;
@@ -48,6 +51,7 @@ namespace Garage_Finder_Backend.Controllers
             _storageCloud = storageCloud;
             _configuration = configuration;
             _userService = userService;
+            _mapper = mapper;
         }
 
         [HttpGet("get")]
@@ -55,8 +59,9 @@ namespace Garage_Finder_Backend.Controllers
         public IActionResult Get()
         {
             var user = GetUserFromToken();
-            user = _userRepository.GetUserByID(user.UserID);
-            return Ok(user);
+            //user = _userRepository.GetUserByID(user.UserID);
+            var result = _userService.Get(user.UserID);
+            return Ok(result);
         }
         [HttpPost("update")]
         [Authorize]
@@ -118,15 +123,16 @@ namespace Garage_Finder_Backend.Controllers
                 var usersDTO = _userRepository.GetAll().Find(x => x.EmailAddress.Equals(email));
                 if (usersDTO != null)
                 {
-                    var roleName = _roleNameRepository.GetUserRole(usersDTO.RoleID);
-                    var gfAccessToken = _jwtService.GenerateJwt(usersDTO, roleName, _jwtSettings);
-                    usersDTO.AccessToken = gfAccessToken;
-                    usersDTO.roleName = roleName;
+                    var userInfor = _mapper.Map<UsersDTO, UserInfor>(usersDTO);
+                    var roleName = _roleNameRepository.GetUserRole(userInfor.RoleID);
+                    var gfAccessToken = _jwtService.GenerateJwt(userInfor, roleName, _jwtSettings);
+                    userInfor.AccessToken = gfAccessToken;
+                    userInfor.roleName = roleName;
 
-                    var refreshToken = _jwtService.GenerateRefreshToken(_jwtSettings, usersDTO.UserID);
+                    var refreshToken = _jwtService.GenerateRefreshToken(_jwtSettings, userInfor.UserID);
                     _refreshTokenRepository.AddOrUpdateToken(refreshToken);
                     SetRefreshToken(refreshToken);
-                    return Ok(usersDTO);
+                    return Ok(userInfor);
                 }
                 else
                 {
@@ -138,12 +144,13 @@ namespace Garage_Finder_Backend.Controllers
                     };
                     _userRepository.Register(userDTO);
                     usersDTO = _userRepository.GetAll().Find(x => x.EmailAddress.Equals(email));
-                    var roleName = _roleNameRepository.GetUserRole(usersDTO.RoleID);
-                    var gfAccessToken = _jwtService.GenerateJwt(usersDTO, roleName, _jwtSettings);
-                    usersDTO.AccessToken = gfAccessToken;
-                    usersDTO.roleName = roleName;
+                    var userInfor = _mapper.Map<UsersDTO, UserInfor>(usersDTO);
+                    var roleName = _roleNameRepository.GetUserRole(userInfor.RoleID);
+                    var gfAccessToken = _jwtService.GenerateJwt(userInfor, roleName, _jwtSettings);
+                    userInfor.AccessToken = gfAccessToken;
+                    userInfor.roleName = roleName;
 
-                    var refreshToken = _jwtService.GenerateRefreshToken(_jwtSettings, usersDTO.UserID);
+                    var refreshToken = _jwtService.GenerateRefreshToken(_jwtSettings, userInfor.UserID);
                     _refreshTokenRepository.AddOrUpdateToken(refreshToken);
                     SetRefreshToken(refreshToken);
                     return Ok(userDTO);
@@ -174,9 +181,11 @@ namespace Garage_Finder_Backend.Controllers
                         else
                         {
                             var usersDTO = JsonConvert.DeserializeObject<UsersDTO>(User.FindFirstValue("user"));
-                            var roleName = _roleNameRepository.GetUserRole(usersDTO.RoleID);
-                            string token = _jwtService.GenerateJwt(usersDTO, roleName, _jwtSettings);
-                            var newRefreshToken = _jwtService.GenerateRefreshToken(_jwtSettings, usersDTO.UserID);
+
+                            var userInfor = _mapper.Map<UsersDTO, UserInfor>(usersDTO);
+                            var roleName = _roleNameRepository.GetUserRole(userInfor.RoleID);
+                            string token = _jwtService.GenerateJwt(userInfor, roleName, _jwtSettings);
+                            var newRefreshToken = _jwtService.GenerateRefreshToken(_jwtSettings, userInfor.UserID);
                             newRefreshToken.TokenID = userRefreshToken[i].TokenID;
                             _refreshTokenRepository.AddOrUpdateToken(newRefreshToken);
                             SetRefreshToken(newRefreshToken);
@@ -314,10 +323,10 @@ namespace Garage_Finder_Backend.Controllers
             }
         }
 
-        private UsersDTO GetUserFromToken()
+        private UserInfor GetUserFromToken()
         {
             var jsonUser = User.FindFirstValue("user");
-            var user = JsonConvert.DeserializeObject<UsersDTO>(jsonUser);
+            var user = JsonConvert.DeserializeObject<UserInfor>(jsonUser);
             return user;
         }
     }

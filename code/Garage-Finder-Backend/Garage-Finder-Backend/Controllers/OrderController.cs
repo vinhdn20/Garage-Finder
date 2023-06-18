@@ -1,4 +1,5 @@
 ﻿using DataAccess.DTO;
+using DataAccess.DTO.ResponeModels.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -12,10 +13,10 @@ namespace Garage_Finder_Backend.Controllers
     {
         private readonly IOrderRepository orderRepository;
         private readonly IServiceRepository serviceRepository;
-        private UsersDTO GetUserFromToken()
+        private UserInfor GetUserFromToken()
         {
             var jsonUser = User.FindFirstValue("user");
-            var user = JsonConvert.DeserializeObject<UsersDTO>(jsonUser);
+            var user = JsonConvert.DeserializeObject<UserInfor>(jsonUser);
             return user;
         }
         public OrderController(IOrderRepository orderRepository, IServiceRepository serviceRepository)

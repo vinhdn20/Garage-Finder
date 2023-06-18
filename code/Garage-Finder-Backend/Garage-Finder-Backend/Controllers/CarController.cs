@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DataAccess.DTO;
 using DataAccess.DTO.RequestDTO.Car;
+using DataAccess.DTO.ResponeModels.User;
 using GFData.Models.Entity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -19,10 +20,10 @@ namespace Garage_Finder_Backend.Controllers
         private readonly IImageCarRepository imageCarRepository;
         private readonly IMapper mapper;
         #region Private
-        private UsersDTO GetUserFromToken()
+        private UserInfor GetUserFromToken()
         {
             var jsonUser = User.FindFirstValue("user");
-            var user = JsonConvert.DeserializeObject<UsersDTO>(jsonUser);
+            var user = JsonConvert.DeserializeObject<UserInfor>(jsonUser);
             return user;
         }
         #endregion

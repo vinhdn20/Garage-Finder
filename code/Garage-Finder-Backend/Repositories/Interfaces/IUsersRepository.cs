@@ -1,4 +1,5 @@
 ﻿using DataAccess.DTO;
+using DataAccess.DTO.ResponeModels.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace Repositories.Interfaces
 {
     public interface IUsersRepository
     {
-        UsersDTO Login(string email, string password);
+        UserInfor Login(string email, string password);
         UsersDTO GetUsersByEmail(string email);
         UsersDTO GetUsersByPhone(string phone);
         UsersDTO GetUserByID(int id);

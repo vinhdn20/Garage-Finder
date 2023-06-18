@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DataAccess.DAO;
 using DataAccess.DTO;
+using DataAccess.DTO.ResponeModels.User;
 using GFData.Models.Entity;
 using Repositories.Interfaces;
 using System;
@@ -42,9 +43,9 @@ namespace Repositories.Implements.UserRepository
             return _mapper.Map<Users, UsersDTO>(UsersDAO.Instance.FindUserByPhone(phone));
         }
 
-        public UsersDTO Login(string email, string password)
+        public UserInfor Login(string email, string password)
         {
-            return _mapper.Map<Users, UsersDTO>(UsersDAO.Instance.FindUserByEmailPassword(email, password));
+            return _mapper.Map<Users, UserInfor>(UsersDAO.Instance.FindUserByEmailPassword(email, password));
         }
 
         public void Register(UsersDTO user)
