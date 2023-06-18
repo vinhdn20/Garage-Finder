@@ -20,5 +20,6 @@ namespace DataAccess.DTO
         public RoleNameDTO roleName { get; set; }
 
         public string AccessToken { get; set; }
+        public RefreshTokenDTO RefreshToken { get; set; }
     }
 }

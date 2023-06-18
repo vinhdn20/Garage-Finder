@@ -102,7 +102,8 @@ namespace Garage_Finder_Backend.Controllers
 
                 var refreshToken = _jwtService.GenerateRefreshToken(_jwtSettings, usersDTO.UserID);
                 _refreshTokenRepository.AddOrUpdateToken(refreshToken);
-                SetRefreshToken(refreshToken);
+                usersDTO.RefreshToken = refreshToken;
+                //SetRefreshToken(refreshToken);
                 return Ok(usersDTO);
             }
             catch (Exception ex)
@@ -131,7 +132,8 @@ namespace Garage_Finder_Backend.Controllers
 
                     var refreshToken = _jwtService.GenerateRefreshToken(_jwtSettings, userInfor.UserID);
                     _refreshTokenRepository.AddOrUpdateToken(refreshToken);
-                    SetRefreshToken(refreshToken);
+                    userInfor.RefreshToken = refreshToken;
+                    //SetRefreshToken(refreshToken);
                     return Ok(userInfor);
                 }
                 else
@@ -152,7 +154,8 @@ namespace Garage_Finder_Backend.Controllers
 
                     var refreshToken = _jwtService.GenerateRefreshToken(_jwtSettings, userInfor.UserID);
                     _refreshTokenRepository.AddOrUpdateToken(refreshToken);
-                    SetRefreshToken(refreshToken);
+                    userInfor.RefreshToken = refreshToken;
+                    //SetRefreshToken(refreshToken);
                     return Ok(userDTO);
                 }
             }
@@ -163,11 +166,10 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpPost("refresh-token")]
-        public IActionResult RefreshToken()
+        public IActionResult RefreshToken([FromBody] string refreshToken)
         {
             try
             {
-                var refreshToken = Request.Cookies["refreshToken"];
                 var user = GetUserFromToken();
                 var userRefreshToken = _refreshTokenRepository.GetRefreshToken(user.UserID);
                 for (int i = 0; i < userRefreshToken.Count; i++)
@@ -188,9 +190,9 @@ namespace Garage_Finder_Backend.Controllers
                             var newRefreshToken = _jwtService.GenerateRefreshToken(_jwtSettings, userInfor.UserID);
                             newRefreshToken.TokenID = userRefreshToken[i].TokenID;
                             _refreshTokenRepository.AddOrUpdateToken(newRefreshToken);
-                            SetRefreshToken(newRefreshToken);
+                            //SetRefreshToken(newRefreshToken);
 
-                            return Ok(token);
+                            return Ok(new { token = token, refreshToken});
                         }
                     }
                 }
@@ -203,16 +205,16 @@ namespace Garage_Finder_Backend.Controllers
             }
         }
 
-        private void SetRefreshToken(RefreshTokenDTO refreshToken)
-        {
-            var cookiesOptions = new CookieOptions
-            {
-                HttpOnly = true,
-                Expires = refreshToken.ExpiresDate
-            };
+        //private void SetRefreshToken(RefreshTokenDTO refreshToken)
+        //{
+        //    var cookiesOptions = new CookieOptions
+        //    {
+        //        HttpOnly = true,
+        //        Expires = refreshToken.ExpiresDate
+        //    };
             
-            Response.Cookies.Append("refreshToken", refreshToken.Token, cookiesOptions);
-        }
+        //    Response.Cookies.Append("refreshToken", refreshToken.Token, cookiesOptions);
+        //}
 
         [HttpGet("logout")]
         [Authorize]

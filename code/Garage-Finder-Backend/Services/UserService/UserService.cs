@@ -23,26 +23,15 @@ namespace Services.UserService
         private readonly JwtSettings _jwtSettings;
         private readonly JwtService _jwtService = new JwtService();
         private readonly IUsersRepository _userRepository;
-        private readonly IRefreshTokenRepository _refreshTokenRepository;
-        private readonly IRoleNameRepository _roleNameRepository;
         private readonly IPhoneVerifyService _phoneVerifyService;
-        private readonly IStorageCloud _storageCloud;
-        private readonly IConfiguration _configuration;
         private readonly IMapper _mapper;
         #endregion
 
         public UserService(IOptionsSnapshot<JwtSettings> jwtSettings,
-            IUsersRepository usersRepository, IRefreshTokenRepository refreshTokenRepository,
-            IRoleNameRepository roleNameRepository, IPhoneVerifyService phoneVerifyService, 
-            IStorageCloud storageCloud, IConfiguration configuration, IMapper mapper)
+            IUsersRepository usersRepository, IMapper mapper)
         {
             _jwtSettings = jwtSettings.Value;
             _userRepository = usersRepository;
-            _refreshTokenRepository = refreshTokenRepository;
-            _roleNameRepository = roleNameRepository;
-            _phoneVerifyService = phoneVerifyService;
-            _storageCloud = storageCloud;
-            _configuration = configuration;
             _mapper = mapper;
         }
 
