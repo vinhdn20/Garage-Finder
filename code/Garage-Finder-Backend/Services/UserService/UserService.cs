@@ -28,11 +28,12 @@ namespace Services.UserService
         #endregion
 
         public UserService(IOptionsSnapshot<JwtSettings> jwtSettings,
-            IUsersRepository usersRepository, IMapper mapper)
+            IUsersRepository usersRepository, IMapper mapper, IPhoneVerifyService phoneVerifyService)
         {
             _jwtSettings = jwtSettings.Value;
             _userRepository = usersRepository;
             _mapper = mapper;
+            _phoneVerifyService = phoneVerifyService;
         }
 
         public UserInfor Get(int userId)
