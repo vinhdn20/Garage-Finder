@@ -46,7 +46,7 @@ namespace Garage_Finder_Backend.Controllers
 
         [HttpPost("Add/{garageId}")]
         [Authorize]
-        public IActionResult Add(int garageId)
+        public IActionResult AddFavoriteGarage(int garageId)
         {
             try
             {
@@ -73,7 +73,7 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpDelete("Delete/{garageId}")]
-        public IActionResult Delete(int garageId)
+        public IActionResult DeleteFavoriteGarage(int garageId)
         {
             try
             {
