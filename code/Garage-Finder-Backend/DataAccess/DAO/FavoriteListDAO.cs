@@ -39,7 +39,8 @@ namespace DataAccess.DAO
                 {
                     favoriteList = (from garage in context.Garage
                                     join favorite in context.FavoriteList on garage.GarageID equals favorite.GarageID
-                                    where favorite.UserID == id select garage).ToList();
+                                    where favorite.UserID == id
+                                    select garage).ToList();
                 }
             }
             catch (Exception e)
@@ -65,20 +66,22 @@ namespace DataAccess.DAO
             }
         }
 
-        public void Delete(int id)
+        public void DeleteByGarageId(int garageId, int userId)
         {
-            try
             {
-                using (var context = new GFDbContext())
+                try
                 {
-                    var cDelete = context.FavoriteList.SingleOrDefault(x => x.FavoriteID == id);
-                    context.FavoriteList.Remove(cDelete);
-                    context.SaveChanges();
+                    using (var context = new GFDbContext())
+                    {
+                        var cDelete = context.FavoriteList.SingleOrDefault(x => x.GarageID == garageId && x.UserID == userId);
+                        context.FavoriteList.Remove(cDelete);
+                        context.SaveChanges();
+                    }
                 }
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
+                catch (Exception e)
+                {
+                    throw new Exception(e.Message);
+                }
             }
         }
     }
