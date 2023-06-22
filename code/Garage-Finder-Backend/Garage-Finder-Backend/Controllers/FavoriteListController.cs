@@ -44,9 +44,9 @@ namespace Garage_Finder_Backend.Controllers
             }
         }
 
-        [HttpPost("Add")]
+        [HttpPost("Add/{garageId}")]
         [Authorize]
-        public IActionResult Add([FromBody] int garageId)
+        public IActionResult Add(int garageId)
         {
             try
             {
