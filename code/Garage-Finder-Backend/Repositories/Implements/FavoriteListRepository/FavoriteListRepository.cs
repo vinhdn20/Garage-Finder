@@ -30,9 +30,9 @@ namespace Repositories.Implements
             FavoriteListDAO.Instance.SaveList(_mapper.Map<FavoriteListDTO, FavoriteList>(favoriteList));
         }
 
-        public void Delete(int id)
+        public void Delete(int garageId, int userId)
         {
-            FavoriteListDAO.Instance.Delete(id);
+            FavoriteListDAO.Instance.DeleteByGarageId(garageId, userId);
         }
     }
 }

@@ -46,12 +46,21 @@ namespace Garage_Finder_Backend.Controllers
 
         [HttpPost("Add")]
         [Authorize]
-        public IActionResult Add(FavoriteListDTO favoriteList)
+        public IActionResult Add([FromBody] int garageId)
         {
             try
             {
                 var user = GetUserFromToken();
-                favoriteList.UserID = user.UserID;
+                var listFV = favoriteListRepository.GetListByUser(user.UserID);
+                if(listFV.Any(x => x.GarageID == garageId))
+                {
+                    return BadRequest("Already contain garage");
+                }
+                var favoriteList = new FavoriteListDTO()
+                {
+                    GarageID = garageId,
+                    UserID = user.UserID
+                };
                 favoriteListRepository.Add(favoriteList);
 
                 return Ok("SUCCESS");
@@ -63,12 +72,13 @@ namespace Garage_Finder_Backend.Controllers
             }
         }
 
-        [HttpDelete("Delete/{id}")]
-        public IActionResult Delete(int id)
+        [HttpDelete("Delete/{garageId}")]
+        public IActionResult Delete(int garageId)
         {
             try
             {
-                favoriteListRepository.Delete(id);
+                var user = GetUserFromToken();
+                favoriteListRepository.Delete(garageId, user.UserID);
                 return Ok("SUCCESS");
             }
             catch (Exception e)
