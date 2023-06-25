@@ -89,5 +89,31 @@ namespace Services.UserService
                 throw new Exception(ex.Message);
             }
         }
+
+        public void ChangePassword(string userEmail, string oldPassword, string newPassword)
+        {
+            try
+            {
+                if(string.IsNullOrWhiteSpace(oldPassword) || string.IsNullOrEmpty(newPassword))
+                {
+                    throw new Exception("Password is null");
+                }
+                try
+                {
+                    _userRepository.Login(userEmail, oldPassword);
+                }
+                catch (Exception)
+                {
+                    throw new Exception("Old password is not correct");
+                }
+                var userDTO = _userRepository.GetUsersByEmail(userEmail);
+                userDTO.Password = newPassword;
+                _userRepository.Update(userDTO);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
     }
 }

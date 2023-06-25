@@ -18,6 +18,7 @@ using DataAccess.DTO.RequestDTO.User;
 using Services.UserService;
 using AutoMapper;
 using DataAccess.DTO.ResponeModels.User;
+using DataAccess.DTO.RequestDTO;
 
 namespace Garage_Finder_Backend.Controllers
 {
@@ -322,6 +323,23 @@ namespace Garage_Finder_Backend.Controllers
             catch (Exception ex)
             {
                 return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpPost("changePassword")]
+        [Authorize]
+        public IActionResult ChangePassword(ChangePasswordDTO changePasswordDTO)
+        {
+            try
+            {
+                var user = GetUserFromToken();
+                _userService.ChangePassword(user.EmailAddress, changePasswordDTO.OldPassword, changePasswordDTO.NewPassword);
+                return Ok();
+                
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
             }
         }
 
