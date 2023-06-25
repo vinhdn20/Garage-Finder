@@ -14,6 +14,6 @@ namespace Repositories.Interfaces
         List<CarDTO> GetCarsByUser(int id);
         void UpdateCar(CarDTO p);
         void DeleteCar(int id);
-
+        CarDTO GetCarById(int id);
     }
 }

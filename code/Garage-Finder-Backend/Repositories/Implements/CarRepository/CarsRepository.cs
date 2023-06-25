@@ -23,6 +23,16 @@ namespace Repositories.Implements.CarRepository
             CarDAO.Instance.DeleteCar(id);
         }
 
+        public CarDTO GetCarById(int id)
+        {
+            var car = CarDAO.Instance.GetCars().FirstOrDefault(x => x.CarID == id);
+            if(car != null)
+            {
+                return _mapper.Map<Car, CarDTO>(car);
+            }
+            return null;
+        }
+
         public List<CarDTO> GetCars()
         {
             return CarDAO.Instance.GetCars().Select(p => _mapper.Map<Car, CarDTO>(p)).ToList();

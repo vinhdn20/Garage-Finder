@@ -61,6 +61,20 @@ namespace Garage_Finder_Backend.Controllers
             }
         }
 
+        [HttpPost("GetByCarId/{id}")]
+        [Authorize]
+        public IActionResult GetByCarID(int id)
+        {
+            try
+            {
+                return Ok(carRepository.GetCarById(id));
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
         [HttpPost("Add")]
         [Authorize]
         public IActionResult Add(AddCarDTO car)
