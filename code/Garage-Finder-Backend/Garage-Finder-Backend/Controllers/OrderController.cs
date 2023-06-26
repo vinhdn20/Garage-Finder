@@ -1,11 +1,12 @@
 ﻿using DataAccess.DTO;
-using DataAccess.DTO.RequestDTO.Order;
-using DataAccess.DTO.ResponeModels.User;
+using DataAccess.DTO.Orders.RequestDTO;
+using DataAccess.DTO.User.ResponeModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Repositories.Implements;
 using Repositories.Interfaces;
+using Services.OrderService;
 using System.Security.Claims;
 
 namespace Garage_Finder_Backend.Controllers
@@ -14,16 +15,21 @@ namespace Garage_Finder_Backend.Controllers
     {
         private readonly IOrderRepository orderRepository;
         private readonly IServiceRepository serviceRepository;
+        private readonly IOrderService orderService;
+        private readonly IGuestOrderRepository guestOrderRepository;
         private UserInfor GetUserFromToken()
         {
             var jsonUser = User.FindFirstValue("user");
             var user = JsonConvert.DeserializeObject<UserInfor>(jsonUser);
             return user;
         }
-        public OrderController(IOrderRepository orderRepository, IServiceRepository serviceRepository)
+        public OrderController(IOrderRepository orderRepository, IServiceRepository serviceRepository,
+            IOrderService orderService, IGuestOrderRepository guestOrderRepository)
         {
             this.orderRepository = orderRepository;
             this.serviceRepository = serviceRepository;
+            this.orderService = orderService;
+            this.guestOrderRepository = guestOrderRepository;
         }
 
         [HttpGet("GetAllOrder")]
@@ -56,6 +62,37 @@ namespace Garage_Finder_Backend.Controllers
             }
         }
 
+        [HttpGet("GetOrderByGarageId/{GarageId}")]
+        [Authorize]
+        public IActionResult GetOrderByGarageId(int GarageId)
+        {
+            try
+            {
+                var orders= orderRepository.GetAllOrdersByGarageId(GarageId);
+                return Ok(orders);
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpGet("GetGuestOrderByGarageId/{GarageId}")]
+        [Authorize]
+        public IActionResult GetGuestOrderByGarageId(int GarageId)
+        {
+            try
+            {
+                var orders = guestOrderRepository.GetOrdersByGarageId(GarageId);
+                return Ok(orders);
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(e.Message);
+            }
+        }
 
         [HttpPost("AddOrder")]
         [Authorize]
@@ -64,12 +101,23 @@ namespace Garage_Finder_Backend.Controllers
 
             try
             {
+                orderService.AddOrderWithCar(newOrder);
 
-                //ServiceDTO orderService = serviceRepository.GetServiceById((int)newOrder.ServiceID);
-                
-                //newOrder.TimeCreate = DateTime.Now;
-                //orderRepository.Add(newOrder);
+                return Ok("SUCCESS");
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
 
+        [HttpPost("AddOrderFromGuest")]
+        [AllowAnonymous]
+        public IActionResult AddOrderFromGuest([FromBody] AddOrderFromGuestDTO newOrder)
+        {
+            try
+            {
+                orderService.AddOrderFromGuest(newOrder);
 
                 return Ok("SUCCESS");
             }

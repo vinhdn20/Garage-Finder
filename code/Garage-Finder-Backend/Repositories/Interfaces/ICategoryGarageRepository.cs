@@ -11,5 +11,6 @@ namespace Repositories.Interfaces
     {
         void Add(CategoryGarageDTO categoryGarageDTO);
         void Remove(int id);
+        CategoryGarageDTO GetById(int id);
     }
 }

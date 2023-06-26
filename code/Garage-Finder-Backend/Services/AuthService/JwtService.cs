@@ -1,5 +1,5 @@
 ﻿using DataAccess.DTO;
-using DataAccess.DTO.ResponeModels.User;
+using DataAccess.DTO.User.ResponeModels;
 using GFData.Models.Entity;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;

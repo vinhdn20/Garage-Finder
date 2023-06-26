@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataAccess.DTO.Orders.RequestDTO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +9,7 @@ namespace Services.OrderService
 {
     public interface IOrderService
     {
+        void AddOrderWithCar(AddOrderWithCarDTO addOrder);
+        void AddOrderFromGuest(AddOrderFromGuestDTO addOrder);
     }
 }

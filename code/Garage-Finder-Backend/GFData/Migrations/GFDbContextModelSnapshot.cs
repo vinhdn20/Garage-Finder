@@ -325,14 +325,27 @@ namespace GFData.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("GuestOrderID"), 1L, 1);
 
+                    b.Property<int?>("BrandCarID")
+                        .HasColumnType("int");
+
                     b.Property<int>("CategoryGarageID")
                         .HasColumnType("int");
 
                     b.Property<string>("Content")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("GarageID")
                         .HasColumnType("int");
+
+                    b.Property<string>("LicensePlates")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");
@@ -346,13 +359,18 @@ namespace GFData.Migrations
                     b.Property<DateTime>("TimeUpdate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("TypeCar")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("GuestOrderID");
+
+                    b.HasIndex("BrandCarID");
 
                     b.HasIndex("CategoryGarageID");
 
                     b.HasIndex("GarageID");
 
-                    b.ToTable("GuestOrders");
+                    b.ToTable("GuestOrder");
                 });
 
             modelBuilder.Entity("GFData.Models.Entity.ImageGarage", b =>
@@ -816,6 +834,10 @@ namespace GFData.Migrations
 
             modelBuilder.Entity("GFData.Models.Entity.GuestOrder", b =>
                 {
+                    b.HasOne("GFData.Models.Entity.Brand", "Brand")
+                        .WithMany("GuestOrders")
+                        .HasForeignKey("BrandCarID");
+
                     b.HasOne("GFData.Models.Entity.CategoryGarage", "CategoryGarage")
                         .WithMany("GuestOrders")
                         .HasForeignKey("CategoryGarageID")
@@ -827,6 +849,8 @@ namespace GFData.Migrations
                         .HasForeignKey("GarageID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Brand");
 
                     b.Navigation("CategoryGarage");
 
@@ -965,6 +989,8 @@ namespace GFData.Migrations
                     b.Navigation("Cars");
 
                     b.Navigation("GarageBrands");
+
+                    b.Navigation("GuestOrders");
                 });
 
             modelBuilder.Entity("GFData.Models.Entity.Car", b =>

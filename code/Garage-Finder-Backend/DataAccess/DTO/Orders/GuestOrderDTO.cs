@@ -1,21 +1,17 @@
-﻿using System;
+﻿using GFData.Models.Entity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GFData.Models.Entity
+namespace DataAccess.DTO.Orders
 {
-    public class GuestOrder
+    public class GuestOrderDTO
     {
-
-        [Key]
         public int GuestOrderID { get; set; }
-        [ForeignKey("Garage")]
         public int GarageID { get; set; }
-        [ForeignKey("CategoryGarage")]
         public int CategoryGarageID { get; set; }
         public DateTime TimeCreate { get; set; }
         public DateTime TimeUpdate { get; set; }
@@ -24,15 +20,11 @@ namespace GFData.Models.Entity
         public string? Content { get; set; }
         public string PhoneNumber { get; set; }
         public string? Email { get; set; }
-        [ForeignKey("Brand")]
         public int? BrandCarID { get; set; }
         public string? TypeCar { get; set; }
         public string? LicensePlates { get; set; }
-        public virtual CategoryGarage? CategoryGarage { get; set; }
 
-        public Garage Garage { get; set; }
-        public Brand Brand { get; set; }
-        public ICollection<ImageGuestOrder> ImageOrders { get; set; }
-        public ICollection<FileGuestOrders> FileOrders { get; set; }
+        public ICollection<ImageGuestOrder>? ImageOrders { get; set; }
+        public ICollection<FileGuestOrders>? FileOrders { get; set; }
     }
 }

@@ -42,7 +42,7 @@ namespace GFData.Data
         public virtual DbSet<CategoryGarage>? CategoryGarage { get; set; }
         public virtual DbSet<ImageGarage>? ImageGarage { get; set; }
         public virtual DbSet<GarageInfo>? GarageInfo { get; set; }  
-        public virtual DbSet<GuestOrder>? GuestOrders { get; set; }
+        public virtual DbSet<GuestOrder>? GuestOrder { get; set; }
         public virtual DbSet<ImageGuestOrder>? ImageGuestOrders { get; set; }
         public virtual DbSet<FileGuestOrders>? FileGuestOrders { get; set; }
 
