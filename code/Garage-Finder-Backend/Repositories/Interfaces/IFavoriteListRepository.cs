@@ -11,7 +11,7 @@ namespace Repositories.Interfaces
     public interface IFavoriteListRepository
     {
         void Add(FavoriteListDTO favoriteList);
-        void Delete(int id);
+        void Delete(int garageId, int userId);
         List<GarageDTO> GetListByUser(int id);
     }
 }
