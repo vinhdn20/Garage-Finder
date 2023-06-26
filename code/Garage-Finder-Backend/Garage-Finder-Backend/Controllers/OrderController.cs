@@ -1,4 +1,5 @@
 ﻿using DataAccess.DTO;
+using DataAccess.DTO.RequestDTO.Order;
 using DataAccess.DTO.ResponeModels.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -57,16 +58,18 @@ namespace Garage_Finder_Backend.Controllers
 
 
         [HttpPost("AddOrder")]
-        public IActionResult Add([FromBody] OrdersDTO newOrder)
+        [Authorize]
+        public IActionResult AddOrderWithCar([FromBody] AddOrderWithCarDTO newOrder)
         {
 
             try
             {
 
-                ServiceDTO orderService = serviceRepository.GetServiceById((int)newOrder.ServiceID);
+                //ServiceDTO orderService = serviceRepository.GetServiceById((int)newOrder.ServiceID);
+                
+                //newOrder.TimeCreate = DateTime.Now;
+                //orderRepository.Add(newOrder);
 
-                newOrder.TimeCreate = DateTime.Now;
-                orderRepository.Add(newOrder);
 
                 return Ok("SUCCESS");
             }

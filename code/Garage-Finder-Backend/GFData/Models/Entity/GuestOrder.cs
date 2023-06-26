@@ -1,14 +1,18 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace GFData.Models.Entity
 {
-    public class Orders
+    public class GuestOrder
     {
+
         [Key]
-        public int OrderID { get; set; }
-        [ForeignKey("Car")]
-        public int CarID { get; set; }
+        public int GuestOrderID { get; set; }
         [ForeignKey("Garage")]
         public int GarageID { get; set; }
         [ForeignKey("CategoryGarage")]
@@ -20,7 +24,6 @@ namespace GFData.Models.Entity
         public string? Content { get; set; }
 
         public virtual CategoryGarage? CategoryGarage { get; set; }
-        public Car Car { get; set; }
         public Garage Garage { get; set; }
 
         public ICollection<ImageOrders> ImageOrders { get; set; }

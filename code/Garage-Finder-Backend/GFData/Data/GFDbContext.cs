@@ -70,11 +70,11 @@ namespace GFData.Data
             .HasForeignKey(c => c.GarageID)
             .OnDelete(DeleteBehavior.NoAction);
 
-            optionsBuilder.Entity<Orders>()
-            .HasOne(p => p.Service)
-            .WithMany(u => u.Orders)
-            .HasForeignKey(c => c.ServiceID)
-            .OnDelete(DeleteBehavior.NoAction);
+            //optionsBuilder.Entity<Orders>()
+            //.HasOne(p => p.Service)
+            //.WithMany(u => u.Orders)
+            //.HasForeignKey(c => c.ServiceID)
+            //.OnDelete(DeleteBehavior.NoAction);
 
             optionsBuilder.Entity<GarageInfo>()
             .HasOne(p => p.User)
