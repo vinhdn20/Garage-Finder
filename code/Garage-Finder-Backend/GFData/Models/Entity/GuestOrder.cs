@@ -26,7 +26,7 @@ namespace GFData.Models.Entity
         public virtual CategoryGarage? CategoryGarage { get; set; }
         public Garage Garage { get; set; }
 
-        public ICollection<ImageOrders> ImageOrders { get; set; }
-        public ICollection<FileOrders> FileOrders { get; set; }
+        public ICollection<ImageGuestOrder> ImageOrders { get; set; }
+        public ICollection<FileGuestOrders> FileOrders { get; set; }
     }
 }

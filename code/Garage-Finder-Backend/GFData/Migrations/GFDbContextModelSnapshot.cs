@@ -174,6 +174,28 @@ namespace GFData.Migrations
                     b.ToTable("Feedback");
                 });
 
+            modelBuilder.Entity("GFData.Models.Entity.FileGuestOrders", b =>
+                {
+                    b.Property<int>("FileId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FileId"), 1L, 1);
+
+                    b.Property<string>("FileLink")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("GuestOrderID")
+                        .HasColumnType("int");
+
+                    b.HasKey("FileId");
+
+                    b.HasIndex("GuestOrderID");
+
+                    b.ToTable("FileGuestOrders");
+                });
+
             modelBuilder.Entity("GFData.Models.Entity.FileOrders", b =>
                 {
                     b.Property<int>("FileId")
@@ -295,6 +317,44 @@ namespace GFData.Migrations
                     b.ToTable("GarageInfo");
                 });
 
+            modelBuilder.Entity("GFData.Models.Entity.GuestOrder", b =>
+                {
+                    b.Property<int>("GuestOrderID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("GuestOrderID"), 1L, 1);
+
+                    b.Property<int>("CategoryGarageID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Content")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("GarageID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("TimeAppointment")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("TimeCreate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("TimeUpdate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("GuestOrderID");
+
+                    b.HasIndex("CategoryGarageID");
+
+                    b.HasIndex("GarageID");
+
+                    b.ToTable("GuestOrders");
+                });
+
             modelBuilder.Entity("GFData.Models.Entity.ImageGarage", b =>
                 {
                     b.Property<int>("ImageID")
@@ -315,6 +375,28 @@ namespace GFData.Migrations
                     b.HasIndex("GarageID");
 
                     b.ToTable("ImageGarage");
+                });
+
+            modelBuilder.Entity("GFData.Models.Entity.ImageGuestOrder", b =>
+                {
+                    b.Property<int>("ImageID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ImageID"), 1L, 1);
+
+                    b.Property<int>("GuestOrderID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ImageLink")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ImageID");
+
+                    b.HasIndex("GuestOrderID");
+
+                    b.ToTable("ImageGuestOrders");
                 });
 
             modelBuilder.Entity("GFData.Models.Entity.ImageOrders", b =>
@@ -411,13 +493,13 @@ namespace GFData.Migrations
                     b.Property<int>("CarID")
                         .HasColumnType("int");
 
+                    b.Property<int>("CategoryGarageID")
+                        .HasColumnType("int");
+
                     b.Property<string>("Content")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("GarageID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ServiceID")
                         .HasColumnType("int");
 
                     b.Property<string>("Status")
@@ -436,9 +518,9 @@ namespace GFData.Migrations
 
                     b.HasIndex("CarID");
 
-                    b.HasIndex("GarageID");
+                    b.HasIndex("CategoryGarageID");
 
-                    b.HasIndex("ServiceID");
+                    b.HasIndex("GarageID");
 
                     b.ToTable("Orders");
                 });
@@ -672,6 +754,17 @@ namespace GFData.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("GFData.Models.Entity.FileGuestOrders", b =>
+                {
+                    b.HasOne("GFData.Models.Entity.GuestOrder", "Orders")
+                        .WithMany("FileOrders")
+                        .HasForeignKey("GuestOrderID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Orders");
+                });
+
             modelBuilder.Entity("GFData.Models.Entity.FileOrders", b =>
                 {
                     b.HasOne("GFData.Models.Entity.Orders", "Orders")
@@ -721,6 +814,25 @@ namespace GFData.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("GFData.Models.Entity.GuestOrder", b =>
+                {
+                    b.HasOne("GFData.Models.Entity.CategoryGarage", "CategoryGarage")
+                        .WithMany("GuestOrders")
+                        .HasForeignKey("CategoryGarageID")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("GFData.Models.Entity.Garage", "Garage")
+                        .WithMany()
+                        .HasForeignKey("GarageID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CategoryGarage");
+
+                    b.Navigation("Garage");
+                });
+
             modelBuilder.Entity("GFData.Models.Entity.ImageGarage", b =>
                 {
                     b.HasOne("GFData.Models.Entity.Garage", "Garage")
@@ -730,6 +842,17 @@ namespace GFData.Migrations
                         .IsRequired();
 
                     b.Navigation("Garage");
+                });
+
+            modelBuilder.Entity("GFData.Models.Entity.ImageGuestOrder", b =>
+                {
+                    b.HasOne("GFData.Models.Entity.GuestOrder", "Orders")
+                        .WithMany("ImageOrders")
+                        .HasForeignKey("GuestOrderID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("GFData.Models.Entity.ImageOrders", b =>
@@ -781,23 +904,23 @@ namespace GFData.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
+                    b.HasOne("GFData.Models.Entity.CategoryGarage", "CategoryGarage")
+                        .WithMany("Orders")
+                        .HasForeignKey("CategoryGarageID")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.HasOne("GFData.Models.Entity.Garage", "Garage")
                         .WithMany("Orders")
                         .HasForeignKey("GarageID")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("GFData.Models.Entity.Service", "Service")
-                        .WithMany("Orders")
-                        .HasForeignKey("ServiceID")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
                     b.Navigation("Car");
 
-                    b.Navigation("Garage");
+                    b.Navigation("CategoryGarage");
 
-                    b.Navigation("Service");
+                    b.Navigation("Garage");
                 });
 
             modelBuilder.Entity("GFData.Models.Entity.RefreshToken", b =>
@@ -851,6 +974,10 @@ namespace GFData.Migrations
 
             modelBuilder.Entity("GFData.Models.Entity.CategoryGarage", b =>
                 {
+                    b.Navigation("GuestOrders");
+
+                    b.Navigation("Orders");
+
                     b.Navigation("Services");
                 });
 
@@ -878,6 +1005,13 @@ namespace GFData.Migrations
                     b.Navigation("Orders");
                 });
 
+            modelBuilder.Entity("GFData.Models.Entity.GuestOrder", b =>
+                {
+                    b.Navigation("FileOrders");
+
+                    b.Navigation("ImageOrders");
+                });
+
             modelBuilder.Entity("GFData.Models.Entity.Orders", b =>
                 {
                     b.Navigation("FileOrders");
@@ -888,11 +1022,6 @@ namespace GFData.Migrations
             modelBuilder.Entity("GFData.Models.Entity.RoleName", b =>
                 {
                     b.Navigation("Users");
-                });
-
-            modelBuilder.Entity("GFData.Models.Entity.Service", b =>
-                {
-                    b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("GFData.Models.Entity.Subscribe", b =>
