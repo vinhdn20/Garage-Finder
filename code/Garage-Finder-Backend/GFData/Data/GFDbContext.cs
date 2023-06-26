@@ -8,7 +8,7 @@ namespace GFData.Data
 {
     public class GFDbContext : DbContext
     {
-        public GFDbContext()    
+        public GFDbContext()
         {
         }
 
@@ -19,9 +19,13 @@ namespace GFData.Data
             var builder = new ConfigurationBuilder()
                             .SetBasePath(Directory.GetCurrentDirectory())
                             .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                            .AddJsonFile($"appsettings.{environmentName}.json", optional: true, reloadOnChange: true); 
+                            .AddJsonFile($"appsettings.{environmentName}.json", optional: true, reloadOnChange: true);
             IConfigurationRoot configuration = builder.Build();
-            optionsBuilder.UseSqlServer(configuration.GetConnectionString("GarageFinderDB"));
+            optionsBuilder.UseSqlServer(configuration.GetConnectionString("GarageFinderDB"),
+                sqlServerOptionsAction: sqlOptions =>
+                    {
+                        sqlOptions.EnableRetryOnFailure(maxRetryCount: 3, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
+                    });
         }
 
 
@@ -32,7 +36,7 @@ namespace GFData.Data
         public virtual DbSet<Garage>? Garage { get; set; }
         public virtual DbSet<GarageBrand>? GarageBrand { get; set; }
         public virtual DbSet<Orders>? Orders { get; set; }
-        public virtual DbSet<Service>? Service { get; set; }    
+        public virtual DbSet<Service>? Service { get; set; }
         public virtual DbSet<Users>? User { get; set; }
         public virtual DbSet<RoleName>? RoleName { get; set; }
         public virtual DbSet<RefreshToken>? RefreshToken { get; set; }
@@ -41,7 +45,7 @@ namespace GFData.Data
         public virtual DbSet<FileOrders>? FileOrders { get; set; }
         public virtual DbSet<CategoryGarage>? CategoryGarage { get; set; }
         public virtual DbSet<ImageGarage>? ImageGarage { get; set; }
-        public virtual DbSet<GarageInfo>? GarageInfo { get; set; }  
+        public virtual DbSet<GarageInfo>? GarageInfo { get; set; }
 
         protected override void OnModelCreating(ModelBuilder optionsBuilder)
         {
