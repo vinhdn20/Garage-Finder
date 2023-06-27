@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Services.EmailService
 {
-    public class IEmailService
+    public interface IEmailService
     {
+        Task<bool> SendMailAsync(string to, string name, string subject, string htmlpart, string textpart = "");
     }
 }

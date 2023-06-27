@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Services.EmailService;
 using Services.OrderService;
 using Services.StorageApi;
 using Services.UserService;
@@ -17,6 +18,7 @@ namespace Services
             services.AddTransient<IStorageCloud, AzureBlob>();
             services.AddTransient<IUserService, UserService.UserService>();
             services.AddTransient<IOrderService, OrderService.OrderService>();
+            services.AddTransient<IEmailService, MailjetService>();
         }
     }
 }

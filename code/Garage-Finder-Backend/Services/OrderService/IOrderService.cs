@@ -11,5 +11,6 @@ namespace Services.OrderService
     {
         void AddOrderWithCar(AddOrderWithCarDTO addOrder);
         void AddOrderFromGuest(AddOrderFromGuestDTO addOrder);
+        void AddOrderWithoutCar(AddOrderWithoutCarDTO addOrder, int userID);
     }
 }
