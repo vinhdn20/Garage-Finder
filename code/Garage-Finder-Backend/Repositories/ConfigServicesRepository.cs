@@ -37,6 +37,7 @@ namespace Repositories
             services.AddScoped<ICategoryGarageRepository, CategoryGarageRepository>();
             services.AddScoped<IImageGarageRepository, ImageGarageRepository>();
             services.AddScoped<IGarageInforRepository, GarageInforRepository>();
+            services.AddScoped<IGuestOrderRepository, GuestOrderRepository>();
         }
     }
 }

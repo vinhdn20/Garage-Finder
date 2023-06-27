@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using DataAccess.DTO;
-using DataAccess.DTO.RequestDTO.UserDTO;
-using DataAccess.DTO.ResponeModels.User;
+using DataAccess.DTO.User.RequestDTO;
+using DataAccess.DTO.User.ResponeModels;
 using Garage_Finder_Backend.Services.AuthService;
 using GFData.Models.Entity;
 using Microsoft.Extensions.Configuration;

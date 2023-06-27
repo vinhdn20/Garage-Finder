@@ -15,6 +15,5 @@ namespace GFData.Models.Entity
         public string? Note { get; set; }
         public string? Cost { get; set; }
         public virtual CategoryGarage? CategoryGarage { get; set; }
-        public ICollection<Orders> Orders { get; set; }
     }
 }

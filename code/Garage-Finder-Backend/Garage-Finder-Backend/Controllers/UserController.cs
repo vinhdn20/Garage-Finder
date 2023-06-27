@@ -13,12 +13,10 @@ using Services.PhoneVerifyService;
 using Services.StorageApi;
 using Azure.Storage.Blobs;
 using System.Net.Mail;
-using DataAccess.DTO.RequestDTO.UserDTO;
-using DataAccess.DTO.RequestDTO.User;
 using Services.UserService;
 using AutoMapper;
-using DataAccess.DTO.ResponeModels.User;
-using DataAccess.DTO.RequestDTO;
+using DataAccess.DTO.User.RequestDTO;
+using DataAccess.DTO.User.ResponeModels;
 
 namespace Garage_Finder_Backend.Controllers
 {

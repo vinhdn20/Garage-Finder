@@ -1,4 +1,4 @@
-﻿using DataAccess.DTO;
+﻿using DataAccess.DTO.Orders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +11,7 @@ namespace Repositories.Interfaces
     {
         List<OrdersDTO> GetAllOrders();
         List<OrdersDTO> GetAllOrdersByUserId(int id);
+        List<OrdersDTO> GetAllOrdersByGarageId(int id);
         OrdersDTO GetOrderById(int id);
         void Add(OrdersDTO order);
         void Update(OrdersDTO order);

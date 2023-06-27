@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
 using DataAccess.DTO;
+using DataAccess.DTO.Orders;
 using DataAccess.DTO.RequestDTO.Car;
 using DataAccess.DTO.RequestDTO.Garage;
-using DataAccess.DTO.ResponeModels.User;
+using DataAccess.DTO.User.ResponeModels;
 using GFData.Models.Entity;
 
 namespace Garage_Finder_Backend
@@ -31,8 +32,11 @@ namespace Garage_Finder_Backend
             CreateMap<Invoices, InvoicesDTO>();
             CreateMap<NotificationDTO, Notification>();
             CreateMap<Notification, NotificationDTO>();
+
             CreateMap<OrdersDTO, Orders>();
             CreateMap<Orders, OrdersDTO>();
+            CreateMap<GuestOrderDTO, GuestOrder>();
+            CreateMap<GuestOrder, GuestOrderDTO>();
             CreateMap<RefreshTokenDTO, RefreshToken>();
             CreateMap<RefreshToken, RefreshTokenDTO>();
             CreateMap<RoleNameDTO, RoleName>();

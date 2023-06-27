@@ -1,4 +1,4 @@
-﻿namespace DataAccess.DTO.RequestDTO.UserDTO
+﻿namespace DataAccess.DTO.User.RequestDTO
 {
     public class UserUpdateDTO
     {
