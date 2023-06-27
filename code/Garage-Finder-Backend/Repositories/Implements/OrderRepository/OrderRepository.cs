@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using DataAccess.DAO;
-using DataAccess.DTO;
+using DataAccess.DTO.Orders;
 using GFData.Models.Entity;
 using Repositories.Interfaces;
 using System;
@@ -41,6 +41,11 @@ namespace Repositories.Implements.OrderRepository
         public OrdersDTO GetOrderById(int id)
         {
             return _mapper.Map<Orders, OrdersDTO>(OrdersDAO.Instance.GetById(id));
+        }
+
+        public List<OrdersDTO> GetAllOrdersByGarageId(int id)
+        {
+            return OrdersDAO.Instance.GetListByGarageID(id).Select(p => _mapper.Map<Orders, OrdersDTO>(p)).ToList();
         }
 
         public void Update(OrdersDTO order)

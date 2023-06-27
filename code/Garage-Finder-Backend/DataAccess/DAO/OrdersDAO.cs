@@ -41,7 +41,7 @@ namespace DataAccess.DAO
                                       OrderID = order.OrderID,
                                       CarID = order.CarID,
                                       GarageID = order.GarageID,
-                                      ServiceID = order.ServiceID,
+                                      CategoryGarageID = order.CategoryGarageID,
                                       TimeCreate = order.TimeCreate,
                                       TimeUpdate = order.TimeUpdate,
                                       TimeAppointment = order.TimeAppointment,
@@ -76,7 +76,7 @@ namespace DataAccess.DAO
                                       OrderID = order.OrderID,
                                       CarID = order.CarID,
                                       GarageID = order.GarageID,
-                                      ServiceID = order.ServiceID,
+                                      CategoryGarageID = order.CategoryGarageID,
                                       TimeCreate = order.TimeCreate,
                                       TimeUpdate = order.TimeUpdate,
                                       TimeAppointment = order.TimeAppointment,
@@ -94,6 +94,40 @@ namespace DataAccess.DAO
             return listOrders;
         }
 
+        public List<Orders> GetListByGarageID(int id)
+        {
+            var listOrders = new List<Orders>();
+            try
+            {
+                using (var context = new GFDbContext())
+                {
+                    listOrders = (from order in context.Orders
+                                  join garage in context.Garage on order.GarageID equals garage.GarageID
+                                  join car in context.Car on order.CarID equals car.CarID
+                                  where garage.GarageID == id
+                                  select new Orders
+                                  {
+                                      OrderID = order.OrderID,
+                                      CarID = order.CarID,
+                                      GarageID = order.GarageID,
+                                      CategoryGarageID = order.CategoryGarageID,
+                                      TimeCreate = order.TimeCreate,
+                                      TimeUpdate = order.TimeUpdate,
+                                      TimeAppointment = order.TimeAppointment,
+                                      Status = order.Status,
+                                      Content = order.Content,
+                                      ImageOrders = context.ImageOrders.Where(x => x.OrderID == order.OrderID).ToList(),
+                                      FileOrders = context.FileOrders.Where(x => x.OrderID == order.OrderID).ToList(),
+
+                                  }).ToList();
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            return listOrders;
+        }
 
         public Orders GetById(int id)
         {

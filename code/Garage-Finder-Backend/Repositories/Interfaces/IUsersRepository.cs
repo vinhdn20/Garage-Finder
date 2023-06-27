@@ -1,5 +1,5 @@
 ﻿using DataAccess.DTO;
-using DataAccess.DTO.ResponeModels.User;
+using DataAccess.DTO.User.ResponeModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Garage_Finder_Backend.Controllers.BrandController">
+    <Position X="0.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAYAAAAAAAAAAAAAAAAAAAABAAEAAAAAAgAAAAAAAAA=</HashCode>
+      <FileName>Controllers\brandController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Garage_Finder_Backend.Controllers.CarController">
+    <Position X="2.75" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAYAAIAAAAAIAAAAAAAAAAAAAAGAAAAAAABAEAAAAAA=</HashCode>
+      <FileName>Controllers\CarController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Garage_Finder_Backend.Controllers.CategoryController">
+    <Position X="4.75" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAYAIAAAAAAAAAAAAAAAABAAAAEAAAAAAgAAAAAAAAA=</HashCode>
+      <FileName>Controllers\CategoryController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Garage_Finder_Backend.Controllers.FavoriteListController">
+    <Position X="6.75" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAAAAAAAAAAYAAACAAAAAAABAAAAAAAA=</HashCode>
+      <FileName>Controllers\FavoriteListController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Garage_Finder_Backend.Controllers.FeedbackController">
+    <Position X="4.75" Y="3.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAYAAAAAAAAAAAAAAACAAAAAAAAAAAAAgAAAAAAAAAA=</HashCode>
+      <FileName>Controllers\FeedbackController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Garage_Finder_Backend.Controllers.GarageController">
+    <Position X="8.75" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAYgAAAAAAAgEAAAAAAQAgAAIAEAABAAAwBQCAACAIA=</HashCode>
+      <FileName>Controllers\GarageController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Garage_Finder_Backend.Controllers.OrderController">
+    <Position X="0.75" Y="3.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAAAABAAAAGAACAAAgBAAAAAAAA=</HashCode>
+      <FileName>Controllers\OrderController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Garage_Finder_Backend.Controllers.ServiceController">
+    <Position X="2.75" Y="3.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAYAAAAAAAAAAAAAAAAAABAAAAEAACAAAgAAAAIgAAA=</HashCode>
+      <FileName>Controllers\ServiceController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Garage_Finder_Backend.Controllers.UserController">
+    <Position X="11.25" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AkQACAEhQAAAgABAAAAhAAIAAIABAAAAAAFEAAAAASA=</HashCode>
+      <FileName>Controllers\UserController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

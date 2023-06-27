@@ -45,7 +45,10 @@ namespace GFData.Data
         public virtual DbSet<FileOrders>? FileOrders { get; set; }
         public virtual DbSet<CategoryGarage>? CategoryGarage { get; set; }
         public virtual DbSet<ImageGarage>? ImageGarage { get; set; }
-        public virtual DbSet<GarageInfo>? GarageInfo { get; set; }
+        public virtual DbSet<GarageInfo>? GarageInfo { get; set; }  
+        public virtual DbSet<GuestOrder>? GuestOrder { get; set; }
+        public virtual DbSet<ImageGuestOrder>? ImageGuestOrders { get; set; }
+        public virtual DbSet<FileGuestOrders>? FileGuestOrders { get; set; }
 
         protected override void OnModelCreating(ModelBuilder optionsBuilder)
         {
@@ -75,9 +78,15 @@ namespace GFData.Data
             .OnDelete(DeleteBehavior.NoAction);
 
             optionsBuilder.Entity<Orders>()
-            .HasOne(p => p.Service)
+            .HasOne(p => p.CategoryGarage)
             .WithMany(u => u.Orders)
-            .HasForeignKey(c => c.ServiceID)
+            .HasForeignKey(c => c.CategoryGarageID)
+            .OnDelete(DeleteBehavior.NoAction);
+
+            optionsBuilder.Entity<GuestOrder>()
+            .HasOne(p => p.CategoryGarage)
+            .WithMany(u => u.GuestOrders)
+            .HasForeignKey(c => c.CategoryGarageID)
             .OnDelete(DeleteBehavior.NoAction);
 
             optionsBuilder.Entity<GarageInfo>()

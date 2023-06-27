@@ -1,4 +1,4 @@
-﻿namespace DataAccess.DTO.RequestDTO.User
+﻿namespace DataAccess.DTO.User.RequestDTO
 {
     public class ForgotPassDTO
     {
