@@ -23,6 +23,11 @@ namespace Repositories.Implements.Garage
             CategoryGarageDAO.Instance.Add(_mapper.Map<CategoryGarageDTO, CategoryGarage>(categoryGarageDTO));
         }
 
+        public CategoryGarageDTO GetById(int id)
+        {
+            return _mapper.Map<CategoryGarage, CategoryGarageDTO>(CategoryGarageDAO.Instance.GetByID(id));            
+        }
+
         public void Remove(int id)
         {
             CategoryGarageDAO.Instance.Remove(id);

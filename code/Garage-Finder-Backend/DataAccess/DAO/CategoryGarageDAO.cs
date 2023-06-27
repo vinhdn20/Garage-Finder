@@ -65,5 +65,20 @@ namespace DataAccess.DAO
                 throw new Exception(e.Message);
             }
         }
+
+        public CategoryGarage GetByID(int id)
+        {
+            try
+            {
+                var db = new GFDbContext();
+                var cate = db.CategoryGarage.FirstOrDefault(x => x.CategoryGarageID == id);
+                return cate;
+
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
     }
 }
