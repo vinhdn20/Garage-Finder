@@ -101,7 +101,7 @@ namespace Services.OrderService
                 TypeCar = addOrder.TypeCar
             };
 
-            //_guestOrderRepository.Add(guestOrder);
+            _guestOrderRepository.Add(guestOrder);
             //Todo: gửi vào email
             _emailService.SendMailAsync(addOrder.Email, addOrder.Name, "Your order create success!",
                 $"<h3>Dear {addOrder.Name}, Your order create success!</h3>");
