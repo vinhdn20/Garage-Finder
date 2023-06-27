@@ -9,8 +9,10 @@ namespace DataAccess.DTO.RequestDTO.Garage
     public class SearchGarage
     {
         public string? keyword { get; set; }
-        public int? provinceID { get; set; }
-        public int? districtsID { get; set; }
-        public int? categoriesID { get; set; }
+        public int[]? provinceID { get; set; }
+        public int[]? districtsID { get; set; }
+        public int[]? categoriesID { get; set; }
+        public int pageNumber { get; set; }
+        public int pageSize { get; set; }
     }
 }

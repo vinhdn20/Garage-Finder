@@ -135,27 +135,61 @@ namespace Garage_Finder_Backend.Controllers
 
 
         [HttpPost("GetByKeyWord")]
-        public IActionResult SearchGarage([FromBody]SearchGarage searchGarage)
+        public IActionResult SearchGarage([FromBody] SearchGarage searchGarage)
         {
             // Lấy danh sách garage từ nguồn dữ liệu
             var garages = garageRepository.GetGarages();
 
             // Áp dụng các bộ lọc
-            if (!string.IsNullOrEmpty(searchGarage.keyword) && searchGarage.provinceID.HasValue && searchGarage.districtsID.HasValue && searchGarage.categoriesID.HasValue)
+            if (!string.IsNullOrEmpty(searchGarage.keyword) && searchGarage.provinceID is null && searchGarage.districtsID is null && searchGarage.categoriesID is null)
             {
-                garages = garages.Where(g => g.GarageName.Contains(searchGarage.keyword)).ToList();
+                garages = garages.Where(g => g.GarageName.Contains(searchGarage.keyword)).Skip((searchGarage.pageNumber - 1) * searchGarage.pageSize).Take(searchGarage.pageSize).ToList();
             }
 
-            if (string.IsNullOrEmpty(searchGarage.keyword) && !searchGarage.provinceID.HasValue && !searchGarage.districtsID.HasValue && searchGarage.categoriesID.HasValue)
+            if (string.IsNullOrEmpty(searchGarage.keyword) && searchGarage.provinceID is not null && searchGarage.districtsID is not null && searchGarage.categoriesID is null)
             {
-                garages = garages.Where(g => g.ProvinceID == searchGarage.provinceID || g.DistrictsID == searchGarage.districtsID).ToList();
+                garages = garages.Where(g => searchGarage.provinceID.Any(d => d == g.ProvinceID) && searchGarage.districtsID.Any(d => d == g.DistrictsID)).Skip((searchGarage.pageNumber - 1) * searchGarage.pageSize).Take(searchGarage.pageSize).ToList();
             }
 
-            if (!string.IsNullOrEmpty(searchGarage.keyword) && searchGarage.provinceID.HasValue && searchGarage.districtsID.HasValue && searchGarage.categoriesID.HasValue)
+            if (string.IsNullOrEmpty(searchGarage.keyword) && searchGarage.provinceID is null && searchGarage.districtsID is null && searchGarage.categoriesID is not null)
             {
-                garages = garages.Where(x => x.CategoryGarages.Any(c => c.CategoryID == searchGarage.categoriesID)).ToList();
+                garages = garages.Where(g => g.CategoryGarages.Any(c => searchGarage.categoriesID.Any(x => x == c.CategoryID))).Skip((searchGarage.pageNumber - 1) * searchGarage.pageSize).Take(searchGarage.pageSize).ToList();
             }
 
+            if (!string.IsNullOrEmpty(searchGarage.keyword) && searchGarage.provinceID is not null && searchGarage.districtsID is not null && searchGarage.categoriesID is null)
+            {
+                garages = garages.Where(g => g.GarageName.Contains(searchGarage.keyword) && searchGarage.provinceID.Any(d => d == g.ProvinceID) && searchGarage.districtsID.Any(d => d == g.DistrictsID)).Skip((searchGarage.pageNumber - 1) * searchGarage.pageSize).Take(searchGarage.pageSize).ToList();
+            }
+
+            if (!string.IsNullOrEmpty(searchGarage.keyword) && searchGarage.provinceID is null && searchGarage.districtsID is null && searchGarage.categoriesID is not null)
+            {
+                garages = garages.Where(g => g.GarageName.Contains(searchGarage.keyword) && g.CategoryGarages.Any(c => searchGarage.categoriesID.Any(x => x == c.CategoryID))).Skip((searchGarage.pageNumber - 1) * searchGarage.pageSize).Take(searchGarage.pageSize).ToList();
+            }
+
+            if (string.IsNullOrEmpty(searchGarage.keyword) && searchGarage.provinceID is not null && searchGarage.districtsID is not null && searchGarage.categoriesID is not null)
+            {
+                garages = garages.Where(g => searchGarage.provinceID.Any(d => d == g.ProvinceID) && searchGarage.districtsID.Any(d => d == g.DistrictsID) && g.CategoryGarages.Any(c => searchGarage.categoriesID.Any(x => x == c.CategoryID))).Skip((searchGarage.pageNumber - 1) * searchGarage.pageSize).Take(searchGarage.pageSize).ToList();
+            }
+
+            if (!string.IsNullOrEmpty(searchGarage.keyword) && searchGarage.provinceID is not null && searchGarage.districtsID is not null && searchGarage.categoriesID is not null)
+            {
+                garages = garages.Where(g => g.GarageName.Contains(searchGarage.keyword) && searchGarage.provinceID.Any(d => d == g.ProvinceID) && searchGarage.districtsID.Any(d => d == g.DistrictsID) && g.CategoryGarages.Any(c => searchGarage.categoriesID.Any(x => x == c.CategoryID))).Skip((searchGarage.pageNumber - 1) * searchGarage.pageSize).Take(searchGarage.pageSize).ToList();
+            }
+
+            if (string.IsNullOrEmpty(searchGarage.keyword) && searchGarage.provinceID is not null && searchGarage.districtsID is null && searchGarage.categoriesID is null)
+            {
+                garages = garages.Where(g => searchGarage.provinceID.Any(d => d == g.ProvinceID)).Skip((searchGarage.pageNumber - 1) * searchGarage.pageSize).Take(searchGarage.pageSize).ToList();
+            }
+
+            if (!string.IsNullOrEmpty(searchGarage.keyword) && searchGarage.provinceID is not null && searchGarage.districtsID is null && searchGarage.categoriesID is null)
+            {
+                garages = garages.Where(g => g.GarageName.Contains(searchGarage.keyword) && searchGarage.provinceID.Any(d => d == g.ProvinceID)).Skip((searchGarage.pageNumber - 1) * searchGarage.pageSize).Take(searchGarage.pageSize).ToList();
+            }
+
+            if (string.IsNullOrEmpty(searchGarage.keyword) && searchGarage.provinceID is not null && searchGarage.districtsID is null && searchGarage.categoriesID is not null)
+            {
+                garages = garages.Where(g => searchGarage.provinceID.Any(d => d == g.ProvinceID) && g.CategoryGarages.Any(c => searchGarage.categoriesID.Any(x => x == c.CategoryID))).Skip((searchGarage.pageNumber - 1) * searchGarage.pageSize).Take(searchGarage.pageSize).ToList();
+            }
 
             // Trả về kết quả
             return Ok(garages);
@@ -321,7 +355,7 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpPost("GetByFilter")]
-        public ActionResult GetGarages([FromBody]FilterGarage filterGarage)
+        public ActionResult GetGarages([FromBody] FilterGarage filterGarage)
         {
             List<GarageDTO> filteredGarages = garageRepository.GetGarages();
             List<GarageDTO> filteredByProvince = new List<GarageDTO>();
@@ -331,23 +365,23 @@ namespace Garage_Finder_Backend.Controllers
 
             if (filterGarage.provinceID is not null)
             {
-                if(filterGarage.provinceID.Count != 0)
+                if (filterGarage.provinceID.Count != 0)
                     filteredGarages = filteredGarages.Where(x => filterGarage.provinceID.Any(d => d == x.ProvinceID)).ToList();
             }
 
             if (filterGarage.districtsID is not null)
             {
-                if(filterGarage.districtsID.Count != 0)
+                if (filterGarage.districtsID.Count != 0)
                     filteredGarages = filteredGarages.Where(x => filterGarage.districtsID.Any(d => d == x.DistrictsID)).ToList();
             }
 
-            if(filterGarage.categoriesID is not null)
+            if (filterGarage.categoriesID is not null)
             {
                 if (filterGarage.categoriesID.Count != 0)
                     filteredGarages = filteredGarages.Where(x => filterGarage.categoriesID.Any(i => x.CategoryGarages.Any(c => c.CategoryID == i))).ToList();
             }
 
-            if(filterGarage.brandsID is not null)
+            if (filterGarage.brandsID is not null)
             {
                 if (filterGarage.brandsID.Count != 0)
                     filteredGarages = filteredGarages.Where(x => filterGarage.brandsID.Any(i => x.GarageBrands.Any(c => c.BrandID == i))).ToList();
@@ -358,7 +392,7 @@ namespace Garage_Finder_Backend.Controllers
             {
                 filteredGarages = garageRepository.GetGarages();
             }
-                
+
             return Ok(filteredGarages);
         }
 
