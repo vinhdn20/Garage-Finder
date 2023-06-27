@@ -127,6 +127,23 @@ namespace Garage_Finder_Backend.Controllers
             }
         }
 
+        [HttpPost("AddOrderWithoutCar")]
+        [Authorize]
+        public IActionResult AddOrderWithouCar([FromBody] AddOrderWithoutCarDTO newOrder)
+        {
+            try
+            {
+                var user = GetUserFromToken();
+                orderService.AddOrderWithoutCar(newOrder, user.UserID);
+
+                return Ok("SUCCESS");
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
         [HttpDelete("Delete/{id}")]
         public IActionResult Delete([FromBody] int id)
         {
