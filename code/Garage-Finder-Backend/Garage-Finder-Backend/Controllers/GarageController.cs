@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using NuGet.DependencyResolver;
 using Repositories.Interfaces;
+using Services.GarageService;
 using System.Security.Claims;
 
 namespace Garage_Finder_Backend.Controllers
@@ -21,16 +22,16 @@ namespace Garage_Finder_Backend.Controllers
         private readonly IGarageBrandRepository garageBrandRepository;
         private readonly ICategoryGarageRepository categoryGarageRepository;
         private readonly IImageGarageRepository imageGarageRepository;
-        private readonly IGarageInforRepository inforRepository;
+        private readonly IGarageService garageService;
         public GarageController(IGarageRepository garageRepository, IGarageBrandRepository garageBrandRepository,
             ICategoryGarageRepository categoryGarageRepository, IImageGarageRepository imageGarageRepository,
-            IGarageInforRepository inforRepository)
+            IGarageService garageService)
         {
             this.garageRepository = garageRepository;
             this.garageBrandRepository = garageBrandRepository;
             this.categoryGarageRepository = categoryGarageRepository;
             this.imageGarageRepository = imageGarageRepository;
-            this.inforRepository = inforRepository;
+            this.garageService = garageService;
         }
         [HttpGet("GetAll")]
         public IActionResult GetAll()
@@ -53,47 +54,7 @@ namespace Garage_Finder_Backend.Controllers
             try
             {
                 var user = GetUserFromToken();
-                var garageDTO = garageRepository.Add(addGarage);
-
-                GarageInfoDTO garageInfoDTO = new GarageInfoDTO()
-                {
-                    GarageID = garageDTO.GarageID,
-                    UserID = user.UserID,
-                };
-                inforRepository.Add(garageInfoDTO);
-
-                var listGarageBrand = new List<GarageBrandDTO>();
-                foreach (var brand in addGarage.BrandsID)
-                {
-                    listGarageBrand.Add(new GarageBrandDTO()
-                    {
-                        GarageID = garageDTO.GarageID,
-                        BrandID = brand
-                    });
-                }
-                listGarageBrand.ForEach(x => garageBrandRepository.Add(x));
-
-                var listCategory = new List<CategoryGarageDTO>();
-                foreach (var cate in addGarage.CategoriesID)
-                {
-                    listCategory.Add(new CategoryGarageDTO()
-                    {
-                        CategoryID = cate,
-                        GarageID = garageDTO.GarageID
-                    });
-                }
-                listCategory.ForEach(x => categoryGarageRepository.Add(x));
-
-                var listImage = new List<ImageGarageDTO>();
-                foreach (var image in addGarage.ImageLink)
-                {
-                    listImage.Add(new ImageGarageDTO()
-                    {
-                        GarageID = garageDTO.GarageID,
-                        ImageLink = image
-                    });
-                }
-                listImage.ForEach(x => imageGarageRepository.AddImageGarage(x));
+                garageService.Add(addGarage, user.UserID);
                 return Ok("SUCCESS");
             }
             catch (Exception e)

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataAccess.DTO.RequestDTO.Garage;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +9,6 @@ namespace Services.GarageService
 {
     public interface IGarageService
     {
+        void Add(AddGarageDTO addGarage, int userID);
     }
 }

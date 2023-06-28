@@ -1,6 +1,8 @@
-﻿using GFData.Data;
+﻿using DataAccess.DTO.RequestDTO.Garage;
+using GFData.Data;
 using GFData.Models.Entity;
 using Microsoft.EntityFrameworkCore;
+using System.Transactions;
 
 namespace DataAccess.DAO
 {
@@ -144,6 +146,51 @@ namespace DataAccess.DAO
             {
                 throw new Exception(e.Message);
             }
+        }
+
+        public async Task<Garage> SaveGrageWithInforAsync(Garage garage, GarageInfo garageInfo, List<GarageBrand> garageBrands,
+            List<CategoryGarage> categoryGarages, List<ImageGarage> imageGarages)
+        {
+            using var context = new GFDbContext();
+            var transaction = context.Database.CreateExecutionStrategy();
+            await transaction.ExecuteAsync(async () =>
+            {
+                using(var dbContextTransaction = context.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        context.Garage.Add(garage);
+                        context.SaveChanges();
+                        garageInfo.GarageID = garage.GarageID;
+                        context.GarageInfo.Add(garageInfo);
+                        foreach (var garagebrand in garageBrands)
+                        {
+                            garagebrand.GarageID = garage.GarageID;
+                            context.GarageBrand.Add(garagebrand);
+                        }
+                        foreach (var category in categoryGarages)
+                        {
+                            category.GarageID = garage.GarageID;
+                            context.CategoryGarage.Add(category);
+                        }
+
+                        foreach (var image in imageGarages)
+                        {
+                            image.GarageID = garage.GarageID;
+                            context.ImageGarage.Add(image);
+                        }
+                        context.SaveChanges();
+                        dbContextTransaction.Commit();
+                        return garage;
+                    }
+                    catch (Exception e)
+                    {
+                        dbContextTransaction.Rollback();
+                        throw new Exception(e.Message);
+                    }
+                }
+            });
+            return null;
         }
 
         public void UpdateGarage(Garage garage)
