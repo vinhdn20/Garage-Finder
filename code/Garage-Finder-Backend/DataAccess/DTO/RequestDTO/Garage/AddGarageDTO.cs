@@ -10,7 +10,6 @@ namespace DataAccess.DTO.RequestDTO.Garage
         public int DistrictsID { get; set; }
         public string EmailAddress { get; set; }
         public string? PhoneNumber { get; set; }
-        public string? Status { get; set; }
         public string? OpenTime { get; set; }
         public string? CloseTime { get; set; }
         public string? Thumbnail { get; set; }

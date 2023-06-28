@@ -11,6 +11,9 @@ namespace Repositories.Interfaces
     public interface IGarageRepository
     {
         GarageDTO Add(AddGarageDTO garage);
+        GarageDTO AddGarageWithInfor(GarageDTO garage, GarageInfoDTO garageInfoDTO,
+            List<GarageBrandDTO> garageBrandDTOs, List<CategoryGarageDTO> categoryGarageDTOs,
+            List<ImageGarageDTO> imageGarageDTOs);
         void Update(UpdateGarageDTO garage);
         List<GarageDTO> GetGarages();
         void DeleteGarage(int id);
