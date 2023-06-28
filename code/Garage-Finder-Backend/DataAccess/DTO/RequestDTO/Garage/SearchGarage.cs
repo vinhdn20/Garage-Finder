@@ -12,6 +12,7 @@ namespace DataAccess.DTO.RequestDTO.Garage
         public int[]? provinceID { get; set; }
         public int[]? districtsID { get; set; }
         public int[]? categoriesID { get; set; }
+        public int[]? brandsID { get; set; }
         public int pageNumber { get; set; }
         public int pageSize { get; set; }
     }
