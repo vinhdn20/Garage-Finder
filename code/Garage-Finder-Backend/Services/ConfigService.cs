@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Services.EmailService;
+using Services.GarageService;
 using Services.OrderService;
 using Services.StorageApi;
 using Services.UserService;
@@ -19,6 +20,7 @@ namespace Services
             services.AddTransient<IUserService, UserService.UserService>();
             services.AddTransient<IOrderService, OrderService.OrderService>();
             services.AddTransient<IEmailService, MailjetService>();
+            services.AddTransient<IGarageService, GarageService.GarageService>();
         }
     }
 }
