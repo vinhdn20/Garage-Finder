@@ -12,6 +12,7 @@ namespace Repositories.Interfaces
         List<GuestOrderDTO> GetAllOrders();
         List<GuestOrderDTO> GetOrdersByGarageId(int id);
         GuestOrderDTO GetOrderById(int id);
+        GuestOrderDTO GetOrderByGFId(int id);
         void Add(GuestOrderDTO order);
         void Update(GuestOrderDTO order);
         void Delete(int id);

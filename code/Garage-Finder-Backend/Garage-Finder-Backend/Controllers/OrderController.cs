@@ -32,19 +32,19 @@ namespace Garage_Finder_Backend.Controllers
             this.guestOrderRepository = guestOrderRepository;
         }
 
-        [HttpGet("GetAllOrder")]
-        public IActionResult GetAll()
-        {
-            try
-            {
-                return Ok(orderRepository.GetAllOrders());
-            }
-            catch (Exception e)
-            {
+        //[HttpGet("GetAllOrder")]
+        //public IActionResult GetAll()
+        //{
+        //    try
+        //    {
+        //        return Ok(orderRepository.GetAllOrders());
+        //    }
+        //    catch (Exception e)
+        //    {
 
-                return BadRequest(e.Message);
-            }
-        }
+        //        return BadRequest(e.Message);
+        //    }
+        //}
 
         [HttpGet("GetByUser")]
         [Authorize]
@@ -54,6 +54,20 @@ namespace Garage_Finder_Backend.Controllers
             {
                 var user = GetUserFromToken();
                 return Ok(orderRepository.GetAllOrdersByUserId(user.UserID));
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpGet("GetOrderByGFId/{gfid}")]
+        public IActionResult GetOrder(int gfid)
+        {
+            try
+            {
+                var user = GetUserFromToken();
             }
             catch (Exception e)
             {
@@ -93,7 +107,7 @@ namespace Garage_Finder_Backend.Controllers
                 return BadRequest(e.Message);
             }
         }
-
+        #region Add order
         [HttpPost("AddOrder")]
         [Authorize]
         public IActionResult AddOrderWithCar([FromBody] AddOrderWithCarDTO newOrder)
@@ -143,6 +157,90 @@ namespace Garage_Finder_Backend.Controllers
                 return BadRequest(e.Message);
             }
         }
+
+        #endregion
+        #region Update order
+
+        [HttpPost("GarageAcceptOrder/{GFOrderID}")]
+        [Authorize]
+        public IActionResult GarageAcceptOrder(int GFOrderID)
+        {
+            try
+            {
+                var user = GetUserFromToken();
+                orderService.GarageAcceptOrder(GFOrderID, user.UserID);
+                return Ok("SUCCESS");
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpPost("GarageRejectOrder/{GFOrderID}")]
+        [Authorize]
+        public IActionResult GarageRejectOrder(int GFOrderID)
+        {
+            try
+            {
+                var user = GetUserFromToken();
+                orderService.GarageRejectOrder(GFOrderID, user.UserID);
+                return Ok("SUCCESS");
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        //[HttpPost("GarageDoneOrder")]
+        //[Authorize]
+        //public IActionResult GarageDoneOrder(DoneOrderDTO doneOrder)
+        //{
+        //    try
+        //    {
+        //        var user = GetUserFromToken();
+        //        orderService.GarageDoneOrder(, user.UserID);
+        //        return Ok("SUCCESS");
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return BadRequest(e.Message);
+        //    }
+        //}
+
+        [HttpPost("GarageCancelOrder/{GFOrderID}")]
+        [Authorize]
+        public IActionResult GarageCancelOrder(int GFOrderID)
+        {
+            try
+            {
+                var user = GetUserFromToken();
+                orderService.GarageCancelOrder(GFOrderID, user.UserID);
+                return Ok("SUCCESS");
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpPost("UserCancelOrder/{GFOrderID}")]
+        [Authorize]
+        public IActionResult UserCancelOrder(int GFOrderID)
+        {
+            try
+            {
+                var user = GetUserFromToken();
+                orderService.UserCancelOrder(user.UserID, GFOrderID);
+                return Ok("SUCCESS");
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+        #endregion
 
         [HttpDelete("Delete/{id}")]
         public IActionResult Delete([FromBody] int id)

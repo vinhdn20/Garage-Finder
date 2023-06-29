@@ -13,6 +13,7 @@ namespace Repositories.Interfaces
         List<OrdersDTO> GetAllOrdersByUserId(int id);
         List<OrdersDTO> GetAllOrdersByGarageId(int id);
         OrdersDTO GetOrderById(int id);
+        OrdersDTO GetOrderByGFId(int id);
         void Add(OrdersDTO order);
         void Update(OrdersDTO order);
         void Delete(int id);

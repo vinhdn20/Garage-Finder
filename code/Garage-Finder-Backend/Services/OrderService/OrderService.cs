@@ -1,8 +1,10 @@
 ﻿using DataAccess.DTO;
 using DataAccess.DTO.Orders;
 using DataAccess.DTO.Orders.RequestDTO;
+using GFData.Models.Entity;
 using Mailjet.Client.Resources;
 using Repositories.Implements.Garage;
+using Repositories.Implements.OrderRepository;
 using Repositories.Implements.UserRepository;
 using Repositories.Interfaces;
 using Services.EmailService;
@@ -18,6 +20,7 @@ namespace Services.OrderService
 {
     public class OrderService : IOrderService
     {
+        #region variable
         private readonly IOrderRepository _orderRepository;
         private readonly ICarRepository _carRepository;
         private readonly ICategoryGarageRepository _categoryGarageRepository;
@@ -25,10 +28,13 @@ namespace Services.OrderService
         private readonly IGuestOrderRepository _guestOrderRepository;
         private readonly IEmailService _emailService;
         private readonly IUsersRepository _usersRepository;
+        private readonly IGarageRepository _garageRepository;
+        #endregion
 
         public OrderService(IOrderRepository orderRepository, ICarRepository carRepository,
             ICategoryGarageRepository categoryGarageRepository, IPhoneVerifyService phoneVerifyService,
-            IGuestOrderRepository guestOrderRepository, IEmailService emailService, IUsersRepository usersRepository)
+            IGuestOrderRepository guestOrderRepository, IEmailService emailService, IUsersRepository usersRepository,
+            IGarageRepository garageRepository)
         {
             _orderRepository = orderRepository;
             _carRepository = carRepository;
@@ -37,6 +43,7 @@ namespace Services.OrderService
             _guestOrderRepository = guestOrderRepository;
             _emailService = emailService;
             _usersRepository = usersRepository;
+            _garageRepository = garageRepository;
         }
 
         public void AddOrderWithCar(AddOrderWithCarDTO addOrder)
@@ -144,5 +151,320 @@ namespace Services.OrderService
             _emailService.SendMailAsync(user.EmailAddress, user.Name, "Your order create success!",
                 $"<h3>Dear {user.Name}, Your order create success!</h3>");
         }
+        #region Order
+        public void GarageAcceptOrder(int GFId, int userId)
+        {
+            var order = _orderRepository.GetOrderByGFId(GFId);
+            if(order != null)
+            {
+                if (!CheckGarageCanAcceptOrReject(userId, order))
+                {
+                    throw new Exception("Can not accept the order");
+                }
+
+                order.Status = Constants.STATUS_ORDER_CONFIRMED;
+                order.TimeUpdate = DateTime.UtcNow;
+                _orderRepository.Update(order);
+            }
+            else
+            {
+                var gorder = _guestOrderRepository.GetOrderByGFId(GFId);
+                if (!CheckGarageCanAcceptOrReject(userId, gorder))
+                {
+                    throw new Exception("Can not accept the order");
+                }
+                if (gorder == null)
+                {
+                    throw new Exception("Can not find order");
+                }
+                gorder.Status = Constants.STATUS_ORDER_CONFIRMED;
+                gorder.TimeUpdate = DateTime.UtcNow;
+                _guestOrderRepository.Update(gorder);
+            }
+        }
+
+        public void GarageRejectOrder(int GFId, int userId)
+        {
+            var order = _orderRepository.GetOrderByGFId(GFId);
+            if(order != null)
+            {
+                if (!CheckGarageCanAcceptOrReject(userId, order))
+                {
+                    throw new Exception("Can not reject the order");
+                }
+
+                order.Status = Constants.STATUS_ORDER_REJECT;
+                order.TimeUpdate = DateTime.UtcNow;
+                _orderRepository.Update(order);
+            }
+            else
+            {
+                var gorder = _guestOrderRepository.GetOrderByGFId(GFId);
+                if (!CheckGarageCanAcceptOrReject(userId, gorder))
+                {
+                    throw new Exception("Can not reject the order");
+                }
+                if (gorder == null)
+                {
+                    throw new Exception("Can not find order");
+                }
+                gorder.Status = Constants.STATUS_ORDER_REJECT;
+                gorder.TimeUpdate = DateTime.UtcNow;
+                _guestOrderRepository.Update(gorder);
+            }
+        }
+
+        public void GarageCancelOrder(int GFId, int userId)
+        {
+            var order = _orderRepository.GetOrderByGFId(GFId);
+            if (order != null)
+            {
+                if (!CheckGarageCanCancelOrDone(userId, order))
+                {
+                    throw new Exception("Can not cancel the order");
+                }
+                order.Status = Constants.STATUS_ORDER_CANCELED;
+                order.TimeUpdate = DateTime.UtcNow;
+                _orderRepository.Update(order);
+            }
+            else
+            {
+                var gorder = _guestOrderRepository.GetOrderByGFId(GFId);
+                if (!CheckGarageCanAcceptOrReject(userId, gorder))
+                {
+                    throw new Exception("Can not cancel the order");
+                }
+                if (gorder == null)
+                {
+                    throw new Exception("Can not find order");
+                }
+                gorder.Status = Constants.STATUS_ORDER_CANCELED;
+                gorder.TimeUpdate = DateTime.UtcNow;
+                _guestOrderRepository.Update(gorder);
+            }
+        }
+
+        public void GarageDoneOrder(int GFId, int userId)
+        {
+            var order = _orderRepository.GetOrderByGFId(GFId);
+            if(order != null)
+            {
+                if (!CheckGarageCanCancelOrDone(userId, order))
+                {
+                    throw new Exception("Can not done the order");
+                }
+
+                order.Status = Constants.STATUS_ORDER_DONE;
+                order.TimeUpdate = DateTime.UtcNow;
+                _orderRepository.Update(order);
+            }
+            else
+            {
+                var gorder = _guestOrderRepository.GetOrderByGFId(GFId);
+                if (!CheckGarageCanAcceptOrReject(userId, gorder))
+                {
+                    throw new Exception("Can not done the order");
+                }
+                if (gorder == null)
+                {
+                    throw new Exception("Can not find order");
+                }
+                gorder.Status = Constants.STATUS_ORDER_DONE;
+                gorder.TimeUpdate = DateTime.UtcNow;
+                _guestOrderRepository.Update(gorder);
+            }
+        }
+
+        public void UserCancelOrder(int userId, int GFId)
+        {
+            var order = _orderRepository.GetOrderByGFId(GFId);
+            if(order != null)
+            {
+                if (!CheckUserCanCancel(userId, order))
+                {
+                    throw new Exception("Can not cancel the order");
+                }
+
+                order.Status = Constants.STATUS_ORDER_CANCELED;
+                order.TimeUpdate = DateTime.UtcNow;
+                _orderRepository.Update(order);
+            }
+            else
+            {
+                var gorder = _guestOrderRepository.GetOrderByGFId(GFId);
+                if (!CheckGarageCanAcceptOrReject(userId, gorder))
+                {
+                    throw new Exception("Can not cancel the order");
+                }
+                if (gorder == null)
+                {
+                    throw new Exception("Can not find order");
+                }
+                gorder.Status = Constants.STATUS_ORDER_CANCELED;
+                gorder.TimeUpdate = DateTime.UtcNow;
+                _guestOrderRepository.Update(gorder);
+            }
+        }
+
+        #endregion
+        #region Private Order method
+        private bool CheckUserCanCancel(int userId, OrdersDTO orders)
+        {
+            if (!ValidationUserOwner(userId, orders))
+            {
+                return false;
+            }
+
+            if (orders.Status.Equals(Constants.STATUS_ORDER_OPEN) || orders.Status.Equals(Constants.STATUS_ORDER_CONFIRMED))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool CheckGarageCanAcceptOrReject(int userId, OrdersDTO orders)
+        {
+            if (!ValidationGarageOwner(orders, userId))
+            {
+                return false;
+            }
+
+            if (orders.Status.Equals(Constants.STATUS_ORDER_OPEN))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private bool CheckGarageCanCancelOrDone(int userId, OrdersDTO orders)
+        {
+            if (!ValidationGarageOwner(orders, userId))
+            {
+                return false;
+            }
+
+            if (orders.Status.Equals(Constants.STATUS_ORDER_CONFIRMED))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private bool ValidationGarageOwner(OrdersDTO orders, int userId)
+        {
+            var garages = _garageRepository.GetGarageByUser(userId);
+            if (!garages.Any(x => x.GarageID == orders.GarageID))
+            {
+                return false;
+            }
+            return true;
+        }
+
+        private bool ValidationUserOwner(int userId, OrdersDTO orders)
+        {
+            var cars = _carRepository.GetCarsByUser(userId);
+            if (!cars.Any(x => x.CarID == orders.CarID))
+            {
+                return false;
+            }
+            return true;
+        }
+
+        #endregion
+
+        #region GuestOrder
+        public void GarageAcceptGuestOrder(int orderId, int userId)
+        {
+            var order = _guestOrderRepository.GetOrderById(orderId);
+            if (!CheckGarageCanAcceptOrReject(userId, order))
+            {
+                throw new Exception("Can not accept the order");
+            }
+
+            order.Status = Constants.STATUS_ORDER_CONFIRMED;
+            order.TimeUpdate = DateTime.UtcNow;
+            _guestOrderRepository.Update(order);
+        }
+
+        public void GarageRejectGuestOrder(int orderId, int userId)
+        {
+            var order = _guestOrderRepository.GetOrderById(orderId);
+            if (!CheckGarageCanAcceptOrReject(userId, order))
+            {
+                throw new Exception("Can not reject the order");
+            }
+
+            order.Status = Constants.STATUS_ORDER_REJECT;
+            order.TimeUpdate = DateTime.UtcNow;
+            _guestOrderRepository.Update(order);
+        }
+
+        public void GarageCancelGuestOrder(int orderId, int userId)
+        {
+            var order = _guestOrderRepository.GetOrderById(orderId);
+            if (!CheckGarageCanCancelOrDone(userId, order))
+            {
+                throw new Exception("Can not cancel the order");
+            }
+            order.Status = Constants.STATUS_ORDER_CANCELED;
+            order.TimeUpdate = DateTime.UtcNow;
+            _guestOrderRepository.Update(order);
+        }
+
+        public void GarageDoneGuestOrder(int orderId, int userId)
+        {
+            var order = _guestOrderRepository.GetOrderById(orderId);
+            if (!CheckGarageCanCancelOrDone(userId, order))
+            {
+                throw new Exception("Can not done the order");
+            }
+
+            order.Status = Constants.STATUS_ORDER_DONE;
+            order.TimeUpdate = DateTime.UtcNow;
+            _guestOrderRepository.Update(order);
+        }
+        #endregion
+        #region Private Guest Order method
+
+        private bool CheckGarageCanAcceptOrReject(int userId, GuestOrderDTO orders)
+        {
+            if (!ValidationGarageOwner(orders, userId))
+            {
+                return false;
+            }
+
+            if (orders.Status.Equals(Constants.STATUS_ORDER_OPEN))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private bool CheckGarageCanCancelOrDone(int userId, GuestOrderDTO orders)
+        {
+            if (!ValidationGarageOwner(orders, userId))
+            {
+                return false;
+            }
+
+            if (orders.Status.Equals(Constants.STATUS_ORDER_CONFIRMED))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private bool ValidationGarageOwner(GuestOrderDTO orders, int userId)
+        {
+            var garages = _garageRepository.GetGarageByUser(userId);
+            if (!garages.Any(x => x.GarageID == orders.GarageID))
+            {
+                return false;
+            }
+            return true;
+        }
+
+        #endregion
     }
 }

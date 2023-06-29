@@ -337,6 +337,9 @@ namespace GFData.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("GFOrderID")
+                        .HasColumnType("int");
+
                     b.Property<int>("GarageID")
                         .HasColumnType("int");
 
@@ -367,6 +370,9 @@ namespace GFData.Migrations
                     b.HasIndex("BrandCarID");
 
                     b.HasIndex("CategoryGarageID");
+
+                    b.HasIndex("GFOrderID")
+                        .IsUnique();
 
                     b.HasIndex("GarageID");
 
@@ -517,6 +523,9 @@ namespace GFData.Migrations
                     b.Property<string>("Content")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("GFOrderID")
+                        .HasColumnType("int");
+
                     b.Property<int>("GarageID")
                         .HasColumnType("int");
 
@@ -537,6 +546,9 @@ namespace GFData.Migrations
                     b.HasIndex("CarID");
 
                     b.HasIndex("CategoryGarageID");
+
+                    b.HasIndex("GFOrderID")
+                        .IsUnique();
 
                     b.HasIndex("GarageID");
 

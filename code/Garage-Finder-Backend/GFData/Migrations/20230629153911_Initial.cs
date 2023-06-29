@@ -195,6 +195,7 @@ namespace GFData.Migrations
                 {
                     GuestOrderID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    GFOrderID = table.Column<int>(type: "int", nullable: false),
                     GarageID = table.Column<int>(type: "int", nullable: false),
                     CategoryGarageID = table.Column<int>(type: "int", nullable: false),
                     TimeCreate = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -484,6 +485,7 @@ namespace GFData.Migrations
                 {
                     OrderID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    GFOrderID = table.Column<int>(type: "int", nullable: false),
                     CarID = table.Column<int>(type: "int", nullable: false),
                     GarageID = table.Column<int>(type: "int", nullable: false),
                     CategoryGarageID = table.Column<int>(type: "int", nullable: false),
@@ -639,6 +641,12 @@ namespace GFData.Migrations
                 column: "GarageID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_GuestOrder_GFOrderID",
+                table: "GuestOrder",
+                column: "GFOrderID",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ImageGarage_GarageID",
                 table: "ImageGarage",
                 column: "GarageID");
@@ -682,6 +690,12 @@ namespace GFData.Migrations
                 name: "IX_Orders_GarageID",
                 table: "Orders",
                 column: "GarageID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Orders_GFOrderID",
+                table: "Orders",
+                column: "GFOrderID",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_RefreshToken_UserID",

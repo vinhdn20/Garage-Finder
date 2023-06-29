@@ -12,5 +12,10 @@ namespace Services.OrderService
         void AddOrderWithCar(AddOrderWithCarDTO addOrder);
         void AddOrderFromGuest(AddOrderFromGuestDTO addOrder);
         void AddOrderWithoutCar(AddOrderWithoutCarDTO addOrder, int userID);
+        void GarageAcceptOrder(int GFId, int userId);
+        void GarageRejectOrder(int GFId, int userId);
+        void GarageCancelOrder(int GFId, int userId);
+        void GarageDoneOrder(int GFId, int userId);
+        void UserCancelOrder(int userId, int GFId);
     }
 }

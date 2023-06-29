@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GFData.Migrations
 {
     [DbContext(typeof(GFDbContext))]
-    [Migration("20230626151558_Initial")]
+    [Migration("20230629153911_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -339,6 +339,9 @@ namespace GFData.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("GFOrderID")
+                        .HasColumnType("int");
+
                     b.Property<int>("GarageID")
                         .HasColumnType("int");
 
@@ -369,6 +372,9 @@ namespace GFData.Migrations
                     b.HasIndex("BrandCarID");
 
                     b.HasIndex("CategoryGarageID");
+
+                    b.HasIndex("GFOrderID")
+                        .IsUnique();
 
                     b.HasIndex("GarageID");
 
@@ -519,6 +525,9 @@ namespace GFData.Migrations
                     b.Property<string>("Content")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("GFOrderID")
+                        .HasColumnType("int");
+
                     b.Property<int>("GarageID")
                         .HasColumnType("int");
 
@@ -539,6 +548,9 @@ namespace GFData.Migrations
                     b.HasIndex("CarID");
 
                     b.HasIndex("CategoryGarageID");
+
+                    b.HasIndex("GFOrderID")
+                        .IsUnique();
 
                     b.HasIndex("GarageID");
 

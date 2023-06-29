@@ -43,6 +43,7 @@ namespace DataAccess.DAO
                                   select new GuestOrder
                                   {
                                       GuestOrderID = order.GuestOrderID,
+                                      GFOrderID = order.GFOrderID,
                                       GarageID = order.GarageID,
                                       CategoryGarageID = order.CategoryGarageID,
                                       TimeCreate = order.TimeCreate,
@@ -77,6 +78,20 @@ namespace DataAccess.DAO
             return order;
         }
 
+        public GuestOrder GetByGFId(int id)
+        {
+            GuestOrder order = null;
+            try
+            {
+                var db = new GFDbContext();
+                order = db.GuestOrder.SingleOrDefault(c => c.GFOrderID == id);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            return order;
+        }
         public GuestOrder GetById(int id)
         {
             GuestOrder order = null;
@@ -97,6 +112,8 @@ namespace DataAccess.DAO
             try
             {
                 var db = new GFDbContext();
+                int id = GetGFOrderId() + 1;
+                order.GFOrderID = id;
                 db.GuestOrder.Add(order);
                 db.SaveChanges();
             }
@@ -144,6 +161,32 @@ namespace DataAccess.DAO
                 {
                     throw new Exception("Order does not exist!!!");
                 }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        public int GetGFOrderId()
+        {
+            int id = -1;
+            try
+            {
+                var db = new GFDbContext();
+                if (db.Orders.Count() != 0)
+                {
+                    id = db.Orders.Max(x => x.GFOrderID);
+                }
+                if (db.GuestOrder.Count() != 0)
+                {
+                    int gid = db.GuestOrder.Max(x => x.GFOrderID);
+                    if (id < gid)
+                    {
+                        id = gid;
+                    }
+                }
+                return id;
             }
             catch (Exception e)
             {

@@ -11,6 +11,7 @@ namespace DataAccess.DTO.Orders
     public class GuestOrderDTO
     {
         public int GuestOrderID { get; set; }
+        public int GFOrderID { get; set; }
         public int GarageID { get; set; }
         public int CategoryGarageID { get; set; }
         public DateTime TimeCreate { get; set; }

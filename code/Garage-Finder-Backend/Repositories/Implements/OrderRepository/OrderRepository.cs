@@ -18,6 +18,9 @@ namespace Repositories.Implements.OrderRepository
         {
             _mapper = mapper;
         }
+
+        public 
+
         public void Add(OrdersDTO order)
         {
             OrdersDAO.Instance.Add(_mapper.Map<OrdersDTO, Orders>(order));
@@ -51,6 +54,11 @@ namespace Repositories.Implements.OrderRepository
         public void Update(OrdersDTO order)
         {
             OrdersDAO.Instance.Update(_mapper.Map<OrdersDTO, Orders>(order));
+        }
+
+        public OrdersDTO GetOrderByGFId(int id)
+        {
+            return _mapper.Map < Orders, OrdersDTO >(OrdersDAO.Instance.GetByGFId(id));
         }
     }
 }
