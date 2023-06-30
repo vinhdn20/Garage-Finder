@@ -32,6 +32,11 @@ namespace Repositories.Implements.OrderRepository
             return GuestOrderDAO.Instance.GetList().Select(p => _mapper.Map<GuestOrder, GuestOrderDTO>(p)).ToList();
         }
 
+        public GuestOrderDTO GetOrderByGFId(int id)
+        {
+            return _mapper.Map<GuestOrder, GuestOrderDTO>(GuestOrderDAO.Instance.GetByGFId(id));
+        }
+
         public GuestOrderDTO GetOrderById(int id)
         {
             return _mapper.Map<GuestOrder, GuestOrderDTO>(GuestOrderDAO.Instance.GetById(id));

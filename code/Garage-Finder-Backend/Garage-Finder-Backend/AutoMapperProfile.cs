@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DataAccess.DTO;
 using DataAccess.DTO.Orders;
+using DataAccess.DTO.Orders.ResponseDTO;
 using DataAccess.DTO.RequestDTO.Car;
 using DataAccess.DTO.RequestDTO.Garage;
 using DataAccess.DTO.User.ResponeModels;
@@ -37,6 +38,14 @@ namespace Garage_Finder_Backend
             CreateMap<Orders, OrdersDTO>();
             CreateMap<GuestOrderDTO, GuestOrder>();
             CreateMap<GuestOrder, GuestOrderDTO>();
+            CreateMap<GuestOrderDTO, OrderDetailDTO>()
+                .ForMember(x => x.BrandID, m => m.MapFrom(a => a.BrandCarID));
+            CreateMap<OrdersDTO, OrderDetailDTO>();
+            CreateMap<CarDTO, OrderDetailDTO>();
+            CreateMap<UsersDTO, OrderDetailDTO>()
+                .ForMember(x => x.Email, m => m.MapFrom(a => a.EmailAddress))
+                .ForMember(x => x.Status, m => m.Ignore());
+
             CreateMap<RefreshTokenDTO, RefreshToken>();
             CreateMap<RefreshToken, RefreshTokenDTO>();
             CreateMap<RoleNameDTO, RoleName>();

@@ -1,16 +1,15 @@
 ﻿using GFData.Models.Entity;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataAccess.DTO.Orders
+namespace DataAccess.DTO.Orders.ResponseDTO
 {
-    public class GuestOrderDTO
+    public class OrderDetailDTO
     {
-        public int GuestOrderID { get; set; }
+        public int OrderID { get; set; }
         public int GFOrderID { get; set; }
         public int GarageID { get; set; }
         public int CategoryGarageID { get; set; }
@@ -21,11 +20,11 @@ namespace DataAccess.DTO.Orders
         public string? Content { get; set; }
         public string PhoneNumber { get; set; }
         public string? Email { get; set; }
-        public int? BrandCarID { get; set; }
+        public int? BrandID { get; set; }
         public string? TypeCar { get; set; }
         public string? LicensePlates { get; set; }
-
-        public ICollection<ImageGuestOrder>? ImageOrders { get; set; }
-        public ICollection<FileGuestOrders>? FileOrders { get; set; }
+        public string? Color { get; set; }
+        public ICollection<string>? ImageOrders { get; set; }
+        public ICollection<string>? FileOrders { get; set; }
     }
 }

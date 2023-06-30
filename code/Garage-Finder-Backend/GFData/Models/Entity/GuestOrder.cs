@@ -5,14 +5,17 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace GFData.Models.Entity
 {
+    [Index(nameof(GFOrderID), IsUnique = true)]
     public class GuestOrder
     {
 
         [Key]
         public int GuestOrderID { get; set; }
+        public int GFOrderID { get; set; }
         [ForeignKey("Garage")]
         public int GarageID { get; set; }
         [ForeignKey("CategoryGarage")]

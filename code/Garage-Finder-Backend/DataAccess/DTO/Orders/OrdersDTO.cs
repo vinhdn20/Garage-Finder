@@ -5,6 +5,7 @@ namespace DataAccess.DTO.Orders
     public class OrdersDTO
     {
         public int OrderID { get; set; }
+        public int GFOrderID { get; set; }
         public int CarID { get; set; }
         public int GarageID { get; set; }
         public int CategoryGarageId { get; set; }
