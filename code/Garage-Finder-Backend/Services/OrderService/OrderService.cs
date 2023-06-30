@@ -51,13 +51,17 @@ namespace Services.OrderService
             _mapper = mapper;
         }
 
-        public OrderDetailDTO GetOrderByGFID(int gfid)
+        public OrderDetailDTO GetOrderByGFID(int gfid, int userId)
         {
             OrderDetailDTO orderDetailDTO = null;
             var orders = _orderRepository.GetOrderByGFId(gfid);
             if(orders != null)
             {
                 var car = _carRepository.GetCarById(orders.CarID);
+                if(!ValidationGarageOwner(orders, userId) && !ValidationUserOwner(userId, orders))
+                {
+                    throw new Exception("Authorize exception!");
+                }
                 var user = _usersRepository.GetUserByID(car.UserID);
                 orderDetailDTO = _mapper.Map<OrdersDTO, OrderDetailDTO>(orders);
                 orderDetailDTO = _mapper.Map<CarDTO,OrderDetailDTO>(car, orderDetailDTO);
@@ -71,6 +75,10 @@ namespace Services.OrderService
                 if(gorders == null)
                 {
                     throw new Exception($"Can not found the order with id {gfid}");
+                }
+                if (!ValidationGarageOwner(gorders, userId))
+                {
+                    throw new Exception("Authorize exception!");
                 }
                 orderDetailDTO = _mapper.Map<GuestOrderDTO, OrderDetailDTO>(gorders);
                 orderDetailDTO.FileOrders = gorders.FileOrders.Select(x => x.FileLink).ToList();

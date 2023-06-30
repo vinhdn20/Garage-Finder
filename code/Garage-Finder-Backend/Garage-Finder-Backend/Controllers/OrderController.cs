@@ -63,12 +63,13 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpGet("GetOrderByGFId/{GFOrderID}")]
+        [Authorize]
         public IActionResult GetOrder(int GFOrderID)
         {
             try
             {
                 var user = GetUserFromToken();
-                object order = orderService.GetOrderByGFID(GFOrderID);
+                object order = orderService.GetOrderByGFID(GFOrderID, user.UserID);
                 return Ok(order);
             }
             catch (Exception e)
