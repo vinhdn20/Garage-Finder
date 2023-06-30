@@ -51,6 +51,11 @@ namespace DataAccess.DAO
                                       TimeAppointment = order.TimeAppointment,
                                       Status = order.Status,
                                       Content = order.Content,
+                                      Email = order.Email,
+                                      PhoneNumber = order.PhoneNumber,
+                                      BrandCarID = order.BrandCarID,
+                                      TypeCar = order.TypeCar,
+                                      LicensePlates = order.LicensePlates,
                                       ImageOrders = context.ImageGuestOrders.Where(x => x.GuestOrderID == order.GuestOrderID).ToList(),
                                       FileOrders = context.FileGuestOrders.Where(x => x.GuestOrderID == order.GuestOrderID).ToList(),
                                   }).ToList();
@@ -80,17 +85,37 @@ namespace DataAccess.DAO
 
         public GuestOrder GetByGFId(int id)
         {
-            GuestOrder order = null;
+            GuestOrder ord = null;
             try
             {
                 var db = new GFDbContext();
-                order = db.GuestOrder.SingleOrDefault(c => c.GFOrderID == id);
+                ord = (from order in db.GuestOrder
+                       where order.GFOrderID == id
+                       select new GuestOrder
+                       {
+                           GuestOrderID = order.GuestOrderID,
+                           GFOrderID = order.GFOrderID,
+                           GarageID = order.GarageID,
+                           CategoryGarageID = order.CategoryGarageID,
+                           TimeCreate = order.TimeCreate,
+                           TimeUpdate = order.TimeUpdate,
+                           TimeAppointment = order.TimeAppointment,
+                           Status = order.Status,
+                           Content = order.Content,
+                           Email = order.Email,
+                           PhoneNumber = order.PhoneNumber,
+                           BrandCarID = order.BrandCarID,
+                           TypeCar = order.TypeCar,
+                           LicensePlates = order.LicensePlates,
+                           ImageOrders = db.ImageGuestOrders.Where(x => x.GuestOrderID == order.GuestOrderID).ToList(),
+                           FileOrders = db.FileGuestOrders.Where(x => x.GuestOrderID == order.GuestOrderID).ToList(),
+                       }).FirstOrDefault();
             }
             catch (Exception e)
             {
                 throw new Exception(e.Message);
             }
-            return order;
+            return ord;
         }
         public GuestOrder GetById(int id)
         {

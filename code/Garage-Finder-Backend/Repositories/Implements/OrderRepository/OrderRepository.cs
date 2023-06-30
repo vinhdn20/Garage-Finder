@@ -19,8 +19,6 @@ namespace Repositories.Implements.OrderRepository
             _mapper = mapper;
         }
 
-        public 
-
         public void Add(OrdersDTO order)
         {
             OrdersDAO.Instance.Add(_mapper.Map<OrdersDTO, Orders>(order));

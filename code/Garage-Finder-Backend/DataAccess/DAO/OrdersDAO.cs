@@ -150,17 +150,33 @@ namespace DataAccess.DAO
 
         public Orders GetByGFId(int id)
         {
-            Orders order = null;
+            Orders ord = null;
             try
             {
                 var db = new GFDbContext();
-                order = db.Orders.SingleOrDefault(c => c.GFOrderID == id);
+                ord = (from order in db.Orders
+                       where order.GFOrderID == id
+                       select new Orders
+                       {
+                           OrderID = order.OrderID,
+                           GFOrderID = order.GFOrderID,
+                           CarID = order.CarID,
+                           GarageID = order.GarageID,
+                           CategoryGarageID = order.CategoryGarageID,
+                           TimeCreate = order.TimeCreate,
+                           TimeUpdate = order.TimeUpdate,
+                           TimeAppointment = order.TimeAppointment,
+                           Status = order.Status,
+                           Content = order.Content,
+                           ImageOrders = db.ImageOrders.Where(x => x.OrderID == order.OrderID).ToList(),
+                           FileOrders = db.FileOrders.Where(x => x.OrderID == order.OrderID).ToList(),
+                       }).FirstOrDefault();
             }
             catch (Exception e)
             {
                 throw new Exception(e.Message);
             }
-            return order;
+            return ord;
         }
 
         public void Add(Orders order)

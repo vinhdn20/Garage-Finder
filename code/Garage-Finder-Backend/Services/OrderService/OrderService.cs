@@ -1,6 +1,8 @@
-﻿using DataAccess.DTO;
+﻿using AutoMapper;
+using DataAccess.DTO;
 using DataAccess.DTO.Orders;
 using DataAccess.DTO.Orders.RequestDTO;
+using DataAccess.DTO.Orders.ResponseDTO;
 using GFData.Models.Entity;
 using Mailjet.Client.Resources;
 using Repositories.Implements.Garage;
@@ -13,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mail;
+using System.Runtime.ConstrainedExecution;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -29,12 +32,13 @@ namespace Services.OrderService
         private readonly IEmailService _emailService;
         private readonly IUsersRepository _usersRepository;
         private readonly IGarageRepository _garageRepository;
+        private readonly IMapper _mapper;
         #endregion
 
         public OrderService(IOrderRepository orderRepository, ICarRepository carRepository,
             ICategoryGarageRepository categoryGarageRepository, IPhoneVerifyService phoneVerifyService,
             IGuestOrderRepository guestOrderRepository, IEmailService emailService, IUsersRepository usersRepository,
-            IGarageRepository garageRepository)
+            IGarageRepository garageRepository, IMapper mapper)
         {
             _orderRepository = orderRepository;
             _carRepository = carRepository;
@@ -44,6 +48,36 @@ namespace Services.OrderService
             _emailService = emailService;
             _usersRepository = usersRepository;
             _garageRepository = garageRepository;
+            _mapper = mapper;
+        }
+
+        public OrderDetailDTO GetOrderByGFID(int gfid)
+        {
+            OrderDetailDTO orderDetailDTO = null;
+            var orders = _orderRepository.GetOrderByGFId(gfid);
+            if(orders != null)
+            {
+                var car = _carRepository.GetCarById(orders.CarID);
+                var user = _usersRepository.GetUserByID(car.UserID);
+                orderDetailDTO = _mapper.Map<OrdersDTO, OrderDetailDTO>(orders);
+                orderDetailDTO = _mapper.Map<CarDTO,OrderDetailDTO>(car, orderDetailDTO);
+                orderDetailDTO = _mapper.Map(user, orderDetailDTO);
+                orderDetailDTO.FileOrders = orders.FileOrders.Select(x => x.FileLink).ToList();
+                orderDetailDTO.ImageOrders = orders.ImageOrders.Select(x => x.ImageLink).ToList();
+            }
+            else
+            {
+                var gorders = _guestOrderRepository.GetOrderByGFId(gfid);
+                if(gorders == null)
+                {
+                    throw new Exception($"Can not found the order with id {gfid}");
+                }
+                orderDetailDTO = _mapper.Map<GuestOrderDTO, OrderDetailDTO>(gorders);
+                orderDetailDTO.FileOrders = gorders.FileOrders.Select(x => x.FileLink).ToList();
+                orderDetailDTO.ImageOrders = gorders.ImageOrders.Select(x => x.ImageLink).ToList();
+            }
+            return orderDetailDTO;
+            
         }
 
         public void AddOrderWithCar(AddOrderWithCarDTO addOrder)
@@ -244,9 +278,9 @@ namespace Services.OrderService
             }
         }
 
-        public void GarageDoneOrder(int GFId, int userId)
+        public void GarageDoneOrder(DoneOrderDTO doneOrder, int userId)
         {
-            var order = _orderRepository.GetOrderByGFId(GFId);
+            var order = _orderRepository.GetOrderByGFId(doneOrder.GFOrderId);
             if(order != null)
             {
                 if (!CheckGarageCanCancelOrDone(userId, order))
@@ -256,12 +290,32 @@ namespace Services.OrderService
 
                 order.Status = Constants.STATUS_ORDER_DONE;
                 order.TimeUpdate = DateTime.UtcNow;
+                order.Content = doneOrder.Content;
+                foreach (var image in doneOrder.ImageLinks)
+                {
+                    ImageOrdersDTO img = new ImageOrdersDTO()
+                    {
+                        ImageLink = image,
+                        OrderID = order.OrderID,
+                    };
+                    order.ImageOrders.Add(img);
+                }
+
+                foreach(var file in doneOrder.FileLinks)
+                {
+                    FileOrdersDTO fileOrdersDTO = new FileOrdersDTO()
+                    {
+                        FileLink = file,
+                        OrderID = order.OrderID,
+                    };
+                    order.FileOrders.Add(fileOrdersDTO);
+                }
                 _orderRepository.Update(order);
             }
             else
             {
-                var gorder = _guestOrderRepository.GetOrderByGFId(GFId);
-                if (!CheckGarageCanAcceptOrReject(userId, gorder))
+                var gorder = _guestOrderRepository.GetOrderByGFId(doneOrder.GFOrderId);
+                if (!CheckGarageCanCancelOrDone(userId, gorder))
                 {
                     throw new Exception("Can not done the order");
                 }
@@ -271,6 +325,26 @@ namespace Services.OrderService
                 }
                 gorder.Status = Constants.STATUS_ORDER_DONE;
                 gorder.TimeUpdate = DateTime.UtcNow;
+                gorder.Content = doneOrder.Content;
+                foreach (var image in doneOrder.ImageLinks)
+                {
+                    ImageGuestOrder img = new ()
+                    {
+                        ImageLink = image,
+                        GuestOrderID = gorder.GuestOrderID,
+                    };
+                    gorder.ImageOrders.Add(img);
+                }
+
+                foreach (var file in doneOrder.FileLinks)
+                {
+                    FileGuestOrders fileOrdersDTO = new ()
+                    {
+                        FileLink = file,
+                        GuestOrderID = gorder.GuestOrderID,
+                    };
+                    gorder.FileOrders.Add(fileOrdersDTO);
+                }
                 _guestOrderRepository.Update(gorder);
             }
         }

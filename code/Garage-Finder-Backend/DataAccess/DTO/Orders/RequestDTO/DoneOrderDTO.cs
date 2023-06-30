@@ -9,5 +9,8 @@ namespace DataAccess.DTO.Orders.RequestDTO
     public class DoneOrderDTO
     {
         public int GFOrderId { get; set; }
+        public string Content { get; set; }
+        public List<string> ImageLinks { get; set; }
+        public List<string> FileLinks { get; set; }
     }
 }

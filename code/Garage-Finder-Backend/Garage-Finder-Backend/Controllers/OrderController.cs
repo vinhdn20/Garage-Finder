@@ -62,12 +62,14 @@ namespace Garage_Finder_Backend.Controllers
             }
         }
 
-        [HttpGet("GetOrderByGFId/{gfid}")]
-        public IActionResult GetOrder(int gfid)
+        [HttpGet("GetOrderByGFId/{GFOrderID}")]
+        public IActionResult GetOrder(int GFOrderID)
         {
             try
             {
                 var user = GetUserFromToken();
+                object order = orderService.GetOrderByGFID(GFOrderID);
+                return Ok(order);
             }
             catch (Exception e)
             {
@@ -193,21 +195,21 @@ namespace Garage_Finder_Backend.Controllers
             }
         }
 
-        //[HttpPost("GarageDoneOrder")]
-        //[Authorize]
-        //public IActionResult GarageDoneOrder(DoneOrderDTO doneOrder)
-        //{
-        //    try
-        //    {
-        //        var user = GetUserFromToken();
-        //        orderService.GarageDoneOrder(, user.UserID);
-        //        return Ok("SUCCESS");
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        return BadRequest(e.Message);
-        //    }
-        //}
+        [HttpPost("GarageDoneOrder")]
+        [Authorize]
+        public IActionResult GarageDoneOrder([FromBody]DoneOrderDTO doneOrder)
+        {
+            try
+            {
+                var user = GetUserFromToken();
+                orderService.GarageDoneOrder(doneOrder, user.UserID);
+                return Ok("SUCCESS");
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
 
         [HttpPost("GarageCancelOrder/{GFOrderID}")]
         [Authorize]
