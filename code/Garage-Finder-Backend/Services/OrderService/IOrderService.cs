@@ -11,7 +11,7 @@ namespace Services.OrderService
 {
     public interface IOrderService
     {
-        OrderDetailDTO GetOrderByGFID(int gfid);
+        OrderDetailDTO GetOrderByGFID(int gfid, int userId);
         void AddOrderWithCar(AddOrderWithCarDTO addOrder);
         void AddOrderFromGuest(AddOrderFromGuestDTO addOrder);
         void AddOrderWithoutCar(AddOrderWithoutCarDTO addOrder, int userID);
