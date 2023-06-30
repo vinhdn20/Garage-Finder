@@ -4,6 +4,8 @@ using DataAccess.DTO.Orders;
 using DataAccess.DTO.Orders.ResponseDTO;
 using DataAccess.DTO.RequestDTO.Car;
 using DataAccess.DTO.RequestDTO.Garage;
+using DataAccess.DTO.Services;
+using DataAccess.DTO.Services.RequestSerivesDTO;
 using DataAccess.DTO.User.ResponeModels;
 using GFData.Models.Entity;
 
@@ -50,8 +52,11 @@ namespace Garage_Finder_Backend
             CreateMap<RefreshToken, RefreshTokenDTO>();
             CreateMap<RoleNameDTO, RoleName>();
             CreateMap<RoleName, RoleNameDTO>();
+            
             CreateMap<ServiceDTO, Service>();
             CreateMap<Service, ServiceDTO>();
+            CreateMap<AddServiceDTO, ServiceDTO>();
+
             CreateMap<SubscribeDTO, Subscribe>();
             CreateMap<Subscribe, SubscribeDTO>();
 

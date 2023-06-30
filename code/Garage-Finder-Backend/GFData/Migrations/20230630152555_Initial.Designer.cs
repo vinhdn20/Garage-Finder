@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GFData.Migrations
 {
     [DbContext(typeof(GFDbContext))]
-    [Migration("20230629153911_Initial")]
+    [Migration("20230630152555_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -613,14 +613,8 @@ namespace GFData.Migrations
                     b.Property<int>("CategoryGarageID")
                         .HasColumnType("int");
 
-                    b.Property<int?>("CategorysCategoryID")
-                        .HasColumnType("int");
-
                     b.Property<string>("Cost")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("GarageID")
-                        .HasColumnType("int");
 
                     b.Property<string>("NameService")
                         .IsRequired()
@@ -632,8 +626,6 @@ namespace GFData.Migrations
                     b.HasKey("ServiceID");
 
                     b.HasIndex("CategoryGarageID");
-
-                    b.HasIndex("CategorysCategoryID");
 
                     b.ToTable("Service");
                 });
@@ -975,14 +967,10 @@ namespace GFData.Migrations
             modelBuilder.Entity("GFData.Models.Entity.Service", b =>
                 {
                     b.HasOne("GFData.Models.Entity.CategoryGarage", "CategoryGarage")
-                        .WithMany("Services")
+                        .WithMany("Service")
                         .HasForeignKey("CategoryGarageID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("GFData.Models.Entity.Categorys", null)
-                        .WithMany("Services")
-                        .HasForeignKey("CategorysCategoryID");
 
                     b.Navigation("CategoryGarage");
                 });
@@ -1018,14 +1006,12 @@ namespace GFData.Migrations
 
                     b.Navigation("Orders");
 
-                    b.Navigation("Services");
+                    b.Navigation("Service");
                 });
 
             modelBuilder.Entity("GFData.Models.Entity.Categorys", b =>
                 {
                     b.Navigation("CategoryGarages");
-
-                    b.Navigation("Services");
                 });
 
             modelBuilder.Entity("GFData.Models.Entity.Garage", b =>

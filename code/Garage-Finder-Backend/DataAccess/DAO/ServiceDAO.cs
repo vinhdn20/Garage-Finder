@@ -62,7 +62,7 @@ namespace DataAccess.DAO
             return p;
         }
 
-        public void SaveService(Service p)
+        public Service SaveService(Service p)
         {
             try
             {
@@ -70,6 +70,7 @@ namespace DataAccess.DAO
                 {
                     context.Service.Add(p);
                     context.SaveChanges();
+                    return p;
                 }
             }
             catch (Exception e)

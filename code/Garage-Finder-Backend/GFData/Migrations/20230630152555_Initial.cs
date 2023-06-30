@@ -236,21 +236,14 @@ namespace GFData.Migrations
                 {
                     ServiceID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    GarageID = table.Column<int>(type: "int", nullable: false),
                     NameService = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CategoryGarageID = table.Column<int>(type: "int", nullable: false),
                     Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Cost = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CategorysCategoryID = table.Column<int>(type: "int", nullable: true)
+                    Cost = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Service", x => x.ServiceID);
-                    table.ForeignKey(
-                        name: "FK_Service_Category_CategorysCategoryID",
-                        column: x => x.CategorysCategoryID,
-                        principalTable: "Category",
-                        principalColumn: "CategoryID");
                     table.ForeignKey(
                         name: "FK_Service_CategoryGarage_CategoryGarageID",
                         column: x => x.CategoryGarageID,
@@ -706,11 +699,6 @@ namespace GFData.Migrations
                 name: "IX_Service_CategoryGarageID",
                 table: "Service",
                 column: "CategoryGarageID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Service_CategorysCategoryID",
-                table: "Service",
-                column: "CategorysCategoryID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_User_PhoneNumber_EmailAddress",
