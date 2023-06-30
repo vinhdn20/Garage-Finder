@@ -1,6 +1,12 @@
-﻿using DataAccess.DTO;
+﻿using DataAccess.DTO.Services;
+using DataAccess.DTO.Services.RequestSerivesDTO;
+using DataAccess.DTO.User.ResponeModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Repositories.Interfaces;
+using Services.ServiceService;
+using System.Security.Claims;
 
 namespace Garage_Finder_Backend.Controllers
 {
@@ -8,35 +14,33 @@ namespace Garage_Finder_Backend.Controllers
     [ApiController]
     public class ServiceController : ControllerBase
     {
-        private readonly IServiceRepository serviceRepository;
-        private readonly IOrderRepository orderRepository;
+        private readonly IService _service;
 
-        public ServiceController(IServiceRepository serviceRepository, IOrderRepository orderRepository)
+        public ServiceController(IService service)
         {
-            this.serviceRepository = serviceRepository;
-            this.orderRepository = orderRepository;
+            this._service = service;
         }
 
-        [HttpGet("GetAll")]
-        public IActionResult GetAll()
-        {
-            try
-            {
-                return Ok(serviceRepository.GetServices());
-            }
-            catch (Exception e)
-            {
+        //[HttpGet("GetAll")]
+        //public IActionResult GetAll()
+        //{
+        //    try
+        //    {
+        //        return Ok(serviceRepository.GetServices());
+        //    }
+        //    catch (Exception e)
+        //    {
 
-                return BadRequest(e.Message);
-            }
-        }
+        //        return BadRequest(e.Message);
+        //    }
+        //}
 
         [HttpGet("GetById/{id}")]
         public IActionResult GetId(int id)
         {
             try
             {
-                return Ok(serviceRepository.GetServiceById(id));
+                return Ok(_service.GetServiceById(id));
             }
             catch (Exception e)
             {
@@ -45,12 +49,12 @@ namespace Garage_Finder_Backend.Controllers
             }
         }
 
-        [HttpGet("GetByCategory/{id}")]
-        public IActionResult GetCategoryId(int id)
+        [HttpGet("GetByCategory/{categoryGarageId}")]
+        public IActionResult GetByCategoryId(int categoryGarageId)
         {
             try
             {
-                return Ok(serviceRepository.GetServicesByCategory(id));
+                return Ok(_service.GetServceByCategoryGarageId(categoryGarageId));
             }
             catch (Exception e)
             {
@@ -60,13 +64,15 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpPost("Add")]
-        public IActionResult Add(ServiceDTO service)
+        [Authorize]
+        public IActionResult Add(AddServiceDTO service)
         {
             try
             {
-                serviceRepository.SaveService(service);
+                var user = GetUserFromToken();
+                var addService = _service.AddService(service, user.UserID);
 
-                return Ok("SUCCESS");
+                return Ok(addService);
             }
             catch (Exception e)
             {
@@ -76,11 +82,13 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpPut("Update")]
+        [Authorize]
         public IActionResult Update(ServiceDTO service)
         {
             try
             {
-                serviceRepository.UpdateService(service);
+                var user = GetUserFromToken();
+                _service.UpdateService(service, user.UserID);
                 return Ok("SUCCESS");
             }
             catch (Exception e)
@@ -91,22 +99,13 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpDelete("Delete/{id}")]
+        [Authorize]
         public IActionResult Delete(int id)
         {
             try
             {
-                serviceRepository.DeleteService(id);
-
-               /* IEnumerable<OrdersDTO> orderList = orderRepository.GetAllOrders();
-
-                foreach (OrdersDTO order in orderList)
-                {
-                    order.OrderID = orderDetailRepository.GetOrderDetailByOrderID(order.OrderID);
-                    if (order.OrderDetail == null)
-                    {
-                        orderRepository.Delete(order.OrderID);
-                    }
-                }*/
+                var user = GetUserFromToken();
+                _service.DeleteServiceById(id, user.UserID);
 
                 return Ok("SUCCESS");
             }
@@ -115,6 +114,13 @@ namespace Garage_Finder_Backend.Controllers
 
                 return BadRequest(e.Message);
             }
+        }
+
+        private UserInfor GetUserFromToken()
+        {
+            var jsonUser = User.FindFirstValue("user");
+            var user = JsonConvert.DeserializeObject<UserInfor>(jsonUser);
+            return user;
         }
     }
 }

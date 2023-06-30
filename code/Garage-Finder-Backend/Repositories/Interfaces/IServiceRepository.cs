@@ -1,4 +1,4 @@
-﻿using DataAccess.DTO;
+﻿using DataAccess.DTO.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +9,9 @@ namespace Repositories.Interfaces
 {
     public interface IServiceRepository
     {
-        void SaveService(ServiceDTO p);
+        ServiceDTO SaveService(ServiceDTO p);
         List<ServiceDTO> GetServices();
-        List<ServiceDTO> GetServicesByCategory(int id);
+        List<ServiceDTO> GetServicesByCategoryGarage(int id);
         ServiceDTO GetServiceById(int id);
         void UpdateService(ServiceDTO p);
         void DeleteService(int id);

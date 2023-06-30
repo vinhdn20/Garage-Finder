@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using DataAccess.DAO;
-using DataAccess.DTO;
+using DataAccess.DTO.Services;
 using GFData.Models.Entity;
 using Repositories.Interfaces;
 using System;
@@ -31,14 +31,15 @@ namespace Repositories.Implements.ServiceRepository
         {
             return ServiceDAO.Instance.GetServices().Select(p => _mapper.Map<Service, ServiceDTO>(p)).ToList();
         }
-        public List<ServiceDTO> GetServicesByCategory(int id)
+        public List<ServiceDTO> GetServicesByCategoryGarage(int id)
         {
             return ServiceDAO.Instance.GetServices().Where(c => c.CategoryGarageID == id).Select(p => _mapper.Map<Service, ServiceDTO>(p)).ToList();
         }
 
-        public void SaveService(ServiceDTO p)
+        public ServiceDTO SaveService(ServiceDTO p)
         {
-            ServiceDAO.Instance.SaveService(_mapper.Map<ServiceDTO, Service>(p));
+            var pAffter = ServiceDAO.Instance.SaveService(_mapper.Map<ServiceDTO, Service>(p));
+            return _mapper.Map<ServiceDTO>(pAffter);
         }
 
         public void UpdateService(ServiceDTO p)
