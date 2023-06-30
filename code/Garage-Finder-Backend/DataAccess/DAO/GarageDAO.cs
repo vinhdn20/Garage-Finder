@@ -56,7 +56,17 @@ namespace DataAccess.DAO
                                      ImageGarages = (from imageGarage in context.ImageGarage
                                                      where imageGarage.GarageID == garage.GarageID
                                                      select imageGarage).ToList(),
-                                     CategoryGarages = context.CategoryGarage.Where(x => x.GarageID == garage.GarageID).ToList(),
+                                     //CategoryGarages = context.CategoryGarage.Where(x => x.GarageID == garage.GarageID).ToList(),
+                                     CategoryGarages = (from cateGara in context.CategoryGarage
+                                                        where cateGara.GarageID == garage.GarageID
+                                                        select new CategoryGarage
+                                                        {
+                                                            CategoryGarageID = cateGara.CategoryGarageID,
+                                                            CategoryID = cateGara.CategoryID,
+                                                            GarageID = garage.GarageID,
+                                                            Services = context.Service
+                                                                .Where(x => x.CategoryGarageID == cateGara.CategoryGarageID).ToList()
+                                                        }).ToList(),
                                      GarageBrands = context.GarageBrand.Where(x => x.GarageID == garage.GarageID).ToList()
                                  }).ToList();
                 }
@@ -96,7 +106,16 @@ namespace DataAccess.DAO
                                       ImageGarages = (from imageGarage in context.ImageGarage
                                                       where imageGarage.GarageID == garage.GarageID
                                                       select imageGarage).ToList(),
-                                      CategoryGarages = context.CategoryGarage.Where(x => x.GarageID == garage.GarageID).ToList(),
+                                      CategoryGarages = (from cateGara in context.CategoryGarage
+                                                         where cateGara.GarageID == garage.GarageID
+                                                         select new CategoryGarage
+                                                         {
+                                                             CategoryGarageID = cateGara.CategoryGarageID,
+                                                             CategoryID = cateGara.CategoryID,
+                                                             GarageID = garage.GarageID,
+                                                             Services = context.Service
+                                                                 .Where(x => x.CategoryGarageID == cateGara.CategoryGarageID).ToList()
+                                                         }).ToList(),
                                       GarageBrands = context.GarageBrand.Where(x => x.GarageID == garage.GarageID).ToList()
                                   }).ToList();
                                   
