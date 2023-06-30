@@ -10,7 +10,7 @@ namespace DataAccess.DTO.Services.RequestSerivesDTO
     {
         public string NameService { get; set; }
         public int CategoryGarageID { get; set; }
-        public double? Cost { get; set; }
+        public string? Cost { get; set; }
         public string? Note { get; set; }
     }
 }
