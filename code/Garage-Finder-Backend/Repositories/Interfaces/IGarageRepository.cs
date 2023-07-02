@@ -1,5 +1,5 @@
 ﻿using DataAccess.DTO;
-using DataAccess.DTO.RequestDTO.Garage;
+using DataAccess.DTO.Garage;
 using System;
 using System.Collections.Generic;
 using System.Linq;

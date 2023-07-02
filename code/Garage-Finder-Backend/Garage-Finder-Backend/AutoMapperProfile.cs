@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using DataAccess.DTO;
+using DataAccess.DTO.Car;
+using DataAccess.DTO.Garage;
 using DataAccess.DTO.Orders;
 using DataAccess.DTO.Orders.ResponseDTO;
-using DataAccess.DTO.RequestDTO.Car;
-using DataAccess.DTO.RequestDTO.Garage;
 using DataAccess.DTO.Services;
 using DataAccess.DTO.Services.RequestSerivesDTO;
 using DataAccess.DTO.User.ResponeModels;

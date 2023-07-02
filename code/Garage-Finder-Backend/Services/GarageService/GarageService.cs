@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using DataAccess.DTO;
-using DataAccess.DTO.RequestDTO.Garage;
+using DataAccess.DTO.Garage;
 using Mailjet.Client.Resources;
 using Repositories.Implements.Garage;
 using Repositories.Interfaces;

@@ -1,7 +1,7 @@
 ﻿using GFData.Models.Entity;
 using System.ComponentModel.DataAnnotations;
 
-namespace DataAccess.DTO.RequestDTO.Garage
+namespace DataAccess.DTO.Garage
 {
     public class GarageDTO
     {

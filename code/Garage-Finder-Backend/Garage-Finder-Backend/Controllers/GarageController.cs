@@ -1,9 +1,10 @@
 ﻿using DataAccess.DAO;
 using DataAccess.DTO;
-using DataAccess.DTO.RequestDTO.Category;
-using DataAccess.DTO.RequestDTO.Garage;
+using DataAccess.DTO.Category;
+using DataAccess.DTO.Garage;
 using DataAccess.DTO.User.ResponeModels;
 using GFData.Models.Entity;
+using Mailjet.Client.Resources;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -23,22 +24,32 @@ namespace Garage_Finder_Backend.Controllers
         private readonly ICategoryGarageRepository categoryGarageRepository;
         private readonly IImageGarageRepository imageGarageRepository;
         private readonly IGarageService garageService;
+        private readonly ICategoryRepository categoryRepository;
         public GarageController(IGarageRepository garageRepository, IGarageBrandRepository garageBrandRepository,
             ICategoryGarageRepository categoryGarageRepository, IImageGarageRepository imageGarageRepository,
-            IGarageService garageService)
+            IGarageService garageService, ICategoryRepository categoryRepository)
         {
             this.garageRepository = garageRepository;
             this.garageBrandRepository = garageBrandRepository;
             this.categoryGarageRepository = categoryGarageRepository;
             this.imageGarageRepository = imageGarageRepository;
             this.garageService = garageService;
+            this.categoryRepository = categoryRepository;
         }
         [HttpGet("GetAll")]
         public IActionResult GetAll()
         {
             try
             {
-                return Ok(garageRepository.GetGarages());
+                var garages = garageRepository.GetGarages();
+                foreach (var garage in garages)
+                {
+                    foreach (var cate in garage.CategoryGarages)
+                    {
+                        cate.CategoryName = categoryRepository.GetCategory().Where(x => x.CategoryID == cate.CategoryID).SingleOrDefault().CategoryName;
+                    }
+                }
+                return Ok(garages);
             }
             catch (Exception e)
             {
@@ -179,6 +190,13 @@ namespace Garage_Finder_Backend.Controllers
 
             garages = garages.Skip((searchGarage.pageNumber - 1) * searchGarage.pageSize).Take(searchGarage.pageSize).ToList();
 
+            foreach (var garage in garages)
+            {
+                foreach (var cate in garage.CategoryGarages)
+                {
+                    cate.CategoryName = categoryGarageRepository.GetById(cate.CategoryGarageID).CategoryName;
+                }
+            }
             // Trả về kết quả
             return Ok(garages);
         }
@@ -187,6 +205,13 @@ namespace Garage_Finder_Backend.Controllers
         public IActionResult GetByPage([FromBody] PageDTO p)
         {
             var garages = garageRepository.GetByPage(p);
+            foreach (var garage in garages)
+            {
+                foreach (var cate in garage.CategoryGarages)
+                {
+                    cate.CategoryName = categoryRepository.GetCategory().Where(x => x.CategoryID == cate.CategoryID).SingleOrDefault().CategoryName;
+                }
+            }
             return Ok(garages);
         }
 
@@ -197,7 +222,15 @@ namespace Garage_Finder_Backend.Controllers
             try
             {
                 var user = GetUserFromToken();
-                return Ok(garageRepository.GetGarageByUser(user.UserID));
+                var garages = garageRepository.GetGarageByUser(user.UserID);
+                foreach (var garage in garages)
+                {
+                    foreach (var cate in garage.CategoryGarages)
+                    {
+                        cate.CategoryName = categoryRepository.GetCategory().Where(x => x.CategoryID == cate.CategoryID).SingleOrDefault().CategoryName;
+                    }
+                }
+                return Ok(garages);
             }
             catch (Exception e)
             {

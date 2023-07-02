@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataAccess.DTO.RequestDTO.Garage
+namespace DataAccess.DTO.Garage
 {
     public class SearchGarage
     {
