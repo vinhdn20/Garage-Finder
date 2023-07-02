@@ -366,7 +366,12 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
-                return Ok(garageRepository.GetGaragesByID(id));
+                var garage = garageRepository.GetGaragesByID(id);
+                foreach (var cate in garage.CategoryGarages)
+                {
+                    cate.CategoryName = categoryRepository.GetCategory().Where(x => x.CategoryID == cate.CategoryID).SingleOrDefault().CategoryName;
+                }
+                return Ok(garage);
             }
             catch (Exception e)
             {
