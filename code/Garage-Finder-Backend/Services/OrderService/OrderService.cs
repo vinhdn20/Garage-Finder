@@ -91,10 +91,10 @@ namespace Services.OrderService
         public void AddOrderWithCar(AddOrderWithCarDTO addOrder)
         {
             // Todo: validate
-            //if (!_phoneVerifyService.VerifyPhoneNumber(addOrder.VerificationCode, addOrder.PhoneNumber).Result)
-            //{
-            //    throw new Exception("Verification code not correct");
-            //}
+            if (!_phoneVerifyService.VerifyPhoneNumber(addOrder.VerificationCode, addOrder.PhoneNumber).Result)
+            {
+                throw new Exception("Verification code not correct");
+            }
             var car = _carRepository.GetCarById(addOrder.carId);
             if(car == null)
             {
@@ -129,10 +129,10 @@ namespace Services.OrderService
 
         public void AddOrderFromGuest(AddOrderFromGuestDTO addOrder)
         {
-            //if (!_phoneVerifyService.VerifyPhoneNumber(addOrder.VerificationCode, addOrder.PhoneNumber).Result)
-            //{
-            //    throw new Exception("Verification code not correct");
-            //}
+            if (!_phoneVerifyService.VerifyPhoneNumber(addOrder.VerificationCode, addOrder.PhoneNumber).Result)
+            {
+                throw new Exception("Verification code not correct");
+            }
 
             addOrder.CategoryGargeId.ForEach(x => CheckCategoryExits(x));
             List<GuestOrderDetail> orderDetails = new List<GuestOrderDetail>();
@@ -165,10 +165,10 @@ namespace Services.OrderService
 
         public void AddOrderWithoutCar(AddOrderWithoutCarDTO addOrder, int userID)
         {
-            //if (!_phoneVerifyService.VerifyPhoneNumber(addOrder.VerificationCode, addOrder.PhoneNumber).Result)
-            //{
-            //    throw new Exception("Verification code not correct");
-            //}
+            if (!_phoneVerifyService.VerifyPhoneNumber(addOrder.VerificationCode, addOrder.PhoneNumber).Result)
+            {
+                throw new Exception("Verification code not correct");
+            }
 
             addOrder.CategoryGargeId.ForEach(x => CheckCategoryExits(x));
             CarDTO carDTO = new CarDTO()
