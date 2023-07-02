@@ -162,6 +162,36 @@ namespace GFData.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Staff",
+                columns: table => new
+                {
+                    StaffId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    EmployeeId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Gender = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    LinkImage = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AddressDetail = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DistrictId = table.Column<int>(type: "int", nullable: true),
+                    ProvinceId = table.Column<int>(type: "int", nullable: true),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    EmailAddress = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    GarageID = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Staff", x => x.StaffId);
+                    table.ForeignKey(
+                        name: "FK_Staff_Garage_GarageID",
+                        column: x => x.GarageID,
+                        principalTable: "Garage",
+                        principalColumn: "GarageID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "User",
                 columns: table => new
                 {
@@ -761,6 +791,18 @@ namespace GFData.Migrations
                 column: "CategoryGarageID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Staff_GarageID",
+                table: "Staff",
+                column: "GarageID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Staff_PhoneNumber_EmailAddress_EmployeeId",
+                table: "Staff",
+                columns: new[] { "PhoneNumber", "EmailAddress", "EmployeeId" },
+                unique: true,
+                filter: "[EmployeeId] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_User_PhoneNumber_EmailAddress",
                 table: "User",
                 columns: new[] { "PhoneNumber", "EmailAddress" },
@@ -819,6 +861,9 @@ namespace GFData.Migrations
 
             migrationBuilder.DropTable(
                 name: "Service");
+
+            migrationBuilder.DropTable(
+                name: "Staff");
 
             migrationBuilder.DropTable(
                 name: "GuestOrder");

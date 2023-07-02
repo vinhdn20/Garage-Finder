@@ -6,6 +6,7 @@ using DataAccess.DTO.Orders;
 using DataAccess.DTO.Orders.ResponseDTO;
 using DataAccess.DTO.Services;
 using DataAccess.DTO.Services.RequestSerivesDTO;
+using DataAccess.DTO.Staff;
 using DataAccess.DTO.User.ResponeModels;
 using GFData.Models.Entity;
 
@@ -85,6 +86,10 @@ namespace Garage_Finder_Backend
 
             CreateMap<AddCarDTO, CarDTO>();
             CreateMap<UpdateCarDTO, CarDTO>();
+
+            CreateMap<AddStaffDTO, Staff>();
+            CreateMap<UpdateStaffDTO, Staff>();
+            CreateMap<Staff, StaffDTO>();
         }
     }
 }

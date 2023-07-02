@@ -13,5 +13,9 @@ namespace Services
         public const string STATUS_ORDER_CANCELED = "canceled";
         public const string STATUS_ORDER_DONE = "done";
         public const string STATUS_ORDER_REJECT = "reject";
+
+        public const string BLOCK_STAFF = "block";
+        public const string OPEN_STAFF = "open";
+        public static readonly List<string> STAFF_STATUS = new List<string>() {BLOCK_STAFF, OPEN_STAFF};
     }
 }

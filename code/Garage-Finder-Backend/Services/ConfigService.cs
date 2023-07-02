@@ -3,6 +3,7 @@ using Services.EmailService;
 using Services.GarageService;
 using Services.OrderService;
 using Services.ServiceService;
+using Services.StaffService;
 using Services.StorageApi;
 using Services.UserService;
 using System;
@@ -23,6 +24,7 @@ namespace Services
             services.AddTransient<IEmailService, MailjetService>();
             services.AddTransient<IGarageService, GarageService.GarageService>();
             services.AddTransient<IService, Service>();
+            services.AddTransient<IStaffService, StaffService.StaffService>();
         }
     }
 }

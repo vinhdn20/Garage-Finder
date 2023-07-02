@@ -7,6 +7,7 @@ using Repositories.Implements.FeedbackRepository;
 using Repositories.Implements.Garage;
 using Repositories.Implements.OrderRepository;
 using Repositories.Implements.ServiceRepository;
+using Repositories.Implements.StaffRepository;
 using Repositories.Implements.UserRepository;
 using Repositories.Interfaces;
 using System;
@@ -38,6 +39,7 @@ namespace Repositories
             services.AddScoped<IImageGarageRepository, ImageGarageRepository>();
             services.AddScoped<IGarageInforRepository, GarageInforRepository>();
             services.AddScoped<IGuestOrderRepository, GuestOrderRepository>();
+            services.AddScoped<IStaffRepository, StaffRepository>();
         }
     }
 }
