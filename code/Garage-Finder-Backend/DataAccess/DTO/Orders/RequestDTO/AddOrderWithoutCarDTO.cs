@@ -15,7 +15,7 @@ namespace DataAccess.DTO.Orders.RequestDTO
         public int BrandCarID { get; set; }
         public string TypeCar { get; set; }
         public string LicensePlates { get; set; }
-        public int CategoryGargeId { get; set; }
+        public List<int> CategoryGargeId { get; set; }
         public DateTime TimeAppointment { get; set; }
     }
 }

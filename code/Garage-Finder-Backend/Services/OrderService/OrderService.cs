@@ -91,29 +91,33 @@ namespace Services.OrderService
         public void AddOrderWithCar(AddOrderWithCarDTO addOrder)
         {
             // Todo: validate
-            if (!_phoneVerifyService.VerifyPhoneNumber(addOrder.VerificationCode, addOrder.PhoneNumber).Result)
-            {
-                throw new Exception("Verification code not correct");
-            }
+            //if (!_phoneVerifyService.VerifyPhoneNumber(addOrder.VerificationCode, addOrder.PhoneNumber).Result)
+            //{
+            //    throw new Exception("Verification code not correct");
+            //}
             var car = _carRepository.GetCarById(addOrder.carId);
             if(car == null)
             {
                 throw new Exception("Can't find car");
             }
-            var category = _categoryGarageRepository.GetById(addOrder.categorygarageId);
-            if(category is null)
+            addOrder.categoryGargeId.ForEach(x => CheckCategoryExits(x));
+            List<OrderDetail> orderDetails = new List<OrderDetail>();
+            foreach (var cate in addOrder.categoryGargeId)
             {
-                throw new Exception("Can't find category");
+                orderDetails.Add(new OrderDetail()
+                {
+                    CategoryGarageID = cate
+                });
             }
             //Todo: tạo 1 order
             OrdersDTO ordersDTO = new OrdersDTO()
             {
                 CarID = addOrder.carId,
                 GarageID = addOrder.garageId,
-                CategoryGarageId = addOrder.categorygarageId,
                 TimeCreate = DateTime.UtcNow,
                 Status = Constants.STATUS_ORDER_OPEN,
-                TimeAppointment = addOrder.TimeAppointment
+                TimeAppointment = addOrder.TimeAppointment,
+                OrderDetails = orderDetails
             };
 
             _orderRepository.Add(ordersDTO);
@@ -125,21 +129,23 @@ namespace Services.OrderService
 
         public void AddOrderFromGuest(AddOrderFromGuestDTO addOrder)
         {
-            if (!_phoneVerifyService.VerifyPhoneNumber(addOrder.VerificationCode, addOrder.PhoneNumber).Result)
-            {
-                throw new Exception("Verification code not correct");
-            }
+            //if (!_phoneVerifyService.VerifyPhoneNumber(addOrder.VerificationCode, addOrder.PhoneNumber).Result)
+            //{
+            //    throw new Exception("Verification code not correct");
+            //}
 
-            var category = _categoryGarageRepository.GetById(addOrder.CategoryGargeId);
-            if (category is null)
+            addOrder.CategoryGargeId.ForEach(x => CheckCategoryExits(x));
+            List<GuestOrderDetail> orderDetails = new List<GuestOrderDetail>();
+            foreach (var cate in addOrder.CategoryGargeId)
             {
-                throw new Exception("Can't find category");
+                orderDetails.Add(new GuestOrderDetail()
+                {
+                    CategoryGarageID = cate
+                });
             }
-
             GuestOrderDTO guestOrder = new GuestOrderDTO()
             {
                 GarageID = addOrder.GarageId,
-                CategoryGarageID = addOrder.CategoryGargeId,
                 TimeCreate = DateTime.UtcNow,
                 Status = Constants.STATUS_ORDER_OPEN,
                 TimeAppointment = addOrder.TimeAppointment,
@@ -147,7 +153,8 @@ namespace Services.OrderService
                 LicensePlates = addOrder.LicensePlates,
                 Email = addOrder.Email,
                 BrandCarID = addOrder.BrandCarID,
-                TypeCar = addOrder.TypeCar
+                TypeCar = addOrder.TypeCar,
+                GuestOrderDetails = orderDetails
             };
 
             _guestOrderRepository.Add(guestOrder);
@@ -158,16 +165,12 @@ namespace Services.OrderService
 
         public void AddOrderWithoutCar(AddOrderWithoutCarDTO addOrder, int userID)
         {
-            if (!_phoneVerifyService.VerifyPhoneNumber(addOrder.VerificationCode, addOrder.PhoneNumber).Result)
-            {
-                throw new Exception("Verification code not correct");
-            }
+            //if (!_phoneVerifyService.VerifyPhoneNumber(addOrder.VerificationCode, addOrder.PhoneNumber).Result)
+            //{
+            //    throw new Exception("Verification code not correct");
+            //}
 
-            var category = _categoryGarageRepository.GetById(addOrder.CategoryGargeId);
-            if (category is null)
-            {
-                throw new Exception("Can't find category");
-            }
+            addOrder.CategoryGargeId.ForEach(x => CheckCategoryExits(x));
             CarDTO carDTO = new CarDTO()
             {
                 BrandID = addOrder.BrandCarID,
@@ -175,16 +178,24 @@ namespace Services.OrderService
                 TypeCar = addOrder.TypeCar,
                 UserID = userID
             };
-            var car = _carRepository.SaveCar(carDTO);
+            var car = _carRepository.SaveCar(carDTO); 
+            List<OrderDetail> orderDetails = new List<OrderDetail>();
+            foreach (var cate in addOrder.CategoryGargeId)
+            {
+                orderDetails.Add(new OrderDetail()
+                {
+                    CategoryGarageID = cate
+                });
+            }
             //Todo: tạo 1 order
             OrdersDTO ordersDTO = new OrdersDTO()
             {
                 CarID = car.CarID,
                 GarageID = addOrder.GarageId,
-                CategoryGarageId = addOrder.CategoryGargeId,
                 TimeCreate = DateTime.UtcNow,
                 Status = Constants.STATUS_ORDER_OPEN,
-                TimeAppointment = addOrder.TimeAppointment
+                TimeAppointment = addOrder.TimeAppointment,
+                OrderDetails = orderDetails
             };
 
             _orderRepository.Add(ordersDTO);
@@ -547,6 +558,14 @@ namespace Services.OrderService
             return true;
         }
 
+        private void CheckCategoryExits(int id)
+        {
+            var category = _categoryGarageRepository.GetById(id);
+            if (category is null)
+            {
+                throw new Exception("Can't find category");
+            }
+        }
         #endregion
     }
 }

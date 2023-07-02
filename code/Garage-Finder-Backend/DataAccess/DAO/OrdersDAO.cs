@@ -43,7 +43,6 @@ namespace DataAccess.DAO
                                       GFOrderID = order.GFOrderID,
                                       CarID = order.CarID,
                                       GarageID = order.GarageID,
-                                      CategoryGarageID = order.CategoryGarageID,
                                       TimeCreate = order.TimeCreate,
                                       TimeUpdate = order.TimeUpdate,
                                       TimeAppointment = order.TimeAppointment,
@@ -51,6 +50,7 @@ namespace DataAccess.DAO
                                       Content = order.Content,
                                       ImageOrders = context.ImageOrders.Where(x => x.OrderID == order.OrderID).ToList(),
                                       FileOrders = context.FileOrders.Where(x => x.OrderID == order.OrderID).ToList(),
+                                      OrderDetails = context.OrderDetail.Where(x => x.OrderId == order.OrderID).ToList()
                                   }).ToList();
                 }
             }
@@ -79,7 +79,6 @@ namespace DataAccess.DAO
                                       GFOrderID = order.GFOrderID,
                                       CarID = order.CarID,
                                       GarageID = order.GarageID,
-                                      CategoryGarageID = order.CategoryGarageID,
                                       TimeCreate = order.TimeCreate,
                                       TimeUpdate = order.TimeUpdate,
                                       TimeAppointment = order.TimeAppointment,
@@ -87,6 +86,7 @@ namespace DataAccess.DAO
                                       Content = order.Content,
                                       ImageOrders = context.ImageOrders.Where(x => x.OrderID == order.OrderID).ToList(),
                                       FileOrders = context.FileOrders.Where(x => x.OrderID == order.OrderID).ToList(),
+                                      OrderDetails = context.OrderDetail.Where(x => x.OrderId == order.OrderID).ToList()
                                   } ).ToList();
                 }
             }
@@ -114,7 +114,6 @@ namespace DataAccess.DAO
                                       GFOrderID = order.GFOrderID,
                                       CarID = order.CarID,
                                       GarageID = order.GarageID,
-                                      CategoryGarageID = order.CategoryGarageID,
                                       TimeCreate = order.TimeCreate,
                                       TimeUpdate = order.TimeUpdate,
                                       TimeAppointment = order.TimeAppointment,
@@ -122,6 +121,7 @@ namespace DataAccess.DAO
                                       Content = order.Content,
                                       ImageOrders = context.ImageOrders.Where(x => x.OrderID == order.OrderID).ToList(),
                                       FileOrders = context.FileOrders.Where(x => x.OrderID == order.OrderID).ToList(),
+                                      OrderDetails = context.OrderDetail.Where(x => x.OrderId == order.OrderID).ToList()
 
                                   }).ToList();
                 }
@@ -162,7 +162,6 @@ namespace DataAccess.DAO
                            GFOrderID = order.GFOrderID,
                            CarID = order.CarID,
                            GarageID = order.GarageID,
-                           CategoryGarageID = order.CategoryGarageID,
                            TimeCreate = order.TimeCreate,
                            TimeUpdate = order.TimeUpdate,
                            TimeAppointment = order.TimeAppointment,
@@ -170,6 +169,7 @@ namespace DataAccess.DAO
                            Content = order.Content,
                            ImageOrders = db.ImageOrders.Where(x => x.OrderID == order.OrderID).ToList(),
                            FileOrders = db.FileOrders.Where(x => x.OrderID == order.OrderID).ToList(),
+                           OrderDetails = db.OrderDetail.Where(x => x.OrderId == order.OrderID).ToList()
                        }).FirstOrDefault();
             }
             catch (Exception e)

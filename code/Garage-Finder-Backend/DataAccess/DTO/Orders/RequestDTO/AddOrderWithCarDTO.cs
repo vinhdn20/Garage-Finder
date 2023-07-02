@@ -12,7 +12,7 @@ namespace DataAccess.DTO.Orders.RequestDTO
         public string VerificationCode { get; set; }
         public int carId { get; set; }
         public int garageId { get; set; }
-        public int categorygarageId { get; set; }
+        public List<int> categoryGargeId { get; set; }
         public DateTime TimeAppointment { get; set; }
     }
 }

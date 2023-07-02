@@ -45,7 +45,6 @@ namespace DataAccess.DAO
                                       GuestOrderID = order.GuestOrderID,
                                       GFOrderID = order.GFOrderID,
                                       GarageID = order.GarageID,
-                                      CategoryGarageID = order.CategoryGarageID,
                                       TimeCreate = order.TimeCreate,
                                       TimeUpdate = order.TimeUpdate,
                                       TimeAppointment = order.TimeAppointment,
@@ -58,6 +57,7 @@ namespace DataAccess.DAO
                                       LicensePlates = order.LicensePlates,
                                       ImageOrders = context.ImageGuestOrders.Where(x => x.GuestOrderID == order.GuestOrderID).ToList(),
                                       FileOrders = context.FileGuestOrders.Where(x => x.GuestOrderID == order.GuestOrderID).ToList(),
+                                      GuestOrderDetails = context.GuestOrderDetail.Where(x => x.GuestOrderID == order.GuestOrderID).ToList()
                                   }).ToList();
                 }
             }
@@ -70,17 +70,37 @@ namespace DataAccess.DAO
         
         public List<GuestOrder> GetByGarageId(int id)
         {
-            List<GuestOrder> order = null;
+            List<GuestOrder> ord = null;
             try
             {
                 var db = new GFDbContext();
-                order = db.GuestOrder.Where(c => c.GarageID == id).ToList();
+                ord = (from order in db.GuestOrder
+                         where order.GarageID == id
+                         select new GuestOrder
+                         {
+                             GuestOrderID = order.GuestOrderID,
+                             GFOrderID = order.GFOrderID,
+                             GarageID = order.GarageID,
+                             TimeCreate = order.TimeCreate,
+                             TimeUpdate = order.TimeUpdate,
+                             TimeAppointment = order.TimeAppointment,
+                             Status = order.Status,
+                             Content = order.Content,
+                             Email = order.Email,
+                             PhoneNumber = order.PhoneNumber,
+                             BrandCarID = order.BrandCarID,
+                             TypeCar = order.TypeCar,
+                             LicensePlates = order.LicensePlates,
+                             ImageOrders = db.ImageGuestOrders.Where(x => x.GuestOrderID == order.GuestOrderID).ToList(),
+                             FileOrders = db.FileGuestOrders.Where(x => x.GuestOrderID == order.GuestOrderID).ToList(),
+                             GuestOrderDetails = db.GuestOrderDetail.Where(x => x.GuestOrderID == order.GuestOrderID).ToList()
+                         }).ToList();
             }
             catch (Exception e)
             {
                 throw new Exception(e.Message);
             }
-            return order;
+            return ord;
         }
 
         public GuestOrder GetByGFId(int id)
@@ -96,7 +116,6 @@ namespace DataAccess.DAO
                            GuestOrderID = order.GuestOrderID,
                            GFOrderID = order.GFOrderID,
                            GarageID = order.GarageID,
-                           CategoryGarageID = order.CategoryGarageID,
                            TimeCreate = order.TimeCreate,
                            TimeUpdate = order.TimeUpdate,
                            TimeAppointment = order.TimeAppointment,
@@ -109,6 +128,7 @@ namespace DataAccess.DAO
                            LicensePlates = order.LicensePlates,
                            ImageOrders = db.ImageGuestOrders.Where(x => x.GuestOrderID == order.GuestOrderID).ToList(),
                            FileOrders = db.FileGuestOrders.Where(x => x.GuestOrderID == order.GuestOrderID).ToList(),
+                           GuestOrderDetails = db.GuestOrderDetail.Where(x => x.GuestOrderID == order.GuestOrderID).ToList()
                        }).FirstOrDefault();
             }
             catch (Exception e)

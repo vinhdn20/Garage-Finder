@@ -19,7 +19,7 @@ namespace GFData.Models.Entity
         public Garage Garage { get; set;}
         public Categorys Categorys { get; set;}
         public ICollection<Service> Services { get; set; }
-        public ICollection<Orders> Orders { get; set; }
-        public ICollection<GuestOrder> GuestOrders { get; set; }
+        public ICollection<GuestOrderDetail> GuestOrderDetails { get; set; }
+        public ICollection<OrderDetail> OrderDetails { get; set; }
     }
 }

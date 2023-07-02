@@ -13,7 +13,6 @@ namespace DataAccess.DTO.Orders
         public int GuestOrderID { get; set; }
         public int GFOrderID { get; set; }
         public int GarageID { get; set; }
-        public int CategoryGarageID { get; set; }
         public DateTime TimeCreate { get; set; }
         public DateTime TimeUpdate { get; set; }
         public DateTime? TimeAppointment { get; set; }
@@ -27,5 +26,6 @@ namespace DataAccess.DTO.Orders
 
         public ICollection<ImageGuestOrder>? ImageOrders { get; set; }
         public ICollection<FileGuestOrders>? FileOrders { get; set; }
+        public List<GuestOrderDetail> GuestOrderDetails { get; set; }
     }
 }

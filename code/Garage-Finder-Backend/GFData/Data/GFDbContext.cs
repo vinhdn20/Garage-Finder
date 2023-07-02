@@ -49,6 +49,8 @@ namespace GFData.Data
         public virtual DbSet<GuestOrder>? GuestOrder { get; set; }
         public virtual DbSet<ImageGuestOrder>? ImageGuestOrders { get; set; }
         public virtual DbSet<FileGuestOrders>? FileGuestOrders { get; set; }
+        public virtual DbSet<OrderDetail> OrderDetail { get; set; }
+        public virtual DbSet<GuestOrderDetail> GuestOrderDetail { get; set; }
 
         protected override void OnModelCreating(ModelBuilder optionsBuilder)
         {
@@ -77,23 +79,23 @@ namespace GFData.Data
             .HasForeignKey(c => c.GarageID)
             .OnDelete(DeleteBehavior.NoAction);
 
-            optionsBuilder.Entity<Orders>()
-            .HasOne(p => p.CategoryGarage)
-            .WithMany(u => u.Orders)
-            .HasForeignKey(c => c.CategoryGarageID)
-            .OnDelete(DeleteBehavior.NoAction);
-
-            optionsBuilder.Entity<GuestOrder>()
-            .HasOne(p => p.CategoryGarage)
-            .WithMany(u => u.GuestOrders)
-            .HasForeignKey(c => c.CategoryGarageID)
-            .OnDelete(DeleteBehavior.NoAction);
-
             optionsBuilder.Entity<GarageInfo>()
             .HasOne(p => p.User)
             .WithMany(u => u.GarageInfos)
             .HasForeignKey(c => c.UserID)
             .OnDelete(DeleteBehavior.NoAction);
+
+            optionsBuilder.Entity<GuestOrderDetail>()
+           .HasOne(p => p.CategoryGarage)
+           .WithMany(u => u.GuestOrderDetails)
+           .HasForeignKey(c => c.CategoryGarageID)
+           .OnDelete(DeleteBehavior.NoAction);
+            
+            optionsBuilder.Entity<OrderDetail>()
+           .HasOne(p => p.CategoryGarage)
+           .WithMany(u => u.OrderDetails)
+           .HasForeignKey(c => c.CategoryGarageID)
+           .OnDelete(DeleteBehavior.NoAction);
 
             optionsBuilder.Entity<Service>().Property(p => p.ServiceID).ValueGeneratedOnAdd()
             .Metadata.SetBeforeSaveBehavior(PropertySaveBehavior.Ignore);

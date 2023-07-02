@@ -18,8 +18,6 @@ namespace GFData.Models.Entity
         public int GFOrderID { get; set; }
         [ForeignKey("Garage")]
         public int GarageID { get; set; }
-        [ForeignKey("CategoryGarage")]
-        public int CategoryGarageID { get; set; }
         public DateTime TimeCreate { get; set; }
         public DateTime TimeUpdate { get; set; }
         public DateTime? TimeAppointment { get; set; }
@@ -37,5 +35,6 @@ namespace GFData.Models.Entity
         public Brand Brand { get; set; }
         public ICollection<ImageGuestOrder> ImageOrders { get; set; }
         public ICollection<FileGuestOrders> FileOrders { get; set; }
+        public ICollection<GuestOrderDetail> GuestOrderDetails { get; set; }
     }
 }
