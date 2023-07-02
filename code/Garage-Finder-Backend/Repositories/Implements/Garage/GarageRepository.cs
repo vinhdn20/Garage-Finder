@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using DataAccess.DAO;
 using DataAccess.DTO;
-using DataAccess.DTO.RequestDTO.Garage;
+using DataAccess.DTO.Garage;
 using GFData.Models.Entity;
 using Repositories.Interfaces;
 
-namespace Repositories.Implements.Garage 
+namespace Repositories.Implements.Garage
 {
     public class GarageRepository : IGarageRepository
     {

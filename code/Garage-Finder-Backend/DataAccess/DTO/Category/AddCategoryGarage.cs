@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataAccess.DTO.RequestDTO.Category
+namespace DataAccess.DTO.Category
 {
     public class AddCategoryGarage
     {

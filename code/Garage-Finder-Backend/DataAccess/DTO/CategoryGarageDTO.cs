@@ -12,6 +12,7 @@ namespace DataAccess.DTO
         public int CategoryGarageID { get; set; }
         public int GarageID { get; set; }
         public int CategoryID { get; set; }
+        public string CategoryName { get; set; }
 
         public ICollection<Service> Services { get; set; }
     }
