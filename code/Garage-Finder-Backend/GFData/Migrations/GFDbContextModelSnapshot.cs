@@ -672,6 +672,65 @@ namespace GFData.Migrations
                     b.ToTable("Service");
                 });
 
+            modelBuilder.Entity("GFData.Models.Entity.Staff", b =>
+                {
+                    b.Property<int>("StaffId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StaffId"), 1L, 1);
+
+                    b.Property<string>("AddressDetail")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("DistrictId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("EmailAddress")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("EmployeeId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("GarageID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Gender")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LinkImage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int?>("ProvinceId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("StaffId");
+
+                    b.HasIndex("GarageID");
+
+                    b.HasIndex("PhoneNumber", "EmailAddress", "EmployeeId")
+                        .IsUnique()
+                        .HasFilter("[EmployeeId] IS NOT NULL");
+
+                    b.ToTable("Staff");
+                });
+
             modelBuilder.Entity("GFData.Models.Entity.Subscribe", b =>
                 {
                     b.Property<int>("SubscribeID")
@@ -1043,6 +1102,17 @@ namespace GFData.Migrations
                         .IsRequired();
 
                     b.Navigation("CategoryGarage");
+                });
+
+            modelBuilder.Entity("GFData.Models.Entity.Staff", b =>
+                {
+                    b.HasOne("GFData.Models.Entity.Garage", "Garage")
+                        .WithMany()
+                        .HasForeignKey("GarageID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Garage");
                 });
 
             modelBuilder.Entity("GFData.Models.Entity.Users", b =>

@@ -51,6 +51,7 @@ namespace GFData.Data
         public virtual DbSet<FileGuestOrders>? FileGuestOrders { get; set; }
         public virtual DbSet<OrderDetail> OrderDetail { get; set; }
         public virtual DbSet<GuestOrderDetail> GuestOrderDetail { get; set; }
+        public virtual DbSet<Staff> Staff { get; set; }
 
         protected override void OnModelCreating(ModelBuilder optionsBuilder)
         {
