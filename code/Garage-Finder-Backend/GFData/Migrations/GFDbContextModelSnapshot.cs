@@ -328,7 +328,7 @@ namespace GFData.Migrations
                     b.Property<int?>("BrandCarID")
                         .HasColumnType("int");
 
-                    b.Property<int>("CategoryGarageID")
+                    b.Property<int?>("CategoryGarageID")
                         .HasColumnType("int");
 
                     b.Property<string>("Content")
@@ -377,6 +377,29 @@ namespace GFData.Migrations
                     b.HasIndex("GarageID");
 
                     b.ToTable("GuestOrder");
+                });
+
+            modelBuilder.Entity("GFData.Models.Entity.GuestOrderDetail", b =>
+                {
+                    b.Property<int>("GuestOrderDetailId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("GuestOrderDetailId"), 1L, 1);
+
+                    b.Property<int>("CategoryGarageID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("GuestOrderID")
+                        .HasColumnType("int");
+
+                    b.HasKey("GuestOrderDetailId");
+
+                    b.HasIndex("CategoryGarageID");
+
+                    b.HasIndex("GuestOrderID");
+
+                    b.ToTable("GuestOrderDetail");
                 });
 
             modelBuilder.Entity("GFData.Models.Entity.ImageGarage", b =>
@@ -506,6 +529,29 @@ namespace GFData.Migrations
                     b.ToTable("Notification");
                 });
 
+            modelBuilder.Entity("GFData.Models.Entity.OrderDetail", b =>
+                {
+                    b.Property<int>("OrderDetailId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderDetailId"), 1L, 1);
+
+                    b.Property<int>("CategoryGarageID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.HasKey("OrderDetailId");
+
+                    b.HasIndex("CategoryGarageID");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("OrderDetail");
+                });
+
             modelBuilder.Entity("GFData.Models.Entity.Orders", b =>
                 {
                     b.Property<int>("OrderID")
@@ -515,9 +561,6 @@ namespace GFData.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderID"), 1L, 1);
 
                     b.Property<int>("CarID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CategoryGarageID")
                         .HasColumnType("int");
 
                     b.Property<string>("Content")
@@ -544,8 +587,6 @@ namespace GFData.Migrations
                     b.HasKey("OrderID");
 
                     b.HasIndex("CarID");
-
-                    b.HasIndex("CategoryGarageID");
 
                     b.HasIndex("GFOrderID")
                         .IsUnique();
@@ -843,10 +884,8 @@ namespace GFData.Migrations
                         .HasForeignKey("BrandCarID");
 
                     b.HasOne("GFData.Models.Entity.CategoryGarage", "CategoryGarage")
-                        .WithMany("GuestOrders")
-                        .HasForeignKey("CategoryGarageID")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .WithMany()
+                        .HasForeignKey("CategoryGarageID");
 
                     b.HasOne("GFData.Models.Entity.Garage", "Garage")
                         .WithMany()
@@ -859,6 +898,25 @@ namespace GFData.Migrations
                     b.Navigation("CategoryGarage");
 
                     b.Navigation("Garage");
+                });
+
+            modelBuilder.Entity("GFData.Models.Entity.GuestOrderDetail", b =>
+                {
+                    b.HasOne("GFData.Models.Entity.CategoryGarage", "CategoryGarage")
+                        .WithMany("GuestOrderDetails")
+                        .HasForeignKey("CategoryGarageID")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("GFData.Models.Entity.GuestOrder", "Orders")
+                        .WithMany("GuestOrderDetails")
+                        .HasForeignKey("GuestOrderID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CategoryGarage");
+
+                    b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("GFData.Models.Entity.ImageGarage", b =>
@@ -924,17 +982,30 @@ namespace GFData.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("GFData.Models.Entity.OrderDetail", b =>
+                {
+                    b.HasOne("GFData.Models.Entity.CategoryGarage", "CategoryGarage")
+                        .WithMany("OrderDetails")
+                        .HasForeignKey("CategoryGarageID")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("GFData.Models.Entity.Orders", "Orders")
+                        .WithMany("OrderDetails")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CategoryGarage");
+
+                    b.Navigation("Orders");
+                });
+
             modelBuilder.Entity("GFData.Models.Entity.Orders", b =>
                 {
                     b.HasOne("GFData.Models.Entity.Car", "Car")
                         .WithMany("Orders")
                         .HasForeignKey("CarID")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("GFData.Models.Entity.CategoryGarage", "CategoryGarage")
-                        .WithMany("Orders")
-                        .HasForeignKey("CategoryGarageID")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
@@ -945,8 +1016,6 @@ namespace GFData.Migrations
                         .IsRequired();
 
                     b.Navigation("Car");
-
-                    b.Navigation("CategoryGarage");
 
                     b.Navigation("Garage");
                 });
@@ -965,7 +1034,7 @@ namespace GFData.Migrations
             modelBuilder.Entity("GFData.Models.Entity.Service", b =>
                 {
                     b.HasOne("GFData.Models.Entity.CategoryGarage", "CategoryGarage")
-                        .WithMany("Service")
+                        .WithMany("Services")
                         .HasForeignKey("CategoryGarageID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1000,11 +1069,11 @@ namespace GFData.Migrations
 
             modelBuilder.Entity("GFData.Models.Entity.CategoryGarage", b =>
                 {
-                    b.Navigation("GuestOrders");
+                    b.Navigation("GuestOrderDetails");
 
-                    b.Navigation("Orders");
+                    b.Navigation("OrderDetails");
 
-                    b.Navigation("Service");
+                    b.Navigation("Services");
                 });
 
             modelBuilder.Entity("GFData.Models.Entity.Categorys", b =>
@@ -1033,6 +1102,8 @@ namespace GFData.Migrations
                 {
                     b.Navigation("FileOrders");
 
+                    b.Navigation("GuestOrderDetails");
+
                     b.Navigation("ImageOrders");
                 });
 
@@ -1041,6 +1112,8 @@ namespace GFData.Migrations
                     b.Navigation("FileOrders");
 
                     b.Navigation("ImageOrders");
+
+                    b.Navigation("OrderDetails");
                 });
 
             modelBuilder.Entity("GFData.Models.Entity.RoleName", b =>

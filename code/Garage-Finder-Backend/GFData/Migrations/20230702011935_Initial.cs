@@ -197,7 +197,6 @@ namespace GFData.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     GFOrderID = table.Column<int>(type: "int", nullable: false),
                     GarageID = table.Column<int>(type: "int", nullable: false),
-                    CategoryGarageID = table.Column<int>(type: "int", nullable: false),
                     TimeCreate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     TimeUpdate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     TimeAppointment = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -207,7 +206,8 @@ namespace GFData.Migrations
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     BrandCarID = table.Column<int>(type: "int", nullable: true),
                     TypeCar = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LicensePlates = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    LicensePlates = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CategoryGarageID = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -453,6 +453,31 @@ namespace GFData.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "GuestOrderDetail",
+                columns: table => new
+                {
+                    GuestOrderDetailId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    GuestOrderID = table.Column<int>(type: "int", nullable: false),
+                    CategoryGarageID = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GuestOrderDetail", x => x.GuestOrderDetailId);
+                    table.ForeignKey(
+                        name: "FK_GuestOrderDetail_CategoryGarage_CategoryGarageID",
+                        column: x => x.CategoryGarageID,
+                        principalTable: "CategoryGarage",
+                        principalColumn: "CategoryGarageID");
+                    table.ForeignKey(
+                        name: "FK_GuestOrderDetail_GuestOrder_GuestOrderID",
+                        column: x => x.GuestOrderID,
+                        principalTable: "GuestOrder",
+                        principalColumn: "GuestOrderID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ImageGuestOrders",
                 columns: table => new
                 {
@@ -481,7 +506,6 @@ namespace GFData.Migrations
                     GFOrderID = table.Column<int>(type: "int", nullable: false),
                     CarID = table.Column<int>(type: "int", nullable: false),
                     GarageID = table.Column<int>(type: "int", nullable: false),
-                    CategoryGarageID = table.Column<int>(type: "int", nullable: false),
                     TimeCreate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     TimeUpdate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     TimeAppointment = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -496,11 +520,6 @@ namespace GFData.Migrations
                         column: x => x.CarID,
                         principalTable: "Car",
                         principalColumn: "CarID");
-                    table.ForeignKey(
-                        name: "FK_Orders_CategoryGarage_CategoryGarageID",
-                        column: x => x.CategoryGarageID,
-                        principalTable: "CategoryGarage",
-                        principalColumn: "CategoryGarageID");
                     table.ForeignKey(
                         name: "FK_Orders_Garage_GarageID",
                         column: x => x.GarageID,
@@ -543,6 +562,31 @@ namespace GFData.Migrations
                     table.ForeignKey(
                         name: "FK_ImageOrders_Orders_OrderID",
                         column: x => x.OrderID,
+                        principalTable: "Orders",
+                        principalColumn: "OrderID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OrderDetail",
+                columns: table => new
+                {
+                    OrderDetailId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    OrderId = table.Column<int>(type: "int", nullable: false),
+                    CategoryGarageID = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrderDetail", x => x.OrderDetailId);
+                    table.ForeignKey(
+                        name: "FK_OrderDetail_CategoryGarage_CategoryGarageID",
+                        column: x => x.CategoryGarageID,
+                        principalTable: "CategoryGarage",
+                        principalColumn: "CategoryGarageID");
+                    table.ForeignKey(
+                        name: "FK_OrderDetail_Orders_OrderId",
+                        column: x => x.OrderId,
                         principalTable: "Orders",
                         principalColumn: "OrderID",
                         onDelete: ReferentialAction.Cascade);
@@ -640,6 +684,16 @@ namespace GFData.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_GuestOrderDetail_CategoryGarageID",
+                table: "GuestOrderDetail",
+                column: "CategoryGarageID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GuestOrderDetail_GuestOrderID",
+                table: "GuestOrderDetail",
+                column: "GuestOrderID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ImageGarage_GarageID",
                 table: "ImageGarage",
                 column: "GarageID");
@@ -670,14 +724,19 @@ namespace GFData.Migrations
                 column: "UserID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_OrderDetail_CategoryGarageID",
+                table: "OrderDetail",
+                column: "CategoryGarageID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderDetail_OrderId",
+                table: "OrderDetail",
+                column: "OrderId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Orders_CarID",
                 table: "Orders",
                 column: "CarID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Orders_CategoryGarageID",
-                table: "Orders",
-                column: "CategoryGarageID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Orders_GarageID",
@@ -734,6 +793,9 @@ namespace GFData.Migrations
                 name: "GarageInfo");
 
             migrationBuilder.DropTable(
+                name: "GuestOrderDetail");
+
+            migrationBuilder.DropTable(
                 name: "ImageGarage");
 
             migrationBuilder.DropTable(
@@ -749,6 +811,9 @@ namespace GFData.Migrations
                 name: "Notification");
 
             migrationBuilder.DropTable(
+                name: "OrderDetail");
+
+            migrationBuilder.DropTable(
                 name: "RefreshToken");
 
             migrationBuilder.DropTable(
@@ -758,28 +823,28 @@ namespace GFData.Migrations
                 name: "GuestOrder");
 
             migrationBuilder.DropTable(
-                name: "Orders");
-
-            migrationBuilder.DropTable(
                 name: "Subscribe");
 
             migrationBuilder.DropTable(
-                name: "Car");
+                name: "Orders");
 
             migrationBuilder.DropTable(
                 name: "CategoryGarage");
 
             migrationBuilder.DropTable(
-                name: "Brand");
-
-            migrationBuilder.DropTable(
-                name: "User");
+                name: "Car");
 
             migrationBuilder.DropTable(
                 name: "Category");
 
             migrationBuilder.DropTable(
                 name: "Garage");
+
+            migrationBuilder.DropTable(
+                name: "Brand");
+
+            migrationBuilder.DropTable(
+                name: "User");
 
             migrationBuilder.DropTable(
                 name: "RoleName");
