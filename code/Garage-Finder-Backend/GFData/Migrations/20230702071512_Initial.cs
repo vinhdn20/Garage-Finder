@@ -207,6 +207,7 @@ namespace GFData.Migrations
                     BrandCarID = table.Column<int>(type: "int", nullable: true),
                     TypeCar = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LicensePlates = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CategoryGarageID = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>

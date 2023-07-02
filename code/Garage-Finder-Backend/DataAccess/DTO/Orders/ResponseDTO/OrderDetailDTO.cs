@@ -12,7 +12,7 @@ namespace DataAccess.DTO.Orders.ResponseDTO
         public int OrderID { get; set; }
         public int GFOrderID { get; set; }
         public int GarageID { get; set; }
-        public List<int> CategoryGargeId { get; set; }
+        public List<string> Category { get; set; }
         public DateTime TimeCreate { get; set; }
         public DateTime TimeUpdate { get; set; }
         public DateTime? TimeAppointment { get; set; }
