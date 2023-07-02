@@ -100,9 +100,9 @@ namespace Services.OrderService
             {
                 throw new Exception("Can't find car");
             }
-            addOrder.categoryGargeId.ForEach(x => CheckCategoryExits(x));
+            addOrder.categoryGarageId.ForEach(x => CheckCategoryExits(x));
             List<OrderDetail> orderDetails = new List<OrderDetail>();
-            foreach (var cate in addOrder.categoryGargeId)
+            foreach (var cate in addOrder.categoryGarageId)
             {
                 orderDetails.Add(new OrderDetail()
                 {
