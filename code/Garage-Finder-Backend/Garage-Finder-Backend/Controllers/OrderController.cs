@@ -1,16 +1,18 @@
 ﻿using AutoMapper;
 using DataAccess.DTO;
+using DataAccess.DTO.Orders;
 using DataAccess.DTO.Orders.RequestDTO;
 using DataAccess.DTO.Orders.ResponseDTO;
 using DataAccess.DTO.User.ResponeModels;
+using GFData.Models.Entity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Newtonsoft.Json;
-using Repositories.Implements;
 using Repositories.Interfaces;
 using Services.OrderService;
 using System.Security.Claims;
+using System.Security.Cryptography;
 
 namespace Garage_Finder_Backend.Controllers
 {
@@ -20,6 +22,10 @@ namespace Garage_Finder_Backend.Controllers
         private readonly IServiceRepository serviceRepository;
         private readonly IOrderService orderService;
         private readonly IGuestOrderRepository guestOrderRepository;
+        private readonly ICarRepository carRepository;
+        private readonly IUsersRepository usersRepository;
+        private readonly ICategoryGarageRepository categoryGarageRepository;
+        private readonly ICategoryRepository categoryRepository;
         private readonly IMapper mapper;
         private UserInfor GetUserFromToken()
         {
@@ -28,12 +34,18 @@ namespace Garage_Finder_Backend.Controllers
             return user;
         }
         public OrderController(IOrderRepository orderRepository, IServiceRepository serviceRepository,
-            IOrderService orderService, IGuestOrderRepository guestOrderRepository, IMapper mapper)
+            IOrderService orderService, IGuestOrderRepository guestOrderRepository, IMapper mapper,
+            ICarRepository carRepository, IUsersRepository usersRepository, 
+            ICategoryGarageRepository categoryGarageRepository, ICategoryRepository categoryRepository)
         {
             this.orderRepository = orderRepository;
             this.serviceRepository = serviceRepository;
             this.orderService = orderService;
             this.guestOrderRepository = guestOrderRepository;
+            this.carRepository = carRepository;
+            this.usersRepository = usersRepository;
+            this.categoryGarageRepository = categoryGarageRepository;
+            this.categoryRepository = categoryRepository;
             this.mapper = mapper;
         }
 
@@ -58,7 +70,31 @@ namespace Garage_Finder_Backend.Controllers
             try
             {
                 var user = GetUserFromToken();
-                return Ok(orderRepository.GetAllOrdersByUserId(user.UserID));
+                var orders = orderRepository.GetAllOrdersByUserId(user.UserID);
+                List<OrderDetailDTO> list = new List<OrderDetailDTO>();
+                foreach (var ord in orders)
+                {
+                    var o = mapper.Map<OrderDetailDTO>(ord);
+                    var car = carRepository.GetCarById(ord.CarID);
+                    var userDB = usersRepository.GetUserByID(car.UserID);
+                    o = mapper.Map<OrdersDTO, OrderDetailDTO>(ord);
+                    o = mapper.Map(car, o);
+                    o = mapper.Map(userDB, o);
+                    o.FileOrders = ord.FileOrders.Select(x => x.FileLink).ToList();
+                    o.ImageOrders = ord.ImageOrders.Select(x => x.ImageLink).ToList();
+                    o.Name = userDB.Name;
+
+                    o.Category = new List<string>();
+                    foreach (var detail in ord.OrderDetails)
+                    {
+                        var categoryGarage = categoryGarageRepository.GetById(detail.CategoryGarageID);
+                        var cate = categoryRepository.GetCategory().Where(x => x.CategoryID == categoryGarage.CategoryID).FirstOrDefault();
+                        o.Category.Add(cate.CategoryName);
+                    }
+
+                    list.Add(o);
+                }
+                return Ok(list);
             }
             catch (Exception e)
             {
@@ -95,12 +131,41 @@ namespace Garage_Finder_Backend.Controllers
                 List<OrderDetailDTO> list = new List<OrderDetailDTO>();
                 foreach (var ord in orders)
                 {
-                    list.Add(mapper.Map<OrderDetailDTO>(ord));
+                    var o = mapper.Map<OrderDetailDTO>(ord);
+                    var car = carRepository.GetCarById(ord.CarID);
+                    var user = usersRepository.GetUserByID(car.UserID);
+                    o = mapper.Map<OrdersDTO, OrderDetailDTO>(ord);
+                    o = mapper.Map(car, o);
+                    o = mapper.Map(user, o);
+                    o.FileOrders = ord.FileOrders.Select(x => x.FileLink).ToList();
+                    o.ImageOrders = ord.ImageOrders.Select(x => x.ImageLink).ToList();
+                    o.Name = user.Name;
+                  
+                    o.Category = new List<string>();
+                    foreach (var detail in ord.OrderDetails)
+                    {
+                        var categoryGarage = categoryGarageRepository.GetById(detail.CategoryGarageID);
+                        var cate = categoryRepository.GetCategory().Where(x => x.CategoryID == categoryGarage.CategoryID).FirstOrDefault();
+                        o.Category.Add(cate.CategoryName);
+                    }
+
+                    list.Add(o);
                 }
 
                 foreach (var order in gorders)
                 {
-                    list.Add(mapper.Map<OrderDetailDTO>(order));
+                    var o = mapper.Map<GuestOrderDTO, OrderDetailDTO>(order);
+                    o.FileOrders = order.FileOrders.Select(x => x.FileLink).ToList();
+                    o.ImageOrders = order.ImageOrders.Select(x => x.ImageLink).ToList();
+                    o.Name = order.Name;
+                    o.Category = new List<string>();
+                    foreach (var detail in order.GuestOrderDetails)
+                    {
+                        var categoryGarage = categoryGarageRepository.GetById(detail.CategoryGarageID);
+                        var cate= categoryRepository.GetCategory().Where(x => x.CategoryID == categoryGarage.CategoryID).FirstOrDefault();
+                        o.Category.Add(cate.CategoryName);
+                    }
+                    list.Add(o);
                 }
                 return Ok(list);
             }
@@ -111,21 +176,6 @@ namespace Garage_Finder_Backend.Controllers
             }
         }
 
-        //[HttpGet("GetGuestOrderByGarageId/{GarageId}")]
-        //[Authorize]
-        //public IActionResult GetGuestOrderByGarageId(int GarageId)
-        //{
-        //    try
-        //    {
-        //        var orders = guestOrderRepository.GetOrdersByGarageId(GarageId);
-        //        return Ok(orders);
-        //    }
-        //    catch (Exception e)
-        //    {
-
-        //        return BadRequest(e.Message);
-        //    }
-        //}
         #region Add order
         [HttpPost("AddOrder")]
         [Authorize]

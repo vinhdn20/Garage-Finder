@@ -156,7 +156,8 @@ namespace Services.OrderService
                 Email = addOrder.Email,
                 BrandCarID = addOrder.BrandCarID,
                 TypeCar = addOrder.TypeCar,
-                GuestOrderDetails = orderDetails
+                GuestOrderDetails = orderDetails,
+                Name = addOrder.Name
             };
 
             _guestOrderRepository.Add(guestOrder);

@@ -55,6 +55,7 @@ namespace DataAccess.DAO
                                       BrandCarID = order.BrandCarID,
                                       TypeCar = order.TypeCar,
                                       LicensePlates = order.LicensePlates,
+                                      Name = order.Name,
                                       ImageOrders = context.ImageGuestOrders.Where(x => x.GuestOrderID == order.GuestOrderID).ToList(),
                                       FileOrders = context.FileGuestOrders.Where(x => x.GuestOrderID == order.GuestOrderID).ToList(),
                                       GuestOrderDetails = context.GuestOrderDetail.Where(x => x.GuestOrderID == order.GuestOrderID).ToList()
@@ -91,6 +92,7 @@ namespace DataAccess.DAO
                              BrandCarID = order.BrandCarID,
                              TypeCar = order.TypeCar,
                              LicensePlates = order.LicensePlates,
+                             Name = order.Name,
                              ImageOrders = db.ImageGuestOrders.Where(x => x.GuestOrderID == order.GuestOrderID).ToList(),
                              FileOrders = db.FileGuestOrders.Where(x => x.GuestOrderID == order.GuestOrderID).ToList(),
                              GuestOrderDetails = db.GuestOrderDetail.Where(x => x.GuestOrderID == order.GuestOrderID).ToList()
@@ -126,6 +128,7 @@ namespace DataAccess.DAO
                            BrandCarID = order.BrandCarID,
                            TypeCar = order.TypeCar,
                            LicensePlates = order.LicensePlates,
+                           Name = order.Name,
                            ImageOrders = db.ImageGuestOrders.Where(x => x.GuestOrderID == order.GuestOrderID).ToList(),
                            FileOrders = db.FileGuestOrders.Where(x => x.GuestOrderID == order.GuestOrderID).ToList(),
                            GuestOrderDetails = db.GuestOrderDetail.Where(x => x.GuestOrderID == order.GuestOrderID).ToList()

@@ -41,7 +41,8 @@ namespace Garage_Finder_Backend
             CreateMap<GuestOrderDTO, GuestOrder>();
             CreateMap<GuestOrder, GuestOrderDTO>();
             CreateMap<GuestOrderDTO, OrderDetailDTO>()
-                .ForMember(x => x.BrandID, m => m.MapFrom(a => a.BrandCarID));
+                .ForMember(x => x.BrandID, m => m.MapFrom(a => a.BrandCarID))
+                .ForMember(x => x.OrderID, m => m.MapFrom(a => a.GuestOrderID));
             CreateMap<OrdersDTO, OrderDetailDTO>();
             CreateMap<CarDTO, OrderDetailDTO>();
             CreateMap<UsersDTO, OrderDetailDTO>()

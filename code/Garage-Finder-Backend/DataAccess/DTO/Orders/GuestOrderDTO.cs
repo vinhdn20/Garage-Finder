@@ -23,6 +23,7 @@ namespace DataAccess.DTO.Orders
         public int? BrandCarID { get; set; }
         public string? TypeCar { get; set; }
         public string? LicensePlates { get; set; }
+        public string? Name { get; set; }
 
         public ICollection<ImageGuestOrder>? ImageOrders { get; set; }
         public ICollection<FileGuestOrders>? FileOrders { get; set; }
