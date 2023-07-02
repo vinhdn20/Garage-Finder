@@ -1,8 +1,11 @@
-﻿using DataAccess.DTO;
+﻿using AutoMapper;
+using DataAccess.DTO;
 using DataAccess.DTO.Orders.RequestDTO;
+using DataAccess.DTO.Orders.ResponseDTO;
 using DataAccess.DTO.User.ResponeModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Newtonsoft.Json;
 using Repositories.Implements;
 using Repositories.Interfaces;
@@ -17,6 +20,7 @@ namespace Garage_Finder_Backend.Controllers
         private readonly IServiceRepository serviceRepository;
         private readonly IOrderService orderService;
         private readonly IGuestOrderRepository guestOrderRepository;
+        private readonly IMapper mapper;
         private UserInfor GetUserFromToken()
         {
             var jsonUser = User.FindFirstValue("user");
@@ -24,12 +28,13 @@ namespace Garage_Finder_Backend.Controllers
             return user;
         }
         public OrderController(IOrderRepository orderRepository, IServiceRepository serviceRepository,
-            IOrderService orderService, IGuestOrderRepository guestOrderRepository)
+            IOrderService orderService, IGuestOrderRepository guestOrderRepository, IMapper mapper)
         {
             this.orderRepository = orderRepository;
             this.serviceRepository = serviceRepository;
             this.orderService = orderService;
             this.guestOrderRepository = guestOrderRepository;
+            this.mapper = mapper;
         }
 
         //[HttpGet("GetAllOrder")]
@@ -86,7 +91,18 @@ namespace Garage_Finder_Backend.Controllers
             try
             {
                 var orders= orderRepository.GetAllOrdersByGarageId(GarageId);
-                return Ok(orders);
+                var gorders = guestOrderRepository.GetOrdersByGarageId(GarageId);
+                List<OrderDetailDTO> list = new List<OrderDetailDTO>();
+                foreach (var ord in orders)
+                {
+                    list.Add(mapper.Map<OrderDetailDTO>(ord));
+                }
+
+                foreach (var order in gorders)
+                {
+                    list.Add(mapper.Map<OrderDetailDTO>(order));
+                }
+                return Ok(list);
             }
             catch (Exception e)
             {
@@ -95,21 +111,21 @@ namespace Garage_Finder_Backend.Controllers
             }
         }
 
-        [HttpGet("GetGuestOrderByGarageId/{GarageId}")]
-        [Authorize]
-        public IActionResult GetGuestOrderByGarageId(int GarageId)
-        {
-            try
-            {
-                var orders = guestOrderRepository.GetOrdersByGarageId(GarageId);
-                return Ok(orders);
-            }
-            catch (Exception e)
-            {
+        //[HttpGet("GetGuestOrderByGarageId/{GarageId}")]
+        //[Authorize]
+        //public IActionResult GetGuestOrderByGarageId(int GarageId)
+        //{
+        //    try
+        //    {
+        //        var orders = guestOrderRepository.GetOrdersByGarageId(GarageId);
+        //        return Ok(orders);
+        //    }
+        //    catch (Exception e)
+        //    {
 
-                return BadRequest(e.Message);
-            }
-        }
+        //        return BadRequest(e.Message);
+        //    }
+        //}
         #region Add order
         [HttpPost("AddOrder")]
         [Authorize]

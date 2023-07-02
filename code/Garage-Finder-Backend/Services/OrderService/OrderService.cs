@@ -68,6 +68,7 @@ namespace Services.OrderService
                 orderDetailDTO = _mapper.Map(user, orderDetailDTO);
                 orderDetailDTO.FileOrders = orders.FileOrders.Select(x => x.FileLink).ToList();
                 orderDetailDTO.ImageOrders = orders.ImageOrders.Select(x => x.ImageLink).ToList();
+                orderDetailDTO.Name = user.Name;
             }
             else
             {
@@ -83,6 +84,7 @@ namespace Services.OrderService
                 orderDetailDTO = _mapper.Map<GuestOrderDTO, OrderDetailDTO>(gorders);
                 orderDetailDTO.FileOrders = gorders.FileOrders.Select(x => x.FileLink).ToList();
                 orderDetailDTO.ImageOrders = gorders.ImageOrders.Select(x => x.ImageLink).ToList();
+                orderDetailDTO.Name = "update sau";
             }
             return orderDetailDTO;
             
