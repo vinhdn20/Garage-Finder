@@ -24,6 +24,8 @@ namespace DataAccess.DTO.Orders.ResponseDTO
         public string? TypeCar { get; set; }
         public string? LicensePlates { get; set; }
         public string? Color { get; set; }
+
+        public string? Name { get; set; }
         public ICollection<string>? ImageOrders { get; set; }
         public ICollection<string>? FileOrders { get; set; }
     }
