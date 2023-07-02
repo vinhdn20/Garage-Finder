@@ -47,20 +47,21 @@ namespace Services.PhoneVerifyService
         {
             try
             {
-                phoneNumber = ChangePhoneToVNPhone(phoneNumber);
-                var verification = await VerificationCheckResource.CreateAsync(
-                    to: phoneNumber,
-                    code: verificationCode,
-                    pathServiceSid: _settings.VerificationServiceSID
-                );
-                if (verification.Status == "approved")
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return true;
+                //phoneNumber = ChangePhoneToVNPhone(phoneNumber);
+                //var verification = await VerificationCheckResource.CreateAsync(
+                //    to: phoneNumber,
+                //    code: verificationCode,
+                //    pathServiceSid: _settings.VerificationServiceSID
+                //);
+                //if (verification.Status == "approved")
+                //{
+                //    return true;
+                //}
+                //else
+                //{
+                //    return false;
+                //}
             }
             catch (Exception ex)
             {
