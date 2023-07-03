@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Services.EmailService;
+using Services.FeedbackService;
 using Services.GarageService;
 using Services.OrderService;
 using Services.ServiceService;
@@ -25,6 +26,7 @@ namespace Services
             services.AddTransient<IGarageService, GarageService.GarageService>();
             services.AddTransient<IService, Service>();
             services.AddTransient<IStaffService, StaffService.StaffService>();
+            services.AddTransient<IFeedbackService, FeedbackService.FeedbackService>();
         }
     }
 }

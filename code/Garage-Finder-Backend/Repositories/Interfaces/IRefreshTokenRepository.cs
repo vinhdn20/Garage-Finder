@@ -1,4 +1,4 @@
-﻿using DataAccess.DTO;
+﻿using DataAccess.DTO.Token;
 using System;
 using System.Collections.Generic;
 using System.Linq;

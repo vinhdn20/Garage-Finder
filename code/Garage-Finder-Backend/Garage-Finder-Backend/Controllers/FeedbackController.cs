@@ -1,8 +1,13 @@
-﻿using DataAccess.DTO;
+﻿using DataAccess.DTO.Feedback;
+using DataAccess.DTO.User.ResponeModels;
 using GFData.Models.Entity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Repositories.Interfaces;
+using Services.FeedbackService;
+using System.Security.Claims;
 
 namespace Garage_Finder_Backend.Controllers
 {
@@ -11,11 +16,11 @@ namespace Garage_Finder_Backend.Controllers
     [ApiController]
     public class FeedbackController : ControllerBase
     {
-        private readonly IFeedbackRepository feedbackRepository;
+        private readonly IFeedbackService _feedbackService;
 
-        public FeedbackController(IFeedbackRepository feedbackRepository)
+        public FeedbackController(IFeedbackService feedbackService)
         {
-            this.feedbackRepository = feedbackRepository;
+            _feedbackService = feedbackService;
         }
 
         [HttpGet("GetByGarage/{id}")]
@@ -23,7 +28,8 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
-                return Ok(feedbackRepository.GetListByGarage(id));
+                var list = _feedbackService.GetFeedbackByGarage(id);
+                return Ok(list);
             }
             catch (Exception e)
             {
@@ -33,11 +39,13 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpPost("Add")]
-        public IActionResult Add(FeedbackDTO feedback)
+        [Authorize]
+        public IActionResult Add(AddFeedbackDTO feedback)
         {
             try
             {
-                feedbackRepository.Add(feedback);
+                var user = User.GetTokenInfor();
+                _feedbackService.AddFeedback(feedback, user.UserID);
 
                 return Ok("SUCCESS");
             }
@@ -47,21 +55,5 @@ namespace Garage_Finder_Backend.Controllers
                 return BadRequest(e.Message);
             }
         }
-
-        [HttpPut("Update")]
-        public IActionResult Update(FeedbackDTO feedback)
-        {
-            try
-            {
-                feedbackRepository.Update(feedback);
-                return Ok("SUCCESS");
-            }
-            catch (Exception e)
-            {
-
-                return BadRequest(e.Message);
-            }
-        }
-
     }
 }

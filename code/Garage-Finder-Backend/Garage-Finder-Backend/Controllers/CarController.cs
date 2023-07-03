@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using DataAccess.DTO;
 using DataAccess.DTO.Car;
 using DataAccess.DTO.User.ResponeModels;
 using GFData.Models.Entity;
@@ -18,14 +17,6 @@ namespace Garage_Finder_Backend.Controllers
     {
         private readonly ICarRepository carRepository;
         private readonly IMapper mapper;
-        #region Private
-        private UserInfor GetUserFromToken()
-        {
-            var jsonUser = User.FindFirstValue("user");
-            var user = JsonConvert.DeserializeObject<UserInfor>(jsonUser);
-            return user;
-        }
-        #endregion
         public CarController(ICarRepository carRepository, IMapper mapper)
         {
             this.carRepository = carRepository;
@@ -49,7 +40,7 @@ namespace Garage_Finder_Backend.Controllers
         [Authorize]
         public IActionResult GetUserId()
         {
-            var user = GetUserFromToken();
+            var user = User.GetTokenInfor();
             try
             {
                 return Ok(carRepository.GetCarsByUser(user.UserID));
@@ -81,7 +72,7 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
-                var user = GetUserFromToken();
+                var user = User.GetTokenInfor();
                 CarDTO carDTO = mapper.Map<AddCarDTO, CarDTO>(car);
                 carDTO.UserID = user.UserID;
                 carDTO = carRepository.SaveCar(carDTO);
@@ -101,7 +92,7 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
-                var user = GetUserFromToken();
+                var user = User.GetTokenInfor();
                 CarDTO carDTO = mapper.Map<UpdateCarDTO, CarDTO>(car);
                 carDTO.UserID = user.UserID;
                 carRepository.UpdateCar(carDTO);

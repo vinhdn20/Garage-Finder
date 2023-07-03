@@ -13,6 +13,6 @@ namespace Services.UserService
         void UpdateUser(UserUpdateDTO usersDTO, int userID);
         bool SendPhoneCode(string phoneNumber);
         UserInfor Get(int userId);
-        void ChangePassword(string userEmail, string oldPassword, string newPassword);
+        void ChangePassword(int userId, string oldPassword, string newPassword);
     }
 }

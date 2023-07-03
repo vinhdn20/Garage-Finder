@@ -1,8 +1,9 @@
-﻿using GFData.Models.Entity;
+﻿using DataAccess.DTO.Token;
+using GFData.Models.Entity;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DataAccess.DTO
+namespace DataAccess.DTO.User
 {
     public class UsersDTO
     {

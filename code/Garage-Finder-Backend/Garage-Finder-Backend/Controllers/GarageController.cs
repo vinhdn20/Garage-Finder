@@ -64,7 +64,7 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
-                var user = GetUserFromToken();
+                var user = User.GetTokenInfor();
                 garageService.Add(addGarage, user.UserID);
                 return Ok("SUCCESS");
             }
@@ -163,11 +163,11 @@ namespace Garage_Finder_Backend.Controllers
                 garages = garages.Where(g => searchGarage.provinceID.Any(d => d == g.ProvinceID) && g.CategoryGarages.Any(c => searchGarage.categoriesID.Any(x => x == c.CategoryID))).ToList();
             }*/
 
-            if (!string.IsNullOrEmpty(searchGarage.keyword)) 
+            if (!string.IsNullOrEmpty(searchGarage.keyword))
             {
                 garages = garages.Where(g => g.GarageName.Contains(searchGarage.keyword)).ToList();
             }
-            
+
             if (searchGarage.provinceID is not null)
             {
                 garages = garages.Where(g => searchGarage.provinceID.Any(d => d == g.ProvinceID)).ToList();
@@ -221,7 +221,7 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
-                var user = GetUserFromToken();
+                var user = User.GetTokenInfor();
                 var garages = garageRepository.GetGarageByUser(user.UserID);
                 foreach (var garage in garages)
                 {
@@ -434,14 +434,6 @@ namespace Garage_Finder_Backend.Controllers
         //        return BadRequest(ex.Message);
         //    }
         //}
-        #endregion
-        #region Private
-        private UserInfor GetUserFromToken()
-        {
-            var jsonUser = User.FindFirstValue("user");
-            var user = JsonConvert.DeserializeObject<UserInfor>(jsonUser);
-            return user;
-        }
         #endregion
     }
 }

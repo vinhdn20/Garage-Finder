@@ -339,33 +339,6 @@ namespace GFData.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Feedback",
-                columns: table => new
-                {
-                    FeedbackID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    GarageID = table.Column<int>(type: "int", nullable: false),
-                    UserID = table.Column<int>(type: "int", nullable: false),
-                    Star = table.Column<int>(type: "int", nullable: false),
-                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Feedback", x => x.FeedbackID);
-                    table.ForeignKey(
-                        name: "FK_Feedback_Garage_GarageID",
-                        column: x => x.GarageID,
-                        principalTable: "Garage",
-                        principalColumn: "GarageID",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Feedback_User_UserID",
-                        column: x => x.UserID,
-                        principalTable: "User",
-                        principalColumn: "UserID");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "GarageInfo",
                 columns: table => new
                 {
@@ -559,6 +532,28 @@ namespace GFData.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Feedback",
+                columns: table => new
+                {
+                    FeedbackID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    OrderID = table.Column<int>(type: "int", nullable: false),
+                    Star = table.Column<int>(type: "int", nullable: false),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DateTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Feedback", x => x.FeedbackID);
+                    table.ForeignKey(
+                        name: "FK_Feedback_Orders_OrderID",
+                        column: x => x.OrderID,
+                        principalTable: "Orders",
+                        principalColumn: "OrderID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "FileOrders",
                 columns: table => new
                 {
@@ -654,14 +649,9 @@ namespace GFData.Migrations
                 column: "UserID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Feedback_GarageID",
+                name: "IX_Feedback_OrderID",
                 table: "Feedback",
-                column: "GarageID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Feedback_UserID",
-                table: "Feedback",
-                column: "UserID");
+                column: "OrderID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_FileGuestOrders_GuestOrderID",
