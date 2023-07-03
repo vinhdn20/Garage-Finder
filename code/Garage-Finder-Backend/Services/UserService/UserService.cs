@@ -73,6 +73,10 @@ namespace Services.UserService
         {
             try
             {
+                if (!phoneNumber.IsValidPhone())
+                {
+                    throw new Exception("Phone number is not valid");
+                }
                 var user = _userRepository.GetUsersByPhone(phoneNumber);
                 if(user == null)
                 {
@@ -94,6 +98,10 @@ namespace Services.UserService
         {
             try
             {
+                if (!userEmail.IsValidEmail())
+                {
+                    throw new Exception("Email is not valid");
+                }
                 if(string.IsNullOrWhiteSpace(oldPassword) || string.IsNullOrEmpty(newPassword))
                 {
                     throw new Exception("Password is null");

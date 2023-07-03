@@ -92,6 +92,10 @@ namespace Services.OrderService
 
         public void AddOrderWithCar(AddOrderWithCarDTO addOrder)
         {
+            if (!addOrder.PhoneNumber.IsValidPhone())
+            {
+                throw new Exception("Phone number is not valid");
+            }
             // Todo: validate
             if (!_phoneVerifyService.VerifyPhoneNumber(addOrder.VerificationCode, addOrder.PhoneNumber).Result)
             {
@@ -131,6 +135,15 @@ namespace Services.OrderService
 
         public void AddOrderFromGuest(AddOrderFromGuestDTO addOrder)
         {
+            if (!addOrder.PhoneNumber.IsValidPhone())
+            {
+                throw new Exception("Phone number is not valid");
+            }
+
+            if (!addOrder.Email.IsValidEmail())
+            {
+                throw new Exception("Email is not valid");
+            }
             if (!_phoneVerifyService.VerifyPhoneNumber(addOrder.VerificationCode, addOrder.PhoneNumber).Result)
             {
                 throw new Exception("Verification code not correct");
@@ -168,6 +181,10 @@ namespace Services.OrderService
 
         public void AddOrderWithoutCar(AddOrderWithoutCarDTO addOrder, int userID)
         {
+            if (!addOrder.PhoneNumber.IsValidPhone())
+            {
+                throw new Exception("Phone number is not valid");
+            }
             if (!_phoneVerifyService.VerifyPhoneNumber(addOrder.VerificationCode, addOrder.PhoneNumber).Result)
             {
                 throw new Exception("Verification code not correct");
