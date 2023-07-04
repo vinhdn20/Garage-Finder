@@ -3,10 +3,12 @@ using DataAccess.DTO.Staff;
 using DataAccess.DTO.Token;
 using DataAccess.DTO.User.RequestDTO;
 using DataAccess.DTO.User.ResponeModels;
+using GFData.Models.Entity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Services.StaffService;
+using System.Data;
 using System.Security.Claims;
 
 namespace Garage_Finder_Backend.Controllers
@@ -38,7 +40,7 @@ namespace Garage_Finder_Backend.Controllers
         //}
 
         [HttpGet("getByGarage/{garageId}")]
-        [Authorize]
+        [Authorize(Roles = Constants.ROLE_USER)]
         public IActionResult GetStaffByGarage(int garageId)
         {
             try
@@ -54,7 +56,7 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpPost("update")]
-        [Authorize]
+        [Authorize(Roles = Constants.ROLE_USER)]
         public IActionResult UpdateStaff(UpdateStaffDTO staffDTO)
         {
             try
@@ -70,7 +72,7 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpDelete("delete/{id}")]
-        [Authorize]
+        [Authorize(Roles = Constants.ROLE_USER)]
         public IActionResult DeleteStaff(int id)
         {
             try
@@ -86,7 +88,7 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpPost("block")]
-        [Authorize]
+        [Authorize(Roles = Constants.ROLE_USER)]
         public IActionResult UpdateStatus(BlockStaffDTO blockStaff)
         {
             try
@@ -102,6 +104,7 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpPost("add")]
+        [Authorize(Roles = Constants.ROLE_USER)]
         public IActionResult Add(AddStaffDTO staff)
         {
             try
@@ -109,6 +112,50 @@ namespace Garage_Finder_Backend.Controllers
                 var user = User.GetTokenInfor();
                 var staffAdd = _staffService.AddStaff(staff, user.UserID);
                 return Ok(staffAdd);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpPost("login")]
+        public IActionResult Login(LoginModel model)
+        {
+            try
+            {
+                var staff = _staffService.LoginStaff(model);
+                return Ok(staff);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpPost("refresh-token")]
+        [Authorize(Roles = $"{Constants.ROLE_STAFF}")]
+        public IActionResult RefreshToken([FromBody] string refreshToken)
+        {
+            try
+            {
+                var user = User.GetTokenInfor();
+                return Ok(_staffService.RefreshToken(refreshToken, user.UserID));
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpPost("getMyStaffInfor")]
+        [Authorize(Roles = $"{Constants.ROLE_STAFF}")]
+        public IActionResult GetInfor()
+        {
+            try
+            {
+                var user = User.GetTokenInfor();
+                return Ok(_staffService.GetMyInfor(user.UserID));
             }
             catch (Exception e)
             {

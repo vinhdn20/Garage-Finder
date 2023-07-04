@@ -729,6 +729,34 @@ namespace GFData.Migrations
                     b.ToTable("Staff");
                 });
 
+            modelBuilder.Entity("GFData.Models.Entity.StaffRefreshToken", b =>
+                {
+                    b.Property<int>("TokenID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TokenID"), 1L, 1);
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("ExpiresDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("StaffId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("TokenID");
+
+                    b.HasIndex("StaffId");
+
+                    b.ToTable("StaffRefreshToken");
+                });
+
             modelBuilder.Entity("GFData.Models.Entity.Subscribe", b =>
                 {
                     b.Property<int>("SubscribeID")
@@ -1105,6 +1133,17 @@ namespace GFData.Migrations
                         .IsRequired();
 
                     b.Navigation("Garage");
+                });
+
+            modelBuilder.Entity("GFData.Models.Entity.StaffRefreshToken", b =>
+                {
+                    b.HasOne("GFData.Models.Entity.Staff", "Staff")
+                        .WithMany()
+                        .HasForeignKey("StaffId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Staff");
                 });
 
             modelBuilder.Entity("GFData.Models.Entity.Users", b =>

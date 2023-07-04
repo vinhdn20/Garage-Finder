@@ -65,7 +65,7 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpPost("Add")]
-        [Authorize]
+        [Authorize(Roles = $"{Constants.ROLE_USER}")]
         public IActionResult Add(AddServiceDTO service)
         {
             try
@@ -83,7 +83,7 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpPut("Update")]
-        [Authorize]
+        [Authorize(Roles = $"{Constants.ROLE_USER}")]
         public IActionResult Update(ServiceDTO service)
         {
             try
@@ -100,7 +100,7 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpDelete("Delete/{id}")]
-        [Authorize]
+        [Authorize(Roles = $"{Constants.ROLE_USER}")]
         public IActionResult Delete(int id)
         {
             try

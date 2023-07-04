@@ -74,14 +74,14 @@ namespace Garage_Finder_Backend.Services.AuthService
             return refreshToken;
         }
 
-        public RefreshToken GenerateRefreshToken(DateTime expriresDate, int userID)
+        public StaffRefreshToken GenerateStaffRefreshToken(JwtSettings jwtSettings, int staffID)
         {
-            var refreshToken = new RefreshToken()
+            var refreshToken = new StaffRefreshToken()
             {
                 Token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64)),
-                ExpiresDate = expriresDate,
+                ExpiresDate = DateTime.UtcNow.AddHours(jwtSettings.RefreshTokenExpirationInHours),
                 CreateDate = DateTime.UtcNow,
-                UserID = userID
+                StaffId = staffID
             };
             return refreshToken;
         }

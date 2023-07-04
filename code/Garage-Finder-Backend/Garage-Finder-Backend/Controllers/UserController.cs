@@ -55,7 +55,7 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpGet("get")]
-        [Authorize]
+        [Authorize(Roles = $"{Constants.ROLE_USER}")]
         public IActionResult Get()
         {
             var user = User.GetTokenInfor();
@@ -64,7 +64,7 @@ namespace Garage_Finder_Backend.Controllers
             return Ok(result);
         }
         [HttpPost("update")]
-        [Authorize]
+        [Authorize(Roles = $"{Constants.ROLE_USER}")]
         public IActionResult Update([FromBody] UserUpdateDTO usersDTO)
         {
             try
@@ -169,6 +169,7 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpPost("refresh-token")]
+        [Authorize(Roles = $"{Constants.ROLE_USER}")]
         public IActionResult RefreshToken([FromBody] string refreshToken)
         {
             try
@@ -185,18 +186,18 @@ namespace Garage_Finder_Backend.Controllers
                         }
                         else
                         {
-                            var usersDTO = JsonConvert.DeserializeObject<UsersDTO>(User.FindFirstValue("user"));
+                            var userDTO = _userRepository.GetUserByID(user.UserID);
+                            var roleName = _roleNameRepository.GetUserRole(userDTO.RoleID);
 
-                            var userInfor = _mapper.Map<UsersDTO, UserInfor>(usersDTO);
-                            var roleName = _roleNameRepository.GetUserRole(userInfor.RoleID);
-                            var tokenInfor = GenerateTokenInfor(usersDTO.UserID, Constants.ROLE_USER);
+                            var tokenInfor = GenerateTokenInfor(userDTO.UserID, Constants.ROLE_USER);
                             string token = _jwtService.GenerateJwt(tokenInfor, roleName, _jwtSettings);
-                            var newRefreshToken = _jwtService.GenerateRefreshToken(_jwtSettings, userInfor.UserID);
+
+                            var newRefreshToken = _jwtService.GenerateRefreshToken(_jwtSettings, userDTO.UserID);
                             newRefreshToken.TokenID = userRefreshToken[i].TokenID;
                             _refreshTokenRepository.AddOrUpdateToken(newRefreshToken);
                             //SetRefreshToken(newRefreshToken);
 
-                            return Ok(new { token = token, refreshToken});
+                            return Ok(new { token = token, newRefreshToken });
                         }
                     }
                 }
@@ -221,7 +222,7 @@ namespace Garage_Finder_Backend.Controllers
         //}
 
         [HttpGet("logout")]
-        [Authorize]
+        [Authorize(Roles = $"{Constants.ROLE_USER}")]
         public IActionResult Logout()
         {
             try
@@ -323,7 +324,7 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpPost("changePassword")]
-        [Authorize]
+        [Authorize(Roles = $"{Constants.ROLE_USER}")]
         public IActionResult ChangePassword(ChangePasswordDTO changePasswordDTO)
         {
             try

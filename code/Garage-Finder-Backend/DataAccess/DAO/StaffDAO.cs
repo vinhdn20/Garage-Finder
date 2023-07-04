@@ -116,5 +116,21 @@ namespace DataAccess.DAO
                 throw new Exception(e.Message);
             }
         }
+
+        public Staff Login(string email, string password)
+        {
+            try
+            {
+                using (var context = new GFDbContext())
+                {
+                    var staff = context.Staff.Where(x => x.EmailAddress.Equals(email) && x.Password.Equals(password)).FirstOrDefault();
+                    return staff;
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Can not find staff: " +e.Message);
+            }
+        }
     }
 }

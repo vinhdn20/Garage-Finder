@@ -23,7 +23,7 @@ namespace Garage_Finder_Backend.Controllers
 
 
         [HttpGet("GetByUser")]
-        [Authorize]
+        [Authorize(Roles = Constants.ROLE_USER)]
         public IActionResult GetUserId()
         {
             try
@@ -39,7 +39,7 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpPost("Add/{garageId}")]
-        [Authorize]
+        [Authorize(Roles = Constants.ROLE_USER)]
         public IActionResult AddFavoriteGarage(int garageId)
         {
             try
@@ -67,6 +67,7 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpDelete("Delete/{garageId}")]
+        [Authorize(Roles = Constants.ROLE_USER)]
         public IActionResult DeleteFavoriteGarage(int garageId)
         {
             try
