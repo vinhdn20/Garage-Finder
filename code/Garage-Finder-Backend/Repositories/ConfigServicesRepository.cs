@@ -40,6 +40,7 @@ namespace Repositories
             services.AddScoped<IGarageInforRepository, GarageInforRepository>();
             services.AddScoped<IGuestOrderRepository, GuestOrderRepository>();
             services.AddScoped<IStaffRepository, StaffRepository>();
+            services.AddScoped<IStaffRefreshTokenRepository, StaffRefreshTokenRepository>();
         }
     }
 }

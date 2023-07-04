@@ -11,6 +11,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Newtonsoft.Json;
 using Repositories.Interfaces;
 using Services.OrderService;
+using System.Data;
 using System.Security.Claims;
 using System.Security.Cryptography;
 
@@ -59,7 +60,7 @@ namespace Garage_Finder_Backend.Controllers
         //}
 
         [HttpGet("GetByUser")]
-        [Authorize]
+        [Authorize(Roles = Constants.ROLE_USER)]
         public IActionResult GetUserId()
         {
             try
@@ -99,7 +100,7 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpGet("GetOrderByGFId/{GFOrderID}")]
-        [Authorize]
+        [Authorize(Roles = $"{Constants.ROLE_USER}, {Constants.ROLE_STAFF}")]
         public IActionResult GetOrder(int GFOrderID)
         {
             try
@@ -116,7 +117,7 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpGet("GetOrderByGarageId/{GarageId}")]
-        [Authorize]
+        [Authorize(Roles = $"{Constants.ROLE_USER}, {Constants.ROLE_STAFF}")]
         public IActionResult GetOrderByGarageId(int GarageId)
         {
             try
@@ -173,7 +174,7 @@ namespace Garage_Finder_Backend.Controllers
 
         #region Add order
         [HttpPost("AddOrder")]
-        [Authorize]
+        [Authorize(Roles = $"{Constants.ROLE_USER}")]
         public IActionResult AddOrderWithCar([FromBody] AddOrderWithCarDTO newOrder)
         {
 
@@ -206,7 +207,7 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpPost("AddOrderWithoutCar")]
-        [Authorize]
+        [Authorize(Roles = $"{Constants.ROLE_USER}")]
         public IActionResult AddOrderWithouCar([FromBody] AddOrderWithoutCarDTO newOrder)
         {
             try
@@ -226,7 +227,7 @@ namespace Garage_Finder_Backend.Controllers
         #region Update order
 
         [HttpPost("GarageAcceptOrder/{GFOrderID}")]
-        [Authorize]
+        [Authorize(Roles = $"{Constants.ROLE_USER}, {Constants.ROLE_STAFF}")]
         public IActionResult GarageAcceptOrder(int GFOrderID)
         {
             try
@@ -242,7 +243,7 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpPost("GarageRejectOrder/{GFOrderID}")]
-        [Authorize]
+        [Authorize(Roles = $"{Constants.ROLE_USER}, {Constants.ROLE_STAFF}")]
         public IActionResult GarageRejectOrder(int GFOrderID)
         {
             try
@@ -258,7 +259,7 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpPost("GarageDoneOrder")]
-        [Authorize]
+        [Authorize(Roles = $"{Constants.ROLE_USER}, {Constants.ROLE_STAFF}")]
         public IActionResult GarageDoneOrder([FromBody]DoneOrderDTO doneOrder)
         {
             try
@@ -274,7 +275,7 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpPost("GarageCancelOrder/{GFOrderID}")]
-        [Authorize]
+        [Authorize(Roles = $"{Constants.ROLE_USER}, {Constants.ROLE_STAFF}")]
         public IActionResult GarageCancelOrder(int GFOrderID)
         {
             try
@@ -290,7 +291,7 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpPost("UserCancelOrder/{GFOrderID}")]
-        [Authorize]
+        [Authorize(Roles = $"{Constants.ROLE_USER}, {Constants.ROLE_STAFF}")]
         public IActionResult UserCancelOrder(int GFOrderID)
         {
             try
@@ -306,19 +307,19 @@ namespace Garage_Finder_Backend.Controllers
         }
         #endregion
 
-        [HttpDelete("Delete/{id}")]
-        public IActionResult Delete([FromBody] int id)
-        {
-            try
-            {
-                orderRepository.Delete(id);
-                return Ok("SUCCESS");
-            }
-            catch (Exception e)
-            {
+        //[HttpDelete("Delete/{id}")]
+        //public IActionResult Delete([FromBody] int id)
+        //{
+        //    try
+        //    {
+        //        orderRepository.Delete(id);
+        //        return Ok("SUCCESS");
+        //    }
+        //    catch (Exception e)
+        //    {
 
-                return BadRequest(e.Message);
-            }
-        }
+        //        return BadRequest(e.Message);
+        //    }
+        //}
     }
 }

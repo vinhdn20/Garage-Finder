@@ -16,6 +16,8 @@ namespace Services
 
         public const string BLOCK_STAFF = "block";
         public const string OPEN_STAFF = "open";
+        public const string ROLE_USER = "user";
+        public const string ROLE_STAFF = "staff";
         public static readonly List<string> STAFF_STATUS = new List<string>() {BLOCK_STAFF, OPEN_STAFF};
     }
 }

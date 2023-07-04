@@ -1,4 +1,5 @@
 ﻿using DataAccess.DTO.Staff;
+using DataAccess.DTO.User.RequestDTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,5 +15,8 @@ namespace Services.StaffService
         void UpdateStaff(UpdateStaffDTO staff, int userId);
         void DeleteStaff(int id, int userId);
         void UpdateStatus(BlockStaffDTO blockStaff, int userId);
+        LoginStaffDTO LoginStaff(LoginModel loginModel);
+        StaffDTO GetMyInfor(int id);
+        Object RefreshToken(string refreshToken, int userId);
     }
 }

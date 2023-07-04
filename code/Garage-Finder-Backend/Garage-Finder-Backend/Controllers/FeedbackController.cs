@@ -39,7 +39,7 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpPost("Add")]
-        [Authorize]
+        [Authorize(Roles = Constants.ROLE_USER)]
         public IActionResult Add(AddFeedbackDTO feedback)
         {
             try

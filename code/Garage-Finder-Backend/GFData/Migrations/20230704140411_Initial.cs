@@ -284,6 +284,28 @@ namespace GFData.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "StaffRefreshToken",
+                columns: table => new
+                {
+                    TokenID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    StaffId = table.Column<int>(type: "int", nullable: false),
+                    Token = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ExpiresDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_StaffRefreshToken", x => x.TokenID);
+                    table.ForeignKey(
+                        name: "FK_StaffRefreshToken_Staff_StaffId",
+                        column: x => x.StaffId,
+                        principalTable: "Staff",
+                        principalColumn: "StaffId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Car",
                 columns: table => new
                 {
@@ -793,6 +815,11 @@ namespace GFData.Migrations
                 filter: "[EmployeeId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_StaffRefreshToken_StaffId",
+                table: "StaffRefreshToken",
+                column: "StaffId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_User_PhoneNumber_EmailAddress",
                 table: "User",
                 columns: new[] { "PhoneNumber", "EmailAddress" },
@@ -853,7 +880,7 @@ namespace GFData.Migrations
                 name: "Service");
 
             migrationBuilder.DropTable(
-                name: "Staff");
+                name: "StaffRefreshToken");
 
             migrationBuilder.DropTable(
                 name: "GuestOrder");
@@ -863,6 +890,9 @@ namespace GFData.Migrations
 
             migrationBuilder.DropTable(
                 name: "Orders");
+
+            migrationBuilder.DropTable(
+                name: "Staff");
 
             migrationBuilder.DropTable(
                 name: "CategoryGarage");

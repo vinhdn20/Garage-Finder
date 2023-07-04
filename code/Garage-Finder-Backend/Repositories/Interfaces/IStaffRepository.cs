@@ -15,5 +15,6 @@ namespace Repositories.Interfaces
         void UpdateStaff(Staff staff);
         List<Staff> GetByGarageId(int id);
         void DeleteStaff(int id);
+        Staff Login(string email, string password);
     }
 }

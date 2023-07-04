@@ -37,7 +37,7 @@ namespace Garage_Finder_Backend.Controllers
         //    }
         //}
         [HttpGet("GetByUser")]
-        [Authorize]
+        [Authorize(Roles = Constants.ROLE_USER)]
         public IActionResult GetUserId()
         {
             var user = User.GetTokenInfor();
@@ -53,7 +53,7 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpPost("GetByCarId/{id}")]
-        [Authorize]
+        [Authorize(Roles = Constants.ROLE_USER)]
         public IActionResult GetByCarID(int id)
         {
             try
@@ -67,7 +67,7 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpPost("Add")]
-        [Authorize]
+        [Authorize(Roles = Constants.ROLE_USER)]
         public IActionResult Add(AddCarDTO car)
         {
             try
@@ -87,7 +87,7 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpPut("Update")]
-        [Authorize]
+        [Authorize(Roles = Constants.ROLE_USER)]
         public IActionResult Update(UpdateCarDTO car)
         {
             try
@@ -106,7 +106,7 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpDelete("Delete/{id}")]
-        [Authorize]
+        [Authorize(Roles = Constants.ROLE_USER)]
         public IActionResult Delete(int id)
         {
             try

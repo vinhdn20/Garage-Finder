@@ -94,6 +94,7 @@ namespace Garage_Finder_Backend
             CreateMap<AddStaffDTO, Staff>();
             CreateMap<UpdateStaffDTO, Staff>();
             CreateMap<Staff, StaffDTO>();
+            CreateMap<Staff, LoginStaffDTO>();
         }
     }
 }

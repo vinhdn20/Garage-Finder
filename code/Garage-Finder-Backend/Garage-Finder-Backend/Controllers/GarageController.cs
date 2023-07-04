@@ -59,7 +59,7 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpPost("Add")]
-        [Authorize]
+        [Authorize(Roles = Constants.ROLE_USER)]
         public IActionResult Add([FromBody] AddGarageDTO addGarage)
         {
             try
@@ -216,7 +216,7 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpGet("GetByUser")]
-        [Authorize]
+        [Authorize(Roles = Constants.ROLE_USER)]
         public IActionResult GetByUser()
         {
             try
@@ -241,7 +241,7 @@ namespace Garage_Finder_Backend.Controllers
         #region Brand
 
         [HttpPost("addBrand")]
-        [Authorize]
+        [Authorize(Roles = Constants.ROLE_USER)]
         public IActionResult AddBrandForGarage([FromBody] List<GarageBrandDTO> garageBrandsDTO)
         {
             try
@@ -259,7 +259,7 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpPost("removeBrand")]
-        [Authorize]
+        [Authorize(Roles = Constants.ROLE_USER)]
         public IActionResult RemoveBrand([FromBody] List<int> garageBrandIds)
         {
             try
@@ -279,7 +279,7 @@ namespace Garage_Finder_Backend.Controllers
         #region Category
 
         [HttpPost("addCategoryForGarage")]
-        [Authorize]
+        [Authorize(Roles = Constants.ROLE_USER)]
         public IActionResult AddCategoryForGarage([FromBody] List<AddCategoryGarage> addCategoryGarageDTO)
         {
             try
@@ -303,7 +303,7 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpPost("removeCategory")]
-        [Authorize]
+        [Authorize(Roles = Constants.ROLE_USER)]
         public IActionResult RemoveCategory([FromBody] List<int> ids)
         {
             try
@@ -324,7 +324,7 @@ namespace Garage_Finder_Backend.Controllers
 
         #region Image
         [HttpPost("addImage")]
-        [Authorize]
+        [Authorize(Roles = Constants.ROLE_USER)]
         public IActionResult AddImage([FromBody] List<ImageGarageDTO> imagesDTO)
         {
             try
@@ -342,7 +342,7 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpPost("removeImage")]
-        [Authorize]
+        [Authorize(Roles = Constants.ROLE_USER)]
         public IActionResult RemoveImage([FromBody] List<int> ids)
         {
             try
