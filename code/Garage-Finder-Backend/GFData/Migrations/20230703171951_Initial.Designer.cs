@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GFData.Migrations
 {
     [DbContext(typeof(GFDbContext))]
-    [Migration("20230702133512_Initial")]
+    [Migration("20230703171951_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -158,20 +158,18 @@ namespace GFData.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("GarageID")
+                    b.Property<DateTime>("DateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("OrderID")
                         .HasColumnType("int");
 
                     b.Property<int>("Star")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserID")
-                        .HasColumnType("int");
-
                     b.HasKey("FeedbackID");
 
-                    b.HasIndex("GarageID");
-
-                    b.HasIndex("UserID");
+                    b.HasIndex("OrderID");
 
                     b.ToTable("Feedback");
                 });
@@ -866,19 +864,13 @@ namespace GFData.Migrations
 
             modelBuilder.Entity("GFData.Models.Entity.Feedback", b =>
                 {
-                    b.HasOne("GFData.Models.Entity.Garage", null)
-                        .WithMany("Feedbacks")
-                        .HasForeignKey("GarageID")
+                    b.HasOne("GFData.Models.Entity.Orders", "Orders")
+                        .WithMany()
+                        .HasForeignKey("OrderID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("GFData.Models.Entity.Users", "User")
-                        .WithMany("Feedbacks")
-                        .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("User");
+                    b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("GFData.Models.Entity.FileGuestOrders", b =>
@@ -1162,8 +1154,6 @@ namespace GFData.Migrations
 
                     b.Navigation("FavoriteList");
 
-                    b.Navigation("Feedbacks");
-
                     b.Navigation("GarageBrands");
 
                     b.Navigation("GarageInfos");
@@ -1206,8 +1196,6 @@ namespace GFData.Migrations
                     b.Navigation("Cars");
 
                     b.Navigation("FavoriteList");
-
-                    b.Navigation("Feedbacks");
 
                     b.Navigation("GarageInfos");
 

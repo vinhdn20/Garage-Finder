@@ -1,9 +1,10 @@
 ﻿using AutoMapper;
-using DataAccess.DTO;
+using DataAccess.DTO.User;
 using DataAccess.DTO.User.RequestDTO;
 using DataAccess.DTO.User.ResponeModels;
 using Garage_Finder_Backend.Services.AuthService;
 using GFData.Models.Entity;
+using Mailjet.Client.Resources;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Repositories.Interfaces;
@@ -94,29 +95,40 @@ namespace Services.UserService
             }
         }
 
-        public void ChangePassword(string userEmail, string oldPassword, string newPassword)
+        public void ChangePassword(int userId, string oldPassword, string newPassword)
         {
             try
             {
-                if (!userEmail.IsValidEmail())
+                UsersDTO user = new UsersDTO();
+                try
                 {
-                    throw new Exception("Email is not valid");
+                    user = _userRepository.GetUserByID(userId);
+                    if (user == null)
+                    {
+                        throw new Exception("Can't find user");
+                    }
                 }
-                if(string.IsNullOrWhiteSpace(oldPassword) || string.IsNullOrEmpty(newPassword))
+                catch (Exception)
+                {
+                    throw new Exception("Can't find user");
+                }
+
+                if (string.IsNullOrWhiteSpace(oldPassword) || string.IsNullOrEmpty(newPassword))
                 {
                     throw new Exception("Password is null");
                 }
+
                 try
                 {
-                    _userRepository.Login(userEmail, oldPassword);
+                    _userRepository.Login(user.EmailAddress, oldPassword);
                 }
                 catch (Exception)
                 {
                     throw new Exception("Old password is not correct");
                 }
-                var userDTO = _userRepository.GetUsersByEmail(userEmail);
-                userDTO.Password = newPassword;
-                _userRepository.Update(userDTO);
+
+                user.Password = newPassword;
+                _userRepository.Update(user);
             }
             catch (Exception e)
             {

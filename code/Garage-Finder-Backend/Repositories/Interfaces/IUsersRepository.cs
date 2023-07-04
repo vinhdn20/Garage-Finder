@@ -1,4 +1,4 @@
-﻿using DataAccess.DTO;
+﻿using DataAccess.DTO.User;
 using DataAccess.DTO.User.ResponeModels;
 using System;
 using System.Collections.Generic;

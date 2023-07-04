@@ -21,12 +21,6 @@ namespace Garage_Finder_Backend.Controllers
             this.favoriteListRepository = favoriteListRepository;
         }
 
-        private UserInfor GetUserFromToken()
-        {
-            var jsonUser = User.FindFirstValue("user");
-            var user = JsonConvert.DeserializeObject<UserInfor>(jsonUser);
-            return user;
-        }
 
         [HttpGet("GetByUser")]
         [Authorize]
@@ -34,7 +28,7 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {   
-                var user = GetUserFromToken();
+                var user = User.GetTokenInfor();
                 return Ok(favoriteListRepository.GetListByUser(user.UserID));
             }
             catch (Exception e)
@@ -50,7 +44,7 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
-                var user = GetUserFromToken();
+                var user = User.GetTokenInfor();
                 var listFV = favoriteListRepository.GetListByUser(user.UserID);
                 if(listFV.Any(x => x.GarageID == garageId))
                 {
@@ -77,7 +71,7 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
-                var user = GetUserFromToken();
+                var user = User.GetTokenInfor();
                 favoriteListRepository.Delete(garageId, user.UserID);
                 return Ok("SUCCESS");
             }

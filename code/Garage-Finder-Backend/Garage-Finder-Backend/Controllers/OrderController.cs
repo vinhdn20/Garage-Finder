@@ -27,12 +27,7 @@ namespace Garage_Finder_Backend.Controllers
         private readonly ICategoryGarageRepository categoryGarageRepository;
         private readonly ICategoryRepository categoryRepository;
         private readonly IMapper mapper;
-        private UserInfor GetUserFromToken()
-        {
-            var jsonUser = User.FindFirstValue("user");
-            var user = JsonConvert.DeserializeObject<UserInfor>(jsonUser);
-            return user;
-        }
+
         public OrderController(IOrderRepository orderRepository, IServiceRepository serviceRepository,
             IOrderService orderService, IGuestOrderRepository guestOrderRepository, IMapper mapper,
             ICarRepository carRepository, IUsersRepository usersRepository, 
@@ -69,7 +64,7 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
-                var user = GetUserFromToken();
+                var user =User.GetTokenInfor();
                 var orders = orderRepository.GetAllOrdersByUserId(user.UserID);
                 List<OrderDetailDTO> list = new List<OrderDetailDTO>();
                 foreach (var ord in orders)
@@ -109,7 +104,7 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
-                var user = GetUserFromToken();
+                var user =User.GetTokenInfor();
                 object order = orderService.GetOrderByGFID(GFOrderID, user.UserID);
                 return Ok(order);
             }
@@ -216,7 +211,7 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
-                var user = GetUserFromToken();
+                var user =User.GetTokenInfor();
                 orderService.AddOrderWithoutCar(newOrder, user.UserID);
 
                 return Ok("SUCCESS");
@@ -236,7 +231,7 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
-                var user = GetUserFromToken();
+                var user =User.GetTokenInfor();
                 orderService.GarageAcceptOrder(GFOrderID, user.UserID);
                 return Ok("SUCCESS");
             }
@@ -252,7 +247,7 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
-                var user = GetUserFromToken();
+                var user =User.GetTokenInfor();
                 orderService.GarageRejectOrder(GFOrderID, user.UserID);
                 return Ok("SUCCESS");
             }
@@ -268,7 +263,7 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
-                var user = GetUserFromToken();
+                var user =User.GetTokenInfor();
                 orderService.GarageDoneOrder(doneOrder, user.UserID);
                 return Ok("SUCCESS");
             }
@@ -284,7 +279,7 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
-                var user = GetUserFromToken();
+                var user =User.GetTokenInfor();
                 orderService.GarageCancelOrder(GFOrderID, user.UserID);
                 return Ok("SUCCESS");
             }
@@ -300,7 +295,7 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
-                var user = GetUserFromToken();
+                var user =User.GetTokenInfor();
                 orderService.UserCancelOrder(user.UserID, GFOrderID);
                 return Ok("SUCCESS");
             }

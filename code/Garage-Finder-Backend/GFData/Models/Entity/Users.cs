@@ -30,7 +30,6 @@ namespace GFData.Models.Entity
         //public ICollection<Garage> Garages { get; set; }
         public ICollection<RefreshToken> RefreshTokens { get; set; }
         public ICollection<FavoriteList> FavoriteList { get; set; }
-        public ICollection<Feedback> Feedbacks { get; set; }
         public ICollection<Invoices> Invoices { get; set; }
 
         public ICollection<Notification> Notifications { get; set; }

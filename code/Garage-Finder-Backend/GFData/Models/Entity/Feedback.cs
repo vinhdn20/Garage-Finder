@@ -7,13 +7,12 @@ namespace GFData.Models.Entity
     {
         [Key]
         public int FeedbackID { get; set; }
-        [ForeignKey("Garage")]
-        public int GarageID { get; set; }
-        [ForeignKey("User")]
-        public int UserID { get; set; }
+        [ForeignKey("Orders")]
+        public int OrderID { get; set; }
         public int Star { get; set; }
         public string Content { get; set; }
-        public Users User { get; set; }
+        public DateTime DateTime { get; set; }
+        public Orders Orders { get; set;}
 
     }
 }

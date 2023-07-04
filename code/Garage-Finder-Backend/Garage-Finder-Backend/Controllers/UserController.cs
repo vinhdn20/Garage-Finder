@@ -6,7 +6,6 @@ using System.Security.Claims;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Repositories.Interfaces;
-using DataAccess.DTO;
 using RestSharp;
 using Services.GgService;
 using Services.PhoneVerifyService;
@@ -17,6 +16,8 @@ using Services.UserService;
 using AutoMapper;
 using DataAccess.DTO.User.RequestDTO;
 using DataAccess.DTO.User.ResponeModels;
+using DataAccess.DTO.User;
+using DataAccess.DTO.Token;
 
 namespace Garage_Finder_Backend.Controllers
 {
@@ -57,7 +58,7 @@ namespace Garage_Finder_Backend.Controllers
         [Authorize]
         public IActionResult Get()
         {
-            var user = GetUserFromToken();
+            var user = User.GetTokenInfor();
             //user = _userRepository.GetUserByID(user.UserID);
             var result = _userService.Get(user.UserID);
             return Ok(result);
@@ -68,7 +69,7 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
-                var user = GetUserFromToken();
+                var user = User.GetTokenInfor();
                 _userService.UpdateUser(usersDTO, user.UserID);
                 return Ok();
             }
@@ -95,7 +96,8 @@ namespace Garage_Finder_Backend.Controllers
                 var usersDTO = _userRepository.Login(loginModel.Email, loginModel.Password);
                 var roleName = _roleNameRepository.GetUserRole(usersDTO.RoleID);
                 usersDTO.roleName = roleName;
-                var accessToken = _jwtService.GenerateJwt(usersDTO, roleName, _jwtSettings);
+                var tokenInfor = GenerateTokenInfor(usersDTO.UserID, Constants.ROLE_USER);
+                var accessToken = _jwtService.GenerateJwt(tokenInfor, roleName, _jwtSettings);
                 usersDTO.AccessToken = accessToken;
 
 
@@ -125,7 +127,8 @@ namespace Garage_Finder_Backend.Controllers
                 {
                     var userInfor = _mapper.Map<UsersDTO, UserInfor>(usersDTO);
                     var roleName = _roleNameRepository.GetUserRole(userInfor.RoleID);
-                    var gfAccessToken = _jwtService.GenerateJwt(userInfor, roleName, _jwtSettings);
+                    var tokenInfor = GenerateTokenInfor(usersDTO.UserID, Constants.ROLE_USER);
+                    var gfAccessToken = _jwtService.GenerateJwt(tokenInfor, roleName, _jwtSettings);
                     userInfor.AccessToken = gfAccessToken;
                     userInfor.roleName = roleName;
 
@@ -147,7 +150,8 @@ namespace Garage_Finder_Backend.Controllers
                     usersDTO = _userRepository.GetAll().Find(x => x.EmailAddress.Equals(email));
                     var userInfor = _mapper.Map<UsersDTO, UserInfor>(usersDTO);
                     var roleName = _roleNameRepository.GetUserRole(userInfor.RoleID);
-                    var gfAccessToken = _jwtService.GenerateJwt(userInfor, roleName, _jwtSettings);
+                    var tokenInfor = GenerateTokenInfor(usersDTO.UserID, Constants.ROLE_USER);
+                    var gfAccessToken = _jwtService.GenerateJwt(tokenInfor, roleName, _jwtSettings);
                     userInfor.AccessToken = gfAccessToken;
                     userInfor.roleName = roleName;
 
@@ -169,7 +173,7 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
-                var user = GetUserFromToken();
+                var user = User.GetTokenInfor();
                 var userRefreshToken = _refreshTokenRepository.GetRefreshToken(user.UserID);
                 for (int i = 0; i < userRefreshToken.Count; i++)
                 {
@@ -185,7 +189,8 @@ namespace Garage_Finder_Backend.Controllers
 
                             var userInfor = _mapper.Map<UsersDTO, UserInfor>(usersDTO);
                             var roleName = _roleNameRepository.GetUserRole(userInfor.RoleID);
-                            string token = _jwtService.GenerateJwt(userInfor, roleName, _jwtSettings);
+                            var tokenInfor = GenerateTokenInfor(usersDTO.UserID, Constants.ROLE_USER);
+                            string token = _jwtService.GenerateJwt(tokenInfor, roleName, _jwtSettings);
                             var newRefreshToken = _jwtService.GenerateRefreshToken(_jwtSettings, userInfor.UserID);
                             newRefreshToken.TokenID = userRefreshToken[i].TokenID;
                             _refreshTokenRepository.AddOrUpdateToken(newRefreshToken);
@@ -221,7 +226,7 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
-                var user = GetUserFromToken();
+                var user = User.GetTokenInfor();
                 _refreshTokenRepository.DeleteRefreshToken(user.UserID);
                 return Ok();
             }
@@ -289,14 +294,7 @@ namespace Garage_Finder_Backend.Controllers
                 userDTO.PhoneNumber = registerUser.PhoneNumber;
                 userDTO.EmailAddress = registerUser.EmailAddress;
                 userDTO.Password = registerUser.Password;
-                if(registerUser.RoleID != 0)
-                {
-                    userDTO.RoleID = registerUser.RoleID;
-                }
-                else
-                {
-                    userDTO.RoleID = 2;
-                }
+                userDTO.RoleID = registerUser.RoleID.HasValue ? registerUser.RoleID.Value ==0? 2 : registerUser.RoleID.Value : 2;
 
                 _userRepository.Register(userDTO);
                 return Ok();
@@ -330,8 +328,8 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
-                var user = GetUserFromToken();
-                _userService.ChangePassword(user.EmailAddress, changePasswordDTO.OldPassword, changePasswordDTO.NewPassword);
+                var user = User.GetTokenInfor();
+                _userService.ChangePassword(user.UserID, changePasswordDTO.OldPassword, changePasswordDTO.NewPassword);
                 return Ok();
                 
             }
@@ -341,11 +339,14 @@ namespace Garage_Finder_Backend.Controllers
             }
         }
 
-        private UserInfor GetUserFromToken()
+        private TokenInfor GenerateTokenInfor(int id, string roleName)
         {
-            var jsonUser = User.FindFirstValue("user");
-            var user = JsonConvert.DeserializeObject<UserInfor>(jsonUser);
-            return user;
+            TokenInfor tokenInfor = new TokenInfor()
+            {
+                UserID = id,
+                RoleName = roleName
+            };
+            return tokenInfor;
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using DataAccess.DTO;
+using DataAccess.DTO.Car;
 using DataAccess.DTO.Orders;
 using DataAccess.DTO.Orders.RequestDTO;
 using DataAccess.DTO.Orders.ResponseDTO;
@@ -97,10 +97,10 @@ namespace Services.OrderService
                 throw new Exception("Phone number is not valid");
             }
             // Todo: validate
-            if (!_phoneVerifyService.VerifyPhoneNumber(addOrder.VerificationCode, addOrder.PhoneNumber).Result)
-            {
-                throw new Exception("Verification code not correct");
-            }
+            //if (!_phoneVerifyService.VerifyPhoneNumber(addOrder.VerificationCode, addOrder.PhoneNumber).Result)
+            //{
+            //    throw new Exception("Verification code not correct");
+            //}
             var car = _carRepository.GetCarById(addOrder.carId);
             if(car == null)
             {

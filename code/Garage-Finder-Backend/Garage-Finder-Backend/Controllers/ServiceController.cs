@@ -1,5 +1,6 @@
 ﻿using DataAccess.DTO.Services;
 using DataAccess.DTO.Services.RequestSerivesDTO;
+using DataAccess.DTO.Token;
 using DataAccess.DTO.User.ResponeModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -69,7 +70,7 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
-                var user = GetUserFromToken();
+                var user = User.GetTokenInfor();
                 var addService = _service.AddService(service, user.UserID);
 
                 return Ok(addService);
@@ -87,7 +88,7 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
-                var user = GetUserFromToken();
+                var user = User.GetTokenInfor();
                 _service.UpdateService(service, user.UserID);
                 return Ok("SUCCESS");
             }
@@ -104,7 +105,7 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
-                var user = GetUserFromToken();
+                var user = User.GetTokenInfor();
                 _service.DeleteServiceById(id, user.UserID);
 
                 return Ok("SUCCESS");
@@ -114,13 +115,6 @@ namespace Garage_Finder_Backend.Controllers
 
                 return BadRequest(e.Message);
             }
-        }
-
-        private UserInfor GetUserFromToken()
-        {
-            var jsonUser = User.FindFirstValue("user");
-            var user = JsonConvert.DeserializeObject<UserInfor>(jsonUser);
-            return user;
         }
     }
 }

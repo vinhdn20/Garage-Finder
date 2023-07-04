@@ -1,4 +1,4 @@
-﻿using DataAccess.DTO;
+﻿using DataAccess.DTO.Category;
 using Microsoft.AspNetCore.Mvc;
 using Repositories.Interfaces;
 

@@ -1,4 +1,4 @@
-﻿using DataAccess.DTO;
+﻿using DataAccess.DTO.Feedback;
 using GFData.Models.Entity;
 using System;
 using System.Collections.Generic;
@@ -10,9 +10,9 @@ namespace Repositories.Interfaces
 {
     public interface IFeedbackRepository
     {
-        List<FeedbackDTO> GetListByGarage(int id);
-        void Add(FeedbackDTO feedback);
-        void Update(FeedbackDTO feedback);
+        List<Feedback> GetListByGarage(int id);
+        void Add(Feedback feedback);
+        void Update(Feedback feedback);
 
     }
 }

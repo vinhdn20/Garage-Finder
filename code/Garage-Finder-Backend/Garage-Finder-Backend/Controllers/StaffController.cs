@@ -1,5 +1,6 @@
 ﻿using DataAccess.DAO;
 using DataAccess.DTO.Staff;
+using DataAccess.DTO.Token;
 using DataAccess.DTO.User.RequestDTO;
 using DataAccess.DTO.User.ResponeModels;
 using Microsoft.AspNetCore.Authorization;
@@ -42,7 +43,7 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
-                var user = GetUserFromToken();
+                var user = User.GetTokenInfor();
                 var staffs = _staffService.GetByGarageID(garageId, user.UserID);
                 return Ok(staffs);
             }
@@ -58,7 +59,7 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
-                var user = GetUserFromToken();
+                var user = User.GetTokenInfor();
                 _staffService.UpdateStaff(staffDTO, user.UserID);
                 return Ok("Success");
             }
@@ -74,7 +75,7 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
-                var user = GetUserFromToken();
+                var user = User.GetTokenInfor();
                 _staffService.DeleteStaff(id, user.UserID);
                 return Ok("Success");
             }
@@ -90,7 +91,7 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
-                var user = GetUserFromToken();
+                var user = User.GetTokenInfor();
                 _staffService.UpdateStatus(blockStaff, user.UserID);
                 return Ok("Success");
             }
@@ -105,7 +106,7 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
-                var user = GetUserFromToken();
+                var user = User.GetTokenInfor();
                 var staffAdd = _staffService.AddStaff(staff, user.UserID);
                 return Ok(staffAdd);
             }
@@ -113,14 +114,6 @@ namespace Garage_Finder_Backend.Controllers
             {
                 return BadRequest(e.Message);
             }
-        }
-
-        private UserInfor GetUserFromToken()
-        {
-            var jsonUser = User.FindFirstValue("user");
-            
-            var user = JsonConvert.DeserializeObject<UserInfor>(jsonUser);
-            return user;
         }
     }
 }

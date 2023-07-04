@@ -1,5 +1,6 @@
 ﻿using DataAccess.DTO;
 using DataAccess.DTO.Staff;
+using DataAccess.DTO.Token;
 using DataAccess.DTO.User.ResponeModels;
 using GFData.Models.Entity;
 using Microsoft.IdentityModel.Tokens;
@@ -13,11 +14,10 @@ namespace Garage_Finder_Backend.Services.AuthService
 {
     public class JwtService
     {
-        public string GenerateJwt(UserInfor user,RoleNameDTO roleName, JwtSettings jwtSettings)
+        public string GenerateJwt(TokenInfor user,RoleNameDTO roleName, JwtSettings jwtSettings)
         {
             var claims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, user.EmailAddress),
                     new Claim(ClaimTypes.Role, roleName.NameRole),
                     new Claim("user", JsonConvert.SerializeObject(user))
                 };
@@ -38,12 +38,11 @@ namespace Garage_Finder_Backend.Services.AuthService
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        public string GenerateJwtForStaff(DataAccess.DTO.Staff.StaffDTO user, JwtSettings jwtSettings)
+        public string GenerateJwtForStaff(TokenInfor user, JwtSettings jwtSettings)
         {
             var claims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, user.EmailAddress),
-                    new Claim(ClaimTypes.Role, "Staff"),
+                    new Claim(ClaimTypes.Role, user.RoleName),
                     new Claim("user", JsonConvert.SerializeObject(user))
                 };
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret));

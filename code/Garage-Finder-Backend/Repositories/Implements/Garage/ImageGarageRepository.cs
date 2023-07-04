@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using DataAccess.DAO;
-using DataAccess.DTO;
+using DataAccess.DTO.Garage;
 using GFData.Models.Entity;
 using Microsoft.EntityFrameworkCore.Migrations.Operations;
 using Repositories.Interfaces;
@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Repositories.Implements.Garage 
+namespace Repositories.Implements.Garage
 {
     public class ImageGarageRepository : IImageGarageRepository
     {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DataAccess.DTO.Token;
 
 namespace DataAccess.DTO.User.ResponeModels
 {

@@ -28,7 +28,6 @@ namespace GFData.Models.Entity
         public double? LngAddress { get; set; }
         public ICollection<Orders> Orders { get; set; }
         public ICollection<FavoriteList> FavoriteList { get; set; }
-        public ICollection<Feedback> Feedbacks { get; set; }
         public ICollection<GarageBrand> GarageBrands { get; set; }
         public ICollection<GarageInfo> GarageInfos { get; set; }
         public ICollection<CategoryGarage> CategoryGarages { get; set; }
