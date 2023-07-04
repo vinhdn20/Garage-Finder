@@ -5,6 +5,7 @@ using DataAccess.DTO.User.ResponeModels;
 using GFData.Models.Entity;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
+using Services;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -18,7 +19,7 @@ namespace Garage_Finder_Backend.Services.AuthService
         {
             var claims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Role, roleName.NameRole),
+                    new Claim(ClaimTypes.Role, Constants.ROLE_USER),
                     new Claim("user", JsonConvert.SerializeObject(user))
                 };
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret));
