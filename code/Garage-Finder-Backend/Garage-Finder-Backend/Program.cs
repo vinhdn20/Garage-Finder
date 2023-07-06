@@ -41,7 +41,7 @@ builder.Services.AddSwaggerGen(c =>
         Scheme = "Bearer"
     });
 
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+c.AddSecurityRequirement(new OpenApiSecurityRequirement()
       {
         {
           new OpenApiSecurityScheme
@@ -60,6 +60,7 @@ builder.Services.AddSwaggerGen(c =>
           }
         });
 
+    c.AddSignalRSwaggerGen();
 });
 
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
@@ -82,11 +83,6 @@ builder.Services
     {
         options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
     })
-    .AddCookie(options =>
-    {
-        options.LoginPath = "/login";
-        options.LogoutPath = "/logout";
-    })
     .AddJwtBearer(options =>
     {
         options.RequireHttpsMetadata = jwtBearerOptions.RequireHttpsMetadata;
@@ -100,7 +96,7 @@ builder.Services
                 // If the request is for our hub...
                 var path = context.HttpContext.Request.Path;
                 if (!string.IsNullOrEmpty(accessToken) &&
-                    (path.StartsWithSegments("/hubs/userGF")))
+                    (path.StartsWithSegments("/UserGF")))
                 {
                     // Read the token out of the query string
                     context.Token = accessToken;
