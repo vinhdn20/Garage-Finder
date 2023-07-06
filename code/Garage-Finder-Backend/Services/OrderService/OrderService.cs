@@ -5,6 +5,8 @@ using DataAccess.DTO.Orders.RequestDTO;
 using DataAccess.DTO.Orders.ResponseDTO;
 using GFData.Models.Entity;
 using Mailjet.Client.Resources;
+using Repositories.Implements.CarRepository;
+using Repositories.Implements.CategoryRepository;
 using Repositories.Implements.Garage;
 using Repositories.Implements.OrderRepository;
 using Repositories.Implements.UserRepository;
@@ -32,13 +34,15 @@ namespace Services.OrderService
         private readonly IEmailService _emailService;
         private readonly IUsersRepository _usersRepository;
         private readonly IGarageRepository _garageRepository;
+        private readonly IBrandRepository _brandRepository;
+        private readonly ICategoryRepository _categoryRepository;
         private readonly IMapper _mapper;
         #endregion
 
         public OrderService(IOrderRepository orderRepository, ICarRepository carRepository,
             ICategoryGarageRepository categoryGarageRepository, IPhoneVerifyService phoneVerifyService,
             IGuestOrderRepository guestOrderRepository, IEmailService emailService, IUsersRepository usersRepository,
-            IGarageRepository garageRepository, IMapper mapper)
+            IGarageRepository garageRepository,IBrandRepository brandRepository, IMapper mapper, ICategoryRepository categoryRepository)
         {
             _orderRepository = orderRepository;
             _carRepository = carRepository;
@@ -48,7 +52,9 @@ namespace Services.OrderService
             _emailService = emailService;
             _usersRepository = usersRepository;
             _garageRepository = garageRepository;
+            _brandRepository = brandRepository;
             _mapper = mapper;
+            _categoryRepository = categoryRepository;
         }
 
         public OrderDetailDTO GetOrderByGFID(int gfid, int userId)
@@ -69,6 +75,8 @@ namespace Services.OrderService
                 orderDetailDTO.FileOrders = orders.FileOrders.Select(x => x.FileLink).ToList();
                 orderDetailDTO.ImageOrders = orders.ImageOrders.Select(x => x.ImageLink).ToList();
                 orderDetailDTO.Name = user.Name;
+                var brand = _brandRepository.GetBrand().FirstOrDefault(x => x.BrandID == car.BrandID);
+                orderDetailDTO.Brand = brand.BrandName;
             }
             else
             {
@@ -84,10 +92,67 @@ namespace Services.OrderService
                 orderDetailDTO = _mapper.Map<GuestOrderDTO, OrderDetailDTO>(gorders);
                 orderDetailDTO.FileOrders = gorders.FileOrders.Select(x => x.FileLink).ToList();
                 orderDetailDTO.ImageOrders = gorders.ImageOrders.Select(x => x.ImageLink).ToList();
-                orderDetailDTO.Name = "update sau";
+                orderDetailDTO.Name = gorders.Name;
+                var brand = _brandRepository.GetBrand().FirstOrDefault(x => x.BrandID == gorders.BrandCarID);
+                orderDetailDTO.Brand = brand.BrandName;
             }
             return orderDetailDTO;
-            
+
+        }
+
+        public List<OrderDetailDTO> GetOrderByGarageId(int garageId, int userId)
+        {
+            var garagas = _garageRepository.GetGarageByUser(userId);
+            if(!garagas.Any(x => x.GarageID == garageId))
+            {
+                throw new Exception("Authorize exception");
+            }
+            var orders = _orderRepository.GetAllOrdersByGarageId(garageId);
+            var gorders = _guestOrderRepository.GetOrdersByGarageId(garageId);
+            List<OrderDetailDTO> list = new List<OrderDetailDTO>();
+            foreach (var ord in orders)
+            {
+                var o = _mapper.Map<OrderDetailDTO>(ord);
+                var car = _carRepository.GetCarById(ord.CarID);
+                var user = _usersRepository.GetUserByID(car.UserID);
+                o = _mapper.Map<OrdersDTO, OrderDetailDTO>(ord);
+                o = _mapper.Map(car, o);
+                o = _mapper.Map(user, o);
+                o.FileOrders = ord.FileOrders.Select(x => x.FileLink).ToList();
+                o.ImageOrders = ord.ImageOrders.Select(x => x.ImageLink).ToList();
+                o.Name = user.Name;
+                var brand = _brandRepository.GetBrand().FirstOrDefault(x => x.BrandID == car.BrandID);
+                o.Brand = brand.BrandName;
+
+                o.Category = new List<string>();
+                foreach (var detail in ord.OrderDetails)
+                {
+                    var categoryGarage = _categoryGarageRepository.GetById(detail.CategoryGarageID);
+                    var cate = _categoryRepository.GetCategory().Where(x => x.CategoryID == categoryGarage.CategoryID).FirstOrDefault();
+                    o.Category.Add(cate.CategoryName);
+                }
+
+                list.Add(o);
+            }
+
+            foreach (var order in gorders)
+            {
+                var o = _mapper.Map<GuestOrderDTO, OrderDetailDTO>(order);
+                o.FileOrders = order.FileOrders.Select(x => x.FileLink).ToList();
+                o.ImageOrders = order.ImageOrders.Select(x => x.ImageLink).ToList();
+                o.Name = order.Name;
+                var brand = _brandRepository.GetBrand().FirstOrDefault(x => x.BrandID == order.BrandCarID);
+                o.Brand = brand.BrandName;
+                o.Category = new List<string>();
+                foreach (var detail in order.GuestOrderDetails)
+                {
+                    var categoryGarage = _categoryGarageRepository.GetById(detail.CategoryGarageID);
+                    var cate = _categoryRepository.GetCategory().Where(x => x.CategoryID == categoryGarage.CategoryID).FirstOrDefault();
+                    o.Category.Add(cate.CategoryName);
+                }
+                list.Add(o);
+            }
+            return list;
         }
 
         public void AddOrderWithCar(AddOrderWithCarDTO addOrder)

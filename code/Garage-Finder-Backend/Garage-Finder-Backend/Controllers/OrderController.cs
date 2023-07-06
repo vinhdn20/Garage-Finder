@@ -122,47 +122,8 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
-                var orders= orderRepository.GetAllOrdersByGarageId(GarageId);
-                var gorders = guestOrderRepository.GetOrdersByGarageId(GarageId);
-                List<OrderDetailDTO> list = new List<OrderDetailDTO>();
-                foreach (var ord in orders)
-                {
-                    var o = mapper.Map<OrderDetailDTO>(ord);
-                    var car = carRepository.GetCarById(ord.CarID);
-                    var user = usersRepository.GetUserByID(car.UserID);
-                    o = mapper.Map<OrdersDTO, OrderDetailDTO>(ord);
-                    o = mapper.Map(car, o);
-                    o = mapper.Map(user, o);
-                    o.FileOrders = ord.FileOrders.Select(x => x.FileLink).ToList();
-                    o.ImageOrders = ord.ImageOrders.Select(x => x.ImageLink).ToList();
-                    o.Name = user.Name;
-                  
-                    o.Category = new List<string>();
-                    foreach (var detail in ord.OrderDetails)
-                    {
-                        var categoryGarage = categoryGarageRepository.GetById(detail.CategoryGarageID);
-                        var cate = categoryRepository.GetCategory().Where(x => x.CategoryID == categoryGarage.CategoryID).FirstOrDefault();
-                        o.Category.Add(cate.CategoryName);
-                    }
-
-                    list.Add(o);
-                }
-
-                foreach (var order in gorders)
-                {
-                    var o = mapper.Map<GuestOrderDTO, OrderDetailDTO>(order);
-                    o.FileOrders = order.FileOrders.Select(x => x.FileLink).ToList();
-                    o.ImageOrders = order.ImageOrders.Select(x => x.ImageLink).ToList();
-                    o.Name = order.Name;
-                    o.Category = new List<string>();
-                    foreach (var detail in order.GuestOrderDetails)
-                    {
-                        var categoryGarage = categoryGarageRepository.GetById(detail.CategoryGarageID);
-                        var cate= categoryRepository.GetCategory().Where(x => x.CategoryID == categoryGarage.CategoryID).FirstOrDefault();
-                        o.Category.Add(cate.CategoryName);
-                    }
-                    list.Add(o);
-                }
+                var user = User.GetTokenInfor();
+                var list = orderService.GetOrderByGarageId(GarageId, user.UserID);
                 return Ok(list);
             }
             catch (Exception e)

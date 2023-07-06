@@ -20,7 +20,7 @@ namespace DataAccess.DTO.Orders.ResponseDTO
         public string? Content { get; set; }
         public string PhoneNumber { get; set; }
         public string? Email { get; set; }
-        public int? BrandID { get; set; }
+        public string? Brand { get; set; }
         public string? TypeCar { get; set; }
         public string? LicensePlates { get; set; }
         public string? Color { get; set; }
