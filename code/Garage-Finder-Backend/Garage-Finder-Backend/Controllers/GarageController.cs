@@ -323,13 +323,18 @@ namespace Garage_Finder_Backend.Controllers
         #region Image
         [HttpPost("addImage")]
         [Authorize(Roles = Constants.ROLE_USER)]
-        public IActionResult AddImage([FromBody] List<ImageGarageDTO> imagesDTO)
+        public IActionResult AddImage([FromBody] List<AddImageGarageDTO> imagesDTO)
         {
             try
             {
                 foreach (var image in imagesDTO)
                 {
-                    imageGarageRepository.AddImageGarage(image);
+                    var imageDTO = new ImageGarageDTO() 
+                    {
+                        GarageID= image.GarageID,
+                        ImageLink = image.ImageLink,
+                    };
+                    imageGarageRepository.AddImageGarage(imageDTO);
                 }
                 return Ok();
             }
