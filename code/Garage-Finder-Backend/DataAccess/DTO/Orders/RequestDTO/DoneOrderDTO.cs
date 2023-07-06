@@ -10,7 +10,7 @@ namespace DataAccess.DTO.Orders.RequestDTO
     {
         public int GFOrderId { get; set; }
         public string Content { get; set; }
-        public List<string> ImageLinks { get; set; }
-        public List<string> FileLinks { get; set; }
+        public List<string> ImageLinks { get; set; } = new List<string>();
+        public List<string> FileLinks { get; set; } = new List<string>();
     }
 }

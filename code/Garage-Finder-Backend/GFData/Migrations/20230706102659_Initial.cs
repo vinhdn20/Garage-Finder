@@ -204,7 +204,7 @@ namespace GFData.Migrations
                     StaffId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    EmployeeId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    EmployeeId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Gender = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PhoneNumber = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     LinkImage = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -797,11 +797,10 @@ namespace GFData.Migrations
                 column: "GarageID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Staff_PhoneNumber_EmailAddress_EmployeeId",
+                name: "IX_Staff_PhoneNumber_EmailAddress",
                 table: "Staff",
-                columns: new[] { "PhoneNumber", "EmailAddress", "EmployeeId" },
-                unique: true,
-                filter: "[EmployeeId] IS NOT NULL");
+                columns: new[] { "PhoneNumber", "EmailAddress" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_StaffRefreshToken_StaffId",

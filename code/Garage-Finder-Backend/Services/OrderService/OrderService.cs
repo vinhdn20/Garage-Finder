@@ -36,13 +36,15 @@ namespace Services.OrderService
         private readonly IGarageRepository _garageRepository;
         private readonly IBrandRepository _brandRepository;
         private readonly ICategoryRepository _categoryRepository;
+        private readonly IStaffRepository _staffRepository;
         private readonly IMapper _mapper;
         #endregion
 
         public OrderService(IOrderRepository orderRepository, ICarRepository carRepository,
             ICategoryGarageRepository categoryGarageRepository, IPhoneVerifyService phoneVerifyService,
             IGuestOrderRepository guestOrderRepository, IEmailService emailService, IUsersRepository usersRepository,
-            IGarageRepository garageRepository,IBrandRepository brandRepository, IMapper mapper, ICategoryRepository categoryRepository)
+            IGarageRepository garageRepository,IBrandRepository brandRepository, IMapper mapper,
+            ICategoryRepository categoryRepository, IStaffRepository staffRepository)
         {
             _orderRepository = orderRepository;
             _carRepository = carRepository;
@@ -55,6 +57,7 @@ namespace Services.OrderService
             _brandRepository = brandRepository;
             _mapper = mapper;
             _categoryRepository = categoryRepository;
+            _staffRepository = staffRepository;
         }
 
         public OrderDetailDTO GetOrderByGFID(int gfid, int userId)
@@ -64,7 +67,8 @@ namespace Services.OrderService
             if(orders != null)
             {
                 var car = _carRepository.GetCarById(orders.CarID);
-                if(!ValidationGarageOwner(orders, userId) && !ValidationUserOwner(userId, orders))
+                if(!ValidationGarageOwner(orders, userId) && !ValidationUserOwner(userId, orders)
+                    && !ValidationStaff(userId, orders))
                 {
                     throw new Exception("Authorize exception!");
                 }
@@ -85,7 +89,7 @@ namespace Services.OrderService
                 {
                     throw new Exception($"Can not found the order with id {gfid}");
                 }
-                if (!ValidationGarageOwner(gorders, userId))
+                if (!ValidationGarageOwner(gorders, userId) && !ValidationStaff(userId, orders))
                 {
                     throw new Exception("Authorize exception!");
                 }
@@ -102,8 +106,9 @@ namespace Services.OrderService
 
         public List<OrderDetailDTO> GetOrderByGarageId(int garageId, int userId)
         {
-            var garagas = _garageRepository.GetGarageByUser(userId);
-            if(!garagas.Any(x => x.GarageID == garageId))
+            var garagas = _garageRepository.GetGarageByUser(userId); 
+            var staff = _staffRepository.GetByGarageId(garageId);
+            if (!garagas.Any(x => x.GarageID == garageId) && !staff.Any(x => x.StaffId == userId))
             {
                 throw new Exception("Authorize exception");
             }
@@ -503,7 +508,7 @@ namespace Services.OrderService
 
         private bool CheckGarageCanAcceptOrReject(int userId, OrdersDTO orders)
         {
-            if (!ValidationGarageOwner(orders, userId))
+            if (!ValidationGarageOwner(orders, userId) && !ValidationStaff(userId, orders))
             {
                 return false;
             }
@@ -517,7 +522,7 @@ namespace Services.OrderService
 
         private bool CheckGarageCanCancelOrDone(int userId, OrdersDTO orders)
         {
-            if (!ValidationGarageOwner(orders, userId))
+            if (!ValidationGarageOwner(orders, userId) && !ValidationStaff(userId, orders))
             {
                 return false;
             }
@@ -549,6 +554,15 @@ namespace Services.OrderService
             return true;
         }
 
+        private bool ValidationStaff(int userId, OrdersDTO orders)
+        {
+            var staff =_staffRepository.GetByGarageId(orders.GarageID);
+            if(!staff.Any(x => x.StaffId == userId))
+            {
+                return false;
+            }
+            return true;
+        }
         #endregion
 
         #region GuestOrder
@@ -607,7 +621,7 @@ namespace Services.OrderService
 
         private bool CheckGarageCanAcceptOrReject(int userId, GuestOrderDTO orders)
         {
-            if (!ValidationGarageOwner(orders, userId))
+            if (!ValidationGarageOwner(orders, userId) && !ValidationStaff(userId, orders))
             {
                 return false;
             }
@@ -621,7 +635,7 @@ namespace Services.OrderService
 
         private bool CheckGarageCanCancelOrDone(int userId, GuestOrderDTO orders)
         {
-            if (!ValidationGarageOwner(orders, userId))
+            if (!ValidationGarageOwner(orders, userId) && !ValidationStaff(userId, orders))
             {
                 return false;
             }
@@ -637,6 +651,16 @@ namespace Services.OrderService
         {
             var garages = _garageRepository.GetGarageByUser(userId);
             if (!garages.Any(x => x.GarageID == orders.GarageID))
+            {
+                return false;
+            }
+            return true;
+        }
+
+        private bool ValidationStaff(int userId, GuestOrderDTO orders)
+        {
+            var staff = _staffRepository.GetByGarageId(orders.GarageID);
+            if (!staff.Any(x => x.StaffId == userId))
             {
                 return false;
             }

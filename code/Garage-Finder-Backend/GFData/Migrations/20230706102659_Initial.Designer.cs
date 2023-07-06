@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GFData.Migrations
 {
     [DbContext(typeof(GFDbContext))]
-    [Migration("20230706080409_Initial")]
+    [Migration("20230706102659_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -686,7 +686,7 @@ namespace GFData.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("EmployeeId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("GarageID")
                         .HasColumnType("int");
@@ -719,9 +719,8 @@ namespace GFData.Migrations
 
                     b.HasIndex("GarageID");
 
-                    b.HasIndex("PhoneNumber", "EmailAddress", "EmployeeId")
-                        .IsUnique()
-                        .HasFilter("[EmployeeId] IS NOT NULL");
+                    b.HasIndex("PhoneNumber", "EmailAddress")
+                        .IsUnique();
 
                     b.ToTable("Staff");
                 });
