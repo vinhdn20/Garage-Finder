@@ -684,7 +684,7 @@ namespace GFData.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("EmployeeId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("GarageID")
                         .HasColumnType("int");
@@ -717,9 +717,8 @@ namespace GFData.Migrations
 
                     b.HasIndex("GarageID");
 
-                    b.HasIndex("PhoneNumber", "EmailAddress", "EmployeeId")
-                        .IsUnique()
-                        .HasFilter("[EmployeeId] IS NOT NULL");
+                    b.HasIndex("PhoneNumber", "EmailAddress")
+                        .IsUnique();
 
                     b.ToTable("Staff");
                 });
