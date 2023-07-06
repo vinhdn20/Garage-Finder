@@ -258,16 +258,17 @@ namespace Garage_Finder_Backend.Controllers
             }
         }
 
-        [HttpPost("removeBrand")]
+        [HttpDelete("removeBrand/{id}")]
         [Authorize(Roles = Constants.ROLE_USER)]
-        public IActionResult RemoveBrand([FromBody] List<int> garageBrandIds)
+        public IActionResult RemoveBrand(int id)
         {
             try
             {
-                foreach (var id in garageBrandIds)
-                {
-                    garageBrandRepository.Delete(id);
-                }
+                //foreach (var id in garageBrandIds)
+                //{
+                //    garageBrandRepository.Delete(id);
+                //}
+                garageBrandRepository.Delete(id);
                 return Ok();
             }
             catch (Exception ex)
@@ -302,16 +303,13 @@ namespace Garage_Finder_Backend.Controllers
             }
         }
 
-        [HttpPost("removeCategory")]
+        [HttpDelete("removeCategory/{id}")]
         [Authorize(Roles = Constants.ROLE_USER)]
-        public IActionResult RemoveCategory([FromBody] List<int> ids)
+        public IActionResult RemoveCategory(int id)
         {
             try
             {
-                foreach (var id in ids)
-                {
-                    categoryGarageRepository.Remove(id);
-                }
+                categoryGarageRepository.Remove(id);
                 return Ok();
             }
             catch (Exception ex)
@@ -341,16 +339,17 @@ namespace Garage_Finder_Backend.Controllers
             }
         }
 
-        [HttpPost("removeImage")]
+        [HttpDelete("removeImage/{id}")]
         [Authorize(Roles = Constants.ROLE_USER)]
-        public IActionResult RemoveImage([FromBody] List<int> ids)
+        public IActionResult RemoveImage(int id)
         {
             try
             {
-                foreach (var id in ids)
-                {
-                    imageGarageRepository.RemoveImageGarage(id);
-                }
+                //foreach (var id in ids)
+                //{
+                //    imageGarageRepository.RemoveImageGarage(id);
+                //}
+                imageGarageRepository.RemoveImageGarage(id);
                 return Ok();
             }
             catch (Exception ex)

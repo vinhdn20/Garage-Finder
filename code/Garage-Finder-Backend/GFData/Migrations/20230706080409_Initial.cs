@@ -142,6 +142,42 @@ namespace GFData.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "GuestOrder",
+                columns: table => new
+                {
+                    GuestOrderID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    GFOrderID = table.Column<int>(type: "int", nullable: false),
+                    GarageID = table.Column<int>(type: "int", nullable: false),
+                    TimeCreate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TimeUpdate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TimeAppointment = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BrandCarID = table.Column<int>(type: "int", nullable: true),
+                    TypeCar = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LicensePlates = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GuestOrder", x => x.GuestOrderID);
+                    table.ForeignKey(
+                        name: "FK_GuestOrder_Brand_BrandCarID",
+                        column: x => x.BrandCarID,
+                        principalTable: "Brand",
+                        principalColumn: "BrandID");
+                    table.ForeignKey(
+                        name: "FK_GuestOrder_Garage_GarageID",
+                        column: x => x.GarageID,
+                        principalTable: "Garage",
+                        principalColumn: "GarageID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ImageGarage",
                 columns: table => new
                 {
@@ -220,48 +256,6 @@ namespace GFData.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "GuestOrder",
-                columns: table => new
-                {
-                    GuestOrderID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    GFOrderID = table.Column<int>(type: "int", nullable: false),
-                    GarageID = table.Column<int>(type: "int", nullable: false),
-                    TimeCreate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    TimeUpdate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    TimeAppointment = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Content = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    BrandCarID = table.Column<int>(type: "int", nullable: true),
-                    TypeCar = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LicensePlates = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CategoryGarageID = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_GuestOrder", x => x.GuestOrderID);
-                    table.ForeignKey(
-                        name: "FK_GuestOrder_Brand_BrandCarID",
-                        column: x => x.BrandCarID,
-                        principalTable: "Brand",
-                        principalColumn: "BrandID");
-                    table.ForeignKey(
-                        name: "FK_GuestOrder_CategoryGarage_CategoryGarageID",
-                        column: x => x.CategoryGarageID,
-                        principalTable: "CategoryGarage",
-                        principalColumn: "CategoryGarageID");
-                    table.ForeignKey(
-                        name: "FK_GuestOrder_Garage_GarageID",
-                        column: x => x.GarageID,
-                        principalTable: "Garage",
-                        principalColumn: "GarageID",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Service",
                 columns: table => new
                 {
@@ -280,6 +274,71 @@ namespace GFData.Migrations
                         column: x => x.CategoryGarageID,
                         principalTable: "CategoryGarage",
                         principalColumn: "CategoryGarageID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "FileGuestOrders",
+                columns: table => new
+                {
+                    FileId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    GuestOrderID = table.Column<int>(type: "int", nullable: false),
+                    FileLink = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FileGuestOrders", x => x.FileId);
+                    table.ForeignKey(
+                        name: "FK_FileGuestOrders_GuestOrder_GuestOrderID",
+                        column: x => x.GuestOrderID,
+                        principalTable: "GuestOrder",
+                        principalColumn: "GuestOrderID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "GuestOrderDetail",
+                columns: table => new
+                {
+                    GuestOrderDetailId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    GuestOrderID = table.Column<int>(type: "int", nullable: false),
+                    CategoryGarageID = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GuestOrderDetail", x => x.GuestOrderDetailId);
+                    table.ForeignKey(
+                        name: "FK_GuestOrderDetail_CategoryGarage_CategoryGarageID",
+                        column: x => x.CategoryGarageID,
+                        principalTable: "CategoryGarage",
+                        principalColumn: "CategoryGarageID");
+                    table.ForeignKey(
+                        name: "FK_GuestOrderDetail_GuestOrder_GuestOrderID",
+                        column: x => x.GuestOrderID,
+                        principalTable: "GuestOrder",
+                        principalColumn: "GuestOrderID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ImageGuestOrders",
+                columns: table => new
+                {
+                    ImageID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    GuestOrderID = table.Column<int>(type: "int", nullable: false),
+                    ImageLink = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ImageGuestOrders", x => x.ImageID);
+                    table.ForeignKey(
+                        name: "FK_ImageGuestOrders_GuestOrder_GuestOrderID",
+                        column: x => x.GuestOrderID,
+                        principalTable: "GuestOrder",
+                        principalColumn: "GuestOrderID",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -455,71 +514,6 @@ namespace GFData.Migrations
                         column: x => x.UserID,
                         principalTable: "User",
                         principalColumn: "UserID",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "FileGuestOrders",
-                columns: table => new
-                {
-                    FileId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    GuestOrderID = table.Column<int>(type: "int", nullable: false),
-                    FileLink = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_FileGuestOrders", x => x.FileId);
-                    table.ForeignKey(
-                        name: "FK_FileGuestOrders_GuestOrder_GuestOrderID",
-                        column: x => x.GuestOrderID,
-                        principalTable: "GuestOrder",
-                        principalColumn: "GuestOrderID",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "GuestOrderDetail",
-                columns: table => new
-                {
-                    GuestOrderDetailId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    GuestOrderID = table.Column<int>(type: "int", nullable: false),
-                    CategoryGarageID = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_GuestOrderDetail", x => x.GuestOrderDetailId);
-                    table.ForeignKey(
-                        name: "FK_GuestOrderDetail_CategoryGarage_CategoryGarageID",
-                        column: x => x.CategoryGarageID,
-                        principalTable: "CategoryGarage",
-                        principalColumn: "CategoryGarageID");
-                    table.ForeignKey(
-                        name: "FK_GuestOrderDetail_GuestOrder_GuestOrderID",
-                        column: x => x.GuestOrderID,
-                        principalTable: "GuestOrder",
-                        principalColumn: "GuestOrderID",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ImageGuestOrders",
-                columns: table => new
-                {
-                    ImageID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    GuestOrderID = table.Column<int>(type: "int", nullable: false),
-                    ImageLink = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ImageGuestOrders", x => x.ImageID);
-                    table.ForeignKey(
-                        name: "FK_ImageGuestOrders_GuestOrder_GuestOrderID",
-                        column: x => x.GuestOrderID,
-                        principalTable: "GuestOrder",
-                        principalColumn: "GuestOrderID",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -711,11 +705,6 @@ namespace GFData.Migrations
                 column: "BrandCarID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_GuestOrder_CategoryGarageID",
-                table: "GuestOrder",
-                column: "CategoryGarageID");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_GuestOrder_GarageID",
                 table: "GuestOrder",
                 column: "GarageID");
@@ -892,10 +881,10 @@ namespace GFData.Migrations
                 name: "Orders");
 
             migrationBuilder.DropTable(
-                name: "Staff");
+                name: "CategoryGarage");
 
             migrationBuilder.DropTable(
-                name: "CategoryGarage");
+                name: "Staff");
 
             migrationBuilder.DropTable(
                 name: "Car");
