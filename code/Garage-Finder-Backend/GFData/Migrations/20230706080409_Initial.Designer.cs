@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GFData.Migrations
 {
     [DbContext(typeof(GFDbContext))]
-    [Migration("20230704140411_Initial")]
+    [Migration("20230706080409_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -328,9 +328,6 @@ namespace GFData.Migrations
                     b.Property<int?>("BrandCarID")
                         .HasColumnType("int");
 
-                    b.Property<int?>("CategoryGarageID")
-                        .HasColumnType("int");
-
                     b.Property<string>("Content")
                         .HasColumnType("nvarchar(max)");
 
@@ -371,8 +368,6 @@ namespace GFData.Migrations
                     b.HasKey("GuestOrderID");
 
                     b.HasIndex("BrandCarID");
-
-                    b.HasIndex("CategoryGarageID");
 
                     b.HasIndex("GFOrderID")
                         .IsUnique();
@@ -967,10 +962,6 @@ namespace GFData.Migrations
                         .WithMany("GuestOrders")
                         .HasForeignKey("BrandCarID");
 
-                    b.HasOne("GFData.Models.Entity.CategoryGarage", "CategoryGarage")
-                        .WithMany()
-                        .HasForeignKey("CategoryGarageID");
-
                     b.HasOne("GFData.Models.Entity.Garage", "Garage")
                         .WithMany()
                         .HasForeignKey("GarageID")
@@ -978,8 +969,6 @@ namespace GFData.Migrations
                         .IsRequired();
 
                     b.Navigation("Brand");
-
-                    b.Navigation("CategoryGarage");
 
                     b.Navigation("Garage");
                 });

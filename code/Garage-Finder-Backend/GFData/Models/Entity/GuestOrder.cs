@@ -30,7 +30,6 @@ namespace GFData.Models.Entity
         public string? TypeCar { get; set; }
         public string? LicensePlates { get; set; }
         public string? Name { get; set; }
-        public virtual CategoryGarage? CategoryGarage { get; set; }
 
         public Garage Garage { get; set; }
         public Brand Brand { get; set; }
