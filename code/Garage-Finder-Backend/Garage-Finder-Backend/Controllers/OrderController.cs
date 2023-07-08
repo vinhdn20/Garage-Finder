@@ -19,30 +19,11 @@ namespace Garage_Finder_Backend.Controllers
 {
     public class OrderController : ControllerBase
     {
-        private readonly IOrderRepository orderRepository;
-        private readonly IServiceRepository serviceRepository;
         private readonly IOrderService orderService;
-        private readonly IGuestOrderRepository guestOrderRepository;
-        private readonly ICarRepository carRepository;
-        private readonly IUsersRepository usersRepository;
-        private readonly ICategoryGarageRepository categoryGarageRepository;
-        private readonly ICategoryRepository categoryRepository;
-        private readonly IMapper mapper;
 
-        public OrderController(IOrderRepository orderRepository, IServiceRepository serviceRepository,
-            IOrderService orderService, IGuestOrderRepository guestOrderRepository, IMapper mapper,
-            ICarRepository carRepository, IUsersRepository usersRepository, 
-            ICategoryGarageRepository categoryGarageRepository, ICategoryRepository categoryRepository)
+        public OrderController(IOrderService orderService)
         {
-            this.orderRepository = orderRepository;
-            this.serviceRepository = serviceRepository;
             this.orderService = orderService;
-            this.guestOrderRepository = guestOrderRepository;
-            this.carRepository = carRepository;
-            this.usersRepository = usersRepository;
-            this.categoryGarageRepository = categoryGarageRepository;
-            this.categoryRepository = categoryRepository;
-            this.mapper = mapper;
         }
 
         //[HttpGet("GetAllOrder")]
@@ -66,30 +47,7 @@ namespace Garage_Finder_Backend.Controllers
             try
             {
                 var user =User.GetTokenInfor();
-                var orders = orderRepository.GetAllOrdersByUserId(user.UserID);
-                List<OrderDetailDTO> list = new List<OrderDetailDTO>();
-                foreach (var ord in orders)
-                {
-                    var o = mapper.Map<OrderDetailDTO>(ord);
-                    var car = carRepository.GetCarById(ord.CarID);
-                    var userDB = usersRepository.GetUserByID(car.UserID);
-                    o = mapper.Map<OrdersDTO, OrderDetailDTO>(ord);
-                    o = mapper.Map(car, o);
-                    o = mapper.Map(userDB, o);
-                    o.FileOrders = ord.FileOrders.Select(x => x.FileLink).ToList();
-                    o.ImageOrders = ord.ImageOrders.Select(x => x.ImageLink).ToList();
-                    o.Name = userDB.Name;
-
-                    o.Category = new List<string>();
-                    foreach (var detail in ord.OrderDetails)
-                    {
-                        var categoryGarage = categoryGarageRepository.GetById(detail.CategoryGarageID);
-                        var cate = categoryRepository.GetCategory().Where(x => x.CategoryID == categoryGarage.CategoryID).FirstOrDefault();
-                        o.Category.Add(cate.CategoryName);
-                    }
-
-                    list.Add(o);
-                }
+                var list = orderService.GetByUserId(user.UserID);
                 return Ok(list);
             }
             catch (Exception e)

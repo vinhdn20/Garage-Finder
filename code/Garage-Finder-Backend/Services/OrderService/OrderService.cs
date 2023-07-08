@@ -60,6 +60,37 @@ namespace Services.OrderService
             _staffRepository = staffRepository;
         }
 
+        public List<OrderDetailDTO> GetByUserId(int userId)
+        {
+            var orders = _orderRepository.GetAllOrdersByUserId(userId);
+            List<OrderDetailDTO> list = new List<OrderDetailDTO>();
+            foreach (var ord in orders)
+            {
+                var o = _mapper.Map<OrderDetailDTO>(ord);
+                var car = _carRepository.GetCarById(ord.CarID);
+                var userDB = _usersRepository.GetUserByID(car.UserID);
+                o = _mapper.Map(car, o); 
+                var brand = _brandRepository.GetBrand().FirstOrDefault(x => x.BrandID == car.BrandID);
+                o.Brand = brand.BrandName;
+
+                o = _mapper.Map(userDB, o);
+                o.FileOrders = ord.FileOrders.Select(x => x.FileLink).ToList();
+                o.ImageOrders = ord.ImageOrders.Select(x => x.ImageLink).ToList();
+                o.Name = userDB.Name;
+
+                o.Category = new List<string>();
+                foreach (var detail in ord.OrderDetails)
+                {
+                    var categoryGarage = _categoryGarageRepository.GetById(detail.CategoryGarageID);
+                    var cate = _categoryRepository.GetCategory().Where(x => x.CategoryID == categoryGarage.CategoryID).FirstOrDefault();
+                    o.Category.Add(cate.CategoryName);
+                }
+
+                list.Add(o);
+            }
+            return list;
+        }
+
         public OrderDetailDTO GetOrderByGFID(int gfid, int userId)
         {
             OrderDetailDTO orderDetailDTO = null;

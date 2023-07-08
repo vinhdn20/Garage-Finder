@@ -13,6 +13,7 @@ namespace Services.OrderService
     {
         OrderDetailDTO GetOrderByGFID(int gfid, int userId);
         List<OrderDetailDTO> GetOrderByGarageId(int garageId, int userId);
+        List<OrderDetailDTO> GetByUserId(int userId);
         void AddOrderWithCar(AddOrderWithCarDTO addOrder);
         void AddOrderFromGuest(AddOrderFromGuestDTO addOrder);
         void AddOrderWithoutCar(AddOrderWithoutCarDTO addOrder, int userID);
