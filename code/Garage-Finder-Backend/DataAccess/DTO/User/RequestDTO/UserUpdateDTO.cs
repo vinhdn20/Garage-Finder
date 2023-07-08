@@ -8,5 +8,6 @@
         public int? ProvinceId { get; set; }
         public int? DistrictId { get; set; }
         public string AddressDetail { get; set; }
+        public string? LinkImage { get; set; }
     }
 }

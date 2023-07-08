@@ -11,6 +11,7 @@ using DataAccess.DTO.Services.RequestSerivesDTO;
 using DataAccess.DTO.Staff;
 using DataAccess.DTO.Token;
 using DataAccess.DTO.User;
+using DataAccess.DTO.User.RequestDTO;
 using DataAccess.DTO.User.ResponeModels;
 using GFData.Models.Entity;
 
@@ -53,6 +54,7 @@ namespace Garage_Finder_Backend
             CreateMap<UsersDTO, OrderDetailDTO>()
                 .ForMember(x => x.Email, m => m.MapFrom(a => a.EmailAddress))
                 .ForMember(x => x.Status, m => m.Ignore());
+            CreateMap<UserUpdateDTO, UsersDTO>();
 
             CreateMap<RefreshTokenDTO, RefreshToken>();
             CreateMap<RefreshToken, RefreshTokenDTO>();

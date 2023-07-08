@@ -56,12 +56,7 @@ namespace Services.UserService
             try
             {
                 var userUpdate = _userRepository.GetUserByID(userID);
-                userUpdate.Name = usersDTO.Name;
-                userUpdate.PhoneNumber = usersDTO.PhoneNumber;
-                userUpdate.EmailAddress = usersDTO.EmailAddress;
-                userUpdate.DistrictId = usersDTO.DistrictId;
-                userUpdate.ProvinceId = usersDTO.ProvinceId;
-                userUpdate.AddressDetail = usersDTO.AddressDetail;
+                userUpdate = _mapper.Map(usersDTO, userUpdate);
                 _userRepository.Update(userUpdate);
             }
             catch (Exception ex)
