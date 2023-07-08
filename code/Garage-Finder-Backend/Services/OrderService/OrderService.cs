@@ -4,22 +4,11 @@ using DataAccess.DTO.Orders;
 using DataAccess.DTO.Orders.RequestDTO;
 using DataAccess.DTO.Orders.ResponseDTO;
 using GFData.Models.Entity;
-using Mailjet.Client.Resources;
-using Repositories.Implements.CarRepository;
-using Repositories.Implements.CategoryRepository;
-using Repositories.Implements.Garage;
-using Repositories.Implements.OrderRepository;
-using Repositories.Implements.UserRepository;
+using Microsoft.AspNetCore.SignalR;
 using Repositories.Interfaces;
 using Services.EmailService;
 using Services.PhoneVerifyService;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Mail;
-using System.Runtime.ConstrainedExecution;
-using System.Text;
-using System.Threading.Tasks;
+using Services.WebSocket;
 
 namespace Services.OrderService
 {

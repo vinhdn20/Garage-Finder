@@ -7,16 +7,16 @@ using System.Threading.Tasks;
 
 namespace GFData.Models.Entity
 {
-    public class Notification
+    public class StaffNotification
     {
-        public int NotificationID { get; set; }
+        public int StaffNotificationID { get; set; }
         public DateTime DateTime { get; set; }
         public string Content { get; set; }
 
-        [ForeignKey("User")]
-        public int UserID { get; set; }
+        [ForeignKey("Staff")]
+        public int StaffId { get; set; }
         public bool IsRead { get; set; }
 
-        public Users User { get; set; }
+        public Staff Staff { get; set; }
     }
 }

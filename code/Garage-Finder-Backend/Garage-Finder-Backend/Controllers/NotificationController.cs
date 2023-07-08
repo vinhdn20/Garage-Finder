@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Validations;
-using Services.AuthService;
+using Services.WebSocket;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.WebSockets;
 using System.Security.Claims;
@@ -16,12 +16,10 @@ namespace Garage_Finder_Backend.Controllers
     [ApiController]
     public class WebSocketController : ControllerBase
     {
-        private readonly JwtBearerOptions _jwtBearerOptions;
         private readonly IHubContext<UserGFHub> _hubContext;
 
-        public WebSocketController(JwtBearerOptions jwtBearerOptions, IHubContext<UserGFHub> hubContext)
+        public WebSocketController(IHubContext<UserGFHub> hubContext)
         {
-            _jwtBearerOptions = jwtBearerOptions;
             _hubContext = hubContext;
         }
 

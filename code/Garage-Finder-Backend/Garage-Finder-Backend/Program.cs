@@ -8,7 +8,7 @@ using Twilio;
 using Services.PhoneVerifyService;
 using Microsoft.OpenApi.Models;
 using Services;
-using Services.AuthService;
+using Services.WebSocket;
 
 var builder = WebApplication.CreateBuilder(args);
 

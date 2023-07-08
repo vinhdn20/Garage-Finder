@@ -5,6 +5,7 @@ using Repositories.Implements.CarRepository;
 using Repositories.Implements.CategoryRepository;
 using Repositories.Implements.FeedbackRepository;
 using Repositories.Implements.Garage;
+using Repositories.Implements.NotificationRepository;
 using Repositories.Implements.OrderRepository;
 using Repositories.Implements.ServiceRepository;
 using Repositories.Implements.StaffRepository;
@@ -41,6 +42,7 @@ namespace Repositories
             services.AddScoped<IGuestOrderRepository, GuestOrderRepository>();
             services.AddScoped<IStaffRepository, StaffRepository>();
             services.AddScoped<IStaffRefreshTokenRepository, StaffRefreshTokenRepository>();
+            services.AddScoped<INotifcationRepository, NotifcationRepository>();
         }
     }
 }
