@@ -20,6 +20,7 @@ namespace GFData.Models.Entity
         public DateTime? TimeAppointment { get; set; }
         public string? Status { get; set; }
         public string? Content { get; set; }
+        public string PhoneNumber { get; set; }
 
         public Car Car { get; set; }
         public Garage Garage { get; set; }
