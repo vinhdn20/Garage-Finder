@@ -56,7 +56,7 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpPost("update")]
-        [Authorize(Roles = Constants.ROLE_USER)]
+        [Authorize(Roles = $"{Constants.ROLE_USER}, {Constants.ROLE_STAFF}")]
         public IActionResult UpdateStaff(UpdateStaffDTO staffDTO)
         {
             try

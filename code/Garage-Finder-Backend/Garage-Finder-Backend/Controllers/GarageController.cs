@@ -165,7 +165,7 @@ namespace Garage_Finder_Backend.Controllers
 
             if (!string.IsNullOrEmpty(searchGarage.keyword))
             {
-                garages = garages.Where(g => g.GarageName.Contains(searchGarage.keyword)).ToList();
+                garages = garages.Where(g => g.GarageName.ToLower().Contains(searchGarage.keyword.ToLower())).ToList();
             }
 
             if (searchGarage.provinceID is not null)
