@@ -1,12 +1,15 @@
 ﻿using AutoMapper;
+using DataAccess.DAO;
 using DataAccess.DTO.Car;
 using DataAccess.DTO.Orders;
 using DataAccess.DTO.Orders.RequestDTO;
 using DataAccess.DTO.Orders.ResponseDTO;
 using GFData.Models.Entity;
+using Mailjet.Client.Resources;
 using Microsoft.AspNetCore.SignalR;
 using Repositories.Interfaces;
 using Services.EmailService;
+using Services.NotificationService;
 using Services.PhoneVerifyService;
 using Services.WebSocket;
 
@@ -26,6 +29,7 @@ namespace Services.OrderService
         private readonly IBrandRepository _brandRepository;
         private readonly ICategoryRepository _categoryRepository;
         private readonly IStaffRepository _staffRepository;
+        private readonly INotificationService _notificationService;
         private readonly IMapper _mapper;
         #endregion
 
@@ -33,7 +37,8 @@ namespace Services.OrderService
             ICategoryGarageRepository categoryGarageRepository, IPhoneVerifyService phoneVerifyService,
             IGuestOrderRepository guestOrderRepository, IEmailService emailService, IUsersRepository usersRepository,
             IGarageRepository garageRepository,IBrandRepository brandRepository, IMapper mapper,
-            ICategoryRepository categoryRepository, IStaffRepository staffRepository)
+            ICategoryRepository categoryRepository, IStaffRepository staffRepository,
+            INotificationService notificationService)
         {
             _orderRepository = orderRepository;
             _carRepository = carRepository;
@@ -47,6 +52,7 @@ namespace Services.OrderService
             _mapper = mapper;
             _categoryRepository = categoryRepository;
             _staffRepository = staffRepository;
+            _notificationService = notificationService;
         }
 
         public List<OrderDetailDTO> GetByUserId(int userId)
@@ -186,11 +192,11 @@ namespace Services.OrderService
             {
                 throw new Exception("Phone number is not valid");
             }
-            // Todo: validate
-            if (!_phoneVerifyService.VerifyPhoneNumber(addOrder.VerificationCode, addOrder.PhoneNumber).Result)
-            {
-                throw new Exception("Verification code not correct");
-            }
+
+            //if (!_phoneVerifyService.VerifyPhoneNumber(addOrder.VerificationCode, addOrder.PhoneNumber).Result)
+            //{
+            //    throw new Exception("Verification code not correct");
+            //}
             var car = _carRepository.GetCarById(addOrder.carId);
             if(car == null)
             {
@@ -222,6 +228,8 @@ namespace Services.OrderService
             var user = _usersRepository.GetUserByID(car.UserID);
             _emailService.SendMailAsync(user.EmailAddress, user.Name, "Your order create success!",
                 $"<h3>Dear {user.Name}, Your order create success!</h3>");
+
+            _notificationService.SendNotificationToStaff(ordersDTO, user.UserID);
         }
 
         public void AddOrderFromGuest(AddOrderFromGuestDTO addOrder)
@@ -268,6 +276,7 @@ namespace Services.OrderService
             //Todo: gửi vào email
             _emailService.SendMailAsync(addOrder.Email, addOrder.Name, "Your order create success!",
                 $"<h3>Dear {addOrder.Name}, Your order create success!</h3>");
+            _notificationService.SendNotificationToStaff(guestOrder);
         }
 
         public void AddOrderWithoutCar(AddOrderWithoutCarDTO addOrder, int userID)
@@ -315,6 +324,7 @@ namespace Services.OrderService
             var user = _usersRepository.GetUserByID(car.UserID);
             _emailService.SendMailAsync(user.EmailAddress, user.Name, "Your order create success!",
                 $"<h3>Dear {user.Name}, Your order create success!</h3>");
+            _notificationService.SendNotificationToStaff(ordersDTO, user.UserID);
         }
         #region Order
         public void GarageAcceptOrder(int GFId, int userId)
@@ -330,6 +340,7 @@ namespace Services.OrderService
                 order.Status = Constants.STATUS_ORDER_CONFIRMED;
                 order.TimeUpdate = DateTime.UtcNow;
                 _orderRepository.Update(order);
+                _notificationService.SendNotificatioToUser(order, userId);
             }
             else
             {
@@ -345,6 +356,8 @@ namespace Services.OrderService
                 gorder.Status = Constants.STATUS_ORDER_CONFIRMED;
                 gorder.TimeUpdate = DateTime.UtcNow;
                 _guestOrderRepository.Update(gorder);
+                _emailService.SendMailAsync(gorder.Email, gorder.Name, "Your order create success!",
+                $"<h3>Dear {gorder.Name}, Your order create success!</h3>");
             }
         }
 
@@ -361,6 +374,7 @@ namespace Services.OrderService
                 order.Status = Constants.STATUS_ORDER_REJECT;
                 order.TimeUpdate = DateTime.UtcNow;
                 _orderRepository.Update(order);
+                _notificationService.SendNotificatioToUser(order, userId);
             }
             else
             {
@@ -376,6 +390,8 @@ namespace Services.OrderService
                 gorder.Status = Constants.STATUS_ORDER_REJECT;
                 gorder.TimeUpdate = DateTime.UtcNow;
                 _guestOrderRepository.Update(gorder);
+                _emailService.SendMailAsync(gorder.Email, gorder.Name, "Your order create success!",
+                $"<h3>Dear {gorder.Name}, Your order create success!</h3>");
             }
         }
 
@@ -391,6 +407,7 @@ namespace Services.OrderService
                 order.Status = Constants.STATUS_ORDER_CANCELED;
                 order.TimeUpdate = DateTime.UtcNow;
                 _orderRepository.Update(order);
+                _notificationService.SendNotificatioToUser(order, userId);
             }
             else
             {
@@ -406,6 +423,8 @@ namespace Services.OrderService
                 gorder.Status = Constants.STATUS_ORDER_CANCELED;
                 gorder.TimeUpdate = DateTime.UtcNow;
                 _guestOrderRepository.Update(gorder);
+                _emailService.SendMailAsync(gorder.Email, gorder.Name, "Your order create success!",
+                $"<h3>Dear {gorder.Name}, Your order create success!</h3>");
             }
         }
 
@@ -442,6 +461,7 @@ namespace Services.OrderService
                     order.FileOrders.Add(fileOrdersDTO);
                 }
                 _orderRepository.Update(order);
+                _notificationService.SendNotificatioToUser(order, userId);
             }
             else
             {
@@ -477,6 +497,8 @@ namespace Services.OrderService
                     gorder.FileOrders.Add(fileOrdersDTO);
                 }
                 _guestOrderRepository.Update(gorder);
+                _emailService.SendMailAsync(gorder.Email, gorder.Name, "Your order create success!",
+                $"<h3>Dear {gorder.Name}, Your order create success!</h3>");
             }
         }
 
@@ -493,21 +515,11 @@ namespace Services.OrderService
                 order.Status = Constants.STATUS_ORDER_CANCELED;
                 order.TimeUpdate = DateTime.UtcNow;
                 _orderRepository.Update(order);
+                _notificationService.SendNotificationToStaff(order, userId);
             }
             else
             {
-                var gorder = _guestOrderRepository.GetOrderByGFId(GFId);
-                if (!CheckGarageCanAcceptOrReject(userId, gorder))
-                {
-                    throw new Exception("Can not cancel the order");
-                }
-                if (gorder == null)
-                {
-                    throw new Exception("Can not find order");
-                }
-                gorder.Status = Constants.STATUS_ORDER_CANCELED;
-                gorder.TimeUpdate = DateTime.UtcNow;
-                _guestOrderRepository.Update(gorder);
+                throw new Exception("Can not find order");
             }
         }
 

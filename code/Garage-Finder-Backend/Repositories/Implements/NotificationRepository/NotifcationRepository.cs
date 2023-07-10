@@ -30,5 +30,15 @@ namespace Repositories.Implements.NotificationRepository
         {
             return NotificationDAO.Instance.GetNotificationsByUserId(id).ToList();
         }
+
+        public void UpdateNotification(Notification notification)
+        {
+            NotificationDAO.Instance.Update(notification);
+        }
+
+        public void UpdateNotification(StaffNotification notification)
+        {
+            StaffNotificationDAO.Instance.Update(notification);
+        }
     }
 }

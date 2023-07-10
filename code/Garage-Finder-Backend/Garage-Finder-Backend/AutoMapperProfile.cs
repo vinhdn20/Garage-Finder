@@ -39,8 +39,10 @@ namespace Garage_Finder_Backend
             CreateMap<GarageInfo, GarageInfoDTO>();
             CreateMap<InvoicesDTO, Invoices>();
             CreateMap<Invoices, InvoicesDTO>();
+
             CreateMap<NotificationDTO, Notification>();
             CreateMap<Notification, NotificationDTO>();
+            CreateMap<StaffNotification, NotificationDTO>();
 
             CreateMap<OrdersDTO, Orders>();
             CreateMap<Orders, OrdersDTO>();

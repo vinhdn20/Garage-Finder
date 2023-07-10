@@ -39,6 +39,7 @@ namespace DataAccess.DAO
                 using (var context = new GFDbContext())
                 {
                     context.StaffNotification.Add(notification);
+                    context.SaveChanges();
                     return notification;
                 }
             }
@@ -56,6 +57,21 @@ namespace DataAccess.DAO
                 {
                     var notification = context.StaffNotification.Where(x => x.StaffId == id).ToList();
                     return notification;
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message + "\n" + e.InnerException.Message);
+            }
+        }
+        public void Update(StaffNotification notification)
+        {
+            try
+            {
+                using (var context = new GFDbContext())
+                {
+                    context.StaffNotification.Update(notification);
+                    context.SaveChanges();
                 }
             }
             catch (Exception e)

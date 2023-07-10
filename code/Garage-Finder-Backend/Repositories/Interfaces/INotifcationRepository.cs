@@ -13,5 +13,7 @@ namespace Repositories.Interfaces
         StaffNotification AddStaffNotification(StaffNotification notification);
         List<Notification> GetNotificationsByUserId(int id);
         List<StaffNotification> GetNotificationsByStaffId(int id);
+        void UpdateNotification(Notification notification);
+        void UpdateNotification(StaffNotification notification);
     }
 }
