@@ -73,11 +73,11 @@ namespace Services.UserService
                 {
                     throw new Exception("Phone number is not valid");
                 }
-                var user = _userRepository.GetUsersByPhone(phoneNumber);
-                if(user == null)
-                {
-                    throw new Exception("Can't find phone number");
-                }
+                //var user = _userRepository.GetUsersByPhone(phoneNumber);
+                //if(user == null)
+                //{
+                //    throw new Exception("Can't find phone number");
+                //}
                 if (!_phoneVerifyService.SendCodeAsync(phoneNumber).Result)
                 {
                     return false;

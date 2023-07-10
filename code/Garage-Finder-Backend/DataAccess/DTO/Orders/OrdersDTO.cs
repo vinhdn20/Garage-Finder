@@ -14,6 +14,7 @@ namespace DataAccess.DTO.Orders
         public DateTime TimeAppointment { get; set; }
         public string Status { get; set; }
         public string Content { get; set; }
+        public string PhoneNumber { get; set; }
         public List<FileOrdersDTO> FileOrders { get; set; }
         public List<ImageOrdersDTO> ImageOrders { get; set; }
         public List<OrderDetail> OrderDetails { get; set; }

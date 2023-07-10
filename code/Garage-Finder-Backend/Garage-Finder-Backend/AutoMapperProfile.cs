@@ -53,7 +53,8 @@ namespace Garage_Finder_Backend
             CreateMap<CarDTO, OrderDetailDTO>();
             CreateMap<UsersDTO, OrderDetailDTO>()
                 .ForMember(x => x.Email, m => m.MapFrom(a => a.EmailAddress))
-                .ForMember(x => x.Status, m => m.Ignore());
+                .ForMember(x => x.Status, m => m.Ignore())
+                .ForMember(x => x.PhoneNumber, m => m.Ignore());
             CreateMap<UserUpdateDTO, UsersDTO>();
 
             CreateMap<RefreshTokenDTO, RefreshToken>();

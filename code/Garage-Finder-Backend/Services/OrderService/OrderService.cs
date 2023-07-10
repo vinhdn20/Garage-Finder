@@ -224,7 +224,8 @@ namespace Services.OrderService
                 TimeCreate = DateTime.UtcNow,
                 Status = Constants.STATUS_ORDER_OPEN,
                 TimeAppointment = addOrder.TimeAppointment,
-                OrderDetails = orderDetails
+                OrderDetails = orderDetails,
+                PhoneNumber = addOrder.PhoneNumber,
             };
 
             _orderRepository.Add(ordersDTO);
@@ -316,7 +317,8 @@ namespace Services.OrderService
                 TimeCreate = DateTime.UtcNow,
                 Status = Constants.STATUS_ORDER_OPEN,
                 TimeAppointment = addOrder.TimeAppointment,
-                OrderDetails = orderDetails
+                OrderDetails = orderDetails,
+                PhoneNumber = addOrder.PhoneNumber,
             };
 
             _orderRepository.Add(ordersDTO);
