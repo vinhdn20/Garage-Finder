@@ -12,11 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GFData.Migrations
 {
     [DbContext(typeof(GFDbContext))]
-<<<<<<<< HEAD:code/Garage-Finder-Backend/GFData/Migrations/20230709094205_Initial.Designer.cs
-    [Migration("20230709094205_Initial")]
-========
-    [Migration("20230708150734_Initial")]
->>>>>>>> 5f312e6 (add notification service):code/Garage-Finder-Backend/GFData/Migrations/20230708150734_Initial.Designer.cs
+    [Migration("20230710094604_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
