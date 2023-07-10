@@ -9,6 +9,8 @@ using Services.PhoneVerifyService;
 using Microsoft.OpenApi.Models;
 using Services;
 using Services.WebSocket;
+using Microsoft.Extensions.Options;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +32,8 @@ builder.Services.ConfigServices();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Garage-Finder-Backend", Version = "v1" });
+
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Description = @"JWT Authorization header using the Bearer scheme. \r\n\r\n 
@@ -60,7 +64,8 @@ c.AddSecurityRequirement(new OpenApiSecurityRequirement()
           }
         });
 
-    c.AddSignalRSwaggerGen();
+    c.AddSignalRSwaggerGen(ssgOptions => ssgOptions.ScanAssemblies(Assembly.GetAssembly(typeof(UserGFHub))));
+
 });
 
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
