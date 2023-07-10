@@ -2,6 +2,7 @@
 using Services.EmailService;
 using Services.FeedbackService;
 using Services.GarageService;
+using Services.NotificationService;
 using Services.OrderService;
 using Services.ServiceService;
 using Services.StaffService;
@@ -27,6 +28,7 @@ namespace Services
             services.AddTransient<IService, Service>();
             services.AddTransient<IStaffService, StaffService.StaffService>();
             services.AddTransient<IFeedbackService, FeedbackService.FeedbackService>();
+            services.AddTransient<INotificationService, NotificationService.NotificationService>();
         }
     }
 }

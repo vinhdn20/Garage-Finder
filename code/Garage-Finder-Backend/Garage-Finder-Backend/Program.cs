@@ -8,6 +8,7 @@ using Twilio;
 using Services.PhoneVerifyService;
 using Microsoft.OpenApi.Models;
 using Services;
+using Services.WebSocket;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,7 +41,7 @@ builder.Services.AddSwaggerGen(c =>
         Scheme = "Bearer"
     });
 
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+c.AddSecurityRequirement(new OpenApiSecurityRequirement()
       {
         {
           new OpenApiSecurityScheme
@@ -59,31 +60,49 @@ builder.Services.AddSwaggerGen(c =>
           }
         });
 
+    c.AddSignalRSwaggerGen();
 });
 
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
 var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>();
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
-
+JwtBearerOptions  jwtBearerOptions = new JwtBearerOptions()
+{
+    RequireHttpsMetadata = false,
+    TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidIssuer = jwtSettings.Issuer,
+        ValidAudience = jwtSettings.Issuer,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret)),
+        ClockSkew = TimeSpan.Zero
+    }
+};
+builder.Services.AddSingleton<JwtBearerOptions>(jwtBearerOptions);
 builder.Services
     .AddAuthentication(options =>
     {
         options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
     })
-    .AddCookie(options =>
-    {
-        options.LoginPath = "/login";
-        options.LogoutPath = "/logout";
-    })
     .AddJwtBearer(options =>
     {
-        options.RequireHttpsMetadata = false;
-        options.TokenValidationParameters = new TokenValidationParameters
+        options.RequireHttpsMetadata = jwtBearerOptions.RequireHttpsMetadata;
+        options.TokenValidationParameters = jwtBearerOptions.TokenValidationParameters;
+        options.Events = new JwtBearerEvents
         {
-            ValidIssuer = jwtSettings.Issuer,
-            ValidAudience = jwtSettings.Issuer,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret)),
-            ClockSkew = TimeSpan.Zero
+            OnMessageReceived = context =>
+            {
+                var accessToken = context.Request.Query["access_token"];
+
+                // If the request is for our hub...
+                var path = context.HttpContext.Request.Path;
+                if (!string.IsNullOrEmpty(accessToken) &&
+                    (path.StartsWithSegments("/UserGF")))
+                {
+                    // Read the token out of the query string
+                    context.Token = accessToken;
+                }
+                return Task.CompletedTask;
+            }
         };
     });
 
@@ -97,6 +116,7 @@ TwilioClient.Init(accountSid, authToken);
 builder.Services.Configure<TwilioVerifySettings>(builder.Configuration.GetSection("Twilio"));
 
 builder.Services.AddTransient<IPhoneVerifyService, TwilioService>();
+builder.Services.AddSignalR();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -106,6 +126,14 @@ if (app.Environment.IsDevelopment())
 app.UseSwagger();
 app.UseSwaggerUI();
 app.UseHttpsRedirection();
+//app.UseWebSockets();
+//var webSocketOptions = new WebSocketOptions
+//{
+//    KeepAliveInterval = TimeSpan.FromMinutes(2)
+//};
+
+//app.UseWebSockets(webSocketOptions);
+app.MapHub<UserGFHub>("/UserGF");
 
 app.UseCors("AllowAnyOrigins");
 app.UseAuthentication();

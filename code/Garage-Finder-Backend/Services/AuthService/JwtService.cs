@@ -20,6 +20,7 @@ namespace Garage_Finder_Backend.Services.AuthService
             var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Role, Constants.ROLE_USER),
+                    new Claim(ClaimTypes.NameIdentifier, user.UserID.ToString()),
                     new Claim("user", JsonConvert.SerializeObject(user))
                 };
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret));
@@ -44,6 +45,7 @@ namespace Garage_Finder_Backend.Services.AuthService
             var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Role, user.RoleName),
+                    new Claim(ClaimTypes.NameIdentifier, user.UserID.ToString()),
                     new Claim("user", JsonConvert.SerializeObject(user))
                 };
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret));

@@ -82,6 +82,10 @@ namespace Services.StaffService
             }
 
             var staff = _staffRepository.Login(loginModel.Email, loginModel.Password);
+            if(staff == null)
+            {
+                throw new Exception("Account not found");
+            }
             LoginStaffDTO loginStaff = _mapper.Map<LoginStaffDTO>(staff);
             var tokenInfor = GenerateTokenInfor(staff.StaffId, Constants.ROLE_STAFF);
             var accessToken = _jwtService.GenerateJwtForStaff(tokenInfor, _jwtSettings);

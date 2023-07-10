@@ -53,6 +53,8 @@ namespace GFData.Data
         public virtual DbSet<GuestOrderDetail> GuestOrderDetail { get; set; }
         public virtual DbSet<Staff> Staff { get; set; }
         public virtual DbSet<StaffRefreshToken> StaffRefreshToken { get; set; }
+        public virtual DbSet<StaffNotification> StaffNotification { get; set; }
+        public virtual DbSet<Notification> Notification { get; set; }
 
         protected override void OnModelCreating(ModelBuilder optionsBuilder)
         {
