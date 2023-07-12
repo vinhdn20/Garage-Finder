@@ -26,11 +26,6 @@ namespace Services.GarageService
 
             var garargeDTO = _mapper.Map<AddGarageDTO, GarageDTO>(addGarage);
 
-            GarageInfoDTO garageInfoDTO = new GarageInfoDTO()
-            {
-                UserID = userID,
-            };
-
             var listGarageBrand = new List<GarageBrandDTO>();
             foreach (var brand in addGarage.BrandsID)
             {
@@ -57,7 +52,7 @@ namespace Services.GarageService
                     ImageLink = image
                 });
             }
-            _garageRepository.AddGarageWithInfor(garargeDTO, garageInfoDTO,
+            _garageRepository.AddGarageWithInfor(garargeDTO,
                 listGarageBrand, listCategory, listImage);
         }
     }

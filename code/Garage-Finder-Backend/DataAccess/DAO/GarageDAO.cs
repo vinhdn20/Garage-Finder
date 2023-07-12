@@ -85,8 +85,7 @@ namespace DataAccess.DAO
                 using (var context = new GFDbContext())
                 {
                     listGarage = (from garage in context.Garage
-                                  join gInfor in context.GarageInfo on garage.GarageID equals gInfor.GarageID
-                                  where gInfor.UserID == userID
+                                  where garage.UserID == userID
                                   select new Garage
                                   {
                                       GarageID = garage.GarageID,
@@ -166,7 +165,7 @@ namespace DataAccess.DAO
             }
         }
 
-        public async Task<Garage> SaveGrageWithInforAsync(Garage garage, GarageInfo garageInfo, List<GarageBrand> garageBrands,
+        public async Task<Garage> SaveGrageWithInforAsync(Garage garage, List<GarageBrand> garageBrands,
             List<CategoryGarage> categoryGarages, List<ImageGarage> imageGarages)
         {
             using var context = new GFDbContext();
@@ -179,8 +178,6 @@ namespace DataAccess.DAO
                     {
                         context.Garage.Add(garage);
                         context.SaveChanges();
-                        garageInfo.GarageID = garage.GarageID;
-                        context.GarageInfo.Add(garageInfo);
                         foreach (var garagebrand in garageBrands)
                         {
                             garagebrand.GarageID = garage.GarageID;

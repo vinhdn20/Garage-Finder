@@ -54,7 +54,8 @@ namespace GFData.Migrations
                     CloseTime = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Thumbnail = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LatAddress = table.Column<double>(type: "float", nullable: true),
-                    LngAddress = table.Column<double>(type: "float", nullable: true)
+                    LngAddress = table.Column<double>(type: "float", nullable: true),
+                    UserID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -442,31 +443,6 @@ namespace GFData.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "GarageInfo",
-                columns: table => new
-                {
-                    InfoID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserID = table.Column<int>(type: "int", nullable: false),
-                    GarageID = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_GarageInfo", x => x.InfoID);
-                    table.ForeignKey(
-                        name: "FK_GarageInfo_Garage_GarageID",
-                        column: x => x.GarageID,
-                        principalTable: "Garage",
-                        principalColumn: "GarageID",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_GarageInfo_User_UserID",
-                        column: x => x.UserID,
-                        principalTable: "User",
-                        principalColumn: "UserID");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Invoices",
                 columns: table => new
                 {
@@ -714,16 +690,6 @@ namespace GFData.Migrations
                 column: "GarageID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_GarageInfo_GarageID",
-                table: "GarageInfo",
-                column: "GarageID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_GarageInfo_UserID",
-                table: "GarageInfo",
-                column: "UserID");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_GuestOrder_BrandCarID",
                 table: "GuestOrder",
                 column: "BrandCarID");
@@ -865,9 +831,6 @@ namespace GFData.Migrations
 
             migrationBuilder.DropTable(
                 name: "GarageBrand");
-
-            migrationBuilder.DropTable(
-                name: "GarageInfo");
 
             migrationBuilder.DropTable(
                 name: "GuestOrderDetail");

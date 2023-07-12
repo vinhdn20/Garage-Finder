@@ -26,10 +26,11 @@ namespace GFData.Models.Entity
         public string? Thumbnail { get; set; }
         public double? LatAddress { get; set; }
         public double? LngAddress { get; set; }
+        [ForeignKey("User")]
+        public int UserID { get; set; }
         public ICollection<Orders> Orders { get; set; }
         public ICollection<FavoriteList> FavoriteList { get; set; }
         public ICollection<GarageBrand> GarageBrands { get; set; }
-        public ICollection<GarageInfo> GarageInfos { get; set; }
         public ICollection<CategoryGarage> CategoryGarages { get; set; }
         public ICollection<ImageGarage> ImageGarages { get; set; }
         //public Users User { get; set; }

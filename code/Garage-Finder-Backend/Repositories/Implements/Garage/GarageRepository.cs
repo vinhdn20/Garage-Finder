@@ -22,12 +22,11 @@ namespace Repositories.Implements.Garage
             return garargeDTO;
         }
 
-        public GarageDTO AddGarageWithInfor(GarageDTO garageDTO, GarageInfoDTO garageInfoDTO, 
+        public GarageDTO AddGarageWithInfor(GarageDTO garageDTO, 
             List<GarageBrandDTO> garageBrandDTOs, List<CategoryGarageDTO> categoryGarageDTOs,
             List<ImageGarageDTO> imageGarageDTOs)
         {
             var garage = _mapper.Map<GarageDTO, GFData.Models.Entity.Garage>(garageDTO);
-            var garageInfor = _mapper.Map<GarageInfoDTO, GarageInfo>(garageInfoDTO);
             var garageBrands = new List<GarageBrand>();
             garageBrandDTOs.ForEach(x => garageBrands.Add(_mapper.Map<GarageBrand>(x)));
 
@@ -37,7 +36,7 @@ namespace Repositories.Implements.Garage
             var imageGarages = new List<ImageGarage>();
             imageGarageDTOs.ForEach(x => imageGarages.Add(_mapper.Map<ImageGarage>(x)));
 
-            var garageAdded = GarageDAO.Instance.SaveGrageWithInforAsync(garage, garageInfor, garageBrands, categoryGarages, imageGarages).Result;
+            var garageAdded = GarageDAO.Instance.SaveGrageWithInforAsync(garage, garageBrands, categoryGarages, imageGarages).Result;
             var garageAddedDTO = _mapper.Map<GFData.Models.Entity.Garage, GarageDTO>(garageAdded);
             return garageAddedDTO;
         }
