@@ -269,6 +269,8 @@ namespace GFData.Migrations
 
                     b.HasKey("GarageID");
 
+                    b.HasIndex("UserID");
+
                     b.ToTable("Garage");
                 });
 
@@ -927,6 +929,17 @@ namespace GFData.Migrations
                         .IsRequired();
 
                     b.Navigation("Orders");
+                });
+
+            modelBuilder.Entity("GFData.Models.Entity.Garage", b =>
+                {
+                    b.HasOne("GFData.Models.Entity.Users", "User")
+                        .WithMany()
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("GFData.Models.Entity.GarageBrand", b =>

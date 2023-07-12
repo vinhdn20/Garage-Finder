@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GFData.Migrations
 {
     [DbContext(typeof(GFDbContext))]
-    [Migration("20230712090039_Initial")]
+    [Migration("20230712094557_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -270,6 +270,8 @@ namespace GFData.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("GarageID");
+
+                    b.HasIndex("UserID");
 
                     b.ToTable("Garage");
                 });
@@ -929,6 +931,17 @@ namespace GFData.Migrations
                         .IsRequired();
 
                     b.Navigation("Orders");
+                });
+
+            modelBuilder.Entity("GFData.Models.Entity.Garage", b =>
+                {
+                    b.HasOne("GFData.Models.Entity.Users", "User")
+                        .WithMany()
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("GFData.Models.Entity.GarageBrand", b =>
