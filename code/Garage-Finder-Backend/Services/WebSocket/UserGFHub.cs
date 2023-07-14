@@ -1,4 +1,5 @@
 ﻿using DataAccess.DTO;
+using DataAccess.DTO.Chat;
 using DataAccess.DTO.Token;
 using GFData.Models.Entity;
 using Mailjet.Client.Resources;
@@ -6,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
 using Repositories.Interfaces;
+using Services.ChatService;
 using Services.NotificationService;
 using SignalRSwaggerGen.Attributes;
 using System;
@@ -23,14 +25,16 @@ namespace Services.WebSocket
     {
         private readonly IGarageRepository _garageRepository;
         private readonly IStaffRepository _staffRepository;
+        private readonly IChatService _chatService;
         private readonly INotificationService _notificationService;
 
         public UserGFHub(IGarageRepository garageRepository, IStaffRepository staffRepository,
-            INotificationService notificationService)
+            INotificationService notificationService, IChatService chatService)
         {
             _garageRepository = garageRepository;
             _staffRepository = staffRepository;
             _notificationService = notificationService;
+            _chatService = chatService;
         }
         public override async Task OnConnectedAsync()
         {
@@ -50,17 +54,41 @@ namespace Services.WebSocket
         }
 
         [SignalRMethod]
-        public async Task ReadAllNotification()
+        public void ReadAllNotification()
         {
             var user = GetTokenInfor();
             _notificationService.ReadAllNotification(user.UserID, user.RoleName);
         }
 
         [SignalRMethod]
-        public async Task<List<NotificationDTO>> GetAllNotification()
+        public List<NotificationDTO> GetAllNotification()
         {
             var user = GetTokenInfor();
             return _notificationService.GetNotification(user.UserID, user.RoleName);
+        }
+
+        public List<RoomDTO> GetListRoom()
+        {
+            var user = GetTokenInfor();
+            return _chatService.GetListRoom(user.UserID, user.RoleName);
+        }
+
+        public List<ChatDTO> GetDetailRoom(int roomId)
+        {
+            var user = GetTokenInfor();
+            return _chatService.GetDetailMessage(user.UserID, user.RoleName, roomId);
+        }
+
+        public void SendMessgeToUser(SendChat sendChat)
+        {
+            var user = GetTokenInfor();
+            _chatService.SendToUser(user.UserID, sendChat);
+        }
+
+        public void SendMessageToGarage(SendChat sendChat)
+        {
+            var user = GetTokenInfor();
+            _chatService.SendToGarage(user.UserID, sendChat);
         }
 
         private TokenInfor GetTokenInfor()

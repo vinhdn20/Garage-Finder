@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Services.ChatService;
 using Services.EmailService;
 using Services.FeedbackService;
 using Services.GarageService;
@@ -29,6 +30,7 @@ namespace Services
             services.AddTransient<IStaffService, StaffService.StaffService>();
             services.AddTransient<IFeedbackService, FeedbackService.FeedbackService>();
             services.AddTransient<INotificationService, NotificationService.NotificationService>();
+            services.AddTransient<IChatService, ChatService.ChatService>();
         }
     }
 }

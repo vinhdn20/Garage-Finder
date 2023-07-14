@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GFData.Migrations
 {
     [DbContext(typeof(GFDbContext))]
-    [Migration("20230712094557_Initial")]
+    [Migration("20230714164016_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -483,6 +483,44 @@ namespace GFData.Migrations
                     b.ToTable("Invoices");
                 });
 
+            modelBuilder.Entity("GFData.Models.Entity.Message", b =>
+                {
+                    b.Property<int>("MessageID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MessageID"), 1L, 1);
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("GarageID")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("RoomID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserID")
+                        .HasColumnType("int");
+
+                    b.HasKey("MessageID");
+
+                    b.HasIndex("GarageID");
+
+                    b.HasIndex("RoomID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("Message");
+                });
+
             modelBuilder.Entity("GFData.Models.Entity.Notification", b =>
                 {
                     b.Property<int>("NotificationID")
@@ -627,6 +665,19 @@ namespace GFData.Migrations
                     b.ToTable("RoleName");
                 });
 
+            modelBuilder.Entity("GFData.Models.Entity.RoomChat", b =>
+                {
+                    b.Property<int>("RoomID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RoomID"), 1L, 1);
+
+                    b.HasKey("RoomID");
+
+                    b.ToTable("RoomChat");
+                });
+
             modelBuilder.Entity("GFData.Models.Entity.Service", b =>
                 {
                     b.Property<int>("ServiceID")
@@ -711,6 +762,44 @@ namespace GFData.Migrations
                         .IsUnique();
 
                     b.ToTable("Staff");
+                });
+
+            modelBuilder.Entity("GFData.Models.Entity.StaffMessage", b =>
+                {
+                    b.Property<int>("StaffMessageID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StaffMessageID"), 1L, 1);
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("RoomID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StaffId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserID")
+                        .HasColumnType("int");
+
+                    b.HasKey("StaffMessageID");
+
+                    b.HasIndex("RoomID");
+
+                    b.HasIndex("StaffId");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("StaffMessages");
                 });
 
             modelBuilder.Entity("GFData.Models.Entity.StaffNotification", b =>
@@ -1051,6 +1140,33 @@ namespace GFData.Migrations
                     b.Navigation("Users");
                 });
 
+            modelBuilder.Entity("GFData.Models.Entity.Message", b =>
+                {
+                    b.HasOne("GFData.Models.Entity.Garage", "Garage")
+                        .WithMany()
+                        .HasForeignKey("GarageID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GFData.Models.Entity.RoomChat", "RoomChat")
+                        .WithMany()
+                        .HasForeignKey("RoomID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GFData.Models.Entity.Users", "Users")
+                        .WithMany("Messages")
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Garage");
+
+                    b.Navigation("RoomChat");
+
+                    b.Navigation("Users");
+                });
+
             modelBuilder.Entity("GFData.Models.Entity.Notification", b =>
                 {
                     b.HasOne("GFData.Models.Entity.Users", "User")
@@ -1131,6 +1247,33 @@ namespace GFData.Migrations
                         .IsRequired();
 
                     b.Navigation("Garage");
+                });
+
+            modelBuilder.Entity("GFData.Models.Entity.StaffMessage", b =>
+                {
+                    b.HasOne("GFData.Models.Entity.RoomChat", "RoomChat")
+                        .WithMany()
+                        .HasForeignKey("RoomID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GFData.Models.Entity.Staff", "Staff")
+                        .WithMany("StaffMessages")
+                        .HasForeignKey("StaffId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("GFData.Models.Entity.Users", "User")
+                        .WithMany()
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("RoomChat");
+
+                    b.Navigation("Staff");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("GFData.Models.Entity.StaffNotification", b =>
@@ -1230,6 +1373,11 @@ namespace GFData.Migrations
                     b.Navigation("Users");
                 });
 
+            modelBuilder.Entity("GFData.Models.Entity.Staff", b =>
+                {
+                    b.Navigation("StaffMessages");
+                });
+
             modelBuilder.Entity("GFData.Models.Entity.Subscribe", b =>
                 {
                     b.Navigation("Invoices");
@@ -1242,6 +1390,8 @@ namespace GFData.Migrations
                     b.Navigation("FavoriteList");
 
                     b.Navigation("Invoices");
+
+                    b.Navigation("Messages");
 
                     b.Navigation("Notifications");
 
