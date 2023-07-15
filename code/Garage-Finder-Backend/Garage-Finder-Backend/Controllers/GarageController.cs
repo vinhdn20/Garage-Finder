@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using NuGet.DependencyResolver;
+using Repositories.Implements.CategoryRepository;
+using Repositories.Implements.Garage;
 using Repositories.Interfaces;
 using Services.GarageService;
 using System.Security.Claims;
@@ -388,11 +390,7 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
-                var garage = garageRepository.GetGaragesByID(id);
-                foreach (var cate in garage.CategoryGarages)
-                {
-                    cate.CategoryName = categoryRepository.GetCategory().Where(x => x.CategoryID == cate.CategoryID).SingleOrDefault().CategoryName;
-                }
+                var garage = garageService.GetById(id);
                 return Ok(garage);
             }
             catch (Exception e)
