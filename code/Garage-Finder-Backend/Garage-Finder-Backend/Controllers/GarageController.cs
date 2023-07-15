@@ -76,11 +76,29 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpPut("Update")]
+        [Authorize(Roles = Constants.ROLE_USER)]
         public IActionResult Update([FromBody] UpdateGarageDTO garageUpdate)
         {
             try
             {
-                garageRepository.Update(garageUpdate);
+                var user = User.GetTokenInfor();
+                GarageDTO garage = new GarageDTO()
+                {
+                    AddressDetail = garageUpdate.AddressDetail,
+                    CloseTime = garageUpdate.CloseTime,
+                    DistrictsID = garageUpdate.DistrictsID,
+                    EmailAddress = garageUpdate.EmailAddress,
+                    GarageID = garageUpdate.GarageID,
+                    GarageName = garageUpdate.GarageName,
+                    LatAddress = garageUpdate.LatAddress,
+                    LngAddress = garageUpdate.LngAddress,
+                    OpenTime = garageUpdate.OpenTime,
+                    PhoneNumber = garageUpdate.PhoneNumber,
+                    ProvinceID = garageUpdate.ProvinceID,
+                    Thumbnail = garageUpdate.Thumbnail,
+                    UserID = user.UserID
+                };
+                garageRepository.Update(garage);
                 return Ok("SUCCESS");
             }
             catch (Exception e)

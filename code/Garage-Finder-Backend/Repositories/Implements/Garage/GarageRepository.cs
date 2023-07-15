@@ -56,9 +56,9 @@ namespace Repositories.Implements.Garage
             GarageDAO.Instance.SaveGarage(_mapper.Map<GarageDTO, GFData.Models.Entity.Garage>(p));
         }
 
-        public void Update(UpdateGarageDTO garage)
+        public void Update(GarageDTO garage)
         {
-            GarageDAO.Instance.UpdateGarage(_mapper.Map<UpdateGarageDTO, GFData.Models.Entity.Garage>(garage));
+            GarageDAO.Instance.UpdateGarage(_mapper.Map<GarageDTO, GFData.Models.Entity.Garage>(garage));
         }
 
         public List<GarageDTO> GetGarageByProviceId(int? provinceID)

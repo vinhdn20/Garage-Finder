@@ -1,5 +1,6 @@
 ﻿using DataAccess.DTO;
 using DataAccess.DTO.Garage;
+using GFData.Models.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,7 @@ namespace Repositories.Interfaces
         GarageDTO AddGarageWithInfor(GarageDTO garage,
             List<GarageBrandDTO> garageBrandDTOs, List<CategoryGarageDTO> categoryGarageDTOs,
             List<ImageGarageDTO> imageGarageDTOs);
-        void Update(UpdateGarageDTO garage);
+        void Update(GarageDTO garage);
         List<GarageDTO> GetGarages();
         void DeleteGarage(int id);
         public GarageDTO GetGaragesByID(int id);
