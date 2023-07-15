@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 
 namespace GFData.Models.Entity
 {
-    [Index(nameof(PhoneNumber), nameof(EmailAddress), IsUnique = true)]
     public class Staff
     {
         [Key]

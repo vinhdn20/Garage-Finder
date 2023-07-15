@@ -47,7 +47,19 @@ namespace Services.StaffService
             {
                 throw new Exception("Authorize exception!");
             }
-
+            var staffs = _staffRepository.GetByGarageId(addStaff.GarageID);
+            if(staffs.Any(x => x.EmployeeId.Equals(addStaff.EmployeeId)))
+            {
+                throw new Exception("Employee id already exist");
+            }
+            if (staffs.Any(x => x.EmailAddress.Equals(addStaff.EmailAddress)))
+            {
+                throw new Exception("EmailAddress already exist");
+            }
+            if (staffs.Any(x => x.PhoneNumber.Equals(addStaff.PhoneNumber)))
+            {
+                throw new Exception("PhoneNumber already exist");
+            }
             Staff staff = _mapper.Map<Staff>(addStaff);
             var staffAdd = _staffRepository.AddStaff(staff);
             return _mapper.Map<StaffDTO>(staffAdd);
