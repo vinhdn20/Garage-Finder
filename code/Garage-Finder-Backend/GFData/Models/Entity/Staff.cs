@@ -29,5 +29,8 @@ namespace GFData.Models.Entity
         public int GarageID { get; set; }
 
         public Garage Garage { get; set;}
+
+        public ICollection<StaffMessage> StaffMessages { get; set; }
+
     }
 }

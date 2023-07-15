@@ -51,6 +51,18 @@ namespace GFData.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "RoomChat",
+                columns: table => new
+                {
+                    RoomID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RoomChat", x => x.RoomID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Subscribe",
                 columns: table => new
                 {
@@ -362,6 +374,41 @@ namespace GFData.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Message",
+                columns: table => new
+                {
+                    MessageID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserID = table.Column<int>(type: "int", nullable: false),
+                    RoomID = table.Column<int>(type: "int", nullable: false),
+                    GarageID = table.Column<int>(type: "int", nullable: false),
+                    DateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsRead = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Message", x => x.MessageID);
+                    table.ForeignKey(
+                        name: "FK_Message_Garage_GarageID",
+                        column: x => x.GarageID,
+                        principalTable: "Garage",
+                        principalColumn: "GarageID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Message_RoomChat_RoomID",
+                        column: x => x.RoomID,
+                        principalTable: "RoomChat",
+                        principalColumn: "RoomID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Message_User_UserID",
+                        column: x => x.UserID,
+                        principalTable: "User",
+                        principalColumn: "UserID");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Orders",
                 columns: table => new
                 {
@@ -597,6 +644,41 @@ namespace GFData.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "StaffMessages",
+                columns: table => new
+                {
+                    StaffMessageID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    StaffId = table.Column<int>(type: "int", nullable: false),
+                    RoomID = table.Column<int>(type: "int", nullable: false),
+                    DateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserID = table.Column<int>(type: "int", nullable: false),
+                    IsRead = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_StaffMessages", x => x.StaffMessageID);
+                    table.ForeignKey(
+                        name: "FK_StaffMessages_RoomChat_RoomID",
+                        column: x => x.RoomID,
+                        principalTable: "RoomChat",
+                        principalColumn: "RoomID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_StaffMessages_Staff_StaffId",
+                        column: x => x.StaffId,
+                        principalTable: "Staff",
+                        principalColumn: "StaffId");
+                    table.ForeignKey(
+                        name: "FK_StaffMessages_User_UserID",
+                        column: x => x.UserID,
+                        principalTable: "User",
+                        principalColumn: "UserID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "StaffNotification",
                 columns: table => new
                 {
@@ -752,6 +834,21 @@ namespace GFData.Migrations
                 column: "UsersUserID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Message_GarageID",
+                table: "Message",
+                column: "GarageID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Message_RoomID",
+                table: "Message",
+                column: "RoomID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Message_UserID",
+                table: "Message",
+                column: "UserID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Notification_UserID",
                 table: "Notification",
                 column: "UserID");
@@ -802,6 +899,21 @@ namespace GFData.Migrations
                 table: "Staff",
                 columns: new[] { "PhoneNumber", "EmailAddress" },
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_StaffMessages_RoomID",
+                table: "StaffMessages",
+                column: "RoomID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_StaffMessages_StaffId",
+                table: "StaffMessages",
+                column: "StaffId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_StaffMessages_UserID",
+                table: "StaffMessages",
+                column: "UserID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_StaffNotification_StaffId",
@@ -859,6 +971,9 @@ namespace GFData.Migrations
                 name: "Invoices");
 
             migrationBuilder.DropTable(
+                name: "Message");
+
+            migrationBuilder.DropTable(
                 name: "Notification");
 
             migrationBuilder.DropTable(
@@ -869,6 +984,9 @@ namespace GFData.Migrations
 
             migrationBuilder.DropTable(
                 name: "Service");
+
+            migrationBuilder.DropTable(
+                name: "StaffMessages");
 
             migrationBuilder.DropTable(
                 name: "StaffNotification");
@@ -887,6 +1005,9 @@ namespace GFData.Migrations
 
             migrationBuilder.DropTable(
                 name: "CategoryGarage");
+
+            migrationBuilder.DropTable(
+                name: "RoomChat");
 
             migrationBuilder.DropTable(
                 name: "Staff");

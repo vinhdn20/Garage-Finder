@@ -1,5 +1,6 @@
 ﻿using GFData.Models.Entity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.Configuration;
 using System.Reflection.Emit;
@@ -54,6 +55,9 @@ namespace GFData.Data
         public virtual DbSet<StaffRefreshToken> StaffRefreshToken { get; set; }
         public virtual DbSet<StaffNotification> StaffNotification { get; set; }
         public virtual DbSet<Notification> Notification { get; set; }
+        public virtual DbSet<RoomChat> RoomChat { get; set; }
+        public virtual DbSet<Message> Message { get; set; }
+        public virtual DbSet<StaffMessage> StaffMessages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder optionsBuilder)
         {
@@ -64,11 +68,17 @@ namespace GFData.Data
             .HasForeignKey(c => c.GarageID)
             .OnDelete(DeleteBehavior.NoAction);
 
-            //optionsBuilder.Entity<Feedback>()
-            //.HasOne(p => p.User)
-            //.WithMany(u => u.Feedbacks)
-            //.HasForeignKey(c => c.UserID)
-            //.OnDelete(DeleteBehavior.NoAction);
+            optionsBuilder.Entity<Message>()
+            .HasOne(p => p.Users)
+            .WithMany(u => u.Messages)
+            .HasForeignKey(c => c.UserID)
+            .OnDelete(DeleteBehavior.NoAction);
+
+            optionsBuilder.Entity<StaffMessage>()
+            .HasOne(p => p.Staff)
+            .WithMany(u => u.StaffMessages)
+            .HasForeignKey(c => c.StaffId)
+            .OnDelete(DeleteBehavior.NoAction);
 
             optionsBuilder.Entity<Orders>()
             .HasOne(p => p.Car)

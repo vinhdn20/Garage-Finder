@@ -3,6 +3,7 @@ using Repositories.Implements;
 using Repositories.Implements.BrandRepository;
 using Repositories.Implements.CarRepository;
 using Repositories.Implements.CategoryRepository;
+using Repositories.Implements.Chat;
 using Repositories.Implements.FeedbackRepository;
 using Repositories.Implements.Garage;
 using Repositories.Implements.NotificationRepository;
@@ -42,6 +43,7 @@ namespace Repositories
             services.AddScoped<IStaffRepository, StaffRepository>();
             services.AddScoped<IStaffRefreshTokenRepository, StaffRefreshTokenRepository>();
             services.AddScoped<INotifcationRepository, NotifcationRepository>();
+            services.AddScoped<IChatRepository, ChatRepository>();
         }
     }
 }
