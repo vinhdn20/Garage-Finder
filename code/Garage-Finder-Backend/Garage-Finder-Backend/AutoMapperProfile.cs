@@ -31,10 +31,14 @@ namespace Garage_Finder_Backend
             CreateMap<FavoriteList, FavoriteListDTO>();
             CreateMap<FeedbackDTO, Feedback>();
             CreateMap<Feedback, FeedbackDTO>();
+
             CreateMap<GarageDTO, Garage>();
             CreateMap<Garage, GarageDTO>();
             CreateMap<GarageBrandDTO, GarageBrand>();
             CreateMap<GarageBrand, GarageBrandDTO>();
+            CreateMap<GarageDTO, ViewGarageDTO>()
+                .ForMember(x => x.GarageBrands, m => m.Ignore());
+
             CreateMap<InvoicesDTO, Invoices>();
             CreateMap<Invoices, InvoicesDTO>();
 

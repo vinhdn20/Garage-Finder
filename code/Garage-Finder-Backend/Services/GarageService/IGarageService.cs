@@ -10,5 +10,6 @@ namespace Services.GarageService
     public interface IGarageService
     {
         void Add(AddGarageDTO addGarage, int userID);
+        ViewGarageDTO GetById(int garageId);
     }
 }

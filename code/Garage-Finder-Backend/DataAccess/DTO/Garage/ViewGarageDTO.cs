@@ -1,9 +1,12 @@
-﻿using GFData.Models.Entity;
-using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace DataAccess.DTO.Garage
 {
-    public class GarageDTO
+    public class ViewGarageDTO
     {
         public int GarageID { get; set; }
         public string GarageName { get; set; }
@@ -19,8 +22,15 @@ namespace DataAccess.DTO.Garage
         public double? LatAddress { get; set; }
         public double? LngAddress { get; set; }
         public int UserID { get; set; }
-        public List<CategoryGarageDTO>? CategoryGarages { get; set; }
-        public List<GarageBrandDTO>? GarageBrands { get; set; }
-        public List<ImageGarageDTO>? ImageGarages { get; set; }
+        public CategoryGarageDTO[]? CategoryGarages { get; set; }
+        public List<ViewBrandDTO>? GarageBrands { get; set; } = new List<ViewBrandDTO>();
+        public ImageGarageDTO[] ImageGarages { get; set; }
+    }
+
+    public class ViewBrandDTO
+    {
+        public int BrId { get; set; }
+        public string BrandName { get; set; }
+        public string LinkImage { get; set; }
     }
 }
