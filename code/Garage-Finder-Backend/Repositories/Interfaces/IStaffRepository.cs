@@ -10,6 +10,7 @@ namespace Repositories.Interfaces
 {
     public interface IStaffRepository
     {
+        List<Staff> GetAll();
         Staff GetById(int id);
         Staff AddStaff(Staff staff);
         void UpdateStaff(Staff staff);

@@ -41,5 +41,10 @@ namespace Repositories.Implements.StaffRepository
         {
             return StaffDAO.Instance.Login(email, password);
         }
+
+        public List<Staff> GetAll()
+        {
+            return StaffDAO.Instance.GetAll();
+        }
     }
 }

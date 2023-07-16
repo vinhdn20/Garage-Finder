@@ -1,6 +1,7 @@
 ﻿using GFData.Data;
 using GFData.Models.Entity;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Metadata;
 using System.Transactions;
 
 namespace DataAccess.DAO
@@ -37,6 +38,7 @@ namespace DataAccess.DAO
                 using (var context = new GFDbContext())
                 {
                     listGarage = (from garage in context.Garage
+                                  where garage.Status != Constants.DELETE_GARAGE
                                  select new Garage
                                  {
                                      GarageID = garage.GarageID,
@@ -85,7 +87,7 @@ namespace DataAccess.DAO
                 using (var context = new GFDbContext())
                 {
                     listGarage = (from garage in context.Garage
-                                  where garage.UserID == userID
+                                  where garage.UserID == userID && garage.Status != Constants.DELETE_GARAGE
                                   select new Garage
                                   {
                                       GarageID = garage.GarageID,
@@ -231,7 +233,8 @@ namespace DataAccess.DAO
                 using (var context = new GFDbContext())
                 {
                     var cDelete = context.Garage.SingleOrDefault(x => x.GarageID == id);
-                    context.Garage.Remove(cDelete);
+                    cDelete.Status = Constants.DELETE_GARAGE;
+                    context.Garage.Update(cDelete);
                     context.SaveChanges();
                 }
             }
