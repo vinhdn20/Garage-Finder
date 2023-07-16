@@ -12,6 +12,7 @@ using Services.EmailService;
 using Services.NotificationService;
 using Services.PhoneVerifyService;
 using Services.WebSocket;
+using System.Runtime.InteropServices;
 
 namespace Services.OrderService
 {
@@ -344,21 +345,28 @@ namespace Services.OrderService
 
                 order.Status = Constants.STATUS_ORDER_CONFIRMED;
                 order.TimeUpdate = DateTime.UtcNow;
-                _orderRepository.Update(order);
+                //_orderRepository.Update(order);
                 _notificationService.SendNotificatioToUser(order, userId);
 
                 var car = _carRepository.GetCarById(order.CarID);
                 var user = _usersRepository.GetUserByID(car.UserID);
                 var garage = _garageRepository.GetGaragesByID(order.GarageID);
-                var categoryGarage = order.OrderDetails.Select(x => x.CategoryGarageID).ToList();
-                var category = garage.CategoryGarages.Where(x => categoryGarage.Any(c => c == x.CategoryGarageID)).Select(x => x.CategoryName);
-                string categoryText = category.FirstOrDefault();
-                for (int i = 1; i < categoryGarage.Count; i++)
+                var categoryGarageId = order.OrderDetails.Select(x => x.CategoryGarageID).ToList();
+                var categoryGarage = garage.CategoryGarages.Where(x => categoryGarageId.Any(c => c == x.CategoryGarageID)).ToList();
+                var category = _categoryRepository.GetCategory().Where(x => categoryGarage.Any(c => c.CategoryID == x.CategoryID)).ToList();
+                string categoryText = category.FirstOrDefault().CategoryName;
+                for (int i = 1; i < category.Count(); i++)
                 {
-                    categoryText += "," + categoryGarage[i];
+                    categoryText += "," + category[i].CategoryName;
                 }
-                _emailService.SendMailAsync(user.EmailAddress, user.Name, "Lịch đặt của bạn đã được xác nhận!", "",
-                $"Garage: {garage.GarageName}\r\nLoại dịch vụ: {categoryText}\r\nThời gian: {order.TimeCreate}\r\nĐịa điểm [địa điểm garage]: {garage.AddressDetail}r\n\r\nQuý khách vui lòng mang xe đến đúng thời gian đặt lịch\r\n{garage.GarageName} chân thành cảm ơn quý khách !");
+                _emailService.SendMailAsync(user.EmailAddress, user.Name, "Lịch đặt của bạn đã được xác nhận!",
+                $"<h1>Lịch đặt của bạn đã được {garage.GarageName} xác nhận</h1><br/>" +
+                $"Garage: {garage.GarageName}<br/>" +
+                $"Loại dịch vụ: {categoryText}<br/>" +
+                $"Thời gian: {order.TimeCreate}<br/>" +
+                $"Địa điểm: {garage.AddressDetail}<br/>" +
+                $"Quý khách vui lòng mang xe đến đúng thời gian đặt lịch<br/><br/>" +
+                $"{garage.GarageName} chân thành cảm ơn quý khách !");
             }
             else
             {
@@ -375,15 +383,21 @@ namespace Services.OrderService
                 gorder.TimeUpdate = DateTime.UtcNow;
                 _guestOrderRepository.Update(gorder);
                 var garage = _garageRepository.GetGaragesByID(gorder.GarageID);
-                var categoryGarage = gorder.GuestOrderDetails.Select(x => x.CategoryGarageID).ToList();
-                var category = garage.CategoryGarages.Where(x => categoryGarage.Any(c => c == x.CategoryGarageID)).Select(x => x.CategoryName);
-                string categoryText = category.FirstOrDefault();
-                for (int i = 1; i < categoryGarage.Count; i++)
+                var categoryGarageId = order.OrderDetails.Select(x => x.CategoryGarageID).ToList();
+                var categoryGarage = garage.CategoryGarages.Where(x => categoryGarageId.Any(c => c == x.CategoryGarageID)).ToList();
+                var category = _categoryRepository.GetCategory().Where(x => categoryGarage.Any(c => c.CategoryID == x.CategoryID)).ToList();
+                string categoryText = category.FirstOrDefault().CategoryName;
+                for (int i = 1; i < category.Count(); i++)
                 {
-                    categoryText += "," + categoryGarage[i];
+                    categoryText += "," + category[i].CategoryName;
                 }
-                _emailService.SendMailAsync(gorder.Email, gorder.Name, "Lịch đặt của bạn đã được xác nhận!","",
-                $"Garage: {garage.GarageName}\r\nLoại dịch vụ: {categoryText}\r\nThời gian: {gorder.TimeCreate}\r\nĐịa điểm [địa điểm garage]: {garage.AddressDetail}r\n\r\nQuý khách vui lòng mang xe đến đúng thời gian đặt lịch\r\n{garage.GarageName} chân thành cảm ơn quý khách !");
+                _emailService.SendMailAsync(gorder.Email, gorder.Name, "Lịch đặt của bạn đã được xác nhận!",
+                $"<h1>Lịch đặt của bạn đã được{garage.GarageName} xác nhận</h1><br/>" +
+                $"Garage: {garage.GarageName}<br/>" +
+                $"Loại dịch vụ: {categoryText}<br/>Thời gian: {gorder.TimeCreate}<br/>" +
+                $"Địa điểm: {garage.AddressDetail}<br/>" +
+                $"Quý khách vui lòng mang xe đến đúng thời gian đặt lịch<br/><br/>" +
+                $"{garage.GarageName} chân thành cảm ơn quý khách !");
             }
         }
 
@@ -405,15 +419,20 @@ namespace Services.OrderService
                 var car = _carRepository.GetCarById(order.CarID);
                 var user = _usersRepository.GetUserByID(car.UserID);
                 var garage = _garageRepository.GetGaragesByID(order.GarageID);
-                var categoryGarage = order.OrderDetails.Select(x => x.CategoryGarageID).ToList();
-                var category = garage.CategoryGarages.Where(x => categoryGarage.Any(c => c == x.CategoryGarageID)).Select(x => x.CategoryName);
-                string categoryText = category.FirstOrDefault();
-                for (int i = 1; i < categoryGarage.Count; i++)
+                var categoryGarageId = order.OrderDetails.Select(x => x.CategoryGarageID).ToList();
+                var categoryGarage = garage.CategoryGarages.Where(x => categoryGarageId.Any(c => c == x.CategoryGarageID)).ToList();
+                var category = _categoryRepository.GetCategory().Where(x => categoryGarage.Any(c => c.CategoryID == x.CategoryID)).ToList();
+                string categoryText = category.FirstOrDefault().CategoryName;
+                for (int i = 1; i < category.Count(); i++)
                 {
-                    categoryText += "," + categoryGarage[i];
+                    categoryText += "," + category[i].CategoryName;
                 }
-                _emailService.SendMailAsync(user.EmailAddress, user.Name, "Lịch đặt của bạn đã bị từ chối!", "",
-                $"Garage: {garage.GarageName}\r\nLoại dịch vụ: {categoryText}\r\nThời gian: {order.TimeCreate}\r\nĐịa điểm [địa điểm garage]: {garage.AddressDetail}");
+                _emailService.SendMailAsync(user.EmailAddress, user.Name, "Lịch đặt của bạn đã bị từ chối!",
+                $"<h1>Lịch đặt của bạn đã bị {garage.GarageName} từ chối</h1><br/>" +
+                $"Garage: {garage.GarageName}<br/>" +
+                $"Loại dịch vụ: {categoryText}<br/>" +
+                $"Thời gian: {order.TimeCreate}<br/>" +
+                $"Địa điểm: {garage.AddressDetail}");
             }
             else
             {
@@ -431,15 +450,20 @@ namespace Services.OrderService
                 _guestOrderRepository.Update(gorder);
 
                 var garage = _garageRepository.GetGaragesByID(gorder.GarageID);
-                var categoryGarage = gorder.GuestOrderDetails.Select(x => x.CategoryGarageID).ToList();
-                var category = garage.CategoryGarages.Where(x => categoryGarage.Any(c => c == x.CategoryGarageID)).Select(x => x.CategoryName);
-                string categoryText = category.FirstOrDefault();
-                for (int i = 1; i < categoryGarage.Count; i++)
+                var categoryGarageId = order.OrderDetails.Select(x => x.CategoryGarageID).ToList();
+                var categoryGarage = garage.CategoryGarages.Where(x => categoryGarageId.Any(c => c == x.CategoryGarageID)).ToList();
+                var category = _categoryRepository.GetCategory().Where(x => categoryGarage.Any(c => c.CategoryID == x.CategoryID)).ToList();
+                string categoryText = category.FirstOrDefault().CategoryName;
+                for (int i = 1; i < category.Count(); i++)
                 {
-                    categoryText += "," + categoryGarage[i];
+                    categoryText += "," + category[i].CategoryName;
                 }
-                _emailService.SendMailAsync(gorder.Email, gorder.Name, "Lịch đặt của bạn đã bị từ chối!", "",
-                $"Garage: {garage.GarageName}\r\nLoại dịch vụ: {categoryText}\r\nThời gian: {gorder.TimeCreate}\r\nĐịa điểm [địa điểm garage]: {garage.AddressDetail}");
+                _emailService.SendMailAsync(gorder.Email, gorder.Name, "Lịch đặt của bạn đã bị từ chối!",
+                $"<h1>Lịch đặt của bạn đã bị {garage.GarageName} từ chối</h1><br/>" +
+                $"Garage: {garage.GarageName}<br/>" +
+                $"Loại dịch vụ: {categoryText}<br/>" +
+                $"Thời gian: {gorder.TimeCreate}<br/>" +
+                $"Địa điểm: {garage.AddressDetail}");
             }
         }
 
