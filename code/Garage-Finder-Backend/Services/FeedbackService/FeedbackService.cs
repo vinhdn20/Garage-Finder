@@ -67,6 +67,7 @@ namespace Services.FeedbackService
                 var user = _usersRepository.GetUserByID(car.UserID);
                 var fbDTO = _mapper.Map<FeedbackDTO>(fb);
                 fbDTO.LinkImage = user.LinkImage;
+                fbDTO.Name = user.Name;
                 feedbackDTOs.Add(fbDTO);
             }
             return feedbackDTOs;
