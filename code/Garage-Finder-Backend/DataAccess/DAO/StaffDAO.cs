@@ -32,7 +32,22 @@ namespace DataAccess.DAO
 
             }
         }
-
+        public List<Staff> GetAll()
+        {
+            List<Staff> staffList = new List<Staff>();
+            try
+            {
+                using (var context = new GFDbContext())
+                {
+                    staffList = context.Staff.ToList();
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message + "\n" + e.InnerException);
+            }
+            return staffList;
+        }
         public List<Staff> GetStaffByGarageID(int GarageID)
         {
             List<Staff> staffList = new List<Staff>();

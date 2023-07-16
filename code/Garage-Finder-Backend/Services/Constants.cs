@@ -19,5 +19,6 @@ namespace Services
         public const string ROLE_USER = "user";
         public const string ROLE_STAFF = "staff";
         public static readonly List<string> STAFF_STATUS = new List<string>() {BLOCK_STAFF, OPEN_STAFF};
+        public const string DELETE_GARAGE = "delete";
     }
 }

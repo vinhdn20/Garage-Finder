@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Repositories.Interfaces;
+using System.Runtime.InteropServices;
 using System.Security.Claims;
 
 namespace Garage_Finder_Backend.Controllers
@@ -16,11 +17,13 @@ namespace Garage_Finder_Backend.Controllers
     public class CarController : ControllerBase
     {
         private readonly ICarRepository carRepository;
+        private readonly IOrderRepository orderRepository;
         private readonly IMapper mapper;
-        public CarController(ICarRepository carRepository, IMapper mapper)
+        public CarController(ICarRepository carRepository, IMapper mapper, IOrderRepository orderRepository)
         {
             this.carRepository = carRepository;
             this.mapper = mapper;
+            this.orderRepository = orderRepository;
         }
 
         //[HttpGet("GetAll")]
@@ -111,6 +114,11 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
+                var user = User.GetTokenInfor();
+                if(orderRepository.GetAllOrdersByUserId(user.UserID).Any(x => x.CarID == id))
+                {
+                    throw new Exception("The car cannot be deleted. This car has been ordered");
+                }
                 carRepository.DeleteCar(id);
                 return Ok("SUCCESS");
             }

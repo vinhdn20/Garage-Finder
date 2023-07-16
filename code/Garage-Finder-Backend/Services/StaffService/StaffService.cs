@@ -52,11 +52,12 @@ namespace Services.StaffService
             {
                 throw new Exception("Employee id already exist");
             }
-            if (staffs.Any(x => x.EmailAddress.Equals(addStaff.EmailAddress)))
+            var allStaff = _staffRepository.GetAll();
+            if (allStaff.Any(x => x.EmailAddress.Equals(addStaff.EmailAddress)))
             {
                 throw new Exception("EmailAddress already exist");
             }
-            if (staffs.Any(x => x.PhoneNumber.Equals(addStaff.PhoneNumber)))
+            if (allStaff.Any(x => x.PhoneNumber.Equals(addStaff.PhoneNumber)))
             {
                 throw new Exception("PhoneNumber already exist");
             }
