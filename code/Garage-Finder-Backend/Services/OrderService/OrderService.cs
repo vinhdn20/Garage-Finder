@@ -357,7 +357,7 @@ namespace Services.OrderService
                 {
                     categoryText += "," + categoryGarage[i];
                 }
-                _emailService.SendMailAsync(user.EmailAddress, user.Name, "Lịch đặt của bạn đã được xác nhận!",
+                _emailService.SendMailAsync(user.EmailAddress, user.Name, "Lịch đặt của bạn đã được xác nhận!", "",
                 $"Garage: {garage.GarageName}\r\nLoại dịch vụ: {categoryText}\r\nThời gian: {order.TimeCreate}\r\nĐịa điểm [địa điểm garage]: {garage.AddressDetail}r\n\r\nQuý khách vui lòng mang xe đến đúng thời gian đặt lịch\r\n{garage.GarageName} chân thành cảm ơn quý khách !");
             }
             else
@@ -382,7 +382,7 @@ namespace Services.OrderService
                 {
                     categoryText += "," + categoryGarage[i];
                 }
-                _emailService.SendMailAsync(gorder.Email, gorder.Name, "Lịch đặt của bạn đã được xác nhận!",
+                _emailService.SendMailAsync(gorder.Email, gorder.Name, "Lịch đặt của bạn đã được xác nhận!","",
                 $"Garage: {garage.GarageName}\r\nLoại dịch vụ: {categoryText}\r\nThời gian: {gorder.TimeCreate}\r\nĐịa điểm [địa điểm garage]: {garage.AddressDetail}r\n\r\nQuý khách vui lòng mang xe đến đúng thời gian đặt lịch\r\n{garage.GarageName} chân thành cảm ơn quý khách !");
             }
         }
@@ -412,8 +412,8 @@ namespace Services.OrderService
                 {
                     categoryText += "," + categoryGarage[i];
                 }
-                _emailService.SendMailAsync(user.EmailAddress, user.Name, "Lịch đặt của bạn đã bị từ chối!",
-                $"Garage: {garage.GarageName}\r\nLoại dịch vụ: {categoryText}\r\nThời gian: {order.TimeCreate}\r\nĐịa điểm [địa điểm garage]: {garage.AddressDetail}r");
+                _emailService.SendMailAsync(user.EmailAddress, user.Name, "Lịch đặt của bạn đã bị từ chối!", "",
+                $"Garage: {garage.GarageName}\r\nLoại dịch vụ: {categoryText}\r\nThời gian: {order.TimeCreate}\r\nĐịa điểm [địa điểm garage]: {garage.AddressDetail}");
             }
             else
             {
@@ -438,8 +438,8 @@ namespace Services.OrderService
                 {
                     categoryText += "," + categoryGarage[i];
                 }
-                _emailService.SendMailAsync(gorder.Email, gorder.Name, "Lịch đặt của bạn đã bị từ chối!",
-                $"Garage: {garage.GarageName}\r\nLoại dịch vụ: {categoryText}\r\nThời gian: {gorder.TimeCreate}\r\nĐịa điểm [địa điểm garage]: {garage.AddressDetail}r");
+                _emailService.SendMailAsync(gorder.Email, gorder.Name, "Lịch đặt của bạn đã bị từ chối!", "",
+                $"Garage: {garage.GarageName}\r\nLoại dịch vụ: {categoryText}\r\nThời gian: {gorder.TimeCreate}\r\nĐịa điểm [địa điểm garage]: {garage.AddressDetail}");
             }
         }
 
@@ -471,8 +471,8 @@ namespace Services.OrderService
                 gorder.Status = Constants.STATUS_ORDER_CANCELED;
                 gorder.TimeUpdate = DateTime.UtcNow;
                 _guestOrderRepository.Update(gorder);
-                _emailService.SendMailAsync(gorder.Email, gorder.Name, "Your order create success!",
-                $"<h3>Dear {gorder.Name}, Your order create success!</h3>");
+                //_emailService.SendMailAsync(gorder.Email, gorder.Name, "Your order create success!",
+                //$"<h3>Dear {gorder.Name}, Your order create success!</h3>");
             }
         }
 
@@ -545,8 +545,8 @@ namespace Services.OrderService
                     gorder.FileOrders.Add(fileOrdersDTO);
                 }
                 _guestOrderRepository.Update(gorder);
-                _emailService.SendMailAsync(gorder.Email, gorder.Name, "Your order create success!",
-                $"<h3>Dear {gorder.Name}, Your order create success!</h3>");
+                //_emailService.SendMailAsync(gorder.Email, gorder.Name, "Your order create success!",
+                //$"<h3>Dear {gorder.Name}, Your order create success!</h3>");
             }
         }
 

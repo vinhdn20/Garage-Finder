@@ -55,5 +55,23 @@ namespace Garage_Finder_Backend.Controllers
                 return BadRequest(e.Message);
             }
         }
+
+        [HttpPost("getByGFOrderId/{id}")]
+        [Authorize(Roles = Constants.ROLE_USER)]
+        public IActionResult GetByGFOrderId(int id)
+        {
+            try
+            {
+                var user = User.GetTokenInfor();
+                var feedback = _feedbackService.GetFeedbackByGFOrderId(id, user.UserID);
+
+                return Ok(feedback);
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(e.Message);
+            }
+        }
     }
 }
