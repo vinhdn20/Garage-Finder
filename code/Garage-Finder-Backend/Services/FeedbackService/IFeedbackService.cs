@@ -11,5 +11,6 @@ namespace Services.FeedbackService
     {
         void AddFeedback(AddFeedbackDTO addFeedback, int userId);
         List<FeedbackDTO> GetFeedbackByGarage(int garageId);
+        FeedbackDTO GetFeedbackByGFOrderId(int gfId, int userId);
     }
 }

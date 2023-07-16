@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Repositories.Interfaces;
-using System.Runtime.InteropServices;
+using Services;
 using System.Security.Claims;
 
 namespace Garage_Finder_Backend.Controllers
@@ -76,6 +76,10 @@ namespace Garage_Finder_Backend.Controllers
             try
             {
                 var user = User.GetTokenInfor();
+                if (!car.LicensePlates.IsValidLicensePlates())
+                {
+                    throw new Exception("License Plates not valid");
+                }
                 CarDTO carDTO = mapper.Map<AddCarDTO, CarDTO>(car);
                 carDTO.UserID = user.UserID;
                 carDTO = carRepository.SaveCar(carDTO);
@@ -84,7 +88,6 @@ namespace Garage_Finder_Backend.Controllers
             }
             catch (Exception e)
             {
-
                 return BadRequest(e.Message);
             }
         }
