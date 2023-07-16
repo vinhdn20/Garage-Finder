@@ -290,6 +290,11 @@ namespace Services.OrderService
                 throw new Exception("Verification code not correct");
             }
 
+            if (!addOrder.LicensePlates.IsValidLicensePlates())
+            {
+                throw new Exception("License Plates not valid");
+            }
+
             addOrder.CategoryGargeId.ForEach(x => CheckCategoryExits(x));
             CarDTO carDTO = new CarDTO()
             {
