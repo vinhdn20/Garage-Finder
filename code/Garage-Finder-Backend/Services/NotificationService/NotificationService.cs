@@ -49,6 +49,7 @@ namespace Services.NotificationService
             var staffs = _staffRepository.GetByGarageId(order.GarageID);
             foreach (var staff in staffs)
             {
+                notification.StaffNotificationID = 0;
                 notification.StaffId = staff.StaffId;
                 _notifcationRepository.AddStaffNotification(notification);
             }
