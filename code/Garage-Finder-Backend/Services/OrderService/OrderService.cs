@@ -219,7 +219,8 @@ namespace Services.OrderService
                 GarageID = addOrder.garageId,
                 TimeCreate = DateTime.UtcNow,
                 Status = Constants.STATUS_ORDER_OPEN,
-                TimeAppointment = addOrder.TimeAppointment,
+                TimeAppointment = DateTime.ParseExact(addOrder.TimeAppointment, "dd/MM/yyyy hh:mm tt",
+                 System.Globalization.CultureInfo.InvariantCulture),
                 OrderDetails = orderDetails,
                 PhoneNumber = addOrder.PhoneNumber,
             };
@@ -345,7 +346,7 @@ namespace Services.OrderService
 
                 order.Status = Constants.STATUS_ORDER_CONFIRMED;
                 order.TimeUpdate = DateTime.UtcNow;
-                //_orderRepository.Update(order);
+                _orderRepository.Update(order);
                 _notificationService.SendNotificatioToUser(order, userId);
 
                 var car = _carRepository.GetCarById(order.CarID);
