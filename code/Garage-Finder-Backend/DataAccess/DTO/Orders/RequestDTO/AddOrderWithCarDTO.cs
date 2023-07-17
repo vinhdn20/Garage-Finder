@@ -13,6 +13,6 @@ namespace DataAccess.DTO.Orders.RequestDTO
         public int carId { get; set; }
         public int garageId { get; set; }
         public List<int> categoryGarageId { get; set; }
-        public DateTime TimeAppointment { get; set; }
+        public string TimeAppointment { get; set; }
     }
 }
