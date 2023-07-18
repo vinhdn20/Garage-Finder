@@ -144,5 +144,6 @@ app.UseCors("AllowAnyOrigins");
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+app.UseDeveloperExceptionPage();
 
 app.Run();
