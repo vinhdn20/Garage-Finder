@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DataAccess.DTO.Feedback;
 using GFData.Models.Entity;
+using Mailjet.Client.Resources;
 using Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -41,7 +42,15 @@ namespace Services.FeedbackService
             }
             var order = orders.Find(x => x.GFOrderID.Equals(addFeedback.GFOrderID));
             var feebbacks = _feedbackRepository.GetListByGarage(order.GarageID);
-            if(feebbacks.Count >= orders.Count)
+            if(feebbacks.Any(x => x.OrderID == order.OrderID))
+            {
+                var fb = feebbacks.FirstOrDefault(x => x.OrderID == order.OrderID);
+                fb.Star = addFeedback.Star;
+                fb.Content = addFeedback.Content;
+                _feedbackRepository.Update(fb);
+                return;
+            }
+            if (feebbacks.Count >= orders.Count)
             {
                 throw new Exception("Can not add order");
             }
@@ -71,6 +80,25 @@ namespace Services.FeedbackService
                 feedbackDTOs.Add(fbDTO);
             }
             return feedbackDTOs;
+        }
+
+        public FeedbackDTO GetFeedbackByGFOrderId(int gfId, int userId)
+        {
+            var order = _orderRepository.GetOrderByGFId(gfId);
+            var feebbacks = _feedbackRepository.GetListByGarage(order.GarageID);
+            if (feebbacks.Any(x => x.OrderID == order.OrderID))
+            {
+                var fb = feebbacks.FirstOrDefault(x => x.OrderID == order.OrderID);
+                var fbDTO = _mapper.Map<FeedbackDTO>(fb);
+                var car = _carRepository.GetCarById(order.CarID);
+                var user = _usersRepository.GetUserByID(car.UserID);
+                fbDTO.LinkImage = user.LinkImage;
+                return fbDTO;
+            }
+            else
+            {
+                throw new Exception("can not find order");
+            }
         }
     }
 }

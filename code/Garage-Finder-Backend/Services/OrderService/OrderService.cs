@@ -12,6 +12,7 @@ using Services.EmailService;
 using Services.NotificationService;
 using Services.PhoneVerifyService;
 using Services.WebSocket;
+using System.Runtime.InteropServices;
 
 namespace Services.OrderService
 {
@@ -218,7 +219,8 @@ namespace Services.OrderService
                 GarageID = addOrder.garageId,
                 TimeCreate = DateTime.UtcNow,
                 Status = Constants.STATUS_ORDER_OPEN,
-                TimeAppointment = addOrder.TimeAppointment,
+                TimeAppointment = DateTime.ParseExact(addOrder.TimeAppointment, "dd/MM/yyyy hh:mm tt",
+                 System.Globalization.CultureInfo.InvariantCulture),
                 OrderDetails = orderDetails,
                 PhoneNumber = addOrder.PhoneNumber,
             };
@@ -226,8 +228,8 @@ namespace Services.OrderService
             _orderRepository.Add(ordersDTO);
             //Todo: gửi vào email
             var user = _usersRepository.GetUserByID(car.UserID);
-            _emailService.SendMailAsync(user.EmailAddress, user.Name, "Your order create success!",
-                $"<h3>Dear {user.Name}, Your order create success!</h3>");
+            //_emailService.SendMailAsync(user.EmailAddress, user.Name, "Your order create success!",
+            //    $"<h3>Dear {user.Name}, Your order create success!</h3>");
 
             _notificationService.SendNotificationToStaff(ordersDTO, user.UserID);
         }
@@ -274,8 +276,8 @@ namespace Services.OrderService
 
             _guestOrderRepository.Add(guestOrder);
             //Todo: gửi vào email
-            _emailService.SendMailAsync(addOrder.Email, addOrder.Name, "Your order create success!",
-                $"<h3>Dear {addOrder.Name}, Your order create success!</h3>");
+            //_emailService.SendMailAsync(addOrder.Email, addOrder.Name, "Your order create success!",
+            //    $"<h3>Dear {addOrder.Name}, Your order create success!</h3>");
             _notificationService.SendNotificationToStaff(guestOrder);
         }
 
@@ -288,6 +290,11 @@ namespace Services.OrderService
             if (!_phoneVerifyService.VerifyPhoneNumber(addOrder.VerificationCode, addOrder.PhoneNumber).Result)
             {
                 throw new Exception("Verification code not correct");
+            }
+
+            if (!addOrder.LicensePlates.IsValidLicensePlates())
+            {
+                throw new Exception("License Plates not valid");
             }
 
             addOrder.CategoryGargeId.ForEach(x => CheckCategoryExits(x));
@@ -322,15 +329,15 @@ namespace Services.OrderService
             _orderRepository.Add(ordersDTO);
             //Todo: gửi vào email
             var user = _usersRepository.GetUserByID(car.UserID);
-            _emailService.SendMailAsync(user.EmailAddress, user.Name, "Your order create success!",
-                $"<h3>Dear {user.Name}, Your order create success!</h3>");
+            //_emailService.SendMailAsync(user.EmailAddress, user.Name, "Your order create success!",
+            //    $"<h3>Dear {user.Name}, Your order create success!</h3>");
             _notificationService.SendNotificationToStaff(ordersDTO, user.UserID);
         }
         #region Order
         public void GarageAcceptOrder(int GFId, int userId)
         {
             var order = _orderRepository.GetOrderByGFId(GFId);
-            if(order != null)
+            if (order != null)
             {
                 if (!CheckGarageCanAcceptOrReject(userId, order))
                 {
@@ -341,6 +348,26 @@ namespace Services.OrderService
                 order.TimeUpdate = DateTime.UtcNow;
                 _orderRepository.Update(order);
                 _notificationService.SendNotificatioToUser(order, userId);
+
+                var car = _carRepository.GetCarById(order.CarID);
+                var user = _usersRepository.GetUserByID(car.UserID);
+                var garage = _garageRepository.GetGaragesByID(order.GarageID);
+                var categoryGarageId = order.OrderDetails.Select(x => x.CategoryGarageID).ToList();
+                var categoryGarage = garage.CategoryGarages.Where(x => categoryGarageId.Any(c => c == x.CategoryGarageID)).ToList();
+                var category = _categoryRepository.GetCategory().Where(x => categoryGarage.Any(c => c.CategoryID == x.CategoryID)).ToList();
+                string categoryText = category.FirstOrDefault().CategoryName;
+                for (int i = 1; i < category.Count(); i++)
+                {
+                    categoryText += "," + category[i].CategoryName;
+                }
+                _emailService.SendMailAsync(user.EmailAddress, user.Name, "Lịch đặt của bạn đã được xác nhận!",
+                $"<h1>Lịch đặt của bạn đã được {garage.GarageName} xác nhận</h1><br/>" +
+                $"Garage: {garage.GarageName}<br/>" +
+                $"Loại dịch vụ: {categoryText}<br/>" +
+                $"Thời gian: {order.TimeCreate}<br/>" +
+                $"Địa điểm: {garage.AddressDetail}<br/>" +
+                $"Quý khách vui lòng mang xe đến đúng thời gian đặt lịch<br/><br/>" +
+                $"{garage.GarageName} chân thành cảm ơn quý khách !");
             }
             else
             {
@@ -356,8 +383,22 @@ namespace Services.OrderService
                 gorder.Status = Constants.STATUS_ORDER_CONFIRMED;
                 gorder.TimeUpdate = DateTime.UtcNow;
                 _guestOrderRepository.Update(gorder);
-                _emailService.SendMailAsync(gorder.Email, gorder.Name, "Your order create success!",
-                $"<h3>Dear {gorder.Name}, Your order create success!</h3>");
+                var garage = _garageRepository.GetGaragesByID(gorder.GarageID);
+                var categoryGarageId = order.OrderDetails.Select(x => x.CategoryGarageID).ToList();
+                var categoryGarage = garage.CategoryGarages.Where(x => categoryGarageId.Any(c => c == x.CategoryGarageID)).ToList();
+                var category = _categoryRepository.GetCategory().Where(x => categoryGarage.Any(c => c.CategoryID == x.CategoryID)).ToList();
+                string categoryText = category.FirstOrDefault().CategoryName;
+                for (int i = 1; i < category.Count(); i++)
+                {
+                    categoryText += "," + category[i].CategoryName;
+                }
+                _emailService.SendMailAsync(gorder.Email, gorder.Name, "Lịch đặt của bạn đã được xác nhận!",
+                $"<h1>Lịch đặt của bạn đã được{garage.GarageName} xác nhận</h1><br/>" +
+                $"Garage: {garage.GarageName}<br/>" +
+                $"Loại dịch vụ: {categoryText}<br/>Thời gian: {gorder.TimeCreate}<br/>" +
+                $"Địa điểm: {garage.AddressDetail}<br/>" +
+                $"Quý khách vui lòng mang xe đến đúng thời gian đặt lịch<br/><br/>" +
+                $"{garage.GarageName} chân thành cảm ơn quý khách !");
             }
         }
 
@@ -375,6 +416,24 @@ namespace Services.OrderService
                 order.TimeUpdate = DateTime.UtcNow;
                 _orderRepository.Update(order);
                 _notificationService.SendNotificatioToUser(order, userId);
+
+                var car = _carRepository.GetCarById(order.CarID);
+                var user = _usersRepository.GetUserByID(car.UserID);
+                var garage = _garageRepository.GetGaragesByID(order.GarageID);
+                var categoryGarageId = order.OrderDetails.Select(x => x.CategoryGarageID).ToList();
+                var categoryGarage = garage.CategoryGarages.Where(x => categoryGarageId.Any(c => c == x.CategoryGarageID)).ToList();
+                var category = _categoryRepository.GetCategory().Where(x => categoryGarage.Any(c => c.CategoryID == x.CategoryID)).ToList();
+                string categoryText = category.FirstOrDefault().CategoryName;
+                for (int i = 1; i < category.Count(); i++)
+                {
+                    categoryText += "," + category[i].CategoryName;
+                }
+                _emailService.SendMailAsync(user.EmailAddress, user.Name, "Lịch đặt của bạn đã bị từ chối!",
+                $"<h1>Lịch đặt của bạn đã bị {garage.GarageName} từ chối</h1><br/>" +
+                $"Garage: {garage.GarageName}<br/>" +
+                $"Loại dịch vụ: {categoryText}<br/>" +
+                $"Thời gian: {order.TimeCreate}<br/>" +
+                $"Địa điểm: {garage.AddressDetail}");
             }
             else
             {
@@ -390,8 +449,22 @@ namespace Services.OrderService
                 gorder.Status = Constants.STATUS_ORDER_REJECT;
                 gorder.TimeUpdate = DateTime.UtcNow;
                 _guestOrderRepository.Update(gorder);
-                _emailService.SendMailAsync(gorder.Email, gorder.Name, "Your order create success!",
-                $"<h3>Dear {gorder.Name}, Your order create success!</h3>");
+
+                var garage = _garageRepository.GetGaragesByID(gorder.GarageID);
+                var categoryGarageId = order.OrderDetails.Select(x => x.CategoryGarageID).ToList();
+                var categoryGarage = garage.CategoryGarages.Where(x => categoryGarageId.Any(c => c == x.CategoryGarageID)).ToList();
+                var category = _categoryRepository.GetCategory().Where(x => categoryGarage.Any(c => c.CategoryID == x.CategoryID)).ToList();
+                string categoryText = category.FirstOrDefault().CategoryName;
+                for (int i = 1; i < category.Count(); i++)
+                {
+                    categoryText += "," + category[i].CategoryName;
+                }
+                _emailService.SendMailAsync(gorder.Email, gorder.Name, "Lịch đặt của bạn đã bị từ chối!",
+                $"<h1>Lịch đặt của bạn đã bị {garage.GarageName} từ chối</h1><br/>" +
+                $"Garage: {garage.GarageName}<br/>" +
+                $"Loại dịch vụ: {categoryText}<br/>" +
+                $"Thời gian: {gorder.TimeCreate}<br/>" +
+                $"Địa điểm: {garage.AddressDetail}");
             }
         }
 
@@ -423,8 +496,8 @@ namespace Services.OrderService
                 gorder.Status = Constants.STATUS_ORDER_CANCELED;
                 gorder.TimeUpdate = DateTime.UtcNow;
                 _guestOrderRepository.Update(gorder);
-                _emailService.SendMailAsync(gorder.Email, gorder.Name, "Your order create success!",
-                $"<h3>Dear {gorder.Name}, Your order create success!</h3>");
+                //_emailService.SendMailAsync(gorder.Email, gorder.Name, "Your order create success!",
+                //$"<h3>Dear {gorder.Name}, Your order create success!</h3>");
             }
         }
 
@@ -497,8 +570,8 @@ namespace Services.OrderService
                     gorder.FileOrders.Add(fileOrdersDTO);
                 }
                 _guestOrderRepository.Update(gorder);
-                _emailService.SendMailAsync(gorder.Email, gorder.Name, "Your order create success!",
-                $"<h3>Dear {gorder.Name}, Your order create success!</h3>");
+                //_emailService.SendMailAsync(gorder.Email, gorder.Name, "Your order create success!",
+                //$"<h3>Dear {gorder.Name}, Your order create success!</h3>");
             }
         }
 
