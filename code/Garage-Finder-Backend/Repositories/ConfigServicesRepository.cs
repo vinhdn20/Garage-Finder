@@ -1,5 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Repositories.Implements;
+using Repositories.Implements.AdminRepository;
 using Repositories.Implements.BrandRepository;
 using Repositories.Implements.CarRepository;
 using Repositories.Implements.CategoryRepository;
@@ -44,6 +45,7 @@ namespace Repositories
             services.AddScoped<IStaffRefreshTokenRepository, StaffRefreshTokenRepository>();
             services.AddScoped<INotifcationRepository, NotifcationRepository>();
             services.AddScoped<IChatRepository, ChatRepository>();
+            services.AddScoped<IAdminRepository, AdminRepository>();
         }
     }
 }

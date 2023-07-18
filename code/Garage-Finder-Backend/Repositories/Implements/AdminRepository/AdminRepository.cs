@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using DataAccess.DAO;
+using DataAccess.DTO.Admin;
 using DataAccess.DTO.Garage;
-using DataAccess.DTO.User.RequestDTO;
 using GFData.Models.Entity;
 using Repositories.Interfaces;
 using System;
@@ -14,30 +14,29 @@ namespace Repositories.Implements.AdminRepository
 {
     public class AdminRepository : IAdminRepository
     {
-        private readonly IGarageRepository garageRepository;
         private readonly IMapper _mapper;
         public AdminRepository(IMapper mapper)
         {
             _mapper = mapper;
         }
 
-
+        public List<GarageDTO> GetGarages()
+        {
+            return GarageDAO.Instance.GetGarages().Select(p => _mapper.Map<GFData.Models.Entity.Garage, GarageDTO>(p)).ToList();
+        }
         public List<UserAdminDTO> GetAllUser()
         {
-            var garages = garageRepository.GetGarages();
+            var garages = GetGarages();
             var result = UsersDAO.Instance.FindAll().Select(m => _mapper.Map<Users, UserAdminDTO>(m)).ToList();
-            foreach (var user in result) 
+            foreach (var user in result)
             {
-                foreach(var garage in garages)
+                if (garages.Any(x => x.UserID == user.UserID))
                 {
-                    if (user.UserID == garage.UserID)
-                    {
-                        user.HaveGarage = true;
-                    }
-                    else 
-                    {
-                        user.HaveGarage = false;
-                    }
+                    user.HaveGarage = true;
+                }
+                else 
+                {
+                    user.HaveGarage = false;
                 }
             }
             return result;

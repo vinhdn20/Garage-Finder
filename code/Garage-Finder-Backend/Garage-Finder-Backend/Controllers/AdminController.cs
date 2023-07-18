@@ -9,7 +9,7 @@ namespace Garage_Finder_Backend.Controllers
     public class AdminController : ControllerBase
     {
         private readonly IGarageRepository garageRepository;
-        private readonly IAdminRepository adminRepository; 
+        private readonly IAdminRepository adminRepository;
 
         public AdminController(IGarageRepository garageRepository, IAdminRepository adminRepository)
         {
@@ -19,49 +19,74 @@ namespace Garage_Finder_Backend.Controllers
 
         [HttpGet("GetUsers")]
         //[Authorize(Roles = $"{Constants.ROLE_ADMIN}")]
-        public IActionResult GetAllUsers()
+        public IActionResult GetAllUsers(string? keyword)
         {
             try
             {
                 var result = adminRepository.GetAllUser();
+                if (!string.IsNullOrEmpty(keyword))
+                {
+                    result = result.Where(g => g.Name.ToLower().Contains(keyword.ToLower())).ToList();
+                }
                 return Ok(result);
-            } catch
-            {
-                return BadRequest();
             }
-            
+            catch (Exception e)
+            {
+                return StatusCode(500, $"Đã xảy ra lỗi: {e.Message}");
+            }
+
         }
 
         [HttpGet("GetUsersTotal")]
-        [Authorize(Roles = $"{Constants.ROLE_USER}")]
+        //[Authorize(Roles = $"{Constants.ROLE_USER}")]
         public IActionResult GetTotalUser()
         {
-            var result = adminRepository.GetAllUser().Count();
-            return Ok(result);
+            try
+            {
+                var result = adminRepository.GetAllUser().Count();
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, $"Đã xảy ra lỗi: {e.Message}");
+            }
+
         }
 
         [HttpGet("GetGarages")]
-        [Authorize(Roles = $"{Constants.ROLE_USER}")]
-        public IActionResult GetAllGarage()
+        //[Authorize(Roles = $"{Constants.ROLE_USER}")]
+        public IActionResult GetAllGarage(string? keyword)
         {
             try
             {
                 var garages = garageRepository.GetGarages();
+                if (!string.IsNullOrEmpty(keyword))
+                {
+                    garages = garages.Where(g => g.GarageName.ToLower().Contains(keyword.ToLower())).ToList();
+                }
                 return Ok(garages);
             }
             catch (Exception e)
             {
 
-                return BadRequest(e.Message);
+                return StatusCode(500, $"Đã xảy ra lỗi: {e.Message}");
             }
         }
 
         [HttpGet("GetGaragesTotal")]
-        [Authorize(Roles = $"{Constants.ROLE_USER}")]
+        //[Authorize(Roles = $"{Constants.ROLE_USER}")]
         public IActionResult GetTotalGarage()
         {
-            var result = garageRepository.GetGarages().Count();
-            return Ok(result);
+            try
+            {
+                var result = garageRepository.GetGarages().Count();
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+
+                return StatusCode(500, $"Đã xảy ra lỗi: {e.Message}");
+            }
         }
 
 

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataAccess.DTO.User.RequestDTO
+namespace DataAccess.DTO.Admin
 {
     public class UserAdminDTO
     {
@@ -15,7 +15,7 @@ namespace DataAccess.DTO.User.RequestDTO
         public int? ProvinceId { get; set; }
         public int? DistrictId { get; set; }
         public string AddressDetail { get; set; }
-        public Boolean HaveGarage { get; set; }   
+        public bool HaveGarage { get; set; }
         public string Status { get; set; }
     }
 }
