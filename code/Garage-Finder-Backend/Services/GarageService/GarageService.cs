@@ -29,12 +29,12 @@ namespace Services.GarageService
         }
         public void Add(AddGarageDTO addGarage, int userID)
         {
-            if (addGarage.PhoneNumber.IsValidPhone())
+            if (!addGarage.PhoneNumber.IsValidPhone())
             {
                 throw new Exception("Phone number not valid");
             }
 
-            if (addGarage.EmailAddress.IsValidEmail())
+            if (!addGarage.EmailAddress.IsValidEmail())
             {
                 throw new Exception("Email not valid");
             }
