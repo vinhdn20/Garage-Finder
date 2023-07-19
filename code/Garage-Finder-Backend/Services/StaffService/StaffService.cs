@@ -99,6 +99,11 @@ namespace Services.StaffService
             {
                 throw new Exception("Account not found");
             }
+
+            if (staff.Status is not null && staff.Status.Equals(Constants.BLOCK_STAFF))
+            {
+                throw new Exception("Account is block");
+            }
             LoginStaffDTO loginStaff = _mapper.Map<LoginStaffDTO>(staff);
             var tokenInfor = GenerateTokenInfor(staff.StaffId, Constants.ROLE_STAFF);
             var accessToken = _jwtService.GenerateJwtForStaff(tokenInfor, _jwtSettings);
@@ -125,7 +130,10 @@ namespace Services.StaffService
                     else
                     {
                         var userDTO = _staffRepository.GetById(userId);
-
+                        if (userDTO.Status is not null && userDTO.Status.Equals(Constants.BLOCK_STAFF))
+                        {
+                            throw new Exception("Account is block");
+                        }
                         var tokenInfor = GenerateTokenInfor(userDTO.StaffId, Constants.ROLE_STAFF);
                         string token = _jwtService.GenerateJwtForStaff(tokenInfor, _jwtSettings);
 
@@ -143,12 +151,20 @@ namespace Services.StaffService
         public StaffDTO GetMyInfor(int id)
         {
             var staff = _mapper.Map<StaffDTO>(_staffRepository.GetById(id));
+            if (staff.Status is not null && staff.Status.Equals(Constants.BLOCK_STAFF))
+            {
+                throw new Exception("Account is block");
+            }
             return staff;
         }
 
         public void UpdateStaff(UpdateStaffDTO staff, int userId)
         {
             var stafDB = _staffRepository.GetById(staff.StaffId);
+            if (stafDB.Status is not null && userId == staff.StaffId && stafDB.Status.Equals(Constants.BLOCK_STAFF))
+            {
+                throw new Exception("Account is block");
+            }
             if (!ValidationGarageOwner(stafDB.GarageID, userId) || userId == staff.StaffId)
             {
                 throw new Exception("Authorize exception!");

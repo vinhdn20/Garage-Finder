@@ -20,6 +20,7 @@ namespace DataAccess.DTO.Staff
         public string Status { get; set; }
         public string EmailAddress { get; set; }
         public string AccessToken { get; set; }
+        public int GarageID { get; set; }
         public StaffRefreshToken RefreshToken { get; set; }
     }
 }
