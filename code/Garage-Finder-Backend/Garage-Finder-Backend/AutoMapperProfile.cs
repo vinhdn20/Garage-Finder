@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DataAccess.DTO;
+using DataAccess.DTO.Admin;
 using DataAccess.DTO.Car;
 using DataAccess.DTO.Category;
 using DataAccess.DTO.Feedback;
@@ -103,6 +104,7 @@ namespace Garage_Finder_Backend
             CreateMap<UpdateStaffDTO, Staff>();
             CreateMap<Staff, StaffDTO>();
             CreateMap<Staff, LoginStaffDTO>();
+            CreateMap<Users, UserAdminDTO>();
         }
     }
 }

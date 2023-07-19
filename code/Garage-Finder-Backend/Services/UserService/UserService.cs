@@ -51,6 +51,19 @@ namespace Services.UserService
             }
         }
 
+        public UserInfor GetAll()
+        {
+            try
+            {
+                var userDTO = _userRepository.GetAll();
+                var result = _mapper.Map<UserInfor>(userDTO);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
         public void UpdateUser(UserUpdateDTO usersDTO, int userID)
         {
             try

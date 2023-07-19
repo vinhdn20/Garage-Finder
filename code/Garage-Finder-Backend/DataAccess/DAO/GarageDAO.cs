@@ -54,6 +54,7 @@ namespace DataAccess.DAO
                                      PhoneNumber = garage.PhoneNumber,
                                      ProvinceID = garage.ProvinceID,
                                      Status = garage.Status,
+                                     UserID = garage.UserID,
                                      ImageGarages = (from imageGarage in context.ImageGarage
                                                      where imageGarage.GarageID == garage.GarageID
                                                      select imageGarage).ToList(),
@@ -103,6 +104,7 @@ namespace DataAccess.DAO
                                       PhoneNumber = garage.PhoneNumber,
                                       ProvinceID = garage.ProvinceID,
                                       Status = garage.Status,
+                                      UserID = garage.UserID,
                                       ImageGarages = (from imageGarage in context.ImageGarage
                                                       where imageGarage.GarageID == garage.GarageID
                                                       select imageGarage).ToList(),
