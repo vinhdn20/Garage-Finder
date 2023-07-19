@@ -14,6 +14,5 @@ namespace Garage_Finder_Backend
         public const string ROLE_ADMIN = "admin";
         public const string ROLE_USER = "user";
         public const string ROLE_STAFF = "staff";
-        public const string ROLE_ADMIN = "admin";
     }
 }
