@@ -8,6 +8,7 @@ using Services.OrderService;
 using Services.ServiceService;
 using Services.StaffService;
 using Services.StorageApi;
+using Services.SubcriptionService;
 using Services.UserService;
 using System;
 using System.Collections.Generic;
@@ -31,6 +32,7 @@ namespace Services
             services.AddTransient<IFeedbackService, FeedbackService.FeedbackService>();
             services.AddTransient<INotificationService, NotificationService.NotificationService>();
             services.AddTransient<IChatService, ChatService.ChatService>();
+            services.AddTransient<ISubcriptionService, SubcriptionService.SubcriptionService>();
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using DataAccess.DTO.Subscription;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Garage_Finder_Backend.Controllers
@@ -69,8 +70,8 @@ namespace Garage_Finder_Backend.Controllers
             }
         }
 
-        [HttpGet("getLinkOrder")]
-        public IActionResult Get(int subscribeID)
+        [HttpGet("getLinkPay")]
+        public IActionResult GetLink(int subscribeID)
         {
             try
             {
@@ -83,11 +84,7 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpGet("vnpay_ipn")]
-        public IActionResult VPN_IPN([FromQuery] string vnp_TmnCode, [FromQuery] int? vnp_Amount,
-            [FromQuery] string vnp_BankCode, [FromQuery] string? vnp_BankTranNo, [FromQuery] string? vnp_CardType,
-            [FromQuery] long? vnp_PayDate, [FromQuery] string vnp_OrderInfo, [FromQuery] string vnp_TransactionNo,
-            [FromQuery] string vnp_ResponseCode, [FromQuery] string vnp_TransactionStatus, [FromQuery] string vnp_TxnRef,
-            [FromQuery] string? vnp_SecureHashType, [FromQuery] string vnp_SecureHash)
+        public IActionResult VPN_IPN([FromQuery] VNPayIPNDTO vNPay)
         {
             try
             {

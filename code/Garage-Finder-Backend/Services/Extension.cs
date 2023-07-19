@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mail;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -37,6 +38,23 @@ namespace Services
         {
             Regex rx = new Regex(@"\b(\d{2}-\w\w(-|\s)\d{4,5})|(\d{2}\w(-|\s)\d{4,5})\b");
             return rx.IsMatch(licensePlates);
+        }
+
+        public static string HmacSHA512(this string inputData, string key)
+        {
+            var hash = new StringBuilder();
+            byte[] keyBytes = Encoding.UTF8.GetBytes(key);
+            byte[] inputBytes = Encoding.UTF8.GetBytes(inputData);
+            using (var hmac = new HMACSHA512(keyBytes))
+            {
+                byte[] hashValue = hmac.ComputeHash(inputBytes);
+                foreach (var theByte in hashValue)
+                {
+                    hash.Append(theByte.ToString("x2"));
+                }
+            }
+
+            return hash.ToString();
         }
     }
 }

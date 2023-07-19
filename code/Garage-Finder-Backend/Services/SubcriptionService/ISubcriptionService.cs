@@ -9,5 +9,7 @@ namespace Services.SubcriptionService
     public interface ISubcriptionService
     {
         public void AddInvoice();
+        public string GetLinkPay(int subscriptionId);
+        public void Vnpay_ipn();
     }
 }
