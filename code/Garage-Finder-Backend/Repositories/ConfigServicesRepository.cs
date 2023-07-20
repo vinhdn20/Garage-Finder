@@ -45,6 +45,7 @@ namespace Repositories
             services.AddScoped<IStaffRefreshTokenRepository, StaffRefreshTokenRepository>();
             services.AddScoped<INotifcationRepository, NotifcationRepository>();
             services.AddScoped<IChatRepository, ChatRepository>();
+            services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
             services.AddScoped<IAdminRepository, AdminRepository>();
         }
     }

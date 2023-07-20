@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using DataAccess.DTO.Subscription;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
+using Services.SubcriptionService;
 
 namespace Garage_Finder_Backend.Controllers
 {
@@ -7,6 +10,11 @@ namespace Garage_Finder_Backend.Controllers
     [ApiController]
     public class SubscriptionController : Controller
     {
+        private readonly ISubcriptionService _subcriptionService;
+        public SubscriptionController(ISubcriptionService subcriptionService)
+        {
+            _subcriptionService = subcriptionService;
+        }
         [HttpGet("getAll")]
         public IActionResult GetAll()
         {
@@ -69,12 +77,21 @@ namespace Garage_Finder_Backend.Controllers
             }
         }
 
-        [HttpGet("getLinkOrder")]
-        public IActionResult Get(int subscribeID)
+        [HttpPost("getLinkPay")]
+        [Authorize(Roles = $"{Constants.ROLE_USER}")]
+        public IActionResult GetLink(int subscribeID, int garageId)
         {
             try
             {
-                return Ok("Chưa xử lý");
+                var ipAddress = Request.HttpContext.Connection.RemoteIpAddress;
+                string ip = "192.168.1.146";
+                if (!ipAddress.ToString().Equals("::1"))
+                {
+                    ip = ipAddress.Address.ToString();
+                }
+                var user = User.GetTokenInfor();
+                var link =  _subcriptionService.GetLinkPay(user.UserID, garageId, subscribeID, ip);
+                return Ok(link);
             }
             catch (Exception e)
             {
@@ -83,16 +100,12 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpGet("vnpay_ipn")]
-        public IActionResult VPN_IPN([FromQuery] string vnp_TmnCode, [FromQuery] int? vnp_Amount,
-            [FromQuery] string vnp_BankCode, [FromQuery] string? vnp_BankTranNo, [FromQuery] string? vnp_CardType,
-            [FromQuery] long? vnp_PayDate, [FromQuery] string vnp_OrderInfo, [FromQuery] string vnp_TransactionNo,
-            [FromQuery] string vnp_ResponseCode, [FromQuery] string vnp_TransactionStatus, [FromQuery] string vnp_TxnRef,
-            [FromQuery] string? vnp_SecureHashType, [FromQuery] string vnp_SecureHash)
+        public IActionResult VPN_IPN([FromQuery] VNPayIPNDTO vNPay)
         {
             try
             {
-
-
+                _subcriptionService.AddInvoice(vNPay);
+                
                 return Ok("SUCCESS");
             }
             catch (Exception e)

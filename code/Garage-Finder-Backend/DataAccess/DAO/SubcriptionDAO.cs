@@ -31,6 +31,22 @@ namespace DataAccess.DAO
                 }
             }
         }
+        public List<Subscribe> GetAll()
+        {
+            List<Subscribe> subscribes = new List<Subscribe>();
+            try
+            {
+                using (var context = new GFDbContext())
+                {
+                    subscribes = context.Subscribes.ToList();
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            return subscribes;
+        }
 
         public void Add(Subscribe sub)
         {
@@ -80,7 +96,7 @@ namespace DataAccess.DAO
             }
         }
 
-        public Subscribe GetSubscribe(int id)
+        public Subscribe GetSubscribeById(int id)
         {
             try
             {

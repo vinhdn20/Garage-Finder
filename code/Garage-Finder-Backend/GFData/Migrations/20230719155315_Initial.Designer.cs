@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GFData.Migrations
 {
     [DbContext(typeof(GFDbContext))]
-    [Migration("20230716091327_Initial")]
+    [Migration("20230719155315_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -462,7 +462,7 @@ namespace GFData.Migrations
                     b.Property<DateTime>("ExpirationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Note")
+                    b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("SubscribeID")
@@ -471,14 +471,11 @@ namespace GFData.Migrations
                     b.Property<int>("UserID")
                         .HasColumnType("int");
 
-                    b.Property<int>("UsersUserID")
-                        .HasColumnType("int");
-
                     b.HasKey("InvoicesID");
 
                     b.HasIndex("SubscribeID");
 
-                    b.HasIndex("UsersUserID");
+                    b.HasIndex("UserID");
 
                     b.ToTable("Invoices");
                 });
@@ -870,16 +867,22 @@ namespace GFData.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Period")
+                    b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("Period")
+                        .HasColumnType("int");
 
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
                     b.HasKey("SubscribeID");
 
-                    b.ToTable("Subscribe");
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("Subscribes");
                 });
 
             modelBuilder.Entity("GFData.Models.Entity.Users", b =>
@@ -1131,7 +1134,7 @@ namespace GFData.Migrations
 
                     b.HasOne("GFData.Models.Entity.Users", "Users")
                         .WithMany("Invoices")
-                        .HasForeignKey("UsersUserID")
+                        .HasForeignKey("UserID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
