@@ -11,5 +11,6 @@ namespace Repositories.Interfaces
     {
         List<Subscribe> GetAllSubscribe();
         Subscribe GetById(int id);
+        Invoices AddInVoices(Invoices invoices);
     }
 }

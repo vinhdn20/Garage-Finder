@@ -59,6 +59,7 @@ namespace GFData.Data
         public virtual DbSet<Message> Message { get; set; }
         public virtual DbSet<StaffMessage> StaffMessages { get; set; }
         public virtual DbSet<Subscribe> Subscribes { get; set; }
+        public virtual DbSet<Invoices> Invoices { get; set; }
 
         protected override void OnModelCreating(ModelBuilder optionsBuilder)
         {

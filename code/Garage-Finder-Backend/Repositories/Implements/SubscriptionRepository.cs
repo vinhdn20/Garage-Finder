@@ -11,6 +11,11 @@ namespace Repositories.Implements
 {
     public class SubscriptionRepository : ISubscriptionRepository
     {
+        public Invoices AddInVoices(Invoices invoices)
+        {
+            return InvoicesDAO.Instance.Add(invoices);
+        }
+
         public List<Subscribe> GetAllSubscribe()
         {
             return SubcriptionDAO.Instance.GetAll();

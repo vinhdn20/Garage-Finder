@@ -13,5 +13,15 @@ namespace Garage_Finder_Backend
             var user = JsonConvert.DeserializeObject<TokenInfor>(jsonUser);
             return user;
         }
+
+        public static string GetIp(this HttpContext httpContext)
+        {
+            string ip = httpContext.GetServerVariable("REMOTE_HOST");
+            if (ip == null)
+            {
+                ip = httpContext.GetServerVariable("REMOTE_ADDR");
+            }
+            return ip;
+        }
     }
 }

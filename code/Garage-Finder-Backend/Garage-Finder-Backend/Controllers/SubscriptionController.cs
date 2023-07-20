@@ -1,6 +1,8 @@
 ﻿using DataAccess.DTO.Subscription;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
+using Services.SubcriptionService;
 
 namespace Garage_Finder_Backend.Controllers
 {
@@ -8,6 +10,11 @@ namespace Garage_Finder_Backend.Controllers
     [ApiController]
     public class SubscriptionController : Controller
     {
+        private readonly ISubcriptionService _subcriptionService;
+        public SubscriptionController(ISubcriptionService subcriptionService)
+        {
+            _subcriptionService = subcriptionService;
+        }
         [HttpGet("getAll")]
         public IActionResult GetAll()
         {
@@ -70,12 +77,21 @@ namespace Garage_Finder_Backend.Controllers
             }
         }
 
-        [HttpGet("getLinkPay")]
-        public IActionResult GetLink(int subscribeID)
+        [HttpPost("getLinkPay")]
+        [Authorize(Roles = $"{Constants.ROLE_USER}")]
+        public IActionResult GetLink(int subscribeID, int garageId)
         {
             try
             {
-                return Ok("Chưa xử lý");
+                var ipAddress = Request.HttpContext.Connection.RemoteIpAddress;
+                string ip = "192.168.1.146";
+                if (!ipAddress.ToString().Equals("::1"))
+                {
+                    ip = ipAddress.Address.ToString();
+                }
+                var user = User.GetTokenInfor();
+                var link =  _subcriptionService.GetLinkPay(user.UserID, garageId, subscribeID, ip);
+                return Ok(link);
             }
             catch (Exception e)
             {
@@ -89,7 +105,7 @@ namespace Garage_Finder_Backend.Controllers
             try
             {
 
-
+                
                 return Ok("SUCCESS");
             }
             catch (Exception e)

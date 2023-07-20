@@ -63,18 +63,19 @@ namespace GFData.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Subscribe",
+                name: "Subscribes",
                 columns: table => new
                 {
                     SubscribeID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Price = table.Column<double>(type: "float", nullable: false),
-                    Period = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Period = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Subscribe", x => x.SubscribeID);
+                    table.PrimaryKey("PK_Subscribes", x => x.SubscribeID);
                 });
 
             migrationBuilder.CreateTable(
@@ -176,21 +177,20 @@ namespace GFData.Migrations
                     UserID = table.Column<int>(type: "int", nullable: false),
                     DateCreate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ExpirationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UsersUserID = table.Column<int>(type: "int", nullable: false)
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Invoices", x => x.InvoicesID);
                     table.ForeignKey(
-                        name: "FK_Invoices_Subscribe_SubscribeID",
+                        name: "FK_Invoices_Subscribes_SubscribeID",
                         column: x => x.SubscribeID,
-                        principalTable: "Subscribe",
+                        principalTable: "Subscribes",
                         principalColumn: "SubscribeID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Invoices_User_UsersUserID",
-                        column: x => x.UsersUserID,
+                        name: "FK_Invoices_User_UserID",
+                        column: x => x.UserID,
                         principalTable: "User",
                         principalColumn: "UserID",
                         onDelete: ReferentialAction.Cascade);
@@ -829,9 +829,9 @@ namespace GFData.Migrations
                 column: "SubscribeID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Invoices_UsersUserID",
+                name: "IX_Invoices_UserID",
                 table: "Invoices",
-                column: "UsersUserID");
+                column: "UserID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Message_GarageID",
@@ -926,6 +926,12 @@ namespace GFData.Migrations
                 column: "StaffId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Subscribes_Name",
+                table: "Subscribes",
+                column: "Name",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_User_PhoneNumber_EmailAddress",
                 table: "User",
                 columns: new[] { "PhoneNumber", "EmailAddress" },
@@ -998,7 +1004,7 @@ namespace GFData.Migrations
                 name: "GuestOrder");
 
             migrationBuilder.DropTable(
-                name: "Subscribe");
+                name: "Subscribes");
 
             migrationBuilder.DropTable(
                 name: "Orders");
