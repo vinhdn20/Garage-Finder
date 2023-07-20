@@ -165,7 +165,7 @@ namespace Services.StaffService
             {
                 throw new Exception("Account is block");
             }
-            if (!ValidationGarageOwner(stafDB.GarageID, userId) || userId == staff.StaffId)
+            if (!ValidationGarageOwner(stafDB.GarageID, userId) && !(userId == staff.StaffId))
             {
                 throw new Exception("Authorize exception!");
             }

@@ -10,6 +10,7 @@ namespace DataAccess.DTO.Staff
 {
     public class LoginStaffDTO
     {
+        public int StaffId { get; set; }
         public string Name { get; set; }
         public string EmployeeId { get; set; }
         public string PhoneNumber { get; set; }
