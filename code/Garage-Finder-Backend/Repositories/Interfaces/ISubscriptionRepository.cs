@@ -12,5 +12,7 @@ namespace Repositories.Interfaces
         List<Subscribe> GetAllSubscribe();
         Subscribe GetById(int id);
         Invoices AddInVoices(Invoices invoices);
+        Invoices GetInvoicesById(int id);
+        void UpdateInvoices(Invoices invoices);
     }
 }

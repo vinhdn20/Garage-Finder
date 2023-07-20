@@ -104,7 +104,7 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
-
+                _subcriptionService.AddInvoice(vNPay);
                 
                 return Ok("SUCCESS");
             }

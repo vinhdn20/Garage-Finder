@@ -1,11 +1,13 @@
 ﻿using DataAccess.DTO.Subscription;
 using GFData.Models.Entity;
 using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -23,9 +25,21 @@ namespace Services.SubcriptionService
             _subscriptionRepository = subscriptionRepository;
             _garageRepository = garageRepository;
         }
-        public void AddInvoice()
+        public void AddInvoice(VNPayIPNDTO vNPay)
         {
-            throw new NotImplementedException();
+            int invoicesId = int.Parse(vNPay.vnp_TxnRef.Split('|')[0]);
+            var invoices = _subscriptionRepository.GetInvoicesById(invoicesId);
+
+            if (vNPay.vnp_ResponseCode.Equals(Constants.VNPAY_SUCCESS))
+            {
+                invoices.Status = Constants.INVOICE_PAID;
+            }
+            else
+            {
+                invoices.Status = Constants.INVOICE_FAIL;
+            }
+
+            _subscriptionRepository.UpdateInvoices(invoices);
         }
 
         public string GetLinkPay(int userId, int garageId, int subscriptionId, string ipAddress)
@@ -48,7 +62,7 @@ namespace Services.SubcriptionService
                 vnp_Amount = amount,
                 vnp_CreateDate = DateTime.UtcNow.AddHours(7).ToString("yyyyMMddHHmmss"),
                 vnp_IpAddr = ipAddress,
-                vnp_OrderInfo = $"Dang ky goi {sub.Name} cho garage {garage.GarageName}. So tien: {sub.Price}.",
+                vnp_OrderInfo = $"Dang ky goi {sub.Name.convertToUnSign3()} cho garage {garage.GarageName.convertToUnSign3()}. So tien: {sub.Price}.",
                 vnp_OrderType = "other",
                 vnp_ReturnUrl = _config["VNPay:URLReturn"],
                 vnp_TxnRef = invoice.InvoicesID.ToString(),
@@ -56,36 +70,48 @@ namespace Services.SubcriptionService
                 vnp_Version = _config["VNPay:API_Version"]
             };
 
-            NameValueCollection queryString = System.Web.HttpUtility.ParseQueryString(string.Empty);
-            queryString.Add("vnp_Amount", vNPay.vnp_Amount.ToString());
+            Dictionary<string,string> requestData = new Dictionary<string, string>();
+            requestData.Add("vnp_Amount", vNPay.vnp_Amount.ToString());
             if(vNPay.vnp_BankCode != null)
             {
-                queryString.Add("vnp_BankCode", vNPay.vnp_BankCode.ToString());
+                requestData.Add("vnp_BankCode", vNPay.vnp_BankCode.ToString());
             }
-            queryString.Add("vnp_Command", vNPay.vnp_Command);
-            queryString.Add("vnp_CreateDate", vNPay.vnp_CreateDate.ToString());
-            queryString.Add("vnp_CurrCode", vNPay.vnp_CurrCode.ToString());
-            queryString.Add("vnp_IpAddr", vNPay.vnp_IpAddr);
-            queryString.Add("vnp_Locale", vNPay.vnp_Locale);
-            queryString.Add("vnp_OrderInfo", vNPay.vnp_OrderInfo);
+            requestData.Add("vnp_Command", vNPay.vnp_Command);
+            requestData.Add("vnp_CreateDate", vNPay.vnp_CreateDate.ToString());
+            requestData.Add("vnp_CurrCode", vNPay.vnp_CurrCode.ToString());
+            requestData.Add("vnp_IpAddr", vNPay.vnp_IpAddr);
+            requestData.Add("vnp_Locale", vNPay.vnp_Locale);
+            requestData.Add("vnp_OrderInfo", vNPay.vnp_OrderInfo);
             if (vNPay.vnp_OrderType != null)
             {
-                queryString.Add("vnp_OrderType", vNPay.vnp_OrderType);
+                requestData.Add("vnp_OrderType", vNPay.vnp_OrderType);
             }
-            queryString.Add("vnp_ReturnUrl", vNPay.vnp_ReturnUrl);
-            queryString.Add("vnp_TmnCode", vNPay.vnp_TmnCode);
-            queryString.Add("vnp_TxnRef", vNPay.vnp_TxnRef);
-            queryString.Add("vnp_Version", vNPay.vnp_Version);
+            requestData.Add("vnp_ReturnUrl", vNPay.vnp_ReturnUrl);
+            requestData.Add("vnp_TmnCode", vNPay.vnp_TmnCode);
+            requestData.Add("vnp_TxnRef", vNPay.vnp_TxnRef + "|" + DateTime.Now.Ticks.ToString());
+            requestData.Add("vnp_Version", vNPay.vnp_Version);
+            StringBuilder data = new StringBuilder();
+            foreach (KeyValuePair<string, string> kv in requestData)
+            {
+                if (!String.IsNullOrEmpty(kv.Value))
+                {
+                    data.Append(WebUtility.UrlEncode(kv.Key) + "=" + WebUtility.UrlEncode(kv.Value) + "&");
+                }
+            }
+            string queryString = data.ToString();
 
-            vNPay.vnp_SecureHash = queryString.ToString().HmacSHA512(_config["VNPay:vnp_HashSecret"]);
-            queryString.Add("vnp_SecureHash", vNPay.vnp_SecureHash);
-            api += "?" + queryString.ToString();
+            api += "?" + queryString;
+            String signData = queryString;
+            if (signData.Length > 0)
+            {
+
+                signData = signData.Remove(data.Length - 1, 1);
+            }
+            //vNPay.vnp_SecureHash = queryString.ToString().HmacSHA512(_config["VNPay:vnp_HashSecret"]);
+            vNPay.vnp_SecureHash = signData.ToString().HmacSHA512(_config["VNPay:vnp_HashSecret"]);
+            api += "vnp_SecureHash=" + vNPay.vnp_SecureHash;
+
             return api;
-        }
-
-        public void Vnpay_ipn()
-        {
-            throw new NotImplementedException();
         }
     }
 }

@@ -47,5 +47,37 @@ namespace DataAccess.DAO
                 throw new Exception(e.Message + "|" + e.InnerException);
             }
         }
+
+        public Invoices Get(int id)
+        {
+            try
+            {
+                using (var context = new GFDbContext())
+                {
+                    var invoice = context.Invoices.First(x => x.InvoicesID == id);
+                    return invoice;
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message + "|" + e.InnerException);
+            }
+        }
+
+        public void Update(Invoices invoice)
+        {
+            try
+            {
+                using (var context = new GFDbContext())
+                {
+                    context.Invoices.Update(invoice);
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message + "|" + e.InnerException);
+            }
+        }
     }
 }

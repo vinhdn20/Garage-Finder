@@ -16,6 +16,16 @@ namespace Repositories.Implements
             return InvoicesDAO.Instance.Add(invoices);
         }
 
+        public Invoices GetInvoicesById(int id)
+        {
+            return InvoicesDAO.Instance.Get(id);
+        }
+
+        public void UpdateInvoices(Invoices invoices)
+        {
+            InvoicesDAO.Instance.Update(invoices);
+        }
+
         public List<Subscribe> GetAllSubscribe()
         {
             return SubcriptionDAO.Instance.GetAll();
