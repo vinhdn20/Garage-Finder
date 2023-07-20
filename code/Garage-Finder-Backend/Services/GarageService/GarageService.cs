@@ -84,7 +84,7 @@ namespace Services.GarageService
                 var dbbrand = _brandRepository.GetBrand().Where(x => x.BrandID == brand.BrandID).SingleOrDefault();
                 result.GarageBrands.Add(new ViewBrandDTO()
                 {
-                    BrId = brand.BrandID,
+                    BrId = brand.BrID,
                     BrandName = dbbrand.BrandName,
                     LinkImage = dbbrand.ImageLink
                 });
