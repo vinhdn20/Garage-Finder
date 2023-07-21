@@ -18,15 +18,24 @@ namespace Garage_Finder_Backend.Controllers
         [HttpGet("getAll")]
         public IActionResult GetAll()
         {
-            return View();
+            try
+            {
+                var subs = _subcriptionService.GetAll();
+                return Ok(subs);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
         [HttpPost("add")]
         [Authorize(Roles = $"{Constants.ROLE_ADMIN}")]
-        public IActionResult Add()
+        public IActionResult Add(AddSubcribeDTO addSubcribe)
         {
             try
             {
+                _subcriptionService.Add(addSubcribe);
                 return Ok("SUCCESS");
             }
             catch (Exception e)
@@ -37,10 +46,11 @@ namespace Garage_Finder_Backend.Controllers
 
         [HttpPost("update")]
         [Authorize(Roles = $"{Constants.ROLE_ADMIN}")]
-        public IActionResult Update()
+        public IActionResult Update(SubscribeDTO subscribe)
         {
             try
             {
+                _subcriptionService.Update(subscribe);
                 return Ok("SUCCESS");
             }
             catch (Exception e)
@@ -55,20 +65,7 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
-                return Ok("SUCCESS");
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
-        }
-
-        [HttpPost("addInvoices")]
-        [Authorize(Roles = $"{Constants.ROLE_USER}")]
-        public IActionResult AddInvoices()
-        {
-            try
-            {
+                _subcriptionService.Delete(id);
                 return Ok("SUCCESS");
             }
             catch (Exception e)
@@ -84,7 +81,7 @@ namespace Garage_Finder_Backend.Controllers
             try
             {
                 var ipAddress = Request.HttpContext.Connection.RemoteIpAddress;
-                string ip = "192.168.1.146";
+                string ip = "127.0.0.1";
                 if (!ipAddress.ToString().Equals("::1"))
                 {
                     ip = ipAddress.Address.ToString();
@@ -104,7 +101,7 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
-                _subcriptionService.AddInvoice(vNPay);
+                _subcriptionService.UpdateInvoice(vNPay);
                 
                 return Ok("SUCCESS");
             }

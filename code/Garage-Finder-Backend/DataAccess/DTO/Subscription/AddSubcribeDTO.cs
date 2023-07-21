@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace DataAccess.DTO.Subscription
 {
-    public class SubscribeDTO
+    public class AddSubcribeDTO
     {
-        public int SubscribeID { get; set; }
         public string Name { get; set; }
         public string Content { get; set; }
         public double Price { get; set; }

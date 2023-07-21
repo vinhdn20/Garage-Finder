@@ -18,6 +18,7 @@ namespace GFData.Models.Entity
         public string Content { get; set; }
         public double Price { get; set; }
         public int Period { get; set; }
+        public string Status { get; set; }
 
         public ICollection<Invoices> Invoices { get; set; }
     }

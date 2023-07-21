@@ -64,6 +64,22 @@ namespace DataAccess.DAO
             }
         }
 
+        public List<Invoices> GetByGarageId(int garageId)
+        {
+            try
+            {
+                using (var context = new GFDbContext())
+                {
+                    var invoice = context.Invoices.Where(x => x.GarageID == garageId).ToList();
+                    return invoice;
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message + "|" + e.InnerException);
+            }
+        }
+
         public void Update(Invoices invoice)
         {
             try

@@ -460,20 +460,25 @@ namespace GFData.Migrations
                     b.Property<DateTime>("ExpirationDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("GarageID")
+                        .HasColumnType("int");
+
                     b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("SubscribeID")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserID")
+                    b.Property<int?>("UsersUserID")
                         .HasColumnType("int");
 
                     b.HasKey("InvoicesID");
 
+                    b.HasIndex("GarageID");
+
                     b.HasIndex("SubscribeID");
 
-                    b.HasIndex("UserID");
+                    b.HasIndex("UsersUserID");
 
                     b.ToTable("Invoices");
                 });
@@ -875,6 +880,10 @@ namespace GFData.Migrations
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("SubscribeID");
 
                     b.HasIndex("Name")
@@ -1124,21 +1133,25 @@ namespace GFData.Migrations
 
             modelBuilder.Entity("GFData.Models.Entity.Invoices", b =>
                 {
+                    b.HasOne("GFData.Models.Entity.Garage", "Garage")
+                        .WithMany()
+                        .HasForeignKey("GarageID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("GFData.Models.Entity.Subscribe", "Subscribe")
                         .WithMany("Invoices")
                         .HasForeignKey("SubscribeID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("GFData.Models.Entity.Users", "Users")
+                    b.HasOne("GFData.Models.Entity.Users", null)
                         .WithMany("Invoices")
-                        .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UsersUserID");
+
+                    b.Navigation("Garage");
 
                     b.Navigation("Subscribe");
-
-                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("GFData.Models.Entity.Message", b =>

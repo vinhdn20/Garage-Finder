@@ -24,5 +24,6 @@ namespace Services
         public const string INVOICE_PAID = "paid";
         public const string INVOICE_FAIL = "fail";
         public const string VNPAY_SUCCESS = "00";
+        public const string DELETE_SUBCRIPTION = "delete";
     }
 }

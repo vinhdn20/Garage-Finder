@@ -1,5 +1,8 @@
-﻿using DataAccess.DTO.Subscription;
+﻿using AutoMapper;
+using DataAccess.DTO.Orders;
+using DataAccess.DTO.Subscription;
 using GFData.Models.Entity;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Repositories.Interfaces;
@@ -18,14 +21,47 @@ namespace Services.SubcriptionService
         private readonly IConfiguration _config;
         private readonly ISubscriptionRepository _subscriptionRepository;
         private readonly IGarageRepository _garageRepository;
+        private readonly IMapper _mapper;
         public SubcriptionService(IConfiguration configuration, ISubscriptionRepository subscriptionRepository,
-            IGarageRepository garageRepository) 
+            IGarageRepository garageRepository, IMapper mapper) 
         {
             _config = configuration;
             _subscriptionRepository = subscriptionRepository;
             _garageRepository = garageRepository;
+            _mapper = mapper;
         }
-        public void AddInvoice(VNPayIPNDTO vNPay)
+        public List<SubscribeDTO> GetAll()
+        {
+            var sub = _subscriptionRepository.GetAllSubscribe();
+            List<SubscribeDTO> result = new List<SubscribeDTO>();
+            sub.ForEach(x => result.Add(_mapper.Map<SubscribeDTO>(x)));
+            return result;
+        }
+
+        public void Add(AddSubcribeDTO addSubcribe)
+        {
+            var sub = _mapper.Map<Subscribe>(addSubcribe);
+            _subscriptionRepository.AddSubcribe(sub);
+        }
+
+        public void Update(SubscribeDTO subscribeDTO)
+        {
+            var sub = _mapper.Map<Subscribe>(subscribeDTO);
+            _subscriptionRepository.UpdateSubribe(sub);
+        }
+
+        public void Delete(int subId)
+        {
+            var sub = _subscriptionRepository.GetById(subId);
+            if(sub == null)
+            {
+                throw new Exception("Can not find subscription");
+            }
+            sub.Status = Constants.DELETE_SUBCRIPTION;
+            _subscriptionRepository.UpdateSubribe(sub);
+        }
+
+        public void UpdateInvoice(VNPayIPNDTO vNPay)
         {
             int invoicesId = int.Parse(vNPay.vnp_TxnRef.Split('|')[0]);
             var invoices = _subscriptionRepository.GetInvoicesById(invoicesId);
@@ -44,6 +80,16 @@ namespace Services.SubcriptionService
 
         public string GetLinkPay(int userId, int garageId, int subscriptionId, string ipAddress)
         {
+            if(!ValidationGarageOwner(garageId, userId))
+            {
+                throw new Exception("Authorize exception");
+            }
+
+            var invoices =_subscriptionRepository.GetInvoicesByGarageId(garageId);
+            if(invoices.Any(x => x.ExpirationDate > DateTime.UtcNow.AddHours(7)))
+            {
+                throw new Exception("You have registered a subscription");
+            }
             var api = _config["VNPay:VNPayAPI"];
             var sub = _subscriptionRepository.GetById(subscriptionId);
             var garage = _garageRepository.GetGaragesByID(garageId);
@@ -54,7 +100,7 @@ namespace Services.SubcriptionService
                 DateCreate = DateTime.UtcNow.AddHours(7),
                 ExpirationDate = DateTime.UtcNow.AddHours(7 + sub.Period),
                 Status = Constants.INVOICE_WAITING,
-                UserID = userId,
+                GarageID = garageId,
                 SubscribeID = subscriptionId,
             });
             VNPayPaymentDTO vNPay = new VNPayPaymentDTO()
@@ -112,6 +158,16 @@ namespace Services.SubcriptionService
             api += "vnp_SecureHash=" + vNPay.vnp_SecureHash;
 
             return api;
+        }
+
+        private bool ValidationGarageOwner(int garageId, int userId)
+        {
+            var garages = _garageRepository.GetGarageByUser(userId);
+            if (!garages.Any(x => x.GarageID == garageId))
+            {
+                return false;
+            }
+            return true;
         }
     }
 }

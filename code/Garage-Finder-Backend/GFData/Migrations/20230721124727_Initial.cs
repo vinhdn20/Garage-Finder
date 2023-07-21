@@ -71,7 +71,8 @@ namespace GFData.Migrations
                     Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Price = table.Column<double>(type: "float", nullable: false),
-                    Period = table.Column<int>(type: "int", nullable: false)
+                    Period = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -161,35 +162,6 @@ namespace GFData.Migrations
                     table.PrimaryKey("PK_Garage", x => x.GarageID);
                     table.ForeignKey(
                         name: "FK_Garage_User_UserID",
-                        column: x => x.UserID,
-                        principalTable: "User",
-                        principalColumn: "UserID",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Invoices",
-                columns: table => new
-                {
-                    InvoicesID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    SubscribeID = table.Column<int>(type: "int", nullable: false),
-                    UserID = table.Column<int>(type: "int", nullable: false),
-                    DateCreate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ExpirationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Invoices", x => x.InvoicesID);
-                    table.ForeignKey(
-                        name: "FK_Invoices_Subscribes_SubscribeID",
-                        column: x => x.SubscribeID,
-                        principalTable: "Subscribes",
-                        principalColumn: "SubscribeID",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Invoices_User_UserID",
                         column: x => x.UserID,
                         principalTable: "User",
                         principalColumn: "UserID",
@@ -371,6 +343,41 @@ namespace GFData.Migrations
                         principalTable: "Garage",
                         principalColumn: "GarageID",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Invoices",
+                columns: table => new
+                {
+                    InvoicesID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SubscribeID = table.Column<int>(type: "int", nullable: false),
+                    GarageID = table.Column<int>(type: "int", nullable: false),
+                    DateCreate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ExpirationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UsersUserID = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Invoices", x => x.InvoicesID);
+                    table.ForeignKey(
+                        name: "FK_Invoices_Garage_GarageID",
+                        column: x => x.GarageID,
+                        principalTable: "Garage",
+                        principalColumn: "GarageID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Invoices_Subscribes_SubscribeID",
+                        column: x => x.SubscribeID,
+                        principalTable: "Subscribes",
+                        principalColumn: "SubscribeID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Invoices_User_UsersUserID",
+                        column: x => x.UsersUserID,
+                        principalTable: "User",
+                        principalColumn: "UserID");
                 });
 
             migrationBuilder.CreateTable(
@@ -824,14 +831,19 @@ namespace GFData.Migrations
                 column: "OrderID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Invoices_GarageID",
+                table: "Invoices",
+                column: "GarageID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Invoices_SubscribeID",
                 table: "Invoices",
                 column: "SubscribeID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Invoices_UserID",
+                name: "IX_Invoices_UsersUserID",
                 table: "Invoices",
-                column: "UserID");
+                column: "UsersUserID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Message_GarageID",

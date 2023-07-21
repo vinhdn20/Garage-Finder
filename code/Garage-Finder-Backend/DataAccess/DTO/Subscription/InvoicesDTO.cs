@@ -10,7 +10,7 @@ namespace DataAccess.DTO.Subscription
     {
         public int InvoicesID { get; set; }
         public int SubscribeID { get; set; }
-        public int UserID { get; set; }
+        public int GarageID { get; set; }
         public DateTime DateCreate { get; set; }
         public DateTime ExpirationDate { get; set; }
         public string Note { get; set; }
