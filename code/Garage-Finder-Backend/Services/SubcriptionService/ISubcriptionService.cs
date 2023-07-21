@@ -9,7 +9,10 @@ namespace Services.SubcriptionService
 {
     public interface ISubcriptionService
     {
-        public void AddInvoice(VNPayIPNDTO vNPay);
+        public void UpdateInvoice(VNPayIPNDTO vNPay);
         public string GetLinkPay(int userId, int garageId, int subscriptionId, string ipAddress);
+        List<SubscribeDTO> GetAll();
+        void Add(AddSubcribeDTO addSubcribe);
+        void Update(SubscribeDTO subscribeDTO);
     }
 }

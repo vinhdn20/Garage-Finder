@@ -26,6 +26,11 @@ namespace Repositories.Implements
             InvoicesDAO.Instance.Update(invoices);
         }
 
+        public List<Invoices> GetInvoicesByGarageId(int garageId)
+        {
+            return InvoicesDAO.Instance.GetByGarageId(garageId);
+        }
+
         public List<Subscribe> GetAllSubscribe()
         {
             return SubcriptionDAO.Instance.GetAll();
@@ -34,6 +39,16 @@ namespace Repositories.Implements
         public Subscribe GetById(int id)
         {
             return SubcriptionDAO.Instance.GetSubscribeById(id);
+        }
+
+        public void AddSubcribe(Subscribe subscribe)
+        {
+            SubcriptionDAO.Instance.Add(subscribe);
+        }
+
+        public void UpdateSubribe(Subscribe subscribe)
+        {
+            SubcriptionDAO.Instance.Update(subscribe);
         }
     }
 }

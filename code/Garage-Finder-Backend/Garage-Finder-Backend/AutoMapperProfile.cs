@@ -74,6 +74,7 @@ namespace Garage_Finder_Backend
 
             CreateMap<SubscribeDTO, Subscribe>();
             CreateMap<Subscribe, SubscribeDTO>();
+            CreateMap<AddSubcribeDTO, Subscribe>();
 
             CreateMap<UsersDTO, Users>();
             CreateMap<Users, UsersDTO>();

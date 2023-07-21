@@ -14,13 +14,13 @@ namespace GFData.Models.Entity
         public int InvoicesID { get; set; }
         [ForeignKey("Subscribe")]
         public int SubscribeID { get; set; }
-        [ForeignKey("Users")]
-        public int UserID { get; set; }
+        [ForeignKey("Garage")]
+        public int GarageID { get; set; }
         public DateTime DateCreate { get; set; }
         public DateTime ExpirationDate { get; set; }
         public string? Status { get; set; }
 
         public Subscribe Subscribe { get; set; }
-        public Users Users { get; set; }
+        public Garage Garage { get; set; }
     }
 }

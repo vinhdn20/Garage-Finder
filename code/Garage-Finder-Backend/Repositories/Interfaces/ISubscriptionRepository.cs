@@ -13,6 +13,9 @@ namespace Repositories.Interfaces
         Subscribe GetById(int id);
         Invoices AddInVoices(Invoices invoices);
         Invoices GetInvoicesById(int id);
+        List<Invoices> GetInvoicesByGarageId(int garageId);
         void UpdateInvoices(Invoices invoices);
+        void AddSubcribe(Subscribe subscribe);
+        void UpdateSubribe(Subscribe subscribe);
     }
 }
