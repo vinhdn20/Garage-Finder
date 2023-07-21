@@ -59,19 +59,20 @@ namespace Garage_Finder_Backend.Controllers
             }
         }
 
-        //[HttpDelete("delete")]
-        //[Authorize(Roles = $"{Constants.ROLE_ADMIN}")]
-        //public IActionResult Delete(int id)
-        //{
-        //    try
-        //    {
-        //        return Ok("SUCCESS");
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        return BadRequest(e.Message);
-        //    }
-        //}
+        [HttpDelete("delete")]
+        [Authorize(Roles = $"{Constants.ROLE_ADMIN}")]
+        public IActionResult Delete(int id)
+        {
+            try
+            {
+                _subcriptionService.Delete(id);
+                return Ok("SUCCESS");
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
 
         [HttpPost("getLinkPay")]
         [Authorize(Roles = $"{Constants.ROLE_USER}")]

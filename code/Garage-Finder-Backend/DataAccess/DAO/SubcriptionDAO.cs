@@ -80,22 +80,6 @@ namespace DataAccess.DAO
             }
         }
 
-        public void Delete(Subscribe sub)
-        {
-            try
-            {
-                using (var context = new GFDbContext())
-                {
-                    context.Subscribes.Remove(sub);
-                    context.SaveChanges();
-                }
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-        }
-
         public Subscribe GetSubscribeById(int id)
         {
             try

@@ -14,5 +14,6 @@ namespace Services.SubcriptionService
         List<SubscribeDTO> GetAll();
         void Add(AddSubcribeDTO addSubcribe);
         void Update(SubscribeDTO subscribeDTO);
+        void Delete(int subId);
     }
 }

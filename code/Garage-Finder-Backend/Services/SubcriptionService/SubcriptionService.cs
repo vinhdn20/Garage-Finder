@@ -2,6 +2,7 @@
 using DataAccess.DTO.Orders;
 using DataAccess.DTO.Subscription;
 using GFData.Models.Entity;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Repositories.Interfaces;
@@ -46,6 +47,17 @@ namespace Services.SubcriptionService
         public void Update(SubscribeDTO subscribeDTO)
         {
             var sub = _mapper.Map<Subscribe>(subscribeDTO);
+            _subscriptionRepository.UpdateSubribe(sub);
+        }
+
+        public void Delete(int subId)
+        {
+            var sub = _subscriptionRepository.GetById(subId);
+            if(sub == null)
+            {
+                throw new Exception("Can not find subscription");
+            }
+            sub.Status = Constants.DELETE_SUBCRIPTION;
             _subscriptionRepository.UpdateSubribe(sub);
         }
 
