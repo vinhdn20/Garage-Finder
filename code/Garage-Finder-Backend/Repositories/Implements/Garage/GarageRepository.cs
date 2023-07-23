@@ -43,12 +43,35 @@ namespace Repositories.Implements.Garage
 
         public List<GarageDTO> GetGarages()
         {
-            return GarageDAO.Instance.GetGarages().Select(p => _mapper.Map<GFData.Models.Entity.Garage, GarageDTO>(p)).ToList();
+            var garages = GarageDAO.Instance.GetGarages().Select(p => _mapper.Map<GFData.Models.Entity.Garage, GarageDTO>(p)).ToList();
+            foreach (var gara in garages)
+            {
+                var feedbacks = FeedbackDAO.Instance.GetByGarage(gara.GarageID);
+                if(feedbacks.Count() == 0)
+                {
+                    gara.Star = 0;
+                    gara.FeedbacksNumber = 0;
+                    continue;
+                }
+                double sum = feedbacks.Sum(x => x.Star);
+                int count = feedbacks.Count();
+                gara.Star = sum / count;
+                gara.FeedbacksNumber = count;
+            }
+            return garages;
         }
 
         public GarageDTO GetGaragesByID(int id)
         {
-            return GarageDAO.Instance.GetGarages().Where(c => c.GarageID == id).Select(p => _mapper.Map<GFData.Models.Entity.Garage, GarageDTO>(p)).FirstOrDefault();
+            var garage = GarageDAO.Instance.GetGarages().Where(c => c.GarageID == id).Select(p => _mapper.Map<GFData.Models.Entity.Garage, GarageDTO>(p)).FirstOrDefault();
+
+            var feedbacks = FeedbackDAO.Instance.GetByGarage(garage.GarageID);
+            double sum = feedbacks.Sum(x => x.Star);
+            int count = feedbacks.Count();
+            garage.Star = sum / count;
+            garage.FeedbacksNumber = count;
+            
+            return garage;
         }
 
         public void SaveGarage(GarageDTO p)
@@ -79,22 +102,53 @@ namespace Repositories.Implements.Garage
 
         public List<GarageDTO> GetGarageByUser(int id)
         {
-            return GarageDAO.Instance.GetByUserID(id).Select(p => _mapper.Map<GFData.Models.Entity.Garage, GarageDTO>(p)).ToList();
+            var garages = GarageDAO.Instance.GetByUserID(id).Select(p => _mapper.Map<GFData.Models.Entity.Garage, GarageDTO>(p)).ToList();
+            foreach (var gara in garages)
+            {
+                var feedbacks = FeedbackDAO.Instance.GetByGarage(gara.GarageID);
+                double sum = feedbacks.Sum(x => x.Star);
+                int count = feedbacks.Count();
+                gara.Star = sum / count;
+            }
+            return garages;
         }
 
         public List<GarageDTO> GetGarageByDistrictsID(int? id)
         {
-            return GarageDAO.Instance.GetGarages().Where(c => c.DistrictsID == id).Select(p => _mapper.Map<GFData.Models.Entity.Garage, GarageDTO>(p)).ToList();
+            var garages = GarageDAO.Instance.GetGarages().Where(c => c.DistrictsID == id).Select(p => _mapper.Map<GFData.Models.Entity.Garage, GarageDTO>(p)).ToList();
+            foreach (var gara in garages)
+            {
+                var feedbacks = FeedbackDAO.Instance.GetByGarage(gara.GarageID);
+                double sum = feedbacks.Sum(x => x.Star);
+                int count = feedbacks.Count();
+                gara.Star = sum / count;
+            }
+            return garages;
         }
 
         public List<GarageDTO> GetGarageByCategoryId(int? id)
         {
-            return GarageDAO.Instance.GetGarages().Where(c => c.CategoryGarages.Any(p => p.CategoryID == id)).Select(p => _mapper.Map<GFData.Models.Entity.Garage, GarageDTO>(p)).ToList();
+            var garages = GarageDAO.Instance.GetGarages().Where(c => c.CategoryGarages.Any(p => p.CategoryID == id)).Select(p => _mapper.Map<GFData.Models.Entity.Garage, GarageDTO>(p)).ToList();
+            foreach (var gara in garages)
+            {
+                var feedbacks = FeedbackDAO.Instance.GetByGarage(gara.GarageID);
+                double sum = feedbacks.Sum(x => x.Star);
+                int count = feedbacks.Count();
+                gara.Star = sum / count;
+            }
+            return garages;
         }
 
         public List<GarageDTO> GetGarageByBrandId(int? id)
         {
             var garages = GarageDAO.Instance.GetGarages().Where(c => c.GarageBrands.Any(p => p.BrandID == id)).Select(p => _mapper.Map<GFData.Models.Entity.Garage, GarageDTO>(p)).ToList();
+            foreach (var gara in garages)
+            {
+                var feedbacks = FeedbackDAO.Instance.GetByGarage(gara.GarageID);
+                double sum = feedbacks.Sum(x => x.Star);
+                int count = feedbacks.Count();
+                gara.Star = sum / count;
+            }
             return garages;
         }
     }
