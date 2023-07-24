@@ -27,6 +27,22 @@ namespace DataAccess.DAO
             }
         }
 
+        public List<Feedback> GetAll()
+        {
+            var feedbacks = new List<Feedback>();
+            try
+            {
+                using (var context = new GFDbContext())
+                {
+                    feedbacks = context.Feedback.ToList();
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            return feedbacks;
+        }
         public List<Feedback> GetByGarage(int id)
         {
             var feedbacks = new List<Feedback>();
@@ -37,6 +53,34 @@ namespace DataAccess.DAO
                     feedbacks = (from feedback in context.Feedback
                                  join order in context.Orders on feedback.OrderID equals order.OrderID
                                  where order.GarageID ==  id
+                                 select new Feedback()
+                                 {
+                                     OrderID = feedback.OrderID,
+                                     Content = feedback.Content,
+                                     DateTime = feedback.DateTime,
+                                     FeedbackID = feedback.FeedbackID,
+                                     Star = feedback.Star
+                                 }).ToList();
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            return feedbacks;
+        }
+
+        public List<Feedback> GetByUserId(int id)
+        {
+            var feedbacks = new List<Feedback>();
+            try
+            {
+                using (var context = new GFDbContext())
+                {
+                    feedbacks = (from feedback in context.Feedback
+                                 join order in context.Orders on feedback.OrderID equals order.OrderID
+                                 join car in context.Car on order.CarID equals car.CarID
+                                 where car.UserID == id
                                  select new Feedback()
                                  {
                                      OrderID = feedback.OrderID,

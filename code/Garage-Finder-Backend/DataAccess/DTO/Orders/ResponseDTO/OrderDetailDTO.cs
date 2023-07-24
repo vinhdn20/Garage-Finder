@@ -26,6 +26,7 @@ namespace DataAccess.DTO.Orders.ResponseDTO
         public string? Color { get; set; }
 
         public string? Name { get; set; }
+        public bool IsFeedback { get; set; } = false;
         public ICollection<string>? ImageOrders { get; set; }
         public ICollection<string>? FileOrders { get; set; }
     }

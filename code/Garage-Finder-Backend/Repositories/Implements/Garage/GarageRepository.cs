@@ -66,6 +66,12 @@ namespace Repositories.Implements.Garage
             var garage = GarageDAO.Instance.GetGarages().Where(c => c.GarageID == id).Select(p => _mapper.Map<GFData.Models.Entity.Garage, GarageDTO>(p)).FirstOrDefault();
 
             var feedbacks = FeedbackDAO.Instance.GetByGarage(garage.GarageID);
+            if (feedbacks.Count() == 0)
+            {
+                garage.Star = 0;
+                garage.FeedbacksNumber = 0;
+                return garage;
+            }
             double sum = feedbacks.Sum(x => x.Star);
             int count = feedbacks.Count();
             garage.Star = sum / count;
@@ -87,6 +93,20 @@ namespace Repositories.Implements.Garage
         public List<GarageDTO> GetGarageByProviceId(int? provinceID)
         {
             var garages = GarageDAO.Instance.GetGarages().Where(c => c.ProvinceID == provinceID).Select(p => _mapper.Map<GFData.Models.Entity.Garage, GarageDTO>(p)).ToList();
+            foreach (var gara in garages)
+            {
+                var feedbacks = FeedbackDAO.Instance.GetByGarage(gara.GarageID);
+                if (feedbacks.Count() == 0)
+                {
+                    gara.Star = 0;
+                    gara.FeedbacksNumber = 0;
+                    continue;
+                }
+                double sum = feedbacks.Sum(x => x.Star);
+                int count = feedbacks.Count();
+                gara.Star = sum / count;
+            }
+
             return garages;
         }
 
@@ -97,6 +117,19 @@ namespace Repositories.Implements.Garage
         public List<GarageDTO> GetByPage(PageDTO p)
         {
             var garages = GarageDAO.Instance.GetGarages().Select(p => _mapper.Map<GFData.Models.Entity.Garage, GarageDTO>(p)).Skip((p.pageNumber - 1) * p.pageSize).Take(p.pageSize).ToList();
+            foreach (var gara in garages)
+            {
+                var feedbacks = FeedbackDAO.Instance.GetByGarage(gara.GarageID);
+                if (feedbacks.Count() == 0)
+                {
+                    gara.Star = 0;
+                    gara.FeedbacksNumber = 0;
+                    continue;
+                }
+                double sum = feedbacks.Sum(x => x.Star);
+                int count = feedbacks.Count();
+                gara.Star = sum / count;
+            }
             return garages;
         }
 
@@ -106,6 +139,12 @@ namespace Repositories.Implements.Garage
             foreach (var gara in garages)
             {
                 var feedbacks = FeedbackDAO.Instance.GetByGarage(gara.GarageID);
+                if (feedbacks.Count() == 0)
+                {
+                    gara.Star = 0;
+                    gara.FeedbacksNumber = 0;
+                    continue;
+                }
                 double sum = feedbacks.Sum(x => x.Star);
                 int count = feedbacks.Count();
                 gara.Star = sum / count;
@@ -119,6 +158,12 @@ namespace Repositories.Implements.Garage
             foreach (var gara in garages)
             {
                 var feedbacks = FeedbackDAO.Instance.GetByGarage(gara.GarageID);
+                if (feedbacks.Count() == 0)
+                {
+                    gara.Star = 0;
+                    gara.FeedbacksNumber = 0;
+                    continue;
+                }
                 double sum = feedbacks.Sum(x => x.Star);
                 int count = feedbacks.Count();
                 gara.Star = sum / count;
@@ -132,6 +177,12 @@ namespace Repositories.Implements.Garage
             foreach (var gara in garages)
             {
                 var feedbacks = FeedbackDAO.Instance.GetByGarage(gara.GarageID);
+                if (feedbacks.Count() == 0)
+                {
+                    gara.Star = 0;
+                    gara.FeedbacksNumber = 0;
+                    continue;
+                }
                 double sum = feedbacks.Sum(x => x.Star);
                 int count = feedbacks.Count();
                 gara.Star = sum / count;
@@ -145,6 +196,12 @@ namespace Repositories.Implements.Garage
             foreach (var gara in garages)
             {
                 var feedbacks = FeedbackDAO.Instance.GetByGarage(gara.GarageID);
+                if (feedbacks.Count() == 0)
+                {
+                    gara.Star = 0;
+                    gara.FeedbacksNumber = 0;
+                    continue;
+                }
                 double sum = feedbacks.Sum(x => x.Star);
                 int count = feedbacks.Count();
                 gara.Star = sum / count;
