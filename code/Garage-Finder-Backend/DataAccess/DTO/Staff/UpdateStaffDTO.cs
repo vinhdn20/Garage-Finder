@@ -18,6 +18,6 @@ namespace DataAccess.DTO.Staff
         public int DistrictId { get; set; }
         public int ProvinceId { get; set; }
         public string AddressDetail { get; set; }
-        public string LinkImage { get; set; }
+        public string? LinkImage { get; set; }
     }
 }

@@ -18,6 +18,7 @@ namespace DataAccess.DTO.Staff
         public int ProvinceId { get; set; }
         public string Status { get; set; }
         public string EmailAddress { get; set; }
+        public string Password { get; set; }
         public string? Gender { get; set; }
         public int GarageID { get; set; }
     }
