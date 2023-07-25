@@ -143,5 +143,27 @@ namespace Services.UserService
                 throw new Exception(e.Message);
             }
         }
+
+        public void Register(UserRegister registerUser)
+        {
+            if (!registerUser.EmailAddress.IsValidEmail())
+            {
+                throw new Exception("Email không hợp lệ");
+            }
+            if (_userRepository.GetUsersByEmail(registerUser.EmailAddress) != null)
+            {
+                throw new Exception("Email đã tồn tại");
+            }
+
+            UsersDTO userDTO = new UsersDTO();
+            userDTO.Name = registerUser.Name;
+            userDTO.PhoneNumber = registerUser.PhoneNumber;
+            userDTO.EmailAddress = registerUser.EmailAddress;
+            userDTO.Password = registerUser.Password;
+            userDTO.RoleID = Constants.ROLE_USER_ID;
+            userDTO.Status = Constants.USER_ACTIVE;
+
+            _userRepository.Register(userDTO);
+        }
     }
 }

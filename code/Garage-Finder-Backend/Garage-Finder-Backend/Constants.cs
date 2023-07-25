@@ -8,11 +8,12 @@ namespace Garage_Finder_Backend
 {
     public class Constants
     {
-        public const int ROLE_GARAGE = 1;
-        public const int ROLE_CAR = 2;
+        public const int ROLE_ADMIN_ID = 1;
+        public const int ROLE_USER_ID = 2;
 
         public const string ROLE_ADMIN = "admin";
         public const string ROLE_USER = "user";
         public const string ROLE_STAFF = "staff";
+        public const string USER_ACTIVE = "active";
     }
 }

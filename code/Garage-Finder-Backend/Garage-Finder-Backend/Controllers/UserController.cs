@@ -143,8 +143,9 @@ namespace Garage_Finder_Backend.Controllers
                     var userDTO = new UsersDTO()
                     {
                         EmailAddress = email,
-                        RoleID = Constants.ROLE_CAR,
-                        Name = objUserInfor.given_name
+                        RoleID = Constants.ROLE_USER_ID,
+                        Name = objUserInfor.given_name,
+                        Status = Constants.USER_ACTIVE
                     };
                     _userRepository.Register(userDTO);
                     usersDTO = _userRepository.GetAll().Find(x => x.EmailAddress.Equals(email));
@@ -285,19 +286,7 @@ namespace Garage_Finder_Backend.Controllers
             try
             {
                 //check when email is exist in database not allow register
-                if (_userRepository.GetUsersByEmail(registerUser.EmailAddress) != null)
-                {
-                    return BadRequest("Email is exist");
-                }
-
-                UsersDTO userDTO = new UsersDTO();
-                userDTO.Name = registerUser.Name;
-                userDTO.PhoneNumber = registerUser.PhoneNumber;
-                userDTO.EmailAddress = registerUser.EmailAddress;
-                userDTO.Password = registerUser.Password;
-                userDTO.RoleID = registerUser.RoleID.HasValue ? registerUser.RoleID.Value ==0? 2 : registerUser.RoleID.Value : 2;
-
-                _userRepository.Register(userDTO);
+                _userService.Register(registerUser);
                 return Ok();
             }
             catch (Exception ex)
