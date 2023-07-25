@@ -98,7 +98,11 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
-                var user = User.GetTokenInfor();
+                var user = User.GetTokenInfor(); 
+                if (!car.LicensePlates.IsValidLicensePlates())
+                {
+                    throw new Exception("License Plates not valid");
+                }
                 CarDTO carDTO = mapper.Map<UpdateCarDTO, CarDTO>(car);
                 carDTO.UserID = user.UserID;
                 carRepository.UpdateCar(carDTO);

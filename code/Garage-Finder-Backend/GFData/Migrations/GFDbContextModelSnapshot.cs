@@ -469,16 +469,11 @@ namespace GFData.Migrations
                     b.Property<int>("SubscribeID")
                         .HasColumnType("int");
 
-                    b.Property<int?>("UsersUserID")
-                        .HasColumnType("int");
-
                     b.HasKey("InvoicesID");
 
                     b.HasIndex("GarageID");
 
                     b.HasIndex("SubscribeID");
-
-                    b.HasIndex("UsersUserID");
 
                     b.ToTable("Invoices");
                 });
@@ -1145,10 +1140,6 @@ namespace GFData.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("GFData.Models.Entity.Users", null)
-                        .WithMany("Invoices")
-                        .HasForeignKey("UsersUserID");
-
                     b.Navigation("Garage");
 
                     b.Navigation("Subscribe");
@@ -1402,8 +1393,6 @@ namespace GFData.Migrations
                     b.Navigation("Cars");
 
                     b.Navigation("FavoriteList");
-
-                    b.Navigation("Invoices");
 
                     b.Navigation("Messages");
 

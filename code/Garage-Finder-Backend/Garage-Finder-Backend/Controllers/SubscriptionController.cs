@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using Services.SubcriptionService;
+using Twilio.TwiML.Voice;
 
 namespace Garage_Finder_Backend.Controllers
 {
@@ -59,20 +60,35 @@ namespace Garage_Finder_Backend.Controllers
             }
         }
 
-        [HttpDelete("delete")]
-        [Authorize(Roles = $"{Constants.ROLE_ADMIN}")]
-        public IActionResult Delete(int id)
-        {
-            try
-            {
-                _subcriptionService.Delete(id);
-                return Ok("SUCCESS");
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
-        }
+        //[HttpDelete("block")]
+        //[Authorize(Roles = $"{Constants.ROLE_ADMIN}")]
+        //public IActionResult Block(int id)
+        //{
+        //    try
+        //    {
+        //        _subcriptionService.Block(id);
+        //        return Ok("SUCCESS");
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return BadRequest(e.Message);
+        //    }
+        //}
+
+        //[HttpPost("unblock")]
+        //[Authorize(Roles = $"{Constants.ROLE_ADMIN}")]
+        //public IActionResult UnBlock(int id)
+        //{
+        //    try
+        //    {
+        //        _subcriptionService.UnBlock(id);
+        //        return Ok("SUCCESS");
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return BadRequest(e.Message);
+        //    }
+        //}
 
         [HttpPost("getLinkPay")]
         [Authorize(Roles = $"{Constants.ROLE_USER}")]
@@ -92,6 +108,24 @@ namespace Garage_Finder_Backend.Controllers
             }
             catch (Exception e)
             {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpGet("registeredSubscription/{garageId}")]
+        [Authorize(Roles = $"{Constants.ROLE_USER}")]
+        public IActionResult GetRegistered(int garageId)
+        {
+            try
+            {
+                var user = User.GetTokenInfor();
+                var invoices = _subcriptionService.GetInvoicesByGarageId(user.UserID,garageId);
+
+                return Ok(invoices);
+            }
+            catch (Exception e)
+            {
+
                 return BadRequest(e.Message);
             }
         }

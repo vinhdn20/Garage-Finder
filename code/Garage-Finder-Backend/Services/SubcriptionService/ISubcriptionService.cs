@@ -14,6 +14,8 @@ namespace Services.SubcriptionService
         List<SubscribeDTO> GetAll();
         void Add(AddSubcribeDTO addSubcribe);
         void Update(SubscribeDTO subscribeDTO);
-        void Delete(int subId);
+        void Block(int subId);
+        void UnBlock(int subId);
+        public List<InvoicesDTO> GetInvoicesByGarageId(int userId, int garageId);
     }
 }

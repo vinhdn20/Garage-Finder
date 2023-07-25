@@ -33,6 +33,7 @@ namespace Services.SubcriptionService
         public List<SubscribeDTO> GetAll()
         {
             var sub = _subscriptionRepository.GetAllSubscribe();
+            //var subAvaiable = sub.Where(x => !x.Status.Equals(Constants.DELETE_SUBCRIPTION)).ToList();
             List<SubscribeDTO> result = new List<SubscribeDTO>();
             sub.ForEach(x => result.Add(_mapper.Map<SubscribeDTO>(x)));
             return result;
@@ -41,21 +42,31 @@ namespace Services.SubcriptionService
         public void Add(AddSubcribeDTO addSubcribe)
         {
             var sub = _mapper.Map<Subscribe>(addSubcribe);
+            sub.Status = Constants.OPEN_SUBCRIPTION;
             _subscriptionRepository.AddSubcribe(sub);
         }
 
         public void Update(SubscribeDTO subscribeDTO)
         {
             var sub = _mapper.Map<Subscribe>(subscribeDTO);
+            var subDB= _subscriptionRepository.GetAllSubscribe().Find(x => x.SubscribeID == subscribeDTO.SubscribeID);
+            if(subDB is null)
+            {
+                throw new Exception("Không tìm thấy gói đăng ký");
+            }
+            if(!sub.Status.Equals(Constants.OPEN_SUBCRIPTION) && !sub.Status.Equals(Constants.DELETE_SUBCRIPTION))
+            {
+                throw new Exception("Status không hợp lệ. Status phải là open hoặc block");
+            }
             _subscriptionRepository.UpdateSubribe(sub);
         }
 
-        public void Delete(int subId)
+        public void Block(int subId)
         {
             var sub = _subscriptionRepository.GetById(subId);
             if(sub == null)
             {
-                throw new Exception("Can not find subscription");
+                throw new Exception("Không thể tìm gói thành viên");
             }
             sub.Status = Constants.DELETE_SUBCRIPTION;
             _subscriptionRepository.UpdateSubribe(sub);
@@ -88,10 +99,14 @@ namespace Services.SubcriptionService
             var invoices =_subscriptionRepository.GetInvoicesByGarageId(garageId);
             if(invoices.Any(x => x.ExpirationDate > DateTime.UtcNow.AddHours(7)))
             {
-                throw new Exception("You have registered a subscription");
+                throw new Exception("Bạn đang đăng ký gói thành viên");
             }
             var api = _config["VNPay:VNPayAPI"];
             var sub = _subscriptionRepository.GetById(subscriptionId);
+            if(sub.Status.Equals(Constants.DELETE_SUBCRIPTION))
+            {
+                throw new Exception("Gói đăng ký không còn hiệu lực");
+            }
             var garage = _garageRepository.GetGaragesByID(garageId);
             
             var amount = Convert.ToInt32(sub.Price * 100);
@@ -160,6 +175,26 @@ namespace Services.SubcriptionService
             return api;
         }
 
+        public List<InvoicesDTO> GetInvoicesByGarageId(int userId, int garageId)
+        {
+            if(!ValidationGarageOwner(garageId, userId))
+            {
+                throw new Exception("Authorize exception");
+            }
+
+            var invoices = _subscriptionRepository.GetInvoicesByGarageId(garageId);
+            var viewInvoices = new List<InvoicesDTO>();
+            var subs = _subscriptionRepository.GetAllSubscribe();
+            foreach (var invoice in invoices)
+            {
+                InvoicesDTO invoicesDTO = _mapper.Map<InvoicesDTO>(invoice);
+                var sub = subs.Find(x => x.SubscribeID == invoicesDTO.InvoicesID);
+                invoicesDTO = _mapper.Map(sub,invoicesDTO);
+                viewInvoices.Add(invoicesDTO);
+            }
+            return viewInvoices;
+        }
+
         private bool ValidationGarageOwner(int garageId, int userId)
         {
             var garages = _garageRepository.GetGarageByUser(userId);
@@ -168,6 +203,17 @@ namespace Services.SubcriptionService
                 return false;
             }
             return true;
+        }
+
+        public void UnBlock(int subId)
+        {
+            var sub = _subscriptionRepository.GetById(subId);
+            if (sub == null)
+            {
+                throw new Exception("Can not find subscription");
+            }
+            sub.Status = Constants.OPEN_SUBCRIPTION;
+            _subscriptionRepository.UpdateSubribe(sub);
         }
     }
 }
