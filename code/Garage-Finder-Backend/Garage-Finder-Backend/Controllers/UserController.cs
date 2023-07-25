@@ -96,7 +96,16 @@ namespace Garage_Finder_Backend.Controllers
                 var usersDTO = _userRepository.Login(loginModel.Email, loginModel.Password);
                 var roleName = _roleNameRepository.GetUserRole(usersDTO.RoleID);
                 usersDTO.roleName = roleName;
-                var tokenInfor = GenerateTokenInfor(usersDTO.UserID, Constants.ROLE_USER);
+                TokenInfor tokenInfor;
+                if (usersDTO.roleName.NameRole == Constants.ROLE_ADMIN)
+                {
+                    tokenInfor = GenerateTokenInfor(usersDTO.UserID, Constants.ROLE_ADMIN);
+                }
+                else
+                {
+                    tokenInfor = GenerateTokenInfor(usersDTO.UserID, Constants.ROLE_USER);
+                }
+                
                 var accessToken = _jwtService.GenerateJwt(tokenInfor, roleName, _jwtSettings);
                 usersDTO.AccessToken = accessToken;
 
