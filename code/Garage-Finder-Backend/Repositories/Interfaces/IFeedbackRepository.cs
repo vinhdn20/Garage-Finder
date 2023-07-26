@@ -10,7 +10,9 @@ namespace Repositories.Interfaces
 {
     public interface IFeedbackRepository
     {
+        List<Feedback> GetAll();
         List<Feedback> GetListByGarage(int id);
+        List<Feedback> GetListByUserId(int userId);
         void Add(Feedback feedback);
         void Update(Feedback feedback);
 

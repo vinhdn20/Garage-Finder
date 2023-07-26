@@ -18,11 +18,20 @@ namespace Repositories.Implements.FeedbackRepository
         {
             _mapper = mapper;
         }
+        public List<Feedback> GetAll()
+        {
+            return FeedbackDAO.Instance.GetAll();
+        }
+
         public List<Feedback> GetListByGarage(int id)
         {
             return FeedbackDAO.Instance.GetByGarage(id);
         }
 
+        public List<Feedback> GetListByUserId(int userId)
+        {
+            return FeedbackDAO.Instance.GetByUserId(userId);
+        }
 
         public void Add(Feedback feedback)
         {

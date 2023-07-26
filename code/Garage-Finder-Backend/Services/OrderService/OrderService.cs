@@ -31,6 +31,7 @@ namespace Services.OrderService
         private readonly ICategoryRepository _categoryRepository;
         private readonly IStaffRepository _staffRepository;
         private readonly INotificationService _notificationService;
+        private readonly IFeedbackRepository _feedbackRepository;
         private readonly IMapper _mapper;
         #endregion
 
@@ -39,7 +40,7 @@ namespace Services.OrderService
             IGuestOrderRepository guestOrderRepository, IEmailService emailService, IUsersRepository usersRepository,
             IGarageRepository garageRepository,IBrandRepository brandRepository, IMapper mapper,
             ICategoryRepository categoryRepository, IStaffRepository staffRepository,
-            INotificationService notificationService)
+            INotificationService notificationService, IFeedbackRepository feedbackRepository)
         {
             _orderRepository = orderRepository;
             _carRepository = carRepository;
@@ -54,11 +55,13 @@ namespace Services.OrderService
             _categoryRepository = categoryRepository;
             _staffRepository = staffRepository;
             _notificationService = notificationService;
+            _feedbackRepository = feedbackRepository;
         }
 
         public List<OrderDetailDTO> GetByUserId(int userId)
         {
             var orders = _orderRepository.GetAllOrdersByUserId(userId);
+            var feedbacks = _feedbackRepository.GetListByUserId(userId);
             List<OrderDetailDTO> list = new List<OrderDetailDTO>();
             foreach (var ord in orders)
             {
@@ -81,7 +84,10 @@ namespace Services.OrderService
                     var cate = _categoryRepository.GetCategory().Where(x => x.CategoryID == categoryGarage.CategoryID).FirstOrDefault();
                     o.Category.Add(cate.CategoryName);
                 }
-
+                if(feedbacks.Any(x => x.OrderID == o.OrderID))
+                {
+                    o.IsFeedback = true;
+                }
                 list.Add(o);
             }
             return list;
@@ -108,6 +114,8 @@ namespace Services.OrderService
                 orderDetailDTO.Name = user.Name;
                 var brand = _brandRepository.GetBrand().FirstOrDefault(x => x.BrandID == car.BrandID);
                 orderDetailDTO.Brand = brand.BrandName;
+
+                orderDetailDTO.IsFeedback = _feedbackRepository.GetAll().Any(x => x.OrderID == orders.OrderID);
             }
             else
             {
@@ -135,6 +143,8 @@ namespace Services.OrderService
         {
             var garagas = _garageRepository.GetGarageByUser(userId); 
             var staff = _staffRepository.GetByGarageId(garageId);
+
+            var feedbacks = _feedbackRepository.GetListByGarage(garageId);
             if (!garagas.Any(x => x.GarageID == garageId) && !staff.Any(x => x.StaffId == userId))
             {
                 throw new Exception("Authorize exception");
@@ -163,7 +173,7 @@ namespace Services.OrderService
                     var cate = _categoryRepository.GetCategory().Where(x => x.CategoryID == categoryGarage.CategoryID).FirstOrDefault();
                     o.Category.Add(cate.CategoryName);
                 }
-
+                o.IsFeedback = feedbacks.Any(x => x.OrderID == ord.OrderID);
                 list.Add(o);
             }
 

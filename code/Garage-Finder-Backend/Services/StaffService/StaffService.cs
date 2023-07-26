@@ -169,7 +169,8 @@ namespace Services.StaffService
             {
                 throw new Exception("Authorize exception!");
             }
-            var staffUpdate = _mapper.Map<Staff>(staff);
+            var staffUpdate = _mapper.Map<Staff>(stafDB);
+            staffUpdate = _mapper.Map(staff, staffUpdate);
             _staffRepository.UpdateStaff(staffUpdate);
         }
 

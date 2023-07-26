@@ -456,6 +456,20 @@ namespace Garage_Finder_Backend.Controllers
             return Ok(filteredGarages);
         }
 
+        [HttpGet("getGarageSuggest")]
+        public IActionResult GetGarageSuggest()
+        {
+            try
+            {
+                var garas =  garageService.GetGarageSuggest();
+                return Ok(garas);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         //[HttpPost]
         //public IActionResult GetGarageAround([FromBody] FindGarageAroundDTO findGarageAroundDTO)
         //{

@@ -22,6 +22,8 @@ namespace DataAccess.DTO.Garage
         public double? LatAddress { get; set; }
         public double? LngAddress { get; set; }
         public int UserID { get; set; }
+        public double Star { get; set; }
+        public int FeedbacksNumber { get; set; }
         public CategoryGarageDTO[]? CategoryGarages { get; set; }
         public List<ViewBrandDTO>? GarageBrands { get; set; } = new List<ViewBrandDTO>();
         public ImageGarageDTO[] ImageGarages { get; set; }

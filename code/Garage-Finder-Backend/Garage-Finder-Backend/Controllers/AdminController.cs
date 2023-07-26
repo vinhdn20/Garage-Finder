@@ -38,7 +38,7 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpGet("GetUsersTotal")]
-        //[Authorize(Roles = $"{Constants.ROLE_USER}")]
+        //[Authorize(Roles = $"{Constants.ROLE_ADMIN}")]
         public IActionResult GetTotalUser()
         {
             try
@@ -54,7 +54,7 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpGet("GetGarages")]
-        //[Authorize(Roles = $"{Constants.ROLE_USER}")]
+        //[Authorize(Roles = $"{Constants.ROLE_ADMIN}")]
         public IActionResult GetAllGarage(string? keyword)
         {
             try
@@ -74,7 +74,7 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpGet("GetGaragesTotal")]
-        //[Authorize(Roles = $"{Constants.ROLE_USER}")]
+        //[Authorize(Roles = $"{Constants.ROLE_ADMIN}")]
         public IActionResult GetTotalGarage()
         {
             try

@@ -16,14 +16,21 @@ namespace Services
 
         public const string BLOCK_STAFF = "block";
         public const string OPEN_STAFF = "open";
+
         public const string ROLE_USER = "user";
         public const string ROLE_STAFF = "staff";
+        public const string ROLE_ADMIN = "admin";
+        public const string USER_ACTIVE = "active";
+        public const int ROLE_ADMIN_ID = 1;
+        public const int ROLE_USER_ID = 2;
+
         public static readonly List<string> STAFF_STATUS = new List<string>() {BLOCK_STAFF, OPEN_STAFF};
         public const string DELETE_GARAGE = "delete";
         public const string INVOICE_WAITING = "waiting";
         public const string INVOICE_PAID = "paid";
         public const string INVOICE_FAIL = "fail";
         public const string VNPAY_SUCCESS = "00";
-        public const string DELETE_SUBCRIPTION = "delete";
+        public const string DELETE_SUBCRIPTION = "block";
+        public const string OPEN_SUBCRIPTION = "open";
     }
 }

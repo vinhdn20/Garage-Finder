@@ -9,6 +9,7 @@ namespace Services.GarageService
 {
     public interface IGarageService
     {
+        List<GarageDTO> GetGarageSuggest();
         void Add(AddGarageDTO addGarage, int userID);
         ViewGarageDTO GetById(int garageId);
     }
