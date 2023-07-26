@@ -18,7 +18,7 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpGet("GetUsers")]
-        //[Authorize(Roles = $"{Constants.ROLE_ADMIN}")]
+        [Authorize(Roles = Constants.ROLE_ADMIN)]
         public IActionResult GetAllUsers(string? keyword)
         {
             try
@@ -38,7 +38,7 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpGet("GetUsersTotal")]
-        //[Authorize(Roles = $"{Constants.ROLE_ADMIN}")]
+        [Authorize(Roles = Constants.ROLE_ADMIN)]
         public IActionResult GetTotalUser()
         {
             try
@@ -54,7 +54,7 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpGet("GetGarages")]
-        //[Authorize(Roles = $"{Constants.ROLE_ADMIN}")]
+        [Authorize(Roles = Constants.ROLE_ADMIN)]
         public IActionResult GetAllGarage(string? keyword)
         {
             try
@@ -74,7 +74,7 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpGet("GetGaragesTotal")]
-        //[Authorize(Roles = $"{Constants.ROLE_ADMIN}")]
+        [Authorize(Roles = Constants.ROLE_ADMIN)]
         public IActionResult GetTotalGarage()
         {
             try
@@ -88,7 +88,65 @@ namespace Garage_Finder_Backend.Controllers
                 return StatusCode(500, $"Đã xảy ra lỗi: {e.Message}");
             }
         }
+        [HttpPost("BanUser")]
+        public IActionResult BanUser(int id)
+        {
+            try
+            {
+                adminRepository.BanUser(id);
+                return Ok();
+            }
+            catch (Exception e)
+            {
 
+                return StatusCode(500, $"Đã xảy ra lỗi: {e.Message}");
+            }
+        }
+
+        [HttpPost("UnBanUser")]
+        public IActionResult UnBanUser(int id)
+        {
+            try
+            {
+                adminRepository.UnBanUser(id);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+
+                return StatusCode(500, $"Đã xảy ra lỗi: {e.Message}");
+            }
+        }
+
+        [HttpPost("BanGarage")]
+        public IActionResult BanGarage(int id)
+        {
+            try
+            {
+                adminRepository.BanGarage(id);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+
+                return StatusCode(500, $"Đã xảy ra lỗi: {e.Message}");
+            }
+        }
+
+        [HttpPost("UnBanGarage")]
+        public IActionResult UnBanGarage(int id)
+        {
+            try
+            {
+                adminRepository.UnBanGarage(id);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+
+                return StatusCode(500, $"Đã xảy ra lỗi: {e.Message}");
+            }
+        }
 
     }
 }

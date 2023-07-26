@@ -21,6 +21,9 @@ namespace Services
         public const string ROLE_STAFF = "staff";
         public const string ROLE_ADMIN = "admin";
         public const string USER_ACTIVE = "active";
+        public const string USER_LOCKED = "locked";
+        public const string GARAGE_ACTIVE = "active";
+        public const string GARAGE_LOCKED = "locked";
         public const int ROLE_ADMIN_ID = 1;
         public const int ROLE_USER_ID = 2;
 
