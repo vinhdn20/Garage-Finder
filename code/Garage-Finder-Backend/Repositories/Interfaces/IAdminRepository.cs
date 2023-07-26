@@ -12,5 +12,6 @@ namespace Repositories.Interfaces
     {
         public List<UserAdminDTO> GetAllUser();
         public List<GarageDTO> GetGarages();
+        public void BanUser(int id);
     }
 }

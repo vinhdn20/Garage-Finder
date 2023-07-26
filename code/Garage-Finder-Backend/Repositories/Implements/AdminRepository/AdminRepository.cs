@@ -42,5 +42,11 @@ namespace Repositories.Implements.AdminRepository
             return result;
         }
 
+        public void BanUser(int id) 
+        {
+            var users = UsersDAO.Instance.FindUserByID(id);
+            users.Status = "Locked";
+        }
+
     }
 }
