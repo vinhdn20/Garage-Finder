@@ -34,5 +34,6 @@ namespace GFData.Models.Entity
         public ICollection<CategoryGarage> CategoryGarages { get; set; }
         public ICollection<ImageGarage> ImageGarages { get; set; }
         public Users User { get; set; }
+        public ICollection<RoomChat> RoomChats { get; set; }
     }
 }

@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace DataAccess.DTO.Chat
 {
-    public class SendChat
+    public class SendChatToUser
     {
         public string Content { get; set; }
-        public int ToId { get; set; }
+        public int UserID { get; set; }
+        public int FromGarageId { get; set; }
     }
 }

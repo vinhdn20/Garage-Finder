@@ -16,14 +16,10 @@ namespace GFData.Models.Entity
         public int UserID { get; set; }
         [ForeignKey("RoomChat")]
         public int RoomID { get; set; }
-        [ForeignKey("Garage")]
-        public int GarageID { get; set; }
         public DateTime DateTime { get; set; }
         public string Content { get; set; }
-        public bool IsRead { get; set; }
 
         public Users Users { get; set; }
-        public Garage Garage { get; set; }
         public RoomChat RoomChat { get; set; }
 
     }

@@ -9,9 +9,10 @@ namespace Services.ChatService
 {
     public interface IChatService
     {
-        void SendToGarage(int userId, SendChat sendChat);
-        void SendToUser(int fromStaffId, SendChat sendChat);
-        List<RoomDTO> GetListRoom(int userId, string roleName);
+        void SendToGarage(int userId, SendChatToGarage sendChat);
+        void SendToUser(int userId, string nameRole, SendChatToUser sendChat);
+        List<RoomDTO> GetListRoomByUserId(int userId);
+        List<RoomDTO> GetListRoomByGarageId(int userId, int garageId);
         List<ChatDTO> GetDetailMessage(int userId, string nameRole, int roomId);
     }
 }

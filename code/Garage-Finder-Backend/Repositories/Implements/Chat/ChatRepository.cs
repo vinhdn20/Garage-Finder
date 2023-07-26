@@ -11,9 +11,9 @@ namespace Repositories.Implements.Chat
 {
     public class ChatRepository : IChatRepository
     {
-        public List<RoomChat> GetRoomByStaff(int staffId)
+        public List<RoomChat> GetRoomByGarageId(int garageId)
         {
-            var rooms = ChatDAO.Instance.GetRoomChatByStaff(staffId);
+            var rooms = ChatDAO.Instance.GetRoomChatByGarage(garageId);
             return rooms;
         }
 
@@ -45,9 +45,14 @@ namespace Repositories.Implements.Chat
             ChatDAO.Instance.UserSendMessage(message);
         }
 
-        public RoomChat CreateRoomChat()
+        public RoomChat CreateRoomChat(RoomChat room)
         {
-            return ChatDAO.Instance.CreateRoomChat();
+            return ChatDAO.Instance.CreateRoomChat(room);
+        }
+
+        public RoomChat GetRoomById(int id)
+        {
+            return ChatDAO.Instance.GetRoomById(id);
         }
     }
 }

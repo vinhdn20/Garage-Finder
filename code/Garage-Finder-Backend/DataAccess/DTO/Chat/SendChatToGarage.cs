@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace DataAccess.DTO.Chat
 {
-    public class ChatDTO
+    public class SendChatToGarage
     {
-        public DateTime DateTime { get; set; }
         public string Content { get; set; }
-        public bool IsSendByMe { get; set; }
+        public int GarageID { get; set; }
     }
 }
