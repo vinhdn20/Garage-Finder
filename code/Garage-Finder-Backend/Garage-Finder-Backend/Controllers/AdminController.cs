@@ -18,7 +18,7 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpGet("GetUsers")]
-        [Authorize(Roles = Constants.ROLE_ADMIN)]
+        [Authorize]
         public IActionResult GetAllUsers(string? keyword)
         {
             try
@@ -38,7 +38,7 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpGet("GetUsersTotal")]
-        [Authorize(Roles = Constants.ROLE_ADMIN)]
+        [Authorize]
         public IActionResult GetTotalUser()
         {
             try
@@ -54,7 +54,7 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpGet("GetGarages")]
-        [Authorize(Roles = Constants.ROLE_ADMIN)]
+        [Authorize]
         public IActionResult GetAllGarage(string? keyword)
         {
             try
@@ -74,7 +74,7 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpGet("GetGaragesTotal")]
-        [Authorize(Roles = Constants.ROLE_ADMIN)]
+        [Authorize]
         public IActionResult GetTotalGarage()
         {
             try
@@ -89,6 +89,7 @@ namespace Garage_Finder_Backend.Controllers
             }
         }
         [HttpPost("BanUser")]
+        [Authorize]
         public IActionResult BanUser(int id)
         {
             try
@@ -104,6 +105,7 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpPost("UnBanUser")]
+        [Authorize]
         public IActionResult UnBanUser(int id)
         {
             try
@@ -119,6 +121,7 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpPost("BanGarage")]
+        [Authorize]
         public IActionResult BanGarage(int id)
         {
             try
@@ -134,6 +137,7 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpPost("UnBanGarage")]
+        [Authorize]
         public IActionResult UnBanGarage(int id)
         {
             try
