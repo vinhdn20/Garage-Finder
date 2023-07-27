@@ -15,9 +15,13 @@ namespace Repositories.Implements.AdminRepository
     public class AdminRepository : IAdminRepository
     {
         private readonly IMapper _mapper;
-        public AdminRepository(IMapper mapper)
+        private readonly IUsersRepository _usersRepository;
+        private readonly IGarageRepository _garageRepository;
+        public AdminRepository(IMapper mapper, IUsersRepository usersRepository, IGarageRepository garageRepository)
         {
             _mapper = mapper;
+            _usersRepository = usersRepository;
+            _garageRepository = garageRepository;
         }
 
         public List<GarageDTO> GetGarages()
@@ -34,12 +38,42 @@ namespace Repositories.Implements.AdminRepository
                 {
                     user.HaveGarage = true;
                 }
-                else 
+                else
                 {
                     user.HaveGarage = false;
                 }
             }
             return result;
+        }
+
+        public void BanUser(int id)
+        {
+            var user = _usersRepository.GetUserByID(id);
+            user.Status = Constants.USER_LOCKED;
+            _usersRepository.Update(user);
+        }
+
+        public void UnBanUser(int id)
+        {
+
+            var user = _usersRepository.GetUserByID(id);
+            user.Status = Constants.USER_ACTIVE;
+            _usersRepository.Update(user);
+        }
+
+        public void BanGarage(int id)
+        {
+            var garage = _garageRepository.GetGaragesByID(id);
+            garage.Status = Constants.GARAGE_LOCKED;
+            _garageRepository.Update(garage);
+
+        }
+
+        public void UnBanGarage(int id)
+        {
+            var garage = _garageRepository.GetGaragesByID(id);
+            garage.Status = Constants.GARAGE_ACTIVE;
+            _garageRepository.Update(garage);
         }
 
     }

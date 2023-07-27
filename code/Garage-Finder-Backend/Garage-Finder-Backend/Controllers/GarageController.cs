@@ -59,6 +59,20 @@ namespace Garage_Finder_Backend.Controllers
                 return BadRequest(e.Message);
             }
         }
+        [HttpGet("GetTotal")]
+        public IActionResult GetTotalGarage()
+        {
+            try
+            {
+                var result = garageRepository.GetGarages().Count();
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+
+                return StatusCode(500, $"Đã xảy ra lỗi: {e.Message}");
+            }
+        }
 
         [HttpPost("Add")]
         [Authorize(Roles = Constants.ROLE_USER)]

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Garage_Finder_Backend
+namespace Repositories
 {
     public class Constants
     {
