@@ -85,7 +85,7 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
-                if(string.IsNullOrEmpty(loginModel.Password))
+                if (string.IsNullOrEmpty(loginModel.Password))
                 {
                     return BadRequest("Password is empty");
                 }
@@ -94,6 +94,10 @@ namespace Garage_Finder_Backend.Controllers
                     return BadRequest("Email is empty");
                 }
                 var usersDTO = _userRepository.Login(loginModel.Email, loginModel.Password);
+                if (usersDTO.Status == Constants.USER_LOCKED)
+                {
+                    return BadRequest("User is locked");
+                }
                 var roleName = _roleNameRepository.GetUserRole(usersDTO.RoleID);
                 usersDTO.roleName = roleName;
                 TokenInfor tokenInfor;
@@ -105,7 +109,7 @@ namespace Garage_Finder_Backend.Controllers
                 {
                     tokenInfor = GenerateTokenInfor(usersDTO.UserID, Constants.ROLE_USER);
                 }
-                
+
                 var accessToken = _jwtService.GenerateJwt(tokenInfor, roleName, _jwtSettings);
                 usersDTO.AccessToken = accessToken;
 
@@ -145,7 +149,14 @@ namespace Garage_Finder_Backend.Controllers
                     _refreshTokenRepository.AddOrUpdateToken(refreshToken);
                     userInfor.RefreshToken = refreshToken;
                     //SetRefreshToken(refreshToken);
-                    return Ok(userInfor);
+                    if (userInfor.Status == Constants.USER_LOCKED)
+                    {
+                        return BadRequest("User is locked");
+                    }
+                    else
+                    {
+                        return Ok(userInfor);
+                    }
                 }
                 else
                 {
@@ -227,7 +238,7 @@ namespace Garage_Finder_Backend.Controllers
         //        HttpOnly = true,
         //        Expires = refreshToken.ExpiresDate
         //    };
-            
+
         //    Response.Cookies.Append("refreshToken", refreshToken.Token, cookiesOptions);
         //}
 
@@ -244,7 +255,7 @@ namespace Garage_Finder_Backend.Controllers
             catch (Exception ex)
             {
                 return StatusCode(500, ex.Message);
-            }            
+            }
         }
 
         [HttpPost]
@@ -253,7 +264,7 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
-                if(_phoneVerifyService.VerifyPhoneNumber(forgotPassModel.verifyCode, forgotPassModel.phoneNumber).Result)
+                if (_phoneVerifyService.VerifyPhoneNumber(forgotPassModel.verifyCode, forgotPassModel.phoneNumber).Result)
                 {
                     var userDTO = _userRepository.GetUsersByPhone(forgotPassModel.phoneNumber);
                     userDTO.Password = forgotPassModel.newPassword;
@@ -330,7 +341,7 @@ namespace Garage_Finder_Backend.Controllers
                 var user = User.GetTokenInfor();
                 _userService.ChangePassword(user.UserID, changePasswordDTO.OldPassword, changePasswordDTO.NewPassword);
                 return Ok();
-                
+
             }
             catch (Exception e)
             {
