@@ -59,7 +59,7 @@ namespace Garage_Finder_Backend.Controllers
 
         [HttpPost("staffSendMessage")]
         [Authorize(Roles = $"{Constants.ROLE_USER}")]
-        public IActionResult StaffSendMessage([FromBody] SendChatToUser sendChat)
+        public IActionResult StaffSendMessage([FromBody] SendChatToUserByGarage sendChat)
         {
             try
             {

@@ -54,5 +54,15 @@ namespace Repositories.Implements.Chat
         {
             return ChatDAO.Instance.GetRoomById(id);
         }
+
+        public List<MessageToUser> GetMessagesToUsers(int senderUserId, int receiveUserId)
+        {
+            return ChatDAO.Instance.GetMessageToUsers(senderUserId, receiveUserId);    
+        }
+
+        public void SendMessageToUsers(MessageToUser messageToUser)
+        {
+            ChatDAO.Instance.SendMessageToUser(messageToUser);
+        }
     }
 }

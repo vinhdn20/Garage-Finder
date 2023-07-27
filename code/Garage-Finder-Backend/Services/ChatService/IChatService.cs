@@ -10,9 +10,11 @@ namespace Services.ChatService
     public interface IChatService
     {
         void SendToGarage(int userId, SendChatToGarage sendChat);
-        void SendToUser(int userId, string nameRole, SendChatToUser sendChat);
+        void SendToUser(int userId, string nameRole, SendChatToUserByGarage sendChat);
         List<RoomDTO> GetListRoomByUserId(int userId);
         List<RoomDTO> GetListRoomByGarageId(int userId, int garageId);
         List<ChatDTO> GetDetailMessage(int userId, string nameRole, int roomId);
+        void SendMessageToUser(int senderUserId, int recieverUserId, string content);
+        List<ChatDTO> GetMessageWithUser(int userId, int userId2);
     }
 }
