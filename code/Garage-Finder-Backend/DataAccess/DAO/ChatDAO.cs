@@ -31,6 +31,29 @@ namespace DataAccess.DAO
                 }
             }
         }
+        public RoomChat GetRoomById(int id)
+        {
+            RoomChat roomChats = new RoomChat();
+            try
+            {
+                using (var context = new GFDbContext())
+                {
+                    roomChats = (from room in context.RoomChat
+                                 where room.RoomID == id
+                                 select new RoomChat()
+                                 {
+                                     RoomID = room.RoomID,
+                                     GarageID = room.GarageID,
+                                     UserID = room.UserID,
+                                 }).First();
+                }
+                return roomChats;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message + "\n" + e.InnerException.Message);
+            }
+        }
 
         public List<RoomChat> GetRoomChatByUser(int userId)
         {
@@ -40,12 +63,13 @@ namespace DataAccess.DAO
                 using (var context = new GFDbContext())
                 {
                     roomChats = (from room in context.RoomChat
-                                    join message in context.Message on room.RoomID equals message.RoomID
-                                    where message.UserID == userId
-                                    select new RoomChat()
-                                    {
-                                        RoomID = room.RoomID,
-                                    }).ToList();
+                                 where room.UserID == userId
+                                 select new RoomChat()
+                                 {
+                                     RoomID = room.RoomID,
+                                     GarageID = room.GarageID,
+                                     UserID = room.UserID,
+                                 }).ToList();
                 }
                 return roomChats;
             }
@@ -55,7 +79,7 @@ namespace DataAccess.DAO
             }            
         }
 
-        public List<RoomChat> GetRoomChatByStaff(int staffId)
+        public List<RoomChat> GetRoomChatByGarage(int garageId)
         {
             List<RoomChat> roomChats = new List<RoomChat>();
             try
@@ -63,11 +87,12 @@ namespace DataAccess.DAO
                 using (var context = new GFDbContext())
                 {
                     roomChats = (from room in context.RoomChat
-                                 join message in context.StaffMessages on room.RoomID equals message.RoomID
-                                 where message.StaffId == staffId
+                                 where room.GarageID == garageId
                                  select new RoomChat()
                                  {
                                      RoomID = room.RoomID,
+                                     GarageID = room.GarageID,
+                                     UserID = room.UserID,
                                  }).ToList();
                 }
                 return roomChats;
@@ -92,10 +117,9 @@ namespace DataAccess.DAO
                                 {
                                     RoomID = room.RoomID,
                                     StaffMessageID = message.StaffMessageID,
-                                    IsRead = true,
                                     Content = message.Content,
                                     DateTime = message.DateTime,
-                                    StaffId = message.StaffId
+                                    StaffId = message.StaffId,                                    
                                 }).ToList();
                 }
                 return  messages;
@@ -120,7 +144,6 @@ namespace DataAccess.DAO
                                 {
                                     RoomID = room.RoomID,
                                     MessageID = message.MessageID,
-                                    IsRead = true,
                                     Content = message.Content,
                                     DateTime = message.DateTime,
                                     UserID = message.UserID,
@@ -215,11 +238,10 @@ namespace DataAccess.DAO
             }
         }
 
-        public RoomChat CreateRoomChat()
+        public RoomChat CreateRoomChat(RoomChat room)
         {
             try
             {
-                RoomChat room = new RoomChat();
                 using(var context = new GFDbContext())
                 {
                     context.RoomChat.Add(room);

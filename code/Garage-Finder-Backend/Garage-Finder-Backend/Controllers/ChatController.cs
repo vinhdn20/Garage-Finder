@@ -45,7 +45,7 @@ namespace Garage_Finder_Backend.Controllers
 
         [HttpPost("userSendMessage")]
         [Authorize(Roles = $"{Constants.ROLE_USER}")]
-        public IActionResult UserSendMessage([FromBody]SendChat sendChat)
+        public IActionResult UserSendMessage([FromBody]SendChatToGarage sendChat)
         {
             try
             {
@@ -59,7 +59,7 @@ namespace Garage_Finder_Backend.Controllers
 
         [HttpPost("staffSendMessage")]
         [Authorize(Roles = $"{Constants.ROLE_USER}")]
-        public IActionResult StaffSendMessage([FromBody] SendChat sendChat)
+        public IActionResult StaffSendMessage([FromBody] SendChatToUser sendChat)
         {
             try
             {

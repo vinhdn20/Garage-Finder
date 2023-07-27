@@ -8,18 +8,18 @@ using System.Threading.Tasks;
 
 namespace GFData.Models.Entity
 {
-    public class StaffMessage
+    public class MessageToUser
     {
         [Key]
-        public int StaffMessageID { get; set; }
-        [ForeignKey("Staff")]
-        public int StaffId { get; set; }
-        [ForeignKey("RoomChat")]
-        public int RoomID { get; set; }
+        public int MessageID { get; set; }
+        [ForeignKey(nameof(Users))]
+        public int SenderUserID { get; set; }
+        [ForeignKey(nameof(Users))]
+        public int ReceiverUserID { get; set; }
         public DateTime DateTime { get; set; }
         public string Content { get; set; }
 
-        public RoomChat RoomChat { get; set; }
-        public Staff Staff { get; set; }
+        public Users Sender { get; set; }
+        public Users Receiver { get; set; }
     }
 }

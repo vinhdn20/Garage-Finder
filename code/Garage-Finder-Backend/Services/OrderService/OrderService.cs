@@ -9,6 +9,7 @@ using Mailjet.Client.Resources;
 using Microsoft.AspNetCore.SignalR;
 using Repositories.Interfaces;
 using Services.EmailService;
+using Services.GarageService;
 using Services.NotificationService;
 using Services.PhoneVerifyService;
 using Services.WebSocket;
@@ -27,6 +28,7 @@ namespace Services.OrderService
         private readonly IEmailService _emailService;
         private readonly IUsersRepository _usersRepository;
         private readonly IGarageRepository _garageRepository;
+        private readonly IGarageService _garageService;
         private readonly IBrandRepository _brandRepository;
         private readonly ICategoryRepository _categoryRepository;
         private readonly IStaffRepository _staffRepository;
@@ -40,7 +42,8 @@ namespace Services.OrderService
             IGuestOrderRepository guestOrderRepository, IEmailService emailService, IUsersRepository usersRepository,
             IGarageRepository garageRepository,IBrandRepository brandRepository, IMapper mapper,
             ICategoryRepository categoryRepository, IStaffRepository staffRepository,
-            INotificationService notificationService, IFeedbackRepository feedbackRepository)
+            INotificationService notificationService, IFeedbackRepository feedbackRepository,
+            IGarageService garageService)
         {
             _orderRepository = orderRepository;
             _carRepository = carRepository;
@@ -56,6 +59,7 @@ namespace Services.OrderService
             _staffRepository = staffRepository;
             _notificationService = notificationService;
             _feedbackRepository = feedbackRepository;
+            _garageService = garageService;
         }
 
         public List<OrderDetailDTO> GetByUserId(int userId)
@@ -213,6 +217,12 @@ namespace Services.OrderService
             {
                 throw new Exception("Can't find car");
             }
+            var garage = _garageService.GetById(addOrder.garageId);
+            var brandCar = _brandRepository.GetBrand().Find(x => x.BrandID == car.BrandID);
+            if(!garage.GarageBrands.Any(x => x.BrandName.Equals(brandCar.BrandName)))
+            {
+                throw new Exception($"Garage này không hỗ trợ sửa xe {brandCar.BrandName}");
+            }
             addOrder.categoryGarageId.ForEach(x => CheckCategoryExits(x));
             List<OrderDetail> orderDetails = new List<OrderDetail>();
             foreach (var cate in addOrder.categoryGarageId)
@@ -230,7 +240,7 @@ namespace Services.OrderService
                 TimeCreate = DateTime.UtcNow,
                 Status = Constants.STATUS_ORDER_OPEN,
                 TimeAppointment = DateTime.ParseExact(addOrder.TimeAppointment, "dd/MM/yyyy hh:mm tt",
-                 System.Globalization.CultureInfo.InvariantCulture),
+                System.Globalization.CultureInfo.InvariantCulture),
                 OrderDetails = orderDetails,
                 PhoneNumber = addOrder.PhoneNumber,
             };
@@ -259,7 +269,12 @@ namespace Services.OrderService
             {
                 throw new Exception("Verification code not correct");
             }
-
+            var garage = _garageService.GetById(addOrder.GarageId);
+            var brandCar = _brandRepository.GetBrand().Find(x => x.BrandID == addOrder.BrandCarID);
+            if (!garage.GarageBrands.Any(x => x.BrandName.Equals(brandCar.BrandName)))
+            {
+                throw new Exception($"Garage này không hỗ trợ sửa xe {brandCar.BrandName}");
+            }
             addOrder.CategoryGargeId.ForEach(x => CheckCategoryExits(x));
             List<GuestOrderDetail> orderDetails = new List<GuestOrderDetail>();
             foreach (var cate in addOrder.CategoryGargeId)
@@ -274,7 +289,8 @@ namespace Services.OrderService
                 GarageID = addOrder.GarageId,
                 TimeCreate = DateTime.UtcNow,
                 Status = Constants.STATUS_ORDER_OPEN,
-                TimeAppointment = addOrder.TimeAppointment,
+                TimeAppointment = DateTime.ParseExact(addOrder.TimeAppointment, "dd/MM/yyyy hh:mm tt",
+                System.Globalization.CultureInfo.InvariantCulture),
                 PhoneNumber = addOrder.PhoneNumber,
                 LicensePlates = addOrder.LicensePlates,
                 Email = addOrder.Email,
@@ -315,7 +331,13 @@ namespace Services.OrderService
                 TypeCar = addOrder.TypeCar,
                 UserID = userID
             };
-            var car = _carRepository.SaveCar(carDTO); 
+            var car = _carRepository.SaveCar(carDTO);
+            var garage = _garageService.GetById(addOrder.GarageId);
+            var brandCar = _brandRepository.GetBrand().Find(x => x.BrandID == addOrder.BrandCarID);
+            if (!garage.GarageBrands.Any(x => x.BrandName.Equals(brandCar.BrandName)))
+            {
+                throw new Exception($"Garage này không hỗ trợ sửa xe {brandCar.BrandName}");
+            }
             List<OrderDetail> orderDetails = new List<OrderDetail>();
             foreach (var cate in addOrder.CategoryGargeId)
             {
@@ -331,7 +353,8 @@ namespace Services.OrderService
                 GarageID = addOrder.GarageId,
                 TimeCreate = DateTime.UtcNow,
                 Status = Constants.STATUS_ORDER_OPEN,
-                TimeAppointment = addOrder.TimeAppointment,
+                TimeAppointment = DateTime.ParseExact(addOrder.TimeAppointment, "dd/MM/yyyy hh:mm tt",
+                System.Globalization.CultureInfo.InvariantCulture),
                 OrderDetails = orderDetails,
                 PhoneNumber = addOrder.PhoneNumber,
             };

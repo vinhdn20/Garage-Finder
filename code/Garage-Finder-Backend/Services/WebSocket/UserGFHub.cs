@@ -67,10 +67,16 @@ namespace Services.WebSocket
             return _notificationService.GetNotification(user.UserID, user.RoleName);
         }
 
-        public List<RoomDTO> GetListRoom()
+        public List<RoomDTO> GetListRoomByUserId()
         {
             var user = GetTokenInfor();
-            return _chatService.GetListRoom(user.UserID, user.RoleName);
+            return _chatService.GetListRoomByUserId(user.UserID);
+        }
+
+        public List<RoomDTO> GetListRoomByGarageId(int garageId)
+        {
+            var user = GetTokenInfor();
+            return _chatService.GetListRoomByGarageId(user.UserID,garageId);
         }
 
         public List<ChatDTO> GetDetailRoom(int roomId)
@@ -79,13 +85,13 @@ namespace Services.WebSocket
             return _chatService.GetDetailMessage(user.UserID, user.RoleName, roomId);
         }
 
-        public void SendMessgeToUser(SendChat sendChat)
+        public void GarageSendMessgeToUser(SendChatToUser sendChat)
         {
             var user = GetTokenInfor();
-            _chatService.SendToUser(user.UserID, sendChat);
+            _chatService.SendToUser(user.UserID, user.RoleName, sendChat);
         }
 
-        public void SendMessageToGarage(SendChat sendChat)
+        public void UserSendMessageToGarage(SendChatToGarage sendChat)
         {
             var user = GetTokenInfor();
             _chatService.SendToGarage(user.UserID, sendChat);

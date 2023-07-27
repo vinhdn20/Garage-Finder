@@ -493,12 +493,6 @@ namespace GFData.Migrations
                     b.Property<DateTime>("DateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("GarageID")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsRead")
-                        .HasColumnType("bit");
-
                     b.Property<int>("RoomID")
                         .HasColumnType("int");
 
@@ -507,13 +501,41 @@ namespace GFData.Migrations
 
                     b.HasKey("MessageID");
 
-                    b.HasIndex("GarageID");
-
                     b.HasIndex("RoomID");
 
                     b.HasIndex("UserID");
 
                     b.ToTable("Message");
+                });
+
+            modelBuilder.Entity("GFData.Models.Entity.MessageToUser", b =>
+                {
+                    b.Property<int>("MessageID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MessageID"), 1L, 1);
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ReceiverUserID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SenderUserID")
+                        .HasColumnType("int");
+
+                    b.HasKey("MessageID");
+
+                    b.HasIndex("ReceiverUserID");
+
+                    b.HasIndex("SenderUserID");
+
+                    b.ToTable("MessageToUsers");
                 });
 
             modelBuilder.Entity("GFData.Models.Entity.Notification", b =>
@@ -668,7 +690,17 @@ namespace GFData.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RoomID"), 1L, 1);
 
+                    b.Property<int>("GarageID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserID")
+                        .HasColumnType("int");
+
                     b.HasKey("RoomID");
+
+                    b.HasIndex("GarageID");
+
+                    b.HasIndex("UserID");
 
                     b.ToTable("RoomChat");
                 });
@@ -774,16 +806,10 @@ namespace GFData.Migrations
                     b.Property<DateTime>("DateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsRead")
-                        .HasColumnType("bit");
-
                     b.Property<int>("RoomID")
                         .HasColumnType("int");
 
                     b.Property<int>("StaffId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserID")
                         .HasColumnType("int");
 
                     b.HasKey("StaffMessageID");
@@ -791,8 +817,6 @@ namespace GFData.Migrations
                     b.HasIndex("RoomID");
 
                     b.HasIndex("StaffId");
-
-                    b.HasIndex("UserID");
 
                     b.ToTable("StaffMessages");
                 });
@@ -1147,14 +1171,8 @@ namespace GFData.Migrations
 
             modelBuilder.Entity("GFData.Models.Entity.Message", b =>
                 {
-                    b.HasOne("GFData.Models.Entity.Garage", "Garage")
-                        .WithMany()
-                        .HasForeignKey("GarageID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("GFData.Models.Entity.RoomChat", "RoomChat")
-                        .WithMany()
+                        .WithMany("Message")
                         .HasForeignKey("RoomID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1165,11 +1183,28 @@ namespace GFData.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.Navigation("Garage");
-
                     b.Navigation("RoomChat");
 
                     b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("GFData.Models.Entity.MessageToUser", b =>
+                {
+                    b.HasOne("GFData.Models.Entity.Users", "Receiver")
+                        .WithMany()
+                        .HasForeignKey("ReceiverUserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GFData.Models.Entity.Users", "Sender")
+                        .WithMany("MessageToUser")
+                        .HasForeignKey("SenderUserID")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Receiver");
+
+                    b.Navigation("Sender");
                 });
 
             modelBuilder.Entity("GFData.Models.Entity.Notification", b =>
@@ -1232,6 +1267,25 @@ namespace GFData.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("GFData.Models.Entity.RoomChat", b =>
+                {
+                    b.HasOne("GFData.Models.Entity.Garage", "Garage")
+                        .WithMany("RoomChats")
+                        .HasForeignKey("GarageID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GFData.Models.Entity.Users", "Users")
+                        .WithMany("RoomChat")
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Garage");
+
+                    b.Navigation("Users");
+                });
+
             modelBuilder.Entity("GFData.Models.Entity.Service", b =>
                 {
                     b.HasOne("GFData.Models.Entity.CategoryGarage", "CategoryGarage")
@@ -1257,7 +1311,7 @@ namespace GFData.Migrations
             modelBuilder.Entity("GFData.Models.Entity.StaffMessage", b =>
                 {
                     b.HasOne("GFData.Models.Entity.RoomChat", "RoomChat")
-                        .WithMany()
+                        .WithMany("StaffMessages")
                         .HasForeignKey("RoomID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1268,17 +1322,9 @@ namespace GFData.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("GFData.Models.Entity.Users", "User")
-                        .WithMany()
-                        .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("RoomChat");
 
                     b.Navigation("Staff");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("GFData.Models.Entity.StaffNotification", b =>
@@ -1353,6 +1399,8 @@ namespace GFData.Migrations
                     b.Navigation("ImageGarages");
 
                     b.Navigation("Orders");
+
+                    b.Navigation("RoomChats");
                 });
 
             modelBuilder.Entity("GFData.Models.Entity.GuestOrder", b =>
@@ -1378,6 +1426,13 @@ namespace GFData.Migrations
                     b.Navigation("Users");
                 });
 
+            modelBuilder.Entity("GFData.Models.Entity.RoomChat", b =>
+                {
+                    b.Navigation("Message");
+
+                    b.Navigation("StaffMessages");
+                });
+
             modelBuilder.Entity("GFData.Models.Entity.Staff", b =>
                 {
                     b.Navigation("StaffMessages");
@@ -1394,11 +1449,15 @@ namespace GFData.Migrations
 
                     b.Navigation("FavoriteList");
 
+                    b.Navigation("MessageToUser");
+
                     b.Navigation("Messages");
 
                     b.Navigation("Notifications");
 
                     b.Navigation("RefreshTokens");
+
+                    b.Navigation("RoomChat");
                 });
 #pragma warning restore 612, 618
         }
