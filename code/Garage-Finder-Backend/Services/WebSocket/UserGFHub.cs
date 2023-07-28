@@ -13,6 +13,7 @@ using SignalRSwaggerGen.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -85,7 +86,7 @@ namespace Services.WebSocket
             return _chatService.GetDetailMessage(user.UserID, user.RoleName, roomId);
         }
 
-        public void GarageSendMessgeToUser(SendChatToUser sendChat)
+        public void GarageSendMessgeToUser(SendChatToUserByGarage sendChat)
         {
             var user = GetTokenInfor();
             _chatService.SendToUser(user.UserID, user.RoleName, sendChat);
@@ -95,6 +96,18 @@ namespace Services.WebSocket
         {
             var user = GetTokenInfor();
             _chatService.SendToGarage(user.UserID, sendChat);
+        }
+
+        public void SendMessageToUser(SendChatToUser sendChat)
+        {
+            var user = GetTokenInfor();
+            _chatService.SendMessageToUser(user.UserID, sendChat.ToUserId, sendChat.Content);
+        }
+
+        public List<ChatDTO> GetMessageWithUser(int userId)
+        {
+            var user = GetTokenInfor();
+            return _chatService.GetMessageWithUser(user.UserID, userId);
         }
 
         private TokenInfor GetTokenInfor()

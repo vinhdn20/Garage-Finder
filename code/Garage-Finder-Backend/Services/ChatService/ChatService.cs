@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Twilio.TwiML.Voice;
 
 namespace Services.ChatService
 {
@@ -76,10 +77,11 @@ namespace Services.ChatService
                 };
                 result.Add(chatDTO);
             }
+            result = result.OrderBy(x => x.DateTime).ToList();
             return result;
         }
 
-        public void SendToUser(int userId, string nameRole, SendChatToUser sendChat)
+        public void SendToUser(int userId, string nameRole, SendChatToUserByGarage sendChat)
         {
             RoomChat roomChat;
             if(nameRole.Equals(Constants.ROLE_USER))
@@ -261,6 +263,59 @@ namespace Services.ChatService
                 roomList.Add(roomDTO);
             }
             return roomList;
+        }
+
+        public void SendMessageToUser(int senderUserId, int recieverUserId, string content)
+        {
+            MessageToUser messageToUser = new MessageToUser()
+            {
+                Content = content,
+                DateTime = DateTime.UtcNow,
+                ReceiverUserID = recieverUserId,
+                SenderUserID = senderUserId,
+            };
+            _chatRepository.SendMessageToUsers(messageToUser);
+            _hubContext.Clients.User(recieverUserId.ToString()).SendAsync("chatWithUser", messageToUser);
+        }
+
+        public List<ChatDTO> GetMessageWithUser(int userId, int userId2)
+        {
+            List<ChatDTO> chats = new List<ChatDTO>();
+            var sendMess = _chatRepository.GetMessagesToUsers(userId, userId2);
+            var receiveMess = _chatRepository.GetMessagesToUsers(userId2, userId);
+            foreach (var mess in sendMess)
+            {
+                var isSendByMe = false;
+                if (mess.SenderUserID == userId)
+                {
+                    isSendByMe = true;
+                }
+                ChatDTO chatDTO = new ChatDTO()
+                {
+                    Content = mess.Content,
+                    DateTime = mess.DateTime,
+                    IsSendByMe = isSendByMe
+                };
+                chats.Add(chatDTO);
+            }
+
+            foreach (var mess in receiveMess)
+            {
+                var isSendByMe = false;
+                if (mess.SenderUserID == userId)
+                {
+                    isSendByMe = true;
+                }
+                ChatDTO chatDTO = new ChatDTO()
+                {
+                    Content = mess.Content,
+                    DateTime = mess.DateTime,
+                    IsSendByMe = isSendByMe
+                };
+                chats.Add(chatDTO);
+            }
+            chats = chats.OrderBy(x => x.DateTime).ToList();
+            return chats;
         }
     }
 }

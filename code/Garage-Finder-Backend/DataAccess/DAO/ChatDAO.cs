@@ -165,31 +165,6 @@ namespace DataAccess.DAO
                 {
                     context.StaffMessages.Add(staffMessage);
                     context.SaveChanges();
-                    //var roomChat = (from room in context.RoomChat
-                    //                join messages in context.Message on room.RoomID equals messages.RoomID
-                    //                join staffMess in  context.StaffMessages on room.RoomID equals staffMess.RoomID
-                    //                join staff in context.Staff on staffMess.StaffId equals staff.StaffId
-                    //                where (staffMess.ToUserID == userId || messages.GarageID == staff.GarageID) 
-                    //                 && staffMess.StaffMessageID == staffMessage.StaffId
-                    //                select new RoomChat()
-                    //                {
-                    //                    RoomID = room.RoomID
-                    //                }).FirstOrDefault();
-                    //if (roomChat != null)
-                    //{
-                    //    staffMessage.RoomID = roomChat.RoomID;
-                    //    context.StaffMessages.Add(staffMessage);
-                    //    context.SaveChanges();
-                    //}
-                    //else
-                    //{
-                    //    RoomChat room = new RoomChat();
-                    //    context.RoomChat.Add(room);
-                    //    context.SaveChanges();
-                    //    staffMessage.RoomID = room.RoomID;
-                    //    context.StaffMessages.Add(staffMessage);
-                    //    context.SaveChanges();
-                    //}
                 }
             }
             catch (Exception e)
@@ -206,30 +181,6 @@ namespace DataAccess.DAO
                 {
                     context.Message.Add(message);
                     context.SaveChanges();
-                    //var roomChat = (from room in context.RoomChat
-                    //                join messages in context.Message on room.RoomID equals messages.RoomID
-                    //                join staffMess in context.StaffMessages on room.RoomID equals staffMess.RoomID
-                    //                join staff in context.Staff on staffMess.StaffId equals staff.StaffId
-                    //                where (staff.GarageID == garageId)
-                    //                select new RoomChat()
-                    //                {
-                    //                    RoomID = room.RoomID
-                    //                }).FirstOrDefault();
-                    //if(roomChat != null)
-                    //{
-                    //    message.RoomID = roomChat.RoomID;
-                    //    context.Message.Add(message);
-                    //    context.SaveChanges();
-                    //}
-                    //else
-                    //{
-                    //    RoomChat room = new RoomChat();
-                    //    context.RoomChat.Add(room);
-                    //    context.SaveChanges();
-                    //    message.RoomID = room.RoomID;
-                    //    context.Message.Add(message);
-                    //    context.SaveChanges();
-                    //}
                 }
             }
             catch (Exception e)
@@ -248,6 +199,41 @@ namespace DataAccess.DAO
                     context.SaveChanges();
                 }
                 return room;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message + "\n" + e.InnerException.Message);
+            }
+        }
+
+        public List<MessageToUser> GetMessageToUsers(int senderUserId, int receiveUserId)
+        {
+            try
+            {
+                List<MessageToUser> messages = new List<MessageToUser>();
+                using (var context = new GFDbContext())
+                {
+                    messages = context.MessageToUsers.Where(x => x.SenderUserID == senderUserId && 
+                                                        x.ReceiverUserID == receiveUserId).ToList();
+                    context.SaveChanges();
+                }
+                return messages;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message + "\n" + e.InnerException.Message);
+            }
+        }
+
+        public void SendMessageToUser(MessageToUser messageToUser)
+        {
+            try
+            {
+                using (var context = new GFDbContext())
+                {
+                    context.MessageToUsers.Add(messageToUser);
+                    context.SaveChanges();
+                }
             }
             catch (Exception e)
             {
