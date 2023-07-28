@@ -10,6 +10,7 @@ using Services.StaffService;
 using Services.StorageApi;
 using Services.SubcriptionService;
 using Services.UserService;
+using Services.WebSocket;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,6 +34,9 @@ namespace Services
             services.AddTransient<INotificationService, NotificationService.NotificationService>();
             services.AddTransient<IChatService, ChatService.ChatService>();
             services.AddTransient<ISubcriptionService, SubcriptionService.SubcriptionService>();
+            services.AddTransient<WebSocketFunction>();
+            services.AddTransient<WebsocketSend>();
+            services.AddWebSocketService();
         }
     }
 }

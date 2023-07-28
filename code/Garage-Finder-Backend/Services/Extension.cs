@@ -1,8 +1,10 @@
 ﻿using DataAccess.DTO.Token;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mail;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -12,6 +14,12 @@ namespace Services
 {
     public static class Extension
     {
+        public static TokenInfor GetTokenInfor(this ClaimsPrincipal User)
+        {
+            var jsonUser = User.FindFirstValue("user");
+            var user = JsonConvert.DeserializeObject<TokenInfor>(jsonUser);
+            return user;
+        }
         public static bool IsValidEmail(this string email)
         {
             var valid = true;

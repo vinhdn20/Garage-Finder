@@ -96,15 +96,22 @@ builder.Services
         {
             OnMessageReceived = context =>
             {
-                var accessToken = context.Request.Query["access_token"];
+                //var accessToken = context.Request.Query["access_token"];
 
-                // If the request is for our hub...
-                var path = context.HttpContext.Request.Path;
-                if (!string.IsNullOrEmpty(accessToken) &&
-                    (path.StartsWithSegments("/UserGF")))
+                //// If the request is for our hub...
+                //var path = context.HttpContext.Request.Path;
+                //if (!string.IsNullOrEmpty(accessToken) &&
+                //    context.HttpContext.WebSockets.IsWebSocketRequest)
+                //{
+                //    // Read the token out of the query string
+                //    context.Token = accessToken;
+                //}
+                //return Task.CompletedTask;
+                if (context.Request.Headers.ContainsKey("Authorization") && context.HttpContext.WebSockets.IsWebSocketRequest)
                 {
-                    // Read the token out of the query string
-                    context.Token = accessToken;
+                    var token = context.Request.Headers["Authorization"].ToString();
+                    // token arrives as string = "client, xxxxxxxxxxxxxxxxxxxxx"
+                    context.Token = token.Substring(token.IndexOf(' ')).Trim();
                 }
                 return Task.CompletedTask;
             }
@@ -121,6 +128,7 @@ TwilioClient.Init(accountSid, authToken);
 builder.Services.Configure<TwilioVerifySettings>(builder.Configuration.GetSection("Twilio"));
 
 builder.Services.AddTransient<IPhoneVerifyService, TwilioService>();
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddSignalR();
 var app = builder.Build();
 
@@ -132,17 +140,16 @@ app.UseSwagger();
 app.UseSwaggerUI();
 app.UseHttpsRedirection();
 //app.UseWebSockets();
-//var webSocketOptions = new WebSocketOptions
-//{
-//    KeepAliveInterval = TimeSpan.FromMinutes(2)
-//};
+var webSocketOptions = new WebSocketOptions
+{
+};
 
-//app.UseWebSockets(webSocketOptions);
+app.UseWebSockets(webSocketOptions);
 app.MapHub<UserGFHub>("/UserGF");
-
 app.UseCors("AllowAnyOrigins");
 app.UseAuthentication();
 app.UseAuthorization();
+app.MapWebSocketManager("/channel", app.Services.GetService<GFWebSocketHandler>());
 app.MapControllers();
 app.UseDeveloperExceptionPage();
 

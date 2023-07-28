@@ -18,22 +18,23 @@ namespace Services.NotificationService
     public class NotificationService : INotificationService
     {
 
-        private readonly IHubContext<UserGFHub> _hubContext;
+        //private readonly IHubContext<UserGFHub> _hubContext;
         private readonly INotifcationRepository _notifcationRepository;
         private readonly IGarageRepository _garageRepository;
         private readonly IStaffRepository _staffRepository;
         private readonly IUsersRepository _userRepository;
+        private readonly WebsocketSend _webSocketHandler;
         private readonly IMapper _mapper;
-        public NotificationService(IHubContext<UserGFHub> hubContext, INotifcationRepository notifcationRepository,
+        public NotificationService(INotifcationRepository notifcationRepository,
             IGarageRepository garageRepository, IUsersRepository usersRepository, IMapper mapper,
-            IStaffRepository staffRepository)
+            IStaffRepository staffRepository, WebsocketSend gFWebSocket)
         {
-            _hubContext = hubContext;
             _notifcationRepository = notifcationRepository;
             _garageRepository = garageRepository;
             _userRepository = usersRepository;
             _mapper = mapper;
             _staffRepository = staffRepository;
+            _webSocketHandler = gFWebSocket;
         }
 
         public void SendNotificationToStaff(OrdersDTO order, int userId)
@@ -55,7 +56,9 @@ namespace Services.NotificationService
             }
 
             NotificationDTO notificationDTO = _mapper.Map<NotificationDTO>(notification);
-            _hubContext.Clients.Group($"Garage-{order.GarageID}").SendAsync("Notify", notificationDTO);
+            //_hubContext.Clients.Group($"Garage-{order.GarageID}").SendAsync("Notify", notificationDTO);
+
+            _webSocketHandler.SendToGroup($"Garage-{order.GarageID}", "Notify", notificationDTO);
         }
 
         public void SendNotificatioToUser(OrdersDTO order, int userId)
@@ -69,7 +72,9 @@ namespace Services.NotificationService
                 UserID = userId
             }; 
             NotificationDTO notificationDTO = _mapper.Map<NotificationDTO>(notification);
-            _hubContext.Clients.User(userId.ToString()).SendAsync("Notify", notificationDTO);
+            //_hubContext.Clients.User(userId.ToString()).SendAsync("Notify", notificationDTO);
+
+            _webSocketHandler.SendAsync(userId.ToString(), "Notify", notificationDTO).Wait();
         }
 
         private string GetUserMessage(string status, int garageId)
@@ -132,7 +137,8 @@ namespace Services.NotificationService
             }
             
             NotificationDTO notificationDTO = _mapper.Map<NotificationDTO>(notification);
-            _hubContext.Clients.Group($"Garage-{orderDetail.GarageID}").SendAsync("Notify", notificationDTO);
+            //_hubContext.Clients.Group($"Garage-{orderDetail.GarageID}").SendAsync("Notify", notificationDTO);
+            _webSocketHandler.SendToGroup($"Garage-{orderDetail.GarageID}", "Notify", notificationDTO);
         }
 
         public List<NotificationDTO> GetNotification(int userId, string roleName)
