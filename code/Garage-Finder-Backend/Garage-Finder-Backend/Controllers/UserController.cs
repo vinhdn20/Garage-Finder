@@ -18,6 +18,7 @@ using DataAccess.DTO.User.RequestDTO;
 using DataAccess.DTO.User.ResponeModels;
 using DataAccess.DTO.User;
 using DataAccess.DTO.Token;
+using Services;
 
 namespace Garage_Finder_Backend.Controllers
 {

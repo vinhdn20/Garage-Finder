@@ -22,16 +22,18 @@ namespace Services.ChatService
         private readonly IGarageRepository _garageRepository;
         private readonly IUsersRepository _usersRepository;
         private readonly IHubContext<UserGFHub> _hubContext;
+        private readonly WebsocketSend _webSocketHandler;
 
         public ChatService(IChatRepository chatRepository, IStaffRepository staffRepository,
             IUsersRepository usersRepository, IGarageRepository garageRepository,
-            IHubContext<UserGFHub> hubContext)
+            IHubContext<UserGFHub> hubContext, WebsocketSend webSocket)
         {
             _chatRepository = chatRepository;
             _staffRepository = staffRepository;
             _usersRepository = usersRepository;
             _garageRepository = garageRepository;
             _hubContext = hubContext;
+            _webSocketHandler = webSocket;
         }
         public List<ChatDTO> GetDetailMessage(int userId, string nameRole, int roomId)
         {
@@ -113,7 +115,8 @@ namespace Services.ChatService
                     RoomID = roomChat.RoomID
                 };
                 _chatRepository.UserSendMessage(message, sendChat.UserID);
-                _hubContext.Clients.User(sendChat.UserID.ToString()).SendAsync("chat", message);
+                //_hubContext.Clients.User(sendChat.UserID.ToString()).SendAsync("chat", message);
+                _webSocketHandler.SendAsync(sendChat.UserID.ToString(), "chat", message).Wait();
             }
             else
             {
@@ -147,7 +150,9 @@ namespace Services.ChatService
                     RoomID = roomChat.RoomID
                 };
                 _chatRepository.StaffSendMessage(staffMessage, sendChat.UserID);
-                _hubContext.Clients.User(sendChat.UserID.ToString()).SendAsync("chat", staffMessage);
+                //_hubContext.Clients.User(sendChat.UserID.ToString()).SendAsync("chat", staffMessage);
+
+                _webSocketHandler.SendAsync(sendChat.UserID.ToString(), "chat", staffMessage).Wait();
             }
             
         }
@@ -180,7 +185,8 @@ namespace Services.ChatService
                 RoomID = roomChat.RoomID
             };
             _chatRepository.UserSendMessage(message, sendChat.GarageID);
-            _hubContext.Clients.Group($"Garage-{sendChat.GarageID}").SendAsync("chat", message);
+            //_hubContext.Clients.Group($"Garage-{sendChat.GarageID}").SendAsync("chat", message);
+            _webSocketHandler.SendToGroup($"Garage-{sendChat.GarageID}", "chat", message);
         }
 
         public List<RoomDTO> GetListRoomByUserId(int userId)
@@ -275,7 +281,9 @@ namespace Services.ChatService
                 SenderUserID = senderUserId,
             };
             _chatRepository.SendMessageToUsers(messageToUser);
-            _hubContext.Clients.User(recieverUserId.ToString()).SendAsync("chatWithUser", messageToUser);
+            //_hubContext.Clients.User(recieverUserId.ToString()).SendAsync("chatWithUser", messageToUser);
+
+            _webSocketHandler.SendAsync(recieverUserId.ToString(), "chatWithUser", messageToUser).Wait();
         }
 
         public List<ChatDTO> GetMessageWithUser(int userId, int userId2)

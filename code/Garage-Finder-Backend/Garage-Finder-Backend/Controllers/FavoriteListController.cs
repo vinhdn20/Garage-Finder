@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Repositories.Interfaces;
+using Services;
 using System.Security.Claims;
 
 namespace Garage_Finder_Backend.Controllers
