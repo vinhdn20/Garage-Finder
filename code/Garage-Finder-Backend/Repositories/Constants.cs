@@ -18,5 +18,7 @@ namespace Repositories
         public const string USER_LOCKED = "locked";
         public const string GARAGE_ACTIVE = "active";
         public const string GARAGE_LOCKED = "locked";
+        public const string GARAGE_WAITING = "waiting";
+        public const string GARAGE_DENIED = "denined";
     }
 }

@@ -22,5 +22,6 @@ namespace DataAccess.DTO.Garage
         public List<int> BrandsID { get; set; }
         //public List<ImageGarageDTO> ImageGarages { get; set; }
         public List<string> ImageLink { get; set; }
+        public string? Status { get; set; }
     }
 }
