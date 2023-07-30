@@ -46,7 +46,7 @@ namespace Services.WebSocket
             {
                 if (socket == null)
                 {
-                    return;
+                    continue;
                 }
                 tasks.Add(socket.SendAsync(
                     sendbuffer,
@@ -54,7 +54,8 @@ namespace Services.WebSocket
                     WebSocketMessageFlags.EndOfMessage,
                     CancellationToken.None).AsTask());
             }
-            Task.WaitAll(tasks.ToArray());
+            if(tasks.Count > 0)
+                Task.WaitAll(tasks.ToArray());
         }
     }
 }
