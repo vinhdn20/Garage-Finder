@@ -96,23 +96,23 @@ builder.Services
         {
             OnMessageReceived = context =>
             {
-                //var accessToken = context.Request.Query["access_token"];
+                var accessToken = context.Request.Query["access_token"];
 
-                //// If the request is for our hub...
-                //var path = context.HttpContext.Request.Path;
-                //if (!string.IsNullOrEmpty(accessToken) &&
-                //    context.HttpContext.WebSockets.IsWebSocketRequest)
-                //{
-                //    // Read the token out of the query string
-                //    context.Token = accessToken;
-                //}
-                //return Task.CompletedTask;
-                if (context.Request.Headers.ContainsKey("Authorization") && context.HttpContext.WebSockets.IsWebSocketRequest)
+                // If the request is for our hub...
+                var path = context.HttpContext.Request.Path;
+                if (!string.IsNullOrEmpty(accessToken) &&
+                    context.HttpContext.WebSockets.IsWebSocketRequest)
                 {
-                    var token = context.Request.Headers["Authorization"].ToString();
-                    // token arrives as string = "client, xxxxxxxxxxxxxxxxxxxxx"
-                    context.Token = token.Substring(token.IndexOf(' ')).Trim();
+                    // Read the token out of the query string
+                    context.Token = accessToken;
                 }
+                return Task.CompletedTask;
+                //if (context.Request.Headers.ContainsKey("Authorization") && context.HttpContext.WebSockets.IsWebSocketRequest)
+                //{
+                //    var token = context.Request.Headers["Authorization"].ToString();
+                //    // token arrives as string = "client, xxxxxxxxxxxxxxxxxxxxx"
+                //    context.Token = token.Substring(token.IndexOf(' ')).Trim();
+                //}
                 return Task.CompletedTask;
             }
         };
