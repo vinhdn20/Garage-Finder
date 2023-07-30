@@ -38,7 +38,6 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpGet("GetUsersTotal")]
-        [Authorize]
         public IActionResult GetTotalUser()
         {
             try
@@ -59,7 +58,27 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
-                var garages = garageRepository.GetGarages();
+                var garages = garageRepository.GetGarages().Where(g => g.Status == Constants.GARAGE_ACTIVE || g.Status ==Constants.GARAGE_LOCKED);
+                if (!string.IsNullOrEmpty(keyword))
+                {
+                    garages = garages.Where(g => g.GarageName.ToLower().Contains(keyword.ToLower())).ToList();
+                }
+                return Ok(garages);
+            }
+            catch (Exception e)
+            {
+
+                return StatusCode(500, $"Đã xảy ra lỗi: {e.Message}");
+            }
+        }
+
+        [HttpGet("ConfirmGarages")]
+        [Authorize]
+        public IActionResult ConfirmGarages(string? keyword)
+        {
+            try
+            {
+                var garages = garageRepository.GetGarages().Where(g => g.Status == Constants.GARAGE_WAITING || g.Status == Constants.GARAGE_DENIED);
                 if (!string.IsNullOrEmpty(keyword))
                 {
                     garages = garages.Where(g => g.GarageName.ToLower().Contains(keyword.ToLower())).ToList();
@@ -74,12 +93,25 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpGet("GetGaragesTotal")]
-        [Authorize]
         public IActionResult GetTotalGarage()
         {
             try
             {
-                var result = garageRepository.GetGarages().Count();
+                var result = garageRepository.GetGarages().Where(g => g.Status == Constants.GARAGE_ACTIVE || g.Status == Constants.GARAGE_LOCKED).Count();
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+
+                return StatusCode(500, $"Đã xảy ra lỗi: {e.Message}");
+            }
+        }
+        [HttpGet("GetTotalGarageConfirm")]
+        public IActionResult GetTotalGarageConfirm()
+        {
+            try
+            {
+                var result = garageRepository.GetGarages().Where(g => g.Status == Constants.GARAGE_WAITING || g.Status == Constants.GARAGE_DENIED).Count();
                 return Ok(result);
             }
             catch (Exception e)
@@ -143,6 +175,38 @@ namespace Garage_Finder_Backend.Controllers
             try
             {
                 adminRepository.UnBanGarage(id);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+
+                return StatusCode(500, $"Đã xảy ra lỗi: {e.Message}");
+            }
+        }
+
+        [HttpPost("AcceptGarage")]
+        [Authorize]
+        public IActionResult AcceptGarage(int id)
+        {
+            try
+            {
+                adminRepository.AcceptGarage(id);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+
+                return StatusCode(500, $"Đã xảy ra lỗi: {e.Message}");
+            }
+        }
+
+        [HttpPost("DeniedGarage")]
+        [Authorize]
+        public IActionResult DeniedGarage(int id)
+        {
+            try
+            {
+                adminRepository.DeniedGarage(id);
                 return Ok();
             }
             catch (Exception e)

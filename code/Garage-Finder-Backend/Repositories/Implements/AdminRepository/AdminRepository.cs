@@ -76,5 +76,20 @@ namespace Repositories.Implements.AdminRepository
             _garageRepository.Update(garage);
         }
 
+        public void AcceptGarage(int id)
+        {
+            var garage = _garageRepository.GetGaragesByID(id);
+            garage.Status = Constants.GARAGE_ACTIVE;
+            _garageRepository.Update(garage);
+
+        }
+
+        public void DeniedGarage(int id)
+        {
+            var garage = _garageRepository.GetGaragesByID(id);
+            garage.Status = Constants.GARAGE_DENIED;
+            _garageRepository.Update(garage);
+        }
+
     }
 }

@@ -46,6 +46,7 @@ namespace Services.GarageService
             }
             var garargeDTO = _mapper.Map<AddGarageDTO, GarageDTO>(addGarage);
             garargeDTO.UserID = userID;
+            garargeDTO.Status = Constants.GARAGE_WAITING;
 
             var listGarageBrand = new List<GarageBrandDTO>();
             foreach (var brand in addGarage.BrandsID)
