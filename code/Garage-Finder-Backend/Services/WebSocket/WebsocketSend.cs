@@ -39,8 +39,8 @@ namespace Services.WebSocket
         public void SendToGroup(string groupId, string method, object obj)
         {
             var sockets = WebSocketConnectionManager.GetSocketByGroupId(groupId);
-            dynamic sendObj = new { type = method, message = JsonConvert.SerializeObject(obj) };
-            var sendbuffer = new ArraySegment<byte>(Encoding.UTF8.GetBytes(sendObj));
+            dynamic sendObj = new { type = method, message = obj };
+            var sendbuffer = new ArraySegment<byte>(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(sendObj)));
             List<Task> tasks = new List<Task>();
             foreach (var socket in sockets)
             {
