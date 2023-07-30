@@ -23,7 +23,7 @@ namespace Services.WebSocket
 
         public List<System.Net.WebSockets.WebSocket> GetSocketByGroupId(string groupId)
         {
-            return this._sockets.Where(x => x.Key == groupId).Select(x => x.Value).ToList();
+            return this._group.Where(x => x.Key == groupId).Select(x => x.Value).ToList();
         }
 
         public ConcurrentDictionary<string, System.Net.WebSockets.WebSocket> GetAllSockets()
