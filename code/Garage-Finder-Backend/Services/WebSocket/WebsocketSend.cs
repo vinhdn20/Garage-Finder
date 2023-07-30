@@ -23,6 +23,10 @@ namespace Services.WebSocket
         public async Task SendAsync(string userId, string method, object obj)
         {
             var socket = WebSocketConnectionManager.GetSocketById(userId.ToString());
+            if(socket == null)
+            {
+                return;
+            }
             dynamic sendObj = new { type = method, message = obj };
             var sendbuffer = new ArraySegment<byte>(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(sendObj)));
             await socket.SendAsync(
@@ -40,6 +44,10 @@ namespace Services.WebSocket
             List<Task> tasks = new List<Task>();
             foreach (var socket in sockets)
             {
+                if (socket == null)
+                {
+                    return;
+                }
                 tasks.Add(socket.SendAsync(
                     sendbuffer,
                     WebSocketMessageType.Text,
