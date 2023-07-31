@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using DataAccess.DTO.Admin;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Repositories.Interfaces;
 using Services;
@@ -21,9 +22,9 @@ namespace Garage_Finder_Backend.Controllers
             this.usersRepository = usersRepository;
         }
 
-        [HttpGet("GetUsers")]
+        [HttpPost("GetUsers")]
         [Authorize]
-        public IActionResult GetAllUsers(string? keyword)
+        public IActionResult GetAllUsers(KeyWordDTO keyword)
         {
             try
             {
@@ -32,9 +33,9 @@ namespace Garage_Finder_Backend.Controllers
                     return Unauthorized("Bạn không phải là admin của web");
                 }
                 var result = adminRepository.GetAllUser();
-                if (!string.IsNullOrEmpty(keyword))
+                if (!string.IsNullOrEmpty(keyword.KeyWord))
                 {
-                    result = result.Where(g => g.Name.ToLower().Contains(keyword.ToLower())).ToList();
+                    result = result.Where(g => g.Name.ToLower().Contains(keyword.KeyWord.ToLower())).ToList();
                 }
                 return Ok(result);
             }
@@ -50,10 +51,6 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
-                if (!CheckAdmin())
-                {
-                    return Unauthorized("Bạn không phải là admin của web");
-                }
                 var result = adminRepository.GetAllUser().Count();
                 return Ok(result);
             }
@@ -64,9 +61,9 @@ namespace Garage_Finder_Backend.Controllers
 
         }
 
-        [HttpGet("GetGarages")]
+        [HttpPost("GetGarages")]
         [Authorize]
-        public IActionResult GetAllGarage(string? keyword)
+        public IActionResult GetAllGarage(KeyWordDTO keyword)
         {
             try
             {
@@ -74,10 +71,10 @@ namespace Garage_Finder_Backend.Controllers
                 {
                     return Unauthorized("Bạn không phải là admin của web");
                 }
-                var garages = garageRepository.GetGarages().Where(g => g.Status == Constants.GARAGE_ACTIVE || g.Status ==Constants.GARAGE_LOCKED);
-                if (!string.IsNullOrEmpty(keyword))
+                var garages = garageRepository.GetGarages();
+                if (!string.IsNullOrEmpty(keyword.KeyWord))
                 {
-                    garages = garages.Where(g => g.GarageName.ToLower().Contains(keyword.ToLower())).ToList();
+                    garages = garages.Where(g => g.GarageName.ToLower().Contains(keyword.KeyWord.ToLower())).ToList();
                 }
                 return Ok(garages);
             }
@@ -88,41 +85,13 @@ namespace Garage_Finder_Backend.Controllers
             }
         }
 
-        [HttpGet("ConfirmGarages")]
-        [Authorize]
-        public IActionResult ConfirmGarages(string? keyword)
-        {
-            try
-            {
-                if (!CheckAdmin())
-                {
-                    return Unauthorized("Bạn không phải là admin của web");
-                }
-                var garages = garageRepository.GetGarages().Where(g => g.Status == Constants.GARAGE_WAITING || g.Status == Constants.GARAGE_DENIED);
-                if (!string.IsNullOrEmpty(keyword))
-                {
-                    garages = garages.Where(g => g.GarageName.ToLower().Contains(keyword.ToLower())).ToList();
-                }
-                return Ok(garages);
-            }
-            catch (Exception e)
-            {
-
-                return StatusCode(500, $"Đã xảy ra lỗi: {e.Message}");
-            }
-        }
-
+        
         [HttpGet("GetGaragesTotal")]
-        [Authorize]
         public IActionResult GetTotalGarage()
         {
             try
             {
-                if (!CheckAdmin())
-                {
-                    return Unauthorized("Bạn không phải là admin của web");
-                }
-                var result = garageRepository.GetGarages().Where(g => g.Status == Constants.GARAGE_ACTIVE || g.Status == Constants.GARAGE_LOCKED).Count();
+                var result = garageRepository.GetGarages().Count();
                 return Ok(result);
             }
             catch (Exception e)
@@ -131,28 +100,11 @@ namespace Garage_Finder_Backend.Controllers
                 return StatusCode(500, $"Đã xảy ra lỗi: {e.Message}");
             }
         }
-        [HttpGet("GetTotalGarageConfirm")]
-        [Authorize]
-        public IActionResult GetTotalGarageConfirm()
-        {
-            try
-            {
-                if (!CheckAdmin())
-                {
-                    return Unauthorized("Bạn không phải là admin của web");
-                }
-                var result = garageRepository.GetGarages().Where(g => g.Status == Constants.GARAGE_WAITING || g.Status == Constants.GARAGE_DENIED).Count();
-                return Ok(result);
-            }
-            catch (Exception e)
-            {
+        
 
-                return StatusCode(500, $"Đã xảy ra lỗi: {e.Message}");
-            }
-        }
-        [HttpPost("BanUser")]
+        [HttpPost("SetStatusGarage")]
         [Authorize]
-        public IActionResult BanUser(int id)
+        public IActionResult SetStatusGarage(StatusGarageDTO garage)
         {
             try
             {
@@ -160,7 +112,7 @@ namespace Garage_Finder_Backend.Controllers
                 {
                     return Unauthorized("Bạn không phải là admin của web");
                 }
-                adminRepository.BanUser(id);
+                adminRepository.SetStatusGarage(garage);
                 return Ok();
             }
             catch (Exception e)
@@ -170,9 +122,9 @@ namespace Garage_Finder_Backend.Controllers
             }
         }
 
-        [HttpPost("UnBanUser")]
+        [HttpPost("SetStatusUser")]
         [Authorize]
-        public IActionResult UnBanUser(int id)
+        public IActionResult SetStatusUser(StatusUserDTO user)
         {
             try
             {
@@ -180,87 +132,7 @@ namespace Garage_Finder_Backend.Controllers
                 {
                     return Unauthorized("Bạn không phải là admin của web");
                 }
-                adminRepository.UnBanUser(id);
-                return Ok();
-            }
-            catch (Exception e)
-            {
-
-                return StatusCode(500, $"Đã xảy ra lỗi: {e.Message}");
-            }
-        }
-
-        [HttpPost("BanGarage")]
-        [Authorize]
-        public IActionResult BanGarage(int id)
-        {
-            try
-            {
-                if (!CheckAdmin())
-                {
-                    return Unauthorized("Bạn không phải là admin của web");
-                }
-                adminRepository.BanGarage(id);
-                return Ok();
-            }
-            catch (Exception e)
-            {
-
-                return StatusCode(500, $"Đã xảy ra lỗi: {e.Message}");
-            }
-        }
-
-        [HttpPost("UnBanGarage")]
-        [Authorize]
-        public IActionResult UnBanGarage(int id)
-        {
-            try
-            {
-                if (!CheckAdmin())
-                {
-                    return Unauthorized("Bạn không phải là admin của web");
-                }
-                adminRepository.UnBanGarage(id);
-                return Ok();
-            }
-            catch (Exception e)
-            {
-
-                return StatusCode(500, $"Đã xảy ra lỗi: {e.Message}");
-            }
-        }
-
-        [HttpPost("AcceptGarage")]
-        [Authorize]
-        public IActionResult AcceptGarage(int id)
-        {
-            try
-            {
-                if (!CheckAdmin())
-                {
-                    return Unauthorized("Bạn không phải là admin của web");
-                }
-                adminRepository.AcceptGarage(id);
-                return Ok();
-            }
-            catch (Exception e)
-            {
-
-                return StatusCode(500, $"Đã xảy ra lỗi: {e.Message}");
-            }
-        }
-
-        [HttpPost("DeniedGarage")]
-        [Authorize]
-        public IActionResult DeniedGarage(int id)
-        {
-            try
-            {
-                if (!CheckAdmin())
-                {
-                    return Unauthorized("Bạn không phải là admin của web");
-                }
-                adminRepository.DeniedGarage(id);
+                adminRepository.SetStatusUser(user);
                 return Ok();
             }
             catch (Exception e)
