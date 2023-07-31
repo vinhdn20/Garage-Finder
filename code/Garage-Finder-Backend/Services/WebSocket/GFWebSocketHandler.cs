@@ -51,17 +51,24 @@ namespace Services.WebSocket
 
         public override async Task OnConnected(System.Net.WebSockets.WebSocket socket)
         {
-            var user = HttpContextAccessor.HttpContext.User.GetTokenInfor();
-            var connectionId = this.WebSocketConnectionManager.AddSocket(socket, user);
-            if (user.RoleName.Equals(Constants.ROLE_STAFF))
+            try
             {
-                var staff = _staffRepository.GetById(user.UserID);
-                WebSocketConnectionManager.AddToGroup(connectionId, $"Garage-{staff.GarageID}");
+                var user = HttpContextAccessor.HttpContext.User.GetTokenInfor();
+                var connectionId = this.WebSocketConnectionManager.AddSocket(socket, user);
+                if (user.RoleName.Equals(Constants.ROLE_STAFF))
+                {
+                    var staff = _staffRepository.GetById(user.UserID);
+                    WebSocketConnectionManager.AddToGroup(connectionId, $"Garage-{staff.GarageID}");
+                }
+                var garages = _garageRepository.GetGarageByUser(user.UserID);
+                foreach (var garage in garages)
+                {
+                    WebSocketConnectionManager.AddToGroup(connectionId, $"Garage-{garage.GarageID}");
+                }
             }
-            var garages = _garageRepository.GetGarageByUser(user.UserID);
-            foreach (var garage in garages)
+            catch (Exception e)
             {
-                WebSocketConnectionManager.AddToGroup(connectionId, $"Garage-{garage.GarageID}");
+
             }
         }
 
