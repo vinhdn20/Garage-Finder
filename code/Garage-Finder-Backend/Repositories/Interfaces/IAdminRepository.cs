@@ -18,5 +18,7 @@ namespace Repositories.Interfaces
         public void UnBanGarage(int id);
         public void AcceptGarage(int id);
         public void DeniedGarage(int id);
+        public void SetStatusGarage(StatusGarageDTO garage);
+        public void SetStatusUser(StatusUserDTO user);
     }
 }

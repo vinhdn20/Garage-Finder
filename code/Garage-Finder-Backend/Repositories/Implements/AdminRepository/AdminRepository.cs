@@ -69,6 +69,20 @@ namespace Repositories.Implements.AdminRepository
 
         }
 
+        public void SetStatusGarage(StatusGarageDTO garage)
+        {
+            var garages = _garageRepository.GetGaragesByID(garage.GarageID);
+            garages.Status = garage.Status;
+            _garageRepository.Update(garages);
+        }
+
+        public void SetStatusUser(StatusUserDTO user)
+        {
+            var users = _usersRepository.GetUserByID(user.UserID);
+            users.Status = user.Status;
+            _usersRepository.Update(users);
+        }
+
         public void UnBanGarage(int id)
         {
             var garage = _garageRepository.GetGaragesByID(id);
