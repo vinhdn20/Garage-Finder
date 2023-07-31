@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Repositories.Interfaces;
+using Services;
 
 namespace Garage_Finder_Backend.Controllers
 {
@@ -10,11 +11,14 @@ namespace Garage_Finder_Backend.Controllers
     {
         private readonly IGarageRepository garageRepository;
         private readonly IAdminRepository adminRepository;
+        private readonly IUsersRepository usersRepository;
 
-        public AdminController(IGarageRepository garageRepository, IAdminRepository adminRepository)
+        public AdminController(IGarageRepository garageRepository, IAdminRepository adminRepository,
+            IUsersRepository usersRepository)
         {
             this.garageRepository = garageRepository;
             this.adminRepository = adminRepository;
+            this.usersRepository = usersRepository;
         }
 
         [HttpGet("GetUsers")]
@@ -23,6 +27,10 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
+                if (!CheckAdmin())
+                {
+                    return Unauthorized("Bạn không phải là admin của web");
+                }
                 var result = adminRepository.GetAllUser();
                 if (!string.IsNullOrEmpty(keyword))
                 {
@@ -42,6 +50,10 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
+                if (!CheckAdmin())
+                {
+                    return Unauthorized("Bạn không phải là admin của web");
+                }
                 var result = adminRepository.GetAllUser().Count();
                 return Ok(result);
             }
@@ -58,6 +70,10 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
+                if (!CheckAdmin())
+                {
+                    return Unauthorized("Bạn không phải là admin của web");
+                }
                 var garages = garageRepository.GetGarages().Where(g => g.Status == Constants.GARAGE_ACTIVE || g.Status ==Constants.GARAGE_LOCKED);
                 if (!string.IsNullOrEmpty(keyword))
                 {
@@ -78,6 +94,10 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
+                if (!CheckAdmin())
+                {
+                    return Unauthorized("Bạn không phải là admin của web");
+                }
                 var garages = garageRepository.GetGarages().Where(g => g.Status == Constants.GARAGE_WAITING || g.Status == Constants.GARAGE_DENIED);
                 if (!string.IsNullOrEmpty(keyword))
                 {
@@ -93,10 +113,15 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpGet("GetGaragesTotal")]
+        [Authorize]
         public IActionResult GetTotalGarage()
         {
             try
             {
+                if (!CheckAdmin())
+                {
+                    return Unauthorized("Bạn không phải là admin của web");
+                }
                 var result = garageRepository.GetGarages().Where(g => g.Status == Constants.GARAGE_ACTIVE || g.Status == Constants.GARAGE_LOCKED).Count();
                 return Ok(result);
             }
@@ -107,10 +132,15 @@ namespace Garage_Finder_Backend.Controllers
             }
         }
         [HttpGet("GetTotalGarageConfirm")]
+        [Authorize]
         public IActionResult GetTotalGarageConfirm()
         {
             try
             {
+                if (!CheckAdmin())
+                {
+                    return Unauthorized("Bạn không phải là admin của web");
+                }
                 var result = garageRepository.GetGarages().Where(g => g.Status == Constants.GARAGE_WAITING || g.Status == Constants.GARAGE_DENIED).Count();
                 return Ok(result);
             }
@@ -126,6 +156,10 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
+                if (!CheckAdmin())
+                {
+                    return Unauthorized("Bạn không phải là admin của web");
+                }
                 adminRepository.BanUser(id);
                 return Ok();
             }
@@ -142,6 +176,10 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
+                if (!CheckAdmin())
+                {
+                    return Unauthorized("Bạn không phải là admin của web");
+                }
                 adminRepository.UnBanUser(id);
                 return Ok();
             }
@@ -158,6 +196,10 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
+                if (!CheckAdmin())
+                {
+                    return Unauthorized("Bạn không phải là admin của web");
+                }
                 adminRepository.BanGarage(id);
                 return Ok();
             }
@@ -174,6 +216,10 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
+                if (!CheckAdmin())
+                {
+                    return Unauthorized("Bạn không phải là admin của web");
+                }
                 adminRepository.UnBanGarage(id);
                 return Ok();
             }
@@ -190,6 +236,10 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
+                if (!CheckAdmin())
+                {
+                    return Unauthorized("Bạn không phải là admin của web");
+                }
                 adminRepository.AcceptGarage(id);
                 return Ok();
             }
@@ -206,6 +256,10 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
+                if (!CheckAdmin())
+                {
+                    return Unauthorized("Bạn không phải là admin của web");
+                }
                 adminRepository.DeniedGarage(id);
                 return Ok();
             }
@@ -216,5 +270,15 @@ namespace Garage_Finder_Backend.Controllers
             }
         }
 
+        private bool CheckAdmin()
+        {
+            var user = User.GetTokenInfor();
+            var userDTO = usersRepository.GetUserByID(user.UserID);
+            if (!userDTO.roleName.NameRole.Equals(Constants.ROLE_ADMIN))
+            {
+                return false;
+            }
+            return true;
+        }
     }
 }
