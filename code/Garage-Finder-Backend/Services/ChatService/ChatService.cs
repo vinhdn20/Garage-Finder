@@ -118,7 +118,7 @@ namespace Services.ChatService
                 };
                 _chatRepository.UserSendMessage(message, sendChat.UserID);
                 //_hubContext.Clients.User(sendChat.UserID.ToString()).SendAsync("chat", message);
-                _webSocketHandler.SendAsync(sendChat.UserID.ToString(), "chat", message).Wait();
+                _webSocketHandler.SendAsync(sendChat.UserID.ToString(), "chat", message);
             }
             else
             {
@@ -154,7 +154,7 @@ namespace Services.ChatService
                 _chatRepository.StaffSendMessage(staffMessage, sendChat.UserID);
                 //_hubContext.Clients.User(sendChat.UserID.ToString()).SendAsync("chat", staffMessage);
 
-                _webSocketHandler.SendAsync(sendChat.UserID.ToString(), "chat", staffMessage).Wait();
+                _webSocketHandler.SendAsync(sendChat.UserID.ToString(), "chat", staffMessage);
             }
             
         }
@@ -285,7 +285,7 @@ namespace Services.ChatService
             _chatRepository.SendMessageToUsers(messageToUser);
             //_hubContext.Clients.User(recieverUserId.ToString()).SendAsync("chatWithUser", messageToUser);
 
-            _webSocketHandler.SendAsync(recieverUserId.ToString(), "chatWithUser", messageToUser).Wait();
+            _webSocketHandler.SendAsync(recieverUserId.ToString(), "chatWithUser", messageToUser);
         }
 
         public List<ChatDTO> GetMessageWithUser(int userId, int userId2)

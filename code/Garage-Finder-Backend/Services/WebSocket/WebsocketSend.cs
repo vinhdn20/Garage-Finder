@@ -20,7 +20,7 @@ namespace Services.WebSocket
             this.HttpContextAccessor = httpContextAccessor;
         }
 
-        public async Task SendAsync(string userId, string method, object obj)
+        public async void SendAsync(string userId, string method, object obj)
         {
             var socket = WebSocketConnectionManager.GetSocketById(userId.ToString());
             if(socket == null)
@@ -36,7 +36,7 @@ namespace Services.WebSocket
                 CancellationToken.None);
         }
 
-        public void SendToGroup(string groupId, string method, object obj)
+        public async void SendToGroup(string groupId, string method, object obj)
         {
             var sockets = WebSocketConnectionManager.GetSocketByGroupId(groupId);
             dynamic sendObj = new { type = method, message = obj };
@@ -48,14 +48,19 @@ namespace Services.WebSocket
                 {
                     continue;
                 }
-                tasks.Add(socket.SendAsync(
+                //tasks.Add(socket.SendAsync(
+                //    sendbuffer,
+                //    WebSocketMessageType.Text,
+                //    endOfMessage: true,
+                //    CancellationToken.None));
+                await socket.SendAsync(
                     sendbuffer,
                     WebSocketMessageType.Text,
                     endOfMessage: true,
-                    CancellationToken.None));
+                    CancellationToken.None);
             }
-            if(tasks.Count > 0)
-                Task.WaitAll(tasks.ToArray());
+            //if(tasks.Count > 0)
+            //    Task.W(tasks.ToArray());
         }
     }
 }
