@@ -47,14 +47,6 @@ namespace Services.WebSocket
             }
         }
 
-        public async Task SendMessageAsync(System.Net.WebSockets.WebSocket socket, string message)
-        {
-            Debug.Print(message);
-            if (socket.State != WebSocketState.Open) { return; }
-            var bytes = Encoding.UTF8.GetBytes(message);
-            var buffer = new ArraySegment<byte>(bytes, 0, bytes.Length);
-            await socket.SendAsync(buffer, WebSocketMessageType.Text, true, CancellationToken.None);
-        }
         public abstract Task ReceiveAsync(System.Net.WebSockets.WebSocket socket, WebSocketReceiveResult result, byte[] buffer);
     }
 }
