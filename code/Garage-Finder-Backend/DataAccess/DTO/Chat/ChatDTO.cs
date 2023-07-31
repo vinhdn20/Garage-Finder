@@ -8,6 +8,7 @@ namespace DataAccess.DTO.Chat
 {
     public class ChatDTO
     {
+        public int RoomID { get; set; }
         public DateTime DateTime { get; set; }
         public string Content { get; set; }
         public bool IsSendByMe { get; set; }

@@ -57,6 +57,7 @@ namespace Services.ChatService
                 }
                 ChatDTO chatDTO = new ChatDTO()
                 {
+                    RoomID = roomId,
                     Content = mess.Content,
                     DateTime = mess.DateTime,
                     IsSendByMe = isSendByMe
@@ -73,6 +74,7 @@ namespace Services.ChatService
                 }
                 ChatDTO chatDTO = new ChatDTO()
                 {
+                    RoomID = roomId,
                     Content = mess.Content,
                     DateTime = mess.DateTime,
                     IsSendByMe = isSendByMe

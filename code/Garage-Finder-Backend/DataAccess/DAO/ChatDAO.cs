@@ -45,7 +45,7 @@ namespace DataAccess.DAO
                                      RoomID = room.RoomID,
                                      GarageID = room.GarageID,
                                      UserID = room.UserID,
-                                 }).First();
+                                 }).FirstOrDefault();
                 }
                 return roomChats;
             }
