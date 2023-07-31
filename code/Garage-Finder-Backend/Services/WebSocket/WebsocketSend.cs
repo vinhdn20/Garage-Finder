@@ -22,7 +22,8 @@ namespace Services.WebSocket
 
         public async void SendAsync(string userId, string method, object obj)
         {
-            var socket = WebSocketConnectionManager.GetSocketById(userId.ToString());
+            var socket = WebSocketConnectionManager.GetSocketByGroupId(userId.ToString()).FirstOrDefault();
+            if(socket == null) { return; }
             if(socket == null)
             {
                 return;

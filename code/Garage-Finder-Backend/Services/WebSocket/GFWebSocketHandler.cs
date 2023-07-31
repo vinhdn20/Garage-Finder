@@ -49,25 +49,32 @@ namespace Services.WebSocket
             _webSocketFunction = webSocketFunction;
         }
 
-        public override Task OnConnected(System.Net.WebSockets.WebSocket socket)
+        public override async Task OnConnected(System.Net.WebSockets.WebSocket socket)
         {
             var user = HttpContextAccessor.HttpContext.User.GetTokenInfor();
+            var connectionId = this.WebSocketConnectionManager.AddSocket(socket, user);
             if (user.RoleName.Equals(Constants.ROLE_STAFF))
             {
                 var staff = _staffRepository.GetById(user.UserID);
-                WebSocketConnectionManager.AddToGroup(socket, $"Garage-{staff.GarageID}");
+                WebSocketConnectionManager.AddToGroup(connectionId, $"Garage-{staff.GarageID}");
             }
             var garages = _garageRepository.GetGarageByUser(user.UserID);
             foreach (var garage in garages)
             {
-                WebSocketConnectionManager.AddToGroup(socket, $"Garage-{garage.GarageID}");
+                WebSocketConnectionManager.AddToGroup(connectionId, $"Garage-{garage.GarageID}");
             }
-            return base.OnConnected(socket);
         }
 
         public override Task OnDisconnected(System.Net.WebSockets.WebSocket socket)
         {
-            return base.OnDisconnected(socket);
+            try
+            {
+                return base.OnDisconnected(socket);
+            }
+            catch (Exception e)
+            {
+                return Task.FromException(e);
+            }
         }
         public override async Task ReceiveAsync(System.Net.WebSockets.WebSocket socket, WebSocketReceiveResult result, byte[] buffer)
         {

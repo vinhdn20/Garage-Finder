@@ -37,8 +37,14 @@ namespace Services.WebSocket
             
         public virtual async Task OnDisconnected(System.Net.WebSockets.WebSocket socket)
         {
-            var id = this.WebSocketConnectionManager.GetSocketId(socket);
-            await this.WebSocketConnectionManager.RemoveSocket(id);
+            try
+            {
+                var id = this.WebSocketConnectionManager.GetSocketId(socket);
+                await this.WebSocketConnectionManager.RemoveSocket(id);
+            }
+            catch (Exception e)
+            {
+            }
         }
 
         public async Task SendMessageAsync(System.Net.WebSockets.WebSocket socket, string message)
