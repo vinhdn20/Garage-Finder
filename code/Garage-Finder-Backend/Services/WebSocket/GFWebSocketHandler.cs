@@ -71,61 +71,68 @@ namespace Services.WebSocket
         }
         public override async Task ReceiveAsync(System.Net.WebSockets.WebSocket socket, WebSocketReceiveResult result, byte[] buffer)
         {
-            if(HttpContextAccessor == null)
+            try
             {
-                return;
-            }
-            var user = HttpContextAccessor.HttpContext.User.GetTokenInfor();
-            string mess = Encoding.UTF8.GetString(buffer, 0, result.Count);
-            dynamic json = JsonConvert.DeserializeObject<dynamic>(mess);
-            ArraySegment<byte> sendbuffer = new ArraySegment<byte>();
-            var namedMethod = (string)json.type;
-            var method = _webSocketFunction.GetType().GetMethod(namedMethod);
-            if(method != null)
-            {
-                var parameters = method.GetParameters();
-                object[] args = new object[parameters.Length];
-                for (int i = 0; i < parameters.Length; i++)
+                if (HttpContextAccessor == null)
                 {
-                    if (parameters[i].ParameterType == typeof(TokenInfor))
+                    return;
+                }
+                var user = HttpContextAccessor.HttpContext.User.GetTokenInfor();
+                string mess = Encoding.UTF8.GetString(buffer, 0, result.Count);
+                dynamic json = JsonConvert.DeserializeObject<dynamic>(mess);
+                ArraySegment<byte> sendbuffer = new ArraySegment<byte>();
+                var namedMethod = (string)json.type;
+                var method = _webSocketFunction.GetType().GetMethod(namedMethod);
+                if (method != null)
+                {
+                    var parameters = method.GetParameters();
+                    object[] args = new object[parameters.Length];
+                    for (int i = 0; i < parameters.Length; i++)
                     {
-                        args[i] = user;
-                    }
-                    else if (parameters[i].ParameterType == typeof(int))
-                    {
-                        var canConvert = int.TryParse(JsonConvert.SerializeObject(json.message), out int number);
-                        if (canConvert)
+                        if (parameters[i].ParameterType == typeof(TokenInfor))
                         {
-                            args[i] = number;
+                            args[i] = user;
+                        }
+                        else if (parameters[i].ParameterType == typeof(int))
+                        {
+                            var canConvert = int.TryParse(JsonConvert.SerializeObject(json.message), out int number);
+                            if (canConvert)
+                            {
+                                args[i] = number;
+                            }
+                        }
+                        else if (parameters[i].ParameterType == typeof(string))
+                        {
+                            var message = (string)json.message;
+
+                            args[i] = message;
+                        }
+                        else
+                        {
+                            args[i] = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(json.message), parameters[1].ParameterType);
                         }
                     }
-                    else if (parameters[i].ParameterType == typeof(string))
+                    object list = null;
+                    list = method.Invoke(_webSocketFunction, args);
+                    if (list != null)
                     {
-                        var message = (string)json.message;
-
-                        args[i] = message;
-                    }
-                    else
-                    {
-                        args[i] = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(json.message), parameters[1].ParameterType);
+                        sendbuffer = new ArraySegment<byte>(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(list)));
                     }
                 }
-                object list = null;
-                list = method.Invoke(_webSocketFunction, args);
-                if (list != null)
+
+                if (sendbuffer.Count > 0)
                 {
-                    sendbuffer = new ArraySegment<byte>(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(list)));
+                    await socket.SendAsync(
+                    sendbuffer,
+                    WebSocketMessageType.Text,
+                    WebSocketMessageFlags.EndOfMessage,
+                    CancellationToken.None);
                 }
             }
-
-            if (sendbuffer.Count > 0)
+            catch (Exception e)
             {
-                await socket.SendAsync(
-                sendbuffer,
-                WebSocketMessageType.Text,
-                WebSocketMessageFlags.EndOfMessage,
-                CancellationToken.None);
-            }            
+
+            }
         }
 
     }
