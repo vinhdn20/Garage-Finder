@@ -54,10 +54,10 @@ namespace Services.WebSocket
         public async Task RemoveSocket(string socketId)
         {
             this._sockets.TryRemove(socketId, out var socket);
-            var removeSocket = this._group.FirstOrDefault(x => x.Value == socket);
-            if(removeSocket.Key is not null)
+            var removeSocket = this._group.Where(x => x.Value == socket).ToList();
+            if(removeSocket.Count > 0)
             {
-                this._group.TryRemove(removeSocket.Key, out socket);
+                removeSocket.ForEach(x => this._group.TryRemove(x.Key, out socket));
             }
             await socket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Connection closed.", CancellationToken.None);
         }

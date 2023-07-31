@@ -140,11 +140,11 @@ app.UseSwagger();
 app.UseSwaggerUI();
 app.UseHttpsRedirection();
 //app.UseWebSockets();
-var webSocketOptions = new WebSocketOptions
-{
-};
+//var webSocketOptions = new WebSocketOptions
+//{
+//};
 
-app.UseWebSockets(webSocketOptions);
+app.UseWebSockets();
 app.MapHub<UserGFHub>("/UserGF");
 app.UseCors("AllowAnyOrigins");
 app.UseAuthentication();

@@ -30,9 +30,9 @@ namespace Services.WebSocket
             dynamic sendObj = new { type = method, message = obj };
             var sendbuffer = new ArraySegment<byte>(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(sendObj)));
             await socket.SendAsync(
-            sendbuffer,
+                sendbuffer,
                 WebSocketMessageType.Text,
-                WebSocketMessageFlags.EndOfMessage,
+                endOfMessage: true,
                 CancellationToken.None);
         }
 
@@ -51,8 +51,8 @@ namespace Services.WebSocket
                 tasks.Add(socket.SendAsync(
                     sendbuffer,
                     WebSocketMessageType.Text,
-                    WebSocketMessageFlags.EndOfMessage,
-                    CancellationToken.None).AsTask());
+                    endOfMessage: true,
+                    CancellationToken.None));
             }
             if(tasks.Count > 0)
                 Task.WaitAll(tasks.ToArray());
