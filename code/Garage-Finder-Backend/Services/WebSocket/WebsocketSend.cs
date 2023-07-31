@@ -23,47 +23,47 @@ namespace Services.WebSocket
 
         public async void SendAsync(string userId, string method, object obj)
         {
-            try
+            var socket = WebSocketConnectionManager.GetSocketByGroupId(userId.ToString());
+            if (socket.Count == 0) { return; }
+            if (socket == null)
             {
-
-                var socket = WebSocketConnectionManager.GetSocketByGroupId(userId.ToString());
-                if (socket.Count == 0) { return; }
-                if (socket == null)
-                {
-                    return;
-                }
-                dynamic sendObj = new { type = method, message = obj };
-                var sendbuffer = new ArraySegment<byte>(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(sendObj)));
-                foreach (var s in socket)
+                return;
+            }
+            dynamic sendObj = new { type = method, message = obj };
+            var sendbuffer = new ArraySegment<byte>(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(sendObj)));
+            foreach (var s in socket)
+            {
+                try
                 {
                     await s.SendAsync(
-                        sendbuffer,
-                        WebSocketMessageType.Text,
-                        endOfMessage: true,
-                        CancellationToken.None);
+                            sendbuffer,
+                            WebSocketMessageType.Text,
+                            endOfMessage: true,
+                            CancellationToken.None);
                 }
-            }
-            catch (Exception e)
-            {
-
+                catch (Exception e)
+                {
+                    var id = this.WebSocketConnectionManager.GetSocketId(s);
+                    await this.WebSocketConnectionManager.RemoveSocket(id);
+                }
             }
         }
 
         public async void SendToGroup(string groupId, string method, object obj)
         {
-            try
+            var sockets = WebSocketConnectionManager.GetSocketByGroupId(groupId);
+            dynamic sendObj = new { type = method, message = obj };
+            var sendbuffer = new ArraySegment<byte>(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(sendObj)));
+            List<Task> tasks = new List<Task>();
+            foreach (var socket in sockets)
             {
-
-                var sockets = WebSocketConnectionManager.GetSocketByGroupId(groupId);
-                dynamic sendObj = new { type = method, message = obj };
-                var sendbuffer = new ArraySegment<byte>(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(sendObj)));
-                List<Task> tasks = new List<Task>();
-                foreach (var socket in sockets)
+                if (socket == null)
                 {
-                    if (socket == null)
-                    {
-                        continue;
-                    }
+                    continue;
+                }
+                try
+                {
+
                     //tasks.Add(socket.SendAsync(
                     //    sendbuffer,
                     //    WebSocketMessageType.Text,
@@ -75,13 +75,14 @@ namespace Services.WebSocket
                         endOfMessage: true,
                         CancellationToken.None);
                 }
-                //if(tasks.Count > 0)
-                //    Task.W(tasks.ToArray());
+                catch (Exception e)
+                {
+                    var id = this.WebSocketConnectionManager.GetSocketId(socket);
+                    await this.WebSocketConnectionManager.RemoveSocket(id);
+                }
             }
-            catch (Exception e)
-            {
-
-            }
+            //if(tasks.Count > 0)
+            //    Task.W(tasks.ToArray
         }
     }
 }

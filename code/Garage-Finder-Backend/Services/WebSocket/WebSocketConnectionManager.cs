@@ -62,13 +62,21 @@ namespace Services.WebSocket
 
         public async Task RemoveSocket(string socketId)
         {
-            this._sockets.TryRemove(socketId, out var socket);
-            var removeSocket = this._group.Where(x => x.Value == socketId).ToList();
-            if(removeSocket.Count > 0)
+            try
             {
-                removeSocket.ForEach(x => this._group.TryRemove(x.Key, out var connectionId));
+
+                this._sockets.TryRemove(socketId, out var socket);
+                var removeSocket = this._group.Where(x => x.Value == socketId).ToList();
+                if (removeSocket.Count > 0)
+                {
+                    removeSocket.ForEach(x => this._group.TryRemove(x.Key, out var connectionId));
+                }
+                await socket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Connection closed.", CancellationToken.None);
             }
-            await socket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Connection closed.", CancellationToken.None);
+            catch (Exception)
+            {
+
+            }
         }
     }
 }
