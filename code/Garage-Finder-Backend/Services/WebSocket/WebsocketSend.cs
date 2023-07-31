@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.WebSockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Services.WebSocket
@@ -22,49 +23,65 @@ namespace Services.WebSocket
 
         public async void SendAsync(string userId, string method, object obj)
         {
-            var socket = WebSocketConnectionManager.GetSocketByGroupId(userId.ToString());
-            if(socket.Count == 0) { return; }
-            if(socket == null)
+            try
             {
-                return;
+
+                var socket = WebSocketConnectionManager.GetSocketByGroupId(userId.ToString());
+                if (socket.Count == 0) { return; }
+                if (socket == null)
+                {
+                    return;
+                }
+                dynamic sendObj = new { type = method, message = obj };
+                var sendbuffer = new ArraySegment<byte>(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(sendObj)));
+                foreach (var s in socket)
+                {
+                    await s.SendAsync(
+                        sendbuffer,
+                        WebSocketMessageType.Text,
+                        endOfMessage: true,
+                        CancellationToken.None);
+                }
             }
-            dynamic sendObj = new { type = method, message = obj };
-            var sendbuffer = new ArraySegment<byte>(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(sendObj)));
-            foreach (var s in socket)
+            catch (Exception e)
             {
-                await s.SendAsync(
-                    sendbuffer,
-                    WebSocketMessageType.Text,
-                    endOfMessage: true,
-                    CancellationToken.None);
+
             }
         }
 
         public async void SendToGroup(string groupId, string method, object obj)
         {
-            var sockets = WebSocketConnectionManager.GetSocketByGroupId(groupId);
-            dynamic sendObj = new { type = method, message = obj };
-            var sendbuffer = new ArraySegment<byte>(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(sendObj)));
-            List<Task> tasks = new List<Task>();
-            foreach (var socket in sockets)
+            try
             {
-                if (socket == null)
+
+                var sockets = WebSocketConnectionManager.GetSocketByGroupId(groupId);
+                dynamic sendObj = new { type = method, message = obj };
+                var sendbuffer = new ArraySegment<byte>(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(sendObj)));
+                List<Task> tasks = new List<Task>();
+                foreach (var socket in sockets)
                 {
-                    continue;
+                    if (socket == null)
+                    {
+                        continue;
+                    }
+                    //tasks.Add(socket.SendAsync(
+                    //    sendbuffer,
+                    //    WebSocketMessageType.Text,
+                    //    endOfMessage: true,
+                    //    CancellationToken.None));
+                    await socket.SendAsync(
+                        sendbuffer,
+                        WebSocketMessageType.Text,
+                        endOfMessage: true,
+                        CancellationToken.None);
                 }
-                //tasks.Add(socket.SendAsync(
-                //    sendbuffer,
-                //    WebSocketMessageType.Text,
-                //    endOfMessage: true,
-                //    CancellationToken.None));
-                await socket.SendAsync(
-                    sendbuffer,
-                    WebSocketMessageType.Text,
-                    endOfMessage: true,
-                    CancellationToken.None);
+                //if(tasks.Count > 0)
+                //    Task.W(tasks.ToArray());
             }
-            //if(tasks.Count > 0)
-            //    Task.W(tasks.ToArray());
+            catch (Exception e)
+            {
+
+            }
         }
     }
 }
