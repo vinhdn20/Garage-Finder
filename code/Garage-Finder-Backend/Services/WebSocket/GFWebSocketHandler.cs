@@ -71,6 +71,10 @@ namespace Services.WebSocket
         }
         public override async Task ReceiveAsync(System.Net.WebSockets.WebSocket socket, WebSocketReceiveResult result, byte[] buffer)
         {
+            if(HttpContextAccessor == null)
+            {
+                return;
+            }
             var user = HttpContextAccessor.HttpContext.User.GetTokenInfor();
             string mess = Encoding.UTF8.GetString(buffer, 0, result.Count);
             dynamic json = JsonConvert.DeserializeObject<dynamic>(mess);

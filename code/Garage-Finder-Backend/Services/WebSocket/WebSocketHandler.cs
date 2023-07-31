@@ -39,6 +39,7 @@ namespace Services.WebSocket
         {
             var id = this.WebSocketConnectionManager.GetSocketId(socket);
             await this.WebSocketConnectionManager.RemoveSocket(id);
+            HttpContextAccessor = null;
         }
 
         public async Task SendMessageAsync(System.Net.WebSockets.WebSocket socket, string message)
