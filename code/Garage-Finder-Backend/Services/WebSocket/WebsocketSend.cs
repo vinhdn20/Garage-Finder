@@ -22,19 +22,22 @@ namespace Services.WebSocket
 
         public async void SendAsync(string userId, string method, object obj)
         {
-            var socket = WebSocketConnectionManager.GetSocketByGroupId(userId.ToString()).FirstOrDefault();
-            if(socket == null) { return; }
+            var socket = WebSocketConnectionManager.GetSocketByGroupId(userId.ToString());
+            if(socket.Count == 0) { return; }
             if(socket == null)
             {
                 return;
             }
             dynamic sendObj = new { type = method, message = obj };
             var sendbuffer = new ArraySegment<byte>(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(sendObj)));
-            await socket.SendAsync(
-                sendbuffer,
-                WebSocketMessageType.Text,
-                endOfMessage: true,
-                CancellationToken.None);
+            foreach (var s in socket)
+            {
+                await s.SendAsync(
+                    sendbuffer,
+                    WebSocketMessageType.Text,
+                    endOfMessage: true,
+                    CancellationToken.None);
+            }
         }
 
         public async void SendToGroup(string groupId, string method, object obj)
