@@ -28,8 +28,9 @@ namespace Services.WebSocket
             if (!context.WebSockets.IsWebSocketRequest || !context.User.Identity.IsAuthenticated) { return; }
             // If it is a WebSockets request,
             // then it accepts the connection and passes the socket to the OnConnected method from the WebSocketHandler.
-            var socket = await context.WebSockets.AcceptWebSocketAsync();
+
             var user = context.User.GetTokenInfor();
+            var socket = await context.WebSockets.AcceptWebSocketAsync();
             // while the socket is in the Open state, it awaits for the receival of new data.
             await this._webSocketHandler.OnConnected(socket);
 

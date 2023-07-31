@@ -14,7 +14,7 @@ namespace Services.WebSocket
     public class WebSocketConnectionManager
     {
         private readonly ConcurrentDictionary<string, System.Net.WebSockets.WebSocket> _sockets = new ConcurrentDictionary<string, System.Net.WebSockets.WebSocket>();
-        private readonly ConcurrentDictionary<string, System.Net.WebSockets.WebSocket> _group = new ConcurrentDictionary<string, System.Net.WebSockets.WebSocket>();
+        private readonly ConcurrentDictionary<string, string> _group = new ConcurrentDictionary<string, string>();
         
         public System.Net.WebSockets.WebSocket GetSocketById(string socketId)
         {
@@ -23,7 +23,13 @@ namespace Services.WebSocket
 
         public List<System.Net.WebSockets.WebSocket> GetSocketByGroupId(string groupId)
         {
-            return this._group.Where(x => x.Key == groupId).Select(x => x.Value).ToList();
+            var connectionIds = this._group.Where(x => x.Key == groupId).Select(x => x.Value).ToList();
+            List<System.Net.WebSockets.WebSocket> sockets = new List<System.Net.WebSockets.WebSocket>();
+            foreach (var connectionId in connectionIds)
+            {
+                sockets.AddRange(this._sockets.Where(x => x.Key.Equals(connectionId)).Select(x => x.Value).ToList());
+            }
+            return sockets;
         }
 
         public ConcurrentDictionary<string, System.Net.WebSockets.WebSocket> GetAllSockets()
@@ -36,28 +42,31 @@ namespace Services.WebSocket
             return this._sockets.FirstOrDefault(x => x.Value == socket).Key;
         }
 
-        public void AddSocket(System.Net.WebSockets.WebSocket socket, TokenInfor user)
+        public string AddSocket(System.Net.WebSockets.WebSocket socket, TokenInfor user)
         {
-            this._sockets.TryAdd(user.UserID.ToString(), socket);
+            var connectionId = GenerateConnectionId();
+            this._sockets.TryAdd(connectionId, socket);
+            this._group.TryAdd(user.UserID.ToString(), connectionId);
+            return connectionId;
         }
 
-        public void AddToGroup(System.Net.WebSockets.WebSocket socket, string groupName)
+        public void AddToGroup(string connectionId, string groupName)
         {
-            this._group.TryAdd(groupName, socket);
+            this._group.TryAdd(groupName, connectionId);
         }
 
-        //private string GenerateConnectionId()
-        //{
-        //    return Guid.NewGuid().ToString("N");
-        //}
+        private string GenerateConnectionId()
+        {
+            return Guid.NewGuid().ToString("N");
+        }
 
         public async Task RemoveSocket(string socketId)
         {
             this._sockets.TryRemove(socketId, out var socket);
-            var removeSocket = this._group.Where(x => x.Value == socket).ToList();
+            var removeSocket = this._group.Where(x => x.Value == socketId).ToList();
             if(removeSocket.Count > 0)
             {
-                removeSocket.ForEach(x => this._group.TryRemove(x.Key, out socket));
+                removeSocket.ForEach(x => this._group.TryRemove(x.Key, out var connectionId));
             }
             await socket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Connection closed.", CancellationToken.None);
         }
