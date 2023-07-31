@@ -74,7 +74,7 @@ namespace Services.NotificationService
             NotificationDTO notificationDTO = _mapper.Map<NotificationDTO>(notification);
             //_hubContext.Clients.User(userId.ToString()).SendAsync("Notify", notificationDTO);
 
-            _webSocketHandler.SendAsync(userId.ToString(), "Notify", notificationDTO).Wait();
+            _webSocketHandler.SendAsync(userId.ToString(), "Notify", notificationDTO);
         }
 
         private string GetUserMessage(string status, int garageId)
