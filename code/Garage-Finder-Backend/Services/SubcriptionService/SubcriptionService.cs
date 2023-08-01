@@ -97,7 +97,7 @@ namespace Services.SubcriptionService
             }
 
             var invoices =_subscriptionRepository.GetInvoicesByGarageId(garageId);
-            if(invoices.Any(x => x.ExpirationDate > DateTime.UtcNow.AddHours(7)))
+            if(invoices.Any(x => x.ExpirationDate > DateTime.UtcNow.AddHours(7) && x.Status.Equals(Constants.INVOICE_PAID)))
             {
                 throw new Exception("Bạn đang đăng ký gói thành viên");
             }
