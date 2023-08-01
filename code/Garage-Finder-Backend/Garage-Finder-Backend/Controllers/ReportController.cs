@@ -45,5 +45,20 @@ namespace Garage_Finder_Backend.Controllers
                 return StatusCode(500, $"Đã xảy ra lỗi: {e.Message}");
             }
         }
+
+        [HttpGet("GetReportByID")]
+        public IActionResult GetReportByID(int id)
+        {
+            try
+            {
+                var result = reportService.GetByID(id);
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, $"Đã xảy ra lỗi: {e.Message}");
+            }
+
+        }
     }
 }

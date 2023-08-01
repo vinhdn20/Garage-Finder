@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace DataAccess.DTO.Report
 {
-    public class ReportDTO
+    public class ViewReportDTO
     {
         public string ReportID { get; set; }
         public string Reason { get; set; }
-        public string? ImageLink { get; set; }
+        public List<string> ImageLink { get; set; }
         public DateTime Date { get; set; }
         public string GarageName { get; set; }
         public string GaragePhone { get; set; }
@@ -18,6 +18,6 @@ namespace DataAccess.DTO.Report
         public string UserEmail { get; set; }
         public int GarageID { get; set; }
         public int UserID { get; set; }
-        public List<ImageReportDTO>? ImageReport { get; set; }
     }
 }
+

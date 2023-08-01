@@ -57,6 +57,18 @@ namespace Services.ReportService
             }
             return reportDTO;
         }
+
+        public ViewReportDTO GetByID(int id)
+        {
+            var report = _reportRepository.GetReportByID(id);
+            
+            var result = _mapper.Map<ViewReportDTO>(report);
+            foreach (var image in report.ImageReport)
+            {
+                result.ImageLink.Add(image.ImageLink);
+            }
+            return result;
+        }
     }
 }
 

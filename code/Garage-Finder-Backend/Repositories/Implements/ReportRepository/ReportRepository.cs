@@ -29,5 +29,11 @@ namespace Repositories.Implements.ReportRepository
         {
             ReportDAO.Instance.SaveList(report);
         }
+
+        public ReportDTO GetReportByID(int id)
+        {
+            var report = ReportDAO.Instance.GetList().Where(c => c.ReportID == id).Select(p => _mapper.Map<Report, ReportDTO>(p)).FirstOrDefault();
+            return report;
+        }
     }
 }

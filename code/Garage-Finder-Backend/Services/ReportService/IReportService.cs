@@ -11,5 +11,6 @@ namespace Services.ReportService
     {
         public void AddReport(AddReportDTO addReport, int userID);
         public List<ReportDTO> GetList();
+        public ViewReportDTO GetByID(int id);
     }
 }
