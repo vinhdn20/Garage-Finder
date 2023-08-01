@@ -1,4 +1,5 @@
 ﻿using DataAccess.DTO.Token;
+using Mailjet.Client.Resources;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
 using System.Collections.Concurrent;
@@ -14,8 +15,8 @@ namespace Services.WebSocket
     public class WebSocketConnectionManager
     {
         private readonly ConcurrentDictionary<string, System.Net.WebSockets.WebSocket> _sockets = new ConcurrentDictionary<string, System.Net.WebSockets.WebSocket>();
-        private readonly ConcurrentDictionary<string, string> _group = new ConcurrentDictionary<string, string>();
-        
+        private readonly List<KeyValuePair<string, string>> _group = new List<KeyValuePair<string, string>>();
+
         public System.Net.WebSockets.WebSocket GetSocketById(string socketId)
         {
             return this._sockets.FirstOrDefault(x => x.Key == socketId).Value;
@@ -46,13 +47,13 @@ namespace Services.WebSocket
         {
             var connectionId = GenerateConnectionId();
             this._sockets.TryAdd(connectionId, socket);
-            this._group.TryAdd(user.UserID.ToString(), connectionId);
+            this._group.Add(new KeyValuePair<string,string>( user.UserID.ToString(), connectionId));
             return connectionId;
         }
 
         public void AddToGroup(string connectionId, string groupName)
         {
-            this._group.TryAdd(groupName, connectionId);
+            this._group.Add(new KeyValuePair<string, string>(groupName, connectionId));
         }
 
         private string GenerateConnectionId()
@@ -69,7 +70,7 @@ namespace Services.WebSocket
                 var removeSocket = this._group.Where(x => x.Value == socketId).ToList();
                 if (removeSocket.Count > 0)
                 {
-                    removeSocket.ForEach(x => this._group.TryRemove(x.Key, out var connectionId));
+                    removeSocket.ForEach(x => this._group.Remove(x));
                 }
                 await socket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Connection closed.", CancellationToken.None);
             }
