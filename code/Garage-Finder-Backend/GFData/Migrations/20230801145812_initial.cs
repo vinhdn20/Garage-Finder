@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace GFData.Migrations
 {
-    public partial class Initial : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -421,6 +421,32 @@ namespace GFData.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Report",
+                columns: table => new
+                {
+                    ReportID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Reason = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    GarageID = table.Column<int>(type: "int", nullable: false),
+                    UserID = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Report", x => x.ReportID);
+                    table.ForeignKey(
+                        name: "FK_Report_Garage_GarageID",
+                        column: x => x.GarageID,
+                        principalTable: "Garage",
+                        principalColumn: "GarageID");
+                    table.ForeignKey(
+                        name: "FK_Report_User_UserID",
+                        column: x => x.UserID,
+                        principalTable: "User",
+                        principalColumn: "UserID");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "RoomChat",
                 columns: table => new
                 {
@@ -650,6 +676,26 @@ namespace GFData.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ImageReport",
+                columns: table => new
+                {
+                    ImageID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ReportID = table.Column<int>(type: "int", nullable: false),
+                    ImageLink = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ImageReport", x => x.ImageID);
+                    table.ForeignKey(
+                        name: "FK_ImageReport_Report_ReportID",
+                        column: x => x.ReportID,
+                        principalTable: "Report",
+                        principalColumn: "ReportID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Message",
                 columns: table => new
                 {
@@ -849,6 +895,11 @@ namespace GFData.Migrations
                 column: "OrderID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ImageReport_ReportID",
+                table: "ImageReport",
+                column: "ReportID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Invoices_GarageID",
                 table: "Invoices",
                 column: "GarageID");
@@ -912,6 +963,16 @@ namespace GFData.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_RefreshToken_UserID",
                 table: "RefreshToken",
+                column: "UserID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Report_GarageID",
+                table: "Report",
+                column: "GarageID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Report_UserID",
+                table: "Report",
                 column: "UserID");
 
             migrationBuilder.CreateIndex(
@@ -1009,6 +1070,9 @@ namespace GFData.Migrations
                 name: "ImageOrders");
 
             migrationBuilder.DropTable(
+                name: "ImageReport");
+
+            migrationBuilder.DropTable(
                 name: "Invoices");
 
             migrationBuilder.DropTable(
@@ -1040,6 +1104,9 @@ namespace GFData.Migrations
 
             migrationBuilder.DropTable(
                 name: "GuestOrder");
+
+            migrationBuilder.DropTable(
+                name: "Report");
 
             migrationBuilder.DropTable(
                 name: "Subscribes");

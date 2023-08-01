@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GFData.Migrations
 {
     [DbContext(typeof(GFDbContext))]
-    [Migration("20230726141449_Initial")]
-    partial class Initial
+    [Migration("20230801145812_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -448,6 +448,28 @@ namespace GFData.Migrations
                     b.ToTable("ImageOrders");
                 });
 
+            modelBuilder.Entity("GFData.Models.Entity.ImageReport", b =>
+                {
+                    b.Property<int>("ImageID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ImageID"), 1L, 1);
+
+                    b.Property<string>("ImageLink")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ReportID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ImageID");
+
+                    b.HasIndex("ReportID");
+
+                    b.ToTable("ImageReport");
+                });
+
             modelBuilder.Entity("GFData.Models.Entity.Invoices", b =>
                 {
                     b.Property<int>("InvoicesID")
@@ -665,6 +687,36 @@ namespace GFData.Migrations
                     b.HasIndex("UserID");
 
                     b.ToTable("RefreshToken");
+                });
+
+            modelBuilder.Entity("GFData.Models.Entity.Report", b =>
+                {
+                    b.Property<int>("ReportID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReportID"), 1L, 1);
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("GarageID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Reason")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ReportID");
+
+                    b.HasIndex("GarageID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("Report");
                 });
 
             modelBuilder.Entity("GFData.Models.Entity.RoleName", b =>
@@ -1152,6 +1204,17 @@ namespace GFData.Migrations
                     b.Navigation("Orders");
                 });
 
+            modelBuilder.Entity("GFData.Models.Entity.ImageReport", b =>
+                {
+                    b.HasOne("GFData.Models.Entity.Report", "Report")
+                        .WithMany("ImageReport")
+                        .HasForeignKey("ReportID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Report");
+                });
+
             modelBuilder.Entity("GFData.Models.Entity.Invoices", b =>
                 {
                     b.HasOne("GFData.Models.Entity.Garage", "Garage")
@@ -1265,6 +1328,25 @@ namespace GFData.Migrations
                         .HasForeignKey("UserID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("GFData.Models.Entity.Report", b =>
+                {
+                    b.HasOne("GFData.Models.Entity.Garage", "Garage")
+                        .WithMany("Reports")
+                        .HasForeignKey("GarageID")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("GFData.Models.Entity.Users", "User")
+                        .WithMany("Reports")
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Garage");
 
                     b.Navigation("User");
                 });
@@ -1402,6 +1484,8 @@ namespace GFData.Migrations
 
                     b.Navigation("Orders");
 
+                    b.Navigation("Reports");
+
                     b.Navigation("RoomChats");
                 });
 
@@ -1421,6 +1505,11 @@ namespace GFData.Migrations
                     b.Navigation("ImageOrders");
 
                     b.Navigation("OrderDetails");
+                });
+
+            modelBuilder.Entity("GFData.Models.Entity.Report", b =>
+                {
+                    b.Navigation("ImageReport");
                 });
 
             modelBuilder.Entity("GFData.Models.Entity.RoleName", b =>
@@ -1458,6 +1547,8 @@ namespace GFData.Migrations
                     b.Navigation("Notifications");
 
                     b.Navigation("RefreshTokens");
+
+                    b.Navigation("Reports");
 
                     b.Navigation("RoomChat");
                 });

@@ -61,6 +61,8 @@ namespace GFData.Data
         public virtual DbSet<Subscribe> Subscribes { get; set; }
         public virtual DbSet<Invoices> Invoices { get; set; }
         public virtual DbSet<MessageToUser> MessageToUsers { get; set; }
+        public virtual DbSet<ImageReport>? ImageReport { get; set; }
+        public virtual DbSet<Report>? Report { get; set; }
 
         protected override void OnModelCreating(ModelBuilder optionsBuilder)
         {
@@ -112,12 +114,24 @@ namespace GFData.Data
            .WithMany(u => u.GuestOrderDetails)
            .HasForeignKey(c => c.CategoryGarageID)
            .OnDelete(DeleteBehavior.NoAction);
-            
+
             optionsBuilder.Entity<OrderDetail>()
            .HasOne(p => p.CategoryGarage)
            .WithMany(u => u.OrderDetails)
            .HasForeignKey(c => c.CategoryGarageID)
            .OnDelete(DeleteBehavior.NoAction);
+
+            optionsBuilder.Entity<Report>()
+          .HasOne(p => p.User)
+          .WithMany(u => u.Reports)
+          .HasForeignKey(c => c.UserID)
+          .OnDelete(DeleteBehavior.NoAction);
+
+            optionsBuilder.Entity<Report>()
+          .HasOne(p => p.Garage)
+          .WithMany(u => u.Reports)
+          .HasForeignKey(c => c.GarageID)
+          .OnDelete(DeleteBehavior.NoAction);
 
             optionsBuilder.Entity<Service>().Property(p => p.ServiceID).ValueGeneratedOnAdd()
             .Metadata.SetBeforeSaveBehavior(PropertySaveBehavior.Ignore);

@@ -9,6 +9,7 @@ using Repositories.Implements.FeedbackRepository;
 using Repositories.Implements.Garage;
 using Repositories.Implements.NotificationRepository;
 using Repositories.Implements.OrderRepository;
+using Repositories.Implements.ReportRepository;
 using Repositories.Implements.ServiceRepository;
 using Repositories.Implements.StaffRepository;
 using Repositories.Implements.UserRepository;
@@ -47,6 +48,7 @@ namespace Repositories
             services.AddScoped<IChatRepository, ChatRepository>();
             services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
             services.AddScoped<IAdminRepository, AdminRepository>();
+            services.AddScoped<IReportRepository, ReportRepository>();
         }
     }
 }
