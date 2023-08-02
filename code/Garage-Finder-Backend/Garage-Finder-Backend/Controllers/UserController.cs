@@ -97,7 +97,7 @@ namespace Garage_Finder_Backend.Controllers
                 var usersDTO = _userRepository.Login(loginModel.Email, loginModel.Password);
                 if (usersDTO.Status == Constants.USER_LOCKED)
                 {
-                    return BadRequest("User is locked");
+                    return BadRequest("Người dùng đã bị khoá tài khoản!");
                 }
                 var roleName = _roleNameRepository.GetUserRole(usersDTO.RoleID);
                 usersDTO.roleName = roleName;
