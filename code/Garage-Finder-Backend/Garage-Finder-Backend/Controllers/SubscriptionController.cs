@@ -104,8 +104,8 @@ namespace Garage_Finder_Backend.Controllers
                     ip = ipAddress.Address.ToString();
                 }
                 var user = User.GetTokenInfor();
-                var link =  _subcriptionService.GetLinkPay(user.UserID, garageId, subscribeID, ip);
-                return Ok(link);
+                return _subcriptionService.GetLinkPay(user.UserID, garageId, subscribeID, ip);
+                //return Ok(link);
             }
             catch (Exception e)
             {

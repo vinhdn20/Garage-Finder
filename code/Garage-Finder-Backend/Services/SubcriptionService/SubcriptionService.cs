@@ -2,6 +2,7 @@
 using DataAccess.DTO.Orders;
 using DataAccess.DTO.Subscription;
 using GFData.Models.Entity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -89,9 +90,9 @@ namespace Services.SubcriptionService
             _subscriptionRepository.UpdateInvoices(invoices);
         }
 
-        public string GetLinkPay(int userId, int garageId, int subscriptionId, string ipAddress)
+        public IActionResult GetLinkPay(int userId, int garageId, int subscriptionId, string ipAddress)
         {
-            if(!ValidationGarageOwner(garageId, userId))
+            if (!ValidationGarageOwner(garageId, userId))
             {
                 throw new Exception("Authorize exception");
             }
@@ -100,7 +101,7 @@ namespace Services.SubcriptionService
             //Tắt tạm
             //if(invoices.Any(x => x.ExpirationDate > DateTime.UtcNow.AddHours(7) && x.Status.Equals(Constants.INVOICE_PAID)))
             //{
-            //    throw new Exception("Bạn đã đăng ký gói thành viên");
+            //    return new OkObjectResult("Bạn đã đăng ký gói thành viên");
             //}
             var api = _config["VNPay:VNPayAPI"];
             var sub = _subscriptionRepository.GetById(subscriptionId);
@@ -173,7 +174,7 @@ namespace Services.SubcriptionService
             vNPay.vnp_SecureHash = signData.ToString().HmacSHA512(_config["VNPay:vnp_HashSecret"]);
             api += "vnp_SecureHash=" + vNPay.vnp_SecureHash;
 
-            return api;
+            return new OkObjectResult(api);
         }
 
         public List<InvoicesDTO> GetInvoicesByGarageId(int userId, int garageId)
