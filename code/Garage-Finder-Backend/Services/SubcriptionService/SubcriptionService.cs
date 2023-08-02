@@ -190,7 +190,7 @@ namespace Services.SubcriptionService
             foreach (var invoice in invoices)
             {
                 InvoicesDTO invoicesDTO = _mapper.Map<InvoicesDTO>(invoice);
-                var sub = subs.Find(x => x.SubscribeID == invoicesDTO.InvoicesID);
+                var sub = subs.Find(x => x.SubscribeID == invoice.SubscribeID);
                 invoicesDTO = _mapper.Map(sub,invoicesDTO);
                 viewInvoices.Add(invoicesDTO);
             }
