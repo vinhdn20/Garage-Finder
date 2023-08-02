@@ -7,6 +7,7 @@ using DataAccess.DTO.Feedback;
 using DataAccess.DTO.Garage;
 using DataAccess.DTO.Orders;
 using DataAccess.DTO.Orders.ResponseDTO;
+using DataAccess.DTO.Report;
 using DataAccess.DTO.Services;
 using DataAccess.DTO.Services.RequestSerivesDTO;
 using DataAccess.DTO.Staff;
@@ -108,6 +109,13 @@ namespace Garage_Finder_Backend
             CreateMap<Staff, StaffDTO>();
             CreateMap<Staff, LoginStaffDTO>();
             CreateMap<Users, UserAdminDTO>();
+
+            CreateMap<Report, ReportDTO>();
+            CreateMap<ReportDTO, Report>();
+            CreateMap<ImageReport, ImageReportDTO>();
+            CreateMap<ImageReportDTO, ImageReport>();
+            CreateMap<ViewReportDTO, ReportDTO>();
+            CreateMap<ReportDTO, ViewReportDTO>();
         }
     }
 }

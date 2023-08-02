@@ -5,6 +5,7 @@ using Services.FeedbackService;
 using Services.GarageService;
 using Services.NotificationService;
 using Services.OrderService;
+using Services.ReportService;
 using Services.ServiceService;
 using Services.StaffService;
 using Services.StorageApi;
@@ -31,6 +32,7 @@ namespace Services
             services.AddTransient<IService, Service>();
             services.AddTransient<IStaffService, StaffService.StaffService>();
             services.AddTransient<IFeedbackService, FeedbackService.FeedbackService>();
+            services.AddTransient<IReportService, ReportService.ReportService>();
             services.AddTransient<INotificationService, NotificationService.NotificationService>();
             services.AddTransient<IChatService, ChatService.ChatService>();
             services.AddTransient<ISubcriptionService, SubcriptionService.SubcriptionService>();
