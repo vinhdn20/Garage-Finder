@@ -37,6 +37,20 @@ namespace Services.ReportService
                 GarageID = garage.GarageID
             };
             _reportRepository.Add(report);
+            if (addReport.ImageLink is null)
+            {
+                return;
+            }
+            report.ImageReport = new List<ImageReport>();
+            foreach (var image in addReport.ImageLink)
+            {
+                report.ImageReport.Add(new ImageReport()
+                {
+                    ImageLink = image,
+                    ReportID = report.ReportID
+                });
+            }
+            _reportRepository.Update(report);
         }
 
         public List<ReportDTO> GetList()
@@ -61,8 +75,13 @@ namespace Services.ReportService
         public ViewReportDTO GetByID(int id)
         {
             var report = _reportRepository.GetReportByID(id);
-            
+
             var result = _mapper.Map<ViewReportDTO>(report);
+            result.GarageName = report.GarageName;
+            result.GaragePhone = report.GaragePhone;
+            result.GarageMail = report.GarageMail;
+            result.UserEmail = report.UserEmail;
+            result.Date = report.Date;
             foreach (var image in report.ImageReport)
             {
                 result.ImageLink.Add(image.ImageLink);

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GFData.Migrations
 {
     [DbContext(typeof(GFDbContext))]
-    [Migration("20230801145812_initial")]
-    partial class initial
+    [Migration("20230802130314_garagefinder")]
+    partial class garagefinder
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

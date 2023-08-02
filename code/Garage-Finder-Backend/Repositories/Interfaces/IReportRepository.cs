@@ -12,6 +12,7 @@ namespace Repositories.Interfaces
     {
         public List<Report> GetList();
         public void Add(Report report);
+        public void Update(Report report);
         public ReportDTO GetReportByID(int id);
     }
 }

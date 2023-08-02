@@ -43,6 +43,8 @@ namespace DataAccess.DAO
                                       ReportID = report.ReportID,
                                       Reason = report.Reason,
                                       Date = report.Date,
+                                      GarageID = report.GarageID,
+                                      UserID = report.UserID,
                                       ImageReport = (from imageReport in context.ImageReport
                                                      where imageReport.ReportID == report.ReportID
                                                      select imageReport).ToList(),
@@ -64,6 +66,22 @@ namespace DataAccess.DAO
                 using (var context = new GFDbContext())
                 {
                     context.Report.Add(reportList);
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        public void UpdateReport(Report reportList)
+        {
+            try
+            {
+                using (var context = new GFDbContext())
+                {
+                    context.Report.Update(reportList);
                     context.SaveChanges();
                 }
             }

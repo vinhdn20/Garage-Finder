@@ -10,7 +10,7 @@ namespace DataAccess.DTO.Report
     {
         public int ReportID { get; set; }
         public int GarageID { get; set; }
-        public int UserID { get; set; }
         public string Reason { get; set; }
+        public List<string>? ImageLink { get; set; }
     }
 }

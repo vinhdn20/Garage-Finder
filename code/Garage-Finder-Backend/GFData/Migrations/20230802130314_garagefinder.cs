@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace GFData.Migrations
 {
-    public partial class initial : Migration
+    public partial class garagefinder : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
