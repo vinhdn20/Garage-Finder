@@ -1,4 +1,5 @@
 ﻿using DataAccess.DTO.Subscription;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace Services.SubcriptionService
     public interface ISubcriptionService
     {
         public void UpdateInvoice(VNPayIPNDTO vNPay);
-        public string GetLinkPay(int userId, int garageId, int subscriptionId, string ipAddress);
+        public IActionResult GetLinkPay(int userId, int garageId, int subscriptionId, string ipAddress);
         List<SubscribeDTO> GetAll();
         void Add(AddSubcribeDTO addSubcribe);
         void Update(SubscribeDTO subscribeDTO);

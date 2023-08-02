@@ -44,7 +44,8 @@ namespace Garage_Finder_Backend
 
             CreateMap<InvoicesDTO, Invoices>();
             CreateMap<Invoices, InvoicesDTO>();
-            CreateMap<Subscribe, InvoicesDTO>();
+            CreateMap<Subscribe, InvoicesDTO>()
+                .ForMember(x => x.Status, m => m.Ignore());
 
             CreateMap<NotificationDTO, Notification>();
             CreateMap<Notification, NotificationDTO>();

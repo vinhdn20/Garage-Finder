@@ -2,6 +2,7 @@
 using DataAccess.DTO.Orders;
 using DataAccess.DTO.Subscription;
 using GFData.Models.Entity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -89,18 +90,19 @@ namespace Services.SubcriptionService
             _subscriptionRepository.UpdateInvoices(invoices);
         }
 
-        public string GetLinkPay(int userId, int garageId, int subscriptionId, string ipAddress)
+        public IActionResult GetLinkPay(int userId, int garageId, int subscriptionId, string ipAddress)
         {
-            if(!ValidationGarageOwner(garageId, userId))
+            if (!ValidationGarageOwner(garageId, userId))
             {
                 throw new Exception("Authorize exception");
             }
 
             var invoices =_subscriptionRepository.GetInvoicesByGarageId(garageId);
-            if(invoices.Any(x => x.ExpirationDate > DateTime.UtcNow.AddHours(7)))
-            {
-                throw new Exception("Bạn đang đăng ký gói thành viên");
-            }
+            //Tắt tạm
+            //if(invoices.Any(x => x.ExpirationDate > DateTime.UtcNow.AddHours(7) && x.Status.Equals(Constants.INVOICE_PAID)))
+            //{
+            //    return new OkObjectResult("Bạn đã đăng ký gói thành viên");
+            //}
             var api = _config["VNPay:VNPayAPI"];
             var sub = _subscriptionRepository.GetById(subscriptionId);
             if(sub.Status.Equals(Constants.DELETE_SUBCRIPTION))
@@ -172,7 +174,7 @@ namespace Services.SubcriptionService
             vNPay.vnp_SecureHash = signData.ToString().HmacSHA512(_config["VNPay:vnp_HashSecret"]);
             api += "vnp_SecureHash=" + vNPay.vnp_SecureHash;
 
-            return api;
+            return new OkObjectResult(api);
         }
 
         public List<InvoicesDTO> GetInvoicesByGarageId(int userId, int garageId)
@@ -188,7 +190,7 @@ namespace Services.SubcriptionService
             foreach (var invoice in invoices)
             {
                 InvoicesDTO invoicesDTO = _mapper.Map<InvoicesDTO>(invoice);
-                var sub = subs.Find(x => x.SubscribeID == invoicesDTO.InvoicesID);
+                var sub = subs.Find(x => x.SubscribeID == invoice.SubscribeID);
                 invoicesDTO = _mapper.Map(sub,invoicesDTO);
                 viewInvoices.Add(invoicesDTO);
             }
