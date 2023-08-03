@@ -115,5 +115,22 @@ namespace DataAccess.DAO
                 throw new Exception(e.Message);
             }
         }
+
+        public void DeleteRefreshToKenExpired()
+        {
+            try
+            {
+                using (var context = new GFDbContext())
+                {
+                    var cDelete = context.RefreshToken.Where(x => x.ExpiresDate <= DateTime.UtcNow);
+                    context.RefreshToken.RemoveRange(cDelete);
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
     }
 }

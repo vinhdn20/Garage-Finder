@@ -1,15 +1,39 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Services.NotificationService.NotificationService" BaseTypeListCollapsed="true">
+    <Position X="17" Y="6" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAggAAAAAABAAABACAAAAAAAAAAAEACgIAAACE=</HashCode>
+      <FileName>NotificationService\NotificationService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
   <Class Name="Services.StorageApi.AzureBlob" BaseTypeListCollapsed="true">
-    <Position X="9.5" Y="4.25" Width="1.5" />
+    <Position X="12" Y="6" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAEAAAAAAAA=</HashCode>
       <FileName>StorageApi\AzureBlob.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
+  <Class Name="Services.FeedbackService.FeedbackService" BaseTypeListCollapsed="true">
+    <Position X="9.25" Y="8.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>QAQAgAAAAIAAAAAAAAAhAAAAAAAAAAAAAAACABAAAAA=</HashCode>
+      <FileName>FeedbackService\FeedbackService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Services.GarageService.GarageService" BaseTypeListCollapsed="true">
+    <Position X="12" Y="10.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAIAAgAABAAAAAAAAAABACAAAAAAAAACAAAACAAAAIA=</HashCode>
+      <FileName>GarageService\GarageService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
   <Class Name="Services.PhoneVerifyService.TwilioService" BaseTypeListCollapsed="true">
-    <Position X="6" Y="3.5" Width="1.5" />
+    <Position X="14.75" Y="10" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAgAAAAAAAAIEAAAAAAAEIAAAAAAA=</HashCode>
       <FileName>PhoneVerifyService\TwilioService.cs</FileName>
@@ -17,39 +41,166 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Services.PhoneVerifyService.TwilioVerifySettings">
-    <Position X="7.75" Y="3.75" Width="1.5" />
+    <Position X="6.5" Y="16.25" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>PhoneVerifyService\TwilioVerifySettings.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="Services.EmailService.MailjetService" BaseTypeListCollapsed="true">
+    <Position X="12" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAA=</HashCode>
+      <FileName>EmailService\MailjetService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
   <Class Name="Services.GgService.GoogleService">
-    <Position X="6" Y="2.25" Width="1.5" />
+    <Position X="9.25" Y="16.25" Width="2.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>GgService\GoogleService.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Services.UserService.UserService" BaseTypeListCollapsed="true">
-    <Position X="4.25" Y="2.25" Width="1.5" />
+  <Class Name="Services.ServiceService.Service" BaseTypeListCollapsed="true">
+    <Position X="6.5" Y="19.5" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AEAAAAAgAAAAgABAAAABAAAAAYAAAAAAAABAAAAAAQA=</HashCode>
+      <HashCode>AAAAIAAAAAAAAAAAAAABACABACAIAAAAGAAAAKAABAA=</HashCode>
+      <FileName>ServiceService\Service.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Services.StaffService.StaffService" BaseTypeListCollapsed="true">
+    <Position X="17" Y="10" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAkQQAAAAABAAgBACBAAIAABAAgAABAAACAAAA=</HashCode>
+      <FileName>StaffService\StaffService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Services.OrderService.OrderService" BaseTypeListCollapsed="true">
+    <Position X="17.25" Y="16.25" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>gEQFgAAAGwEAAAABCAEBADHQCAABAAASCAACiDAIiAQ=</HashCode>
+      <FileName>OrderService\OrderService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Services.ChatService.ChatService" BaseTypeListCollapsed="true">
+    <Position X="14.75" Y="6" Width="2" />
+    <TypeIdentifier>
+      <HashCode>BAUAAAAAAAEAAAABABAAACBAAAECAAAQAAAAAAAAAAE=</HashCode>
+      <FileName>ChatService\ChatService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Services.WebSocket.GFWebSocketHandler">
+    <Position X="6.75" Y="9" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAAABAAAAACAAAAAAAAIAABEAAAAAAAA=</HashCode>
+      <FileName>WebSocket\GFWebSocketHandler.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Services.WebSocket.WebSocketConnectionManager">
+    <Position X="9.25" Y="21.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAIAAhAEAAAAAAFgAAACAAAiAA=</HashCode>
+      <FileName>WebSocket\WebSocketConnectionManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Services.WebSocket.WebSocketFunction">
+    <Position X="9.25" Y="17.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>JBAAAAEAEAUAAAAAABAAAAAAAAMgAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>WebSocket\WebSocketFunction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Services.WebSocket.WebSocketHandler">
+    <Position X="6.5" Y="6" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAAAAAAIAAAAACAAAAAIAABAAAAAAAAA=</HashCode>
+      <FileName>WebSocket\WebSocketHandler.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Services.WebSocket.WebSocketManagerExtensions">
+    <Position X="12.25" Y="19.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAABAAAAAAACAAAAAAAAAAAAAA=</HashCode>
+      <FileName>WebSocket\WebSocketManagerExtensions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Services.WebSocket.WebSocketManagerMiddleware">
+    <Position X="9.25" Y="11.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAE=</HashCode>
+      <FileName>WebSocket\WebSocketManagerMiddleware.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Services.WebSocket.WebsocketSend">
+    <Position X="12.25" Y="21" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAAAAAAAIAAAAADAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>WebSocket\WebsocketSend.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Services.ReportService.ReportService" BaseTypeListCollapsed="true">
+    <Position X="12.25" Y="16.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAQAAIAAAAAAAAAAAAABACgAAAAAAAAAAAAAgAAAAAI=</HashCode>
+      <FileName>ReportService\ReportService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Services.UserService.AutoDeleteRToken" BaseTypeListCollapsed="true">
+    <Position X="9.25" Y="6" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAEAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UserService\AutoDeleteRToken.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Services.UserService.UserService" BaseTypeListCollapsed="true">
+    <Position X="15.25" Y="16.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAgAAAAgABAAAABAAAAAYABAAAAAgBAAAAAAQA=</HashCode>
       <FileName>UserService\UserService.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Garage_Finder_Backend.Services.AuthService.JwtService">
-    <Position X="7.75" Y="2.25" Width="1.5" />
+    <Position X="6.5" Y="17.5" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>ACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAA=</HashCode>
+      <HashCode>ACAAAAAAAAAAAgBAAAAAAAAAAAAAAAAAAAAAAACAAAA=</HashCode>
       <FileName>AuthService\JwtService.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Garage_Finder_Backend.Services.AuthService.JwtSettings">
-    <Position X="9.5" Y="2.25" Width="1.5" />
+    <Position X="12.25" Y="23.75" Width="2.5" />
     <TypeIdentifier>
       <HashCode>AAEAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAEAIAAAAAA=</HashCode>
       <FileName>AuthService\JwtSettings.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Services.SubcriptionService.SubcriptionService" BaseTypeListCollapsed="true">
+    <Position X="6.5" Y="12" Width="2" />
+    <TypeIdentifier>
+      <HashCode>gAYMAAAAAAAABAAQAAABACBAAAAAACEAAgAAAAAAAAA=</HashCode>
+      <FileName>SubcriptionService\SubcriptionService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Services.Constants">
+    <Position X="6.5" Y="23.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>EAACgDAAAQgQQAAAAAAECAMgAgAQACBAACACDAIAIAA=</HashCode>
+      <FileName>Constants.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Services.Extension">
+    <Position X="15.25" Y="20" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>IAAAEAAAAAAAAAAAAAAAAAAAAAAAAAQgAABABAAAAAA=</HashCode>
+      <FileName>Extension.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />

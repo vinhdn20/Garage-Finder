@@ -35,7 +35,7 @@
   <Class Name="Repositories.Implements.FeedbackRepository.FeedbackRepository" BaseTypeListCollapsed="true">
     <Position X="8" Y="5.5" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAYAAAAAAAAAAAAAAAABAAAAAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAYAAAAAAAAAAAAAAAABAAAAAAAIQAAAAgAAAAAAAAA=</HashCode>
       <FileName>Implements\FeedbackRepository\FeedbackRepository.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -43,7 +43,7 @@
   <Class Name="Repositories.Implements.Garage.CategoryGarageRepository" BaseTypeListCollapsed="true">
     <Position X="10.25" Y="2.25" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AAIAAAAAAAAAAAAAAAABBAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAIAAAAAAAAAAAAAAAABBAAAAAAAAAAAAAAAAAAAAIA=</HashCode>
       <FileName>Implements\Garage\CategoryGarageRepository.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -56,24 +56,16 @@
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="Repositories.Implements.Garage.GarageInforRepository" BaseTypeListCollapsed="true">
-    <Position X="12.75" Y="5.5" Width="2" />
-    <TypeIdentifier>
-      <HashCode>AAIAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Implements\Garage\GarageInforRepository.cs</FileName>
-    </TypeIdentifier>
-    <Lollipop Position="0.2" />
-  </Class>
   <Class Name="Repositories.Implements.Garage.GarageRepository" BaseTypeListCollapsed="true">
-    <Position X="5.75" Y="8.25" Width="1.5" />
+    <Position X="5.75" Y="8.5" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAYgAAACBAAgAAAEBAABAIAAAAAAAAAAAAAAAAAAADA=</HashCode>
+      <HashCode>AAYgAAACBAAgAAAEBAABAIgAAAAAAAAAAAAAAAAAADA=</HashCode>
       <FileName>Implements\Garage\GarageRepository.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Repositories.Implements.Garage.ImageGarageRepository" BaseTypeListCollapsed="true">
-    <Position X="8" Y="8.25" Width="2" />
+    <Position X="8" Y="8.5" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAIAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAEA=</HashCode>
       <FileName>Implements\Garage\ImageGarageRepository.cs</FileName>
@@ -81,25 +73,25 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Repositories.Implements.OrderRepository.OrderRepository" BaseTypeListCollapsed="true">
-    <Position X="10.25" Y="8.25" Width="1.5" />
+    <Position X="10.25" Y="8.5" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAYAAAAAAAAAAAAAAAgBAAAAAAEEAAAAAAAAAAAAAAg=</HashCode>
+      <HashCode>AAYAAAAAAAAAAAAAAAgBAAAAAAMEAAAAAAAAAAAACAg=</HashCode>
       <FileName>Implements\OrderRepository\OrderRepository.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Repositories.Implements.ServiceRepository.ServiceRepository" BaseTypeListCollapsed="true">
-    <Position X="15" Y="4.5" Width="2" />
+    <Position X="15" Y="5.5" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAEAACAIBAAAAAAAIAAAAAAAAEAAABAA=</HashCode>
+      <HashCode>AAAAAAAAAACAAEAACAABAAAAAAAIAAAAAAAAEAAABAA=</HashCode>
       <FileName>Implements\ServiceRepository\ServiceRepository.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Repositories.Implements.UserRepository.RefreshTokenRepository" BaseTypeListCollapsed="true">
-    <Position X="12.75" Y="8.25" Width="2" />
+    <Position X="12.75" Y="5.5" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAQAAAAAAAAAAhAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <HashCode>AAAAAAAAQAQAAAAAAAAhAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
       <FileName>Implements\UserRepository\RefreshTokenRepository.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -113,10 +105,74 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Repositories.Implements.UserRepository.UsersRepository" BaseTypeListCollapsed="true">
-    <Position X="15" Y="8.25" Width="1.5" />
+    <Position X="15" Y="8.5" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAYAAAAAAAIAAAAAAAIhAAAAAAABAAAAAgAQAAAAAAA=</HashCode>
       <FileName>Implements\UserRepository\UsersRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Repositories.Implements.AdminRepository.AdminRepository" BaseTypeListCollapsed="true">
+    <Position X="12.75" Y="8.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAQgAACAAAAAAAAgAAABACAAAIAAIgBAAAgBAEAAAAA=</HashCode>
+      <FileName>Implements\AdminRepository\AdminRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Repositories.Implements.Chat.ChatRepository" BaseTypeListCollapsed="true">
+    <Position X="5.75" Y="13" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAEFAAAAAAABIAIAAAAAEAIACgAAAAAAAAA=</HashCode>
+      <FileName>Implements\Chat\ChatRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Repositories.Implements.SubscriptionRepository" BaseTypeListCollapsed="true">
+    <Position X="8" Y="16.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgAwEBAAAAAAAAAAAAAAAAAAAAAAAAAAAAYg=</HashCode>
+      <FileName>Implements\SubscriptionRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Repositories.Implements.NotificationRepository.NotifcationRepository" BaseTypeListCollapsed="true">
+    <Position X="10.25" Y="13" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAwAABAAAAAAAAAAAAABABAAAAAA=</HashCode>
+      <FileName>Implements\NotificationRepository\NotifcationRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Repositories.Implements.OrderRepository.GuestOrderRepository" BaseTypeListCollapsed="true">
+    <Position X="8" Y="13" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAYAAAAAAAAAAAAAAAABAABAAAMEAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>Implements\OrderRepository\GuestOrderRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Repositories.Implements.ReportRepository.ReportRepository" BaseTypeListCollapsed="true">
+    <Position X="12.75" Y="13" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAYAAAAAAAAAAAAAAAABACIAAAAAAAAAAAAAAAAAAAI=</HashCode>
+      <FileName>Implements\ReportRepository\ReportRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Repositories.Implements.UserRepository.StaffRefreshTokenRepository" BaseTypeListCollapsed="true">
+    <Position X="15" Y="13" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQAAAAAAAAAAgAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Implements\StaffRepository\StaffRefreshTokenRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Repositories.Implements.StaffRepository.StaffRepository" BaseTypeListCollapsed="true">
+    <Position X="5.75" Y="16.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQEAAAAAAAAAAAAAAAAAAAAgAgAQAACAAIA=</HashCode>
+      <FileName>Implements\StaffRepository\StaffRepository.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>

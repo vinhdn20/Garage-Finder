@@ -3,7 +3,7 @@
   <Class Name="GFData.Models.Entity.Brand">
     <Position X="4" Y="1.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAACAAAAAAAAAAEAAAAAAAAAAABAABACAAEAAAA=</HashCode>
+      <HashCode>AAAAAAACAQAAAAAAAAEAAAAAAAAAAABAABACAAEAAAA=</HashCode>
       <FileName>Models\Entity\Brand.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -15,21 +15,21 @@
     </TypeIdentifier>
   </Class>
   <Class Name="GFData.Models.Entity.CategoryGarage">
-    <Position X="7.5" Y="1.25" Width="1.5" />
+    <Position X="7.75" Y="1.25" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>gAAEAAASAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAACAA=</HashCode>
+      <HashCode>gAAEAAASAAAAAAAAABIAAAAACAAAAAAAAAAAAAAACAA=</HashCode>
       <FileName>Models\Entity\CategoryGarage.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GFData.Models.Entity.Categorys">
-    <Position X="9.25" Y="1.25" Width="1.5" />
+    <Position X="9.75" Y="1.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>gAAAAAACAAEAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAACAAEAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Models\Entity\Categorys.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GFData.Models.Entity.FavoriteList">
-    <Position X="11" Y="1.25" Width="1.5" />
+    <Position X="11.5" Y="1.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAFAAAAAAAAAAAAIAAAAAgACAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Models\Entity\FavoriteList.cs</FileName>
@@ -38,7 +38,7 @@
   <Class Name="GFData.Models.Entity.Feedback">
     <Position X="4" Y="3.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAABAAAAAgAAAAgAAAAAAAgACAAAAAAAgAAAAAAAAAA=</HashCode>
+      <HashCode>AAEAABAAAgAAAAgAAAAAAAAAAAAAAAQAgAAAAAAAAAA=</HashCode>
       <FileName>Models\Entity\Feedback.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -50,24 +50,17 @@
     </TypeIdentifier>
   </Class>
   <Class Name="GFData.Models.Entity.Garage">
-    <Position X="7.5" Y="3.75" Width="1.5" />
+    <Position X="7.75" Y="3.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAEEAAAEAAkEAAAAAgkCSAAACAAAAAJAAIAAIgAAAAA=</HashCode>
+      <HashCode>IAEFAAAEAAkEAAAAAgkASAgACAAAAAJAAIAAIgAAEAA=</HashCode>
       <FileName>Models\Entity\Garage.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GFData.Models.Entity.GarageBrand">
-    <Position X="9.25" Y="3.25" Width="1.5" />
+    <Position X="9.75" Y="3" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAEAAAAAAAAAEAAAAAAAAAACAAAAAAAABAAAAABAAA=</HashCode>
       <FileName>Models\Entity\GarageBrand.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="GFData.Models.Entity.GarageInfo">
-    <Position X="11" Y="3.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAFAAAAAAAAAAgAAAAAAAgACAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Models\Entity\GarageInfo.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GFData.Models.Entity.ImageGarage">
@@ -85,23 +78,23 @@
     </TypeIdentifier>
   </Class>
   <Class Name="GFData.Models.Entity.Invoices">
-    <Position X="7.5" Y="8.75" Width="1.5" />
+    <Position X="7.75" Y="9.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAACAAAAAAAAAAAAAAAAgAwAAGAAAAAEAAAAEAAAA=</HashCode>
+      <HashCode>AAAEAAAEAAAAAAAAAAAAAAAAyAAGAAAAAEAAAAAAAAA=</HashCode>
       <FileName>Models\Entity\Invoices.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GFData.Models.Entity.Notification">
-    <Position X="9.25" Y="5.5" Width="1.5" />
+    <Position X="9.75" Y="5.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAABgAAAAgAAAEAAAAAAAAgAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAABgAAAAgAAAAAAAAAAEAgAAAAAAAQAAAAAAAAAAAA=</HashCode>
       <FileName>Models\Entity\Notification.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GFData.Models.Entity.Orders">
-    <Position X="11" Y="5.75" Width="1.5" />
+    <Position X="11.5" Y="3.5" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAAGAHAEAgQAAAgAAAAAAgAACAAAQAAAAAAIAAAAAgA=</HashCode>
+      <HashCode>AAAGAVAEAgQAAAgAABAAQgAACAAAAAAAAAAIAAAAAgA=</HashCode>
       <FileName>Models\Entity\Orders.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -120,24 +113,122 @@
     </TypeIdentifier>
   </Class>
   <Class Name="GFData.Models.Entity.Service">
-    <Position X="12.75" Y="6.25" Width="1.5" />
+    <Position X="13.5" Y="6.25" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAEAACAQAAEAAAAAAAAAABAACAAAAAAAAAAIAAEAAAA=</HashCode>
+      <HashCode>AAAAACAQAAEAAAAAAAAAABAAAAAAAAAAAAAIAAEAAAA=</HashCode>
       <FileName>Models\Entity\Service.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GFData.Models.Entity.Subscribe">
-    <Position X="9.25" Y="7.75" Width="1.5" />
+    <Position X="9.75" Y="7.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAwAAAAAAAAAAAAAAAAAAAAAAAEAAACAAAAI=</HashCode>
+      <HashCode>AAAAAAAEAwAAAAAAAAAAAAQAAAAAAAAAAEAAACAAAAI=</HashCode>
       <FileName>Models\Entity\Subscribe.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GFData.Models.Entity.Users">
-    <Position X="12.75" Y="1.25" Width="1.5" />
+    <Position X="13.5" Y="1.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAIGAAIkCAAAAAACSAwAAAAAAAgCEIAAEiAAAAA=</HashCode>
+      <HashCode>IAAAAAIGAAIkCgAAAAAAQAwAAAAAAAgCEIAAEwAAEAA=</HashCode>
       <FileName>Models\Entity\Users.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GFData.Models.Entity.FileGuestOrders">
+    <Position X="4" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAAAABAAAAAAAAAAAAACAAAAAAAIAAAA=</HashCode>
+      <FileName>Models\Entity\FileGuestOrders.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GFData.Models.Entity.GuestOrder">
+    <Position X="5.75" Y="10.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAEAUAEAqAAAAgABAIAQgQACgAAAAAAAAAIAIABAgA=</HashCode>
+      <FileName>Models\Entity\GuestOrder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GFData.Models.Entity.GuestOrderDetail">
+    <Position X="7.75" Y="12" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>IAEAAAAQAAEAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Entity\GuestOrderDetail.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GFData.Models.Entity.ImageGuestOrder">
+    <Position X="11.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAAAABAAAAAAAAQAAAAAAAAACAAAAAAA=</HashCode>
+      <FileName>Models\Entity\ImageGuestOrder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GFData.Models.Entity.ImageReport">
+    <Position X="4" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAQAAAACAAAACAAAABAA=</HashCode>
+      <FileName>Models\Entity\ImageReport.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GFData.Models.Entity.Message">
+    <Position X="13.5" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACACAgAAAAAAAAAAAAgAAAAAAAQEAAAAAAAAEAA=</HashCode>
+      <FileName>Models\Entity\Message.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GFData.Models.Entity.MessageToUser">
+    <Position X="11.5" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAgAAAAAAAAAAAAAAAAAEAAUEAAAAAAAIAAA=</HashCode>
+      <FileName>Models\Entity\MessageToUser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GFData.Models.Entity.OrderDetail">
+    <Position X="11.5" Y="9.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>EAEAAAAQAAEAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>Models\Entity\OrderDetail.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GFData.Models.Entity.Report">
+    <Position X="4" Y="14.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAFAAAAAAAAAAIAAAAAAAgAiAAAAACBAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Entity\Report.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GFData.Models.Entity.RoomChat">
+    <Position X="13.5" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEACACAAAAAEAAAAAAAAgACAAAAAAAAAAAIAAAAAA=</HashCode>
+      <FileName>Models\Entity\RoomChat.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GFData.Models.Entity.Staff">
+    <Position X="9.75" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAEAAAECECAAAAAQAQACAAAAAgCEAAAAgACAAA=</HashCode>
+      <FileName>Models\Entity\Staff.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GFData.Models.Entity.StaffMessage">
+    <Position X="9.75" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAgABAAAAAAAAAAAAACAAAAQCAAAAAAAAEAA=</HashCode>
+      <FileName>Models\Entity\StaffMessage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GFData.Models.Entity.StaffNotification">
+    <Position X="7.75" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAAAAAAEAgAACAAAAQCAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Entity\StaffNotification.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GFData.Models.Entity.StaffRefreshToken">
+    <Position X="13.5" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAQAAAAAAAAAAAAAAAAACAAAAACAAABAAABAAA=</HashCode>
+      <FileName>Models\Entity\StaffRefreshToken.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />

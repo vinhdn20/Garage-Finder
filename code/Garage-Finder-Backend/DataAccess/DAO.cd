@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ClassDiagram MajorVersion="1" MinorVersion="1">
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
   <Class Name="DataAccess.DAO.BrandDAO">
     <Position X="2.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
@@ -8,108 +8,157 @@
     </TypeIdentifier>
   </Class>
   <Class Name="DataAccess.DAO.CarDAO">
-    <Position X="4.25" Y="0.5" Width="1.5" />
+    <Position X="4.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>EAYAAIAAAQAAAAAAAAAAAAACAABAAAAAQAAAAAAAAAA=</HashCode>
       <FileName>DAO\CarDAO.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="DataAccess.DAO.CategoryDAO">
-    <Position X="6" Y="0.5" Width="1.5" />
+    <Position X="6.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAYAAIAAAAIAAAAAAAAAAAAAAQBAAAAAQAAAAAAAAAA=</HashCode>
       <FileName>DAO\CategoryDAO.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="DataAccess.DAO.CategoryGarageDAO">
-    <Position X="7.75" Y="0.5" Width="1.75" />
+    <Position X="8.5" Y="0.5" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAIAAIAAAAAAAAAAAAAABAAAAABAAAAAQAAAAAAAAAA=</HashCode>
+      <HashCode>AAIAAIAAAAAAAAAAAAAABAAAAABAAAAAQAAAgAAAAAA=</HashCode>
       <FileName>DAO\CategoryGarageDAO.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="DataAccess.DAO.FavoriteListDAO">
-    <Position X="2.5" Y="4.25" Width="1.75" />
+    <Position X="2.5" Y="4.75" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAIAQAAAAAAAAAAAAAAAAAABAAAAAQAAABAAAAAI=</HashCode>
       <FileName>DAO\FavoriteListDAO.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="DataAccess.DAO.FeedbackDAO">
-    <Position X="4.25" Y="4.25" Width="1.5" />
+    <Position X="4.5" Y="4.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAIAAAAAAAAAAAIAAAAAAAABAAAAAQAAAAAAAAQI=</HashCode>
+      <HashCode>AEAAAIAAAAAAAAAAAIAAAAAAAABAEAAAQgAAAAAAAQA=</HashCode>
       <FileName>DAO\FeedbackDAO.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="DataAccess.DAO.GarageBrandDAO">
-    <Position X="6" Y="4.25" Width="1.75" />
+    <Position X="6.5" Y="4.75" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAYAAIAAAAAAAAAAAAAAAAAAAAFAAAAAUAAAAAAAAAA=</HashCode>
       <FileName>DAO\GarageBrandDAO.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="DataAccess.DAO.GarageDAO">
-    <Position X="7.75" Y="4.25" Width="1.5" />
+    <Position X="8.5" Y="4.75" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAgAIAABAAAAAAAAAAQAAAABABAAAAAQAAAAAAAABA=</HashCode>
       <FileName>DAO\GarageDAO.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="DataAccess.DAO.GarageInforDAO">
-    <Position X="2.5" Y="8.25" Width="1.5" />
+  <Class Name="DataAccess.DAO.InvoicesDAO">
+    <Position X="2.5" Y="9.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAIAAIAAAAAAAAAAAAAAAAAAAABAAAAAQAAAAAAAAAA=</HashCode>
-      <FileName>DAO\GarageInforDAO.cs</FileName>
+      <HashCode>AAYAAIAAAAEAAABAAAAAAAAAAABAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>DAO\InvoicesDAO.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="DataAccess.DAO.ImageGarageDAO">
-    <Position X="4.25" Y="8.25" Width="1.75" />
+    <Position X="4.5" Y="9.25" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAIAAIAAAAAAAAAAAAAABAAAAABAAAAAQAAAAAAAAAA=</HashCode>
       <FileName>DAO\ImageGarageDAO.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="DataAccess.DAO.OrdersDAO">
-    <Position X="9.5" Y="0.5" Width="1.5" />
+    <Position X="10.75" Y="0.5" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAYAAIAAAAAAAAAAAAAAAAAAAAFAQAAAQAAAAAAAAII=</HashCode>
+      <HashCode>AAYAAIAAAAAAAAAABAAAAAAAAAFAQAAAQAAAABAAAII=</HashCode>
       <FileName>DAO\OrdersDAO.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="DataAccess.DAO.RefreshTokenDAO">
-    <Position X="11.25" Y="0.5" Width="2.25" />
+    <Position X="13" Y="0.5" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AAAAAIAAAAAQAAAAAAAABAAQAABAAAEAQACAAAAAAAA=</HashCode>
+      <HashCode>AAAAAIAAAAQQAAAAAAAABAAQAABAAAEAQACAAAAAAAA=</HashCode>
       <FileName>DAO\RefreshTokenDAO.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="DataAccess.DAO.RoleDAO">
-    <Position X="6" Y="8.25" Width="1.5" />
+    <Position X="6.5" Y="9.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAIAAAAAAAAAAAAAAAAAAAABBAAAAQAAAAAAAAAA=</HashCode>
       <FileName>DAO\RoleDAO.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="DataAccess.DAO.ServiceDAO">
-    <Position X="7.75" Y="8.25" Width="1.5" />
+    <Position X="8.5" Y="9.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAIAAAAAAAUAACAAAAAAAAABAAAAAQAAAEAAABAA=</HashCode>
       <FileName>DAO\ServiceDAO.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="DataAccess.DAO.SubscribeDAO">
-    <Position X="9.5" Y="4.25" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAIAAAAAAAAAAAAAAAAAAAABAAAAAQAAAAAAAAAA=</HashCode>
-      <FileName>DAO\SubscribeDAO.cs</FileName>
-    </TypeIdentifier>
-  </Class>
   <Class Name="DataAccess.DAO.UsersDAO">
-    <Position X="11.25" Y="4.25" Width="2" />
+    <Position X="13" Y="4.75" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAQAIAAAAgAAAAAAAAQAAAAAQBAAAAASAAAIAAAAAg=</HashCode>
       <FileName>DAO\UsersDAO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataAccess.DAO.ChatDAO">
+    <Position X="10.75" Y="4.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIBAAAEBAAAAAAAAAAICAAFABAIIQgAAAAAAAAA=</HashCode>
+      <FileName>DAO\ChatDAO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataAccess.DAO.GuestOrderDAO">
+    <Position X="10.75" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAYAAIAAAAEAAAAAAAAAAAAAAAFAAAAAQAAAABAAAII=</HashCode>
+      <FileName>DAO\GuestOrderDAO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataAccess.DAO.NotificationDAO">
+    <Position X="13" Y="9.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAQAAIAAAAAAAAAAAAAAAAAAAABAAAAAwABAAAAAAAA=</HashCode>
+      <FileName>DAO\NotificationDAO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataAccess.DAO.ReportDAO">
+    <Position X="2.5" Y="13.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAIAQAAAAAAAAAAAAAAAAAABAAAAAQAAAAAAAAAI=</HashCode>
+      <FileName>DAO\ReportDAO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataAccess.DAO.StaffDAO">
+    <Position X="4.5" Y="13.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAQAAAAAAAAAAAAAAAABAAAAgQgBQAACIAAA=</HashCode>
+      <FileName>DAO\StaffDAO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataAccess.DAO.StaffNotificationDAO">
+    <Position X="6.5" Y="13.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAQAAIAAAAAAAAAAAAAAAAAAAABAAAAAwABAAAAAAAA=</HashCode>
+      <FileName>DAO\StaffNotificationDAO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataAccess.DAO.StaffRefreshTokenDAO">
+    <Position X="8.5" Y="13.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAQAAAAAAAABAAQAABAAAEAQACAAAAAAAA=</HashCode>
+      <FileName>DAO\StaffRefreshTokenDAO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataAccess.DAO.SubcriptionDAO">
+    <Position X="10.75" Y="13.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAYAAIAAAAAAAAAAAEAAAAAAAABAAAAAQgAAAAAAAAA=</HashCode>
+      <FileName>DAO\SubcriptionDAO.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />

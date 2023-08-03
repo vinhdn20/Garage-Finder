@@ -1,65 +1,142 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ClassDiagram MajorVersion="1" MinorVersion="1">
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="Garage_Finder_Backend.Controllers.AdminController">
+    <Position X="5.5" Y="0.75" Width="4" />
+    <Members>
+      <Method Name="AdminController" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAQIAIAAAAABAQACBAEEAIAA=</HashCode>
+      <FileName>Controllers\AdminController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
   <Class Name="Garage_Finder_Backend.Controllers.BrandController">
-    <Position X="0.75" Y="0.5" Width="1.5" />
+    <Position X="10" Y="0.75" Width="3" />
+    <Members>
+      <Method Name="BrandController" Hidden="true" />
+    </Members>
     <TypeIdentifier>
       <HashCode>AAYAAAAAAAAAAAAAAAAAAAABAAEAAAAAAgAAAAAAAAA=</HashCode>
       <FileName>Controllers\brandController.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Garage_Finder_Backend.Controllers.CarController">
-    <Position X="2.75" Y="0.5" Width="1.75" />
+    <Position X="14" Y="0.75" Width="3" />
+    <Members>
+      <Method Name="CarController" Hidden="true" />
+    </Members>
     <TypeIdentifier>
-      <HashCode>AAYAAIAAAAAIAAAAAAAAAAAAAAGAAAAAAABAEAAAAAA=</HashCode>
+      <HashCode>AAYAAIAAAAAIAAAAAAAAABAAAAGAAAAAAAAAEAAAAAA=</HashCode>
       <FileName>Controllers\CarController.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Garage_Finder_Backend.Controllers.CategoryController">
-    <Position X="4.75" Y="0.5" Width="1.75" />
+    <Position X="18" Y="0.75" Width="3.25" />
+    <Members>
+      <Method Name="CategoryController" Hidden="true" />
+    </Members>
     <TypeIdentifier>
       <HashCode>AAYAIAAAAAAAAAAAAAAAABAAAAEAAAAAAgAAAAAAAAA=</HashCode>
       <FileName>Controllers\CategoryController.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Garage_Finder_Backend.Controllers.FavoriteListController">
-    <Position X="6.75" Y="0.5" Width="1.75" />
+  <Class Name="Garage_Finder_Backend.Controllers.ChatController">
+    <Position X="5.5" Y="4.5" Width="4.25" />
+    <Members>
+      <Method Name="ChatController" Hidden="true" />
+    </Members>
     <TypeIdentifier>
-      <HashCode>AAEAAAAAAAAAAAAAAAAAAAYAAACAAAAAAABAAAAAAAA=</HashCode>
+      <HashCode>BAEAAAAAAAUAAAAAABAAAABAAAEAAAAQAAAAAAAAAAA=</HashCode>
+      <FileName>Controllers\ChatController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Garage_Finder_Backend.Controllers.FavoriteListController">
+    <Position X="10" Y="4.5" Width="3.5" />
+    <Members>
+      <Method Name="FavoriteListController" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAAAAAAAAAAYAAACAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Controllers\FavoriteListController.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Garage_Finder_Backend.Controllers.FeedbackController">
-    <Position X="4.75" Y="3.75" Width="1.75" />
+    <Position X="14" Y="4.5" Width="3.25" />
+    <Members>
+      <Method Name="FeedbackController" Hidden="true" />
+    </Members>
     <TypeIdentifier>
-      <HashCode>AAYAAAAAAAAAAAAAAACAAAAAAAAAAAAAgAAAAAAAAAA=</HashCode>
+      <HashCode>AAIABAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAEA=</HashCode>
       <FileName>Controllers\FeedbackController.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Garage_Finder_Backend.Controllers.GarageController">
-    <Position X="8.75" Y="0.5" Width="2.25" />
+    <Position X="18" Y="4.5" Width="5.75" />
+    <Members>
+      <Method Name="GarageController" Hidden="true" />
+    </Members>
     <TypeIdentifier>
-      <HashCode>AAYgAAAAAAAgEAAAAAAQAgAAIAEAABAAAwBQCAACAIA=</HashCode>
+      <HashCode>AAYgIAAABAAgEAAAAEAQAgAAIAEAABAAAwAACAACIIA=</HashCode>
       <FileName>Controllers\GarageController.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Garage_Finder_Backend.Controllers.OrderController">
-    <Position X="0.75" Y="3.75" Width="1.75" />
+    <Position X="5.25" Y="10.75" Width="4.75" />
+    <Members>
+      <Method Name="OrderController" Hidden="true" />
+    </Members>
     <TypeIdentifier>
-      <HashCode>AAIAAAAAAAAAAAAAAAAAABAAAAGAACAAAgBAAAAAAAA=</HashCode>
+      <HashCode>AAABAQAAAAEAAAAACAAAAACQCAKIAAAQAAAAAAAAgAA=</HashCode>
       <FileName>Controllers\OrderController.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Garage_Finder_Backend.Controllers.ServiceController">
-    <Position X="2.75" Y="3.75" Width="1.75" />
+  <Class Name="Garage_Finder_Backend.Controllers.ReportController">
+    <Position X="10.25" Y="10.75" Width="3.5" />
+    <Members>
+      <Method Name="ReportController" Hidden="true" />
+    </Members>
     <TypeIdentifier>
-      <HashCode>AAYAAAAAAAAAAAAAAAAAABAAAAEAACAAAgAAAAIgAAA=</HashCode>
+      <HashCode>AAAAAIBAAEAAAAAAAAAAAAIAAAAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>Controllers\ReportController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Garage_Finder_Backend.Controllers.ServiceController">
+    <Position X="14" Y="10.75" Width="3.75" />
+    <Members>
+      <Method Name="ServiceController" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAYAAAAAAAAAAAAQAABAAAAAAAEAAAAAAAAAAAIAAAA=</HashCode>
       <FileName>Controllers\ServiceController.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Garage_Finder_Backend.Controllers.UserController">
-    <Position X="11.25" Y="0.5" Width="2" />
+  <Class Name="Garage_Finder_Backend.Controllers.StaffController">
+    <Position X="18" Y="10.75" Width="3.75" />
+    <Members>
+      <Method Name="StaffController" Hidden="true" />
+    </Members>
     <TypeIdentifier>
-      <HashCode>AkQACAEhQAAAgABAAAAhAAIAAIABAAAAAAFEAAAAASA=</HashCode>
+      <HashCode>AAIAAAAEQAAAAAAAAAAAAgAAAAAAAAEgAAAQIACAAAA=</HashCode>
+      <FileName>Controllers\StaffController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Garage_Finder_Backend.Controllers.SubscriptionController">
+    <Position X="5.25" Y="14.75" Width="3.5" />
+    <Members>
+      <Method Name="SubscriptionController" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AEYAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAhBAAAAAAAA=</HashCode>
+      <FileName>Controllers\SubscriptionController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Garage_Finder_Backend.Controllers.UserController">
+    <Position X="10.25" Y="14.75" Width="5" />
+    <Members>
+      <Method Name="UserController" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AkQACAEhQAAAgABAAAAhAAIAAIABBAAAAAFEAAAAASA=</HashCode>
       <FileName>Controllers\UserController.cs</FileName>
     </TypeIdentifier>
   </Class>

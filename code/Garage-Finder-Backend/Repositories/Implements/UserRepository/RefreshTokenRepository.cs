@@ -37,5 +37,10 @@ namespace Repositories.Implements.UserRepository
         {
             RefreshTokenDAO.Instance.DeleteRefreshTokenByUserID(userID);
         }
+
+        public void DeleteRefreshToKenExpired()
+        {
+            RefreshTokenDAO.Instance.DeleteRefreshToKenExpired();
+        }
     }
 }
