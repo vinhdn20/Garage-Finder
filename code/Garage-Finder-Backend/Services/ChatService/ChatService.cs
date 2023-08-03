@@ -1,7 +1,6 @@
 ﻿using DataAccess.DTO.Chat;
 using DataAccess.DTO.User;
 using GFData.Models.Entity;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using Repositories.Implements.Garage;
 using Repositories.Interfaces;
@@ -21,18 +20,16 @@ namespace Services.ChatService
         private readonly IStaffRepository _staffRepository;
         private readonly IGarageRepository _garageRepository;
         private readonly IUsersRepository _usersRepository;
-        private readonly IHubContext<UserGFHub> _hubContext;
         private readonly WebsocketSend _webSocketHandler;
 
         public ChatService(IChatRepository chatRepository, IStaffRepository staffRepository,
             IUsersRepository usersRepository, IGarageRepository garageRepository,
-            IHubContext<UserGFHub> hubContext, WebsocketSend webSocket)
+            WebsocketSend webSocket)
         {
             _chatRepository = chatRepository;
             _staffRepository = staffRepository;
             _usersRepository = usersRepository;
             _garageRepository = garageRepository;
-            _hubContext = hubContext;
             _webSocketHandler = webSocket;
         }
         public List<ChatDTO> GetDetailMessage(int userId, string nameRole, int roomId)

@@ -1,248 +1,472 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="DataAccess.DTO.RequestDTO.Car.AddCarDTO">
-    <Position X="2.5" Y="0.5" Width="1.5" />
+  <Class Name="DataAccess.DTO.Admin.KeyWordDTO">
+    <Position X="16.5" Y="10.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAIAAAAAAAAQAAAAAAAAAAAAAABAAgIAAAAA=</HashCode>
-      <FileName>DTO\RequestDTO\Car\AddCarDTO.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DTO\Admin\KeyWordDTO.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="DataAccess.DTO.RequestDTO.Car.UpdateCarDTO">
-    <Position X="8" Y="8.25" Width="1.5" />
+  <Class Name="DataAccess.DTO.Admin.StatusGarageDTO">
+    <Position X="14.75" Y="20.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAACAAAAAIAAAAAAAAQAAAAAAAAAAAAAABAAgIAAAAA=</HashCode>
-      <FileName>DTO\RequestDTO\Car\UpdateCarDTO.cs</FileName>
+      <HashCode>AAAAAAAEAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DTO\Admin\StatusGarageDTO.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="DataAccess.DTO.RequestDTO.Category.AddCategoryGarage">
-    <Position X="4.25" Y="0.5" Width="1.75" />
+  <Class Name="DataAccess.DTO.Admin.StatusUserDTO">
+    <Position X="16.5" Y="20.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAACAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>DTO\RequestDTO\Category\AddCategoryGarage.cs</FileName>
+      <HashCode>AAAAAAAEAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DTO\Admin\StatusUserDTO.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="DataAccess.DTO.RequestDTO.Garage.AddGarageDTO">
+  <Class Name="DataAccess.DTO.Admin.UserAdminDTO">
+    <Position X="11.25" Y="24.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAAAECAAAAACAQAwAAAAAAAAAEAAAAgAAAAA=</HashCode>
+      <FileName>DTO\Admin\UserAdminDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataAccess.DTO.Car.AddCarDTO">
     <Position X="6" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAEAAAEAAgEAAAAAggISAAAACAAAABAAAACIgCAAAA=</HashCode>
-      <FileName>DTO\RequestDTO\Garage\AddGarageDTO.cs</FileName>
+      <HashCode>AAAAAAAAAIAAAAAAAAQAAAAAAAAAAAAAABAAgIAAAAA=</HashCode>
+      <FileName>DTO\Car\AddCarDTO.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="DataAccess.DTO.RequestDTO.Garage.FilterGarage">
-    <Position X="8" Y="2.5" Width="1.5" />
+  <Class Name="DataAccess.DTO.Car.CarDTO">
+    <Position X="14.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAIAAAAAAAAQAAAgAAAAAAAAAABAAgIAAAAA=</HashCode>
+      <FileName>DTO\Car\CarDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataAccess.DTO.Car.UpdateCarDTO">
+    <Position X="6" Y="24.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAIAAAAAAAAQAAAAAAAAAAAAAABAAgIAAAAA=</HashCode>
+      <FileName>DTO\Car\UpdateCarDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataAccess.DTO.Category.AddCategoryGarage">
+    <Position X="7.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DTO\Category\AddCategoryGarage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataAccess.DTO.Category.CategoryDTO">
+    <Position X="16.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DTO\Category\CategoryDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataAccess.DTO.Chat.ChatDTO">
+    <Position X="6" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAgAAAAAAACAAAAAAAAAAAAQAAAAAAAAAAAA=</HashCode>
+      <FileName>DTO\Chat\ChatDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataAccess.DTO.Chat.RoomDTO">
+    <Position X="18.25" Y="15.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAgAAAAAAAAAAAAwACAAAAAwAAAAAAAAAAAA=</HashCode>
+      <FileName>DTO\Chat\RoomDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataAccess.DTO.Chat.SendChatToGarage">
+    <Position X="6" Y="20.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DTO\Chat\SendChatToGarage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataAccess.DTO.Chat.SendChatToUser">
+    <Position X="7.75" Y="20.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DTO\Chat\SendChatToUser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataAccess.DTO.Chat.SendChatToUserByGarage">
+    <Position X="9.5" Y="20.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAAAAAAAAgAAAAAgAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DTO\Chat\SendChatToUserByGarage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataAccess.DTO.Feedback.AddFeedbackDTO">
+    <Position X="9.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAAgAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAA=</HashCode>
+      <FileName>DTO\Feedback\AddFeedbackDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataAccess.DTO.Feedback.FeedbackDTO">
+    <Position X="11.25" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAgAAAAAAAQAAAAAAAwAgAAAAAAAAAA=</HashCode>
+      <FileName>DTO\Feedback\FeedbackDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataAccess.DTO.Garage.AddGarageDTO">
+    <Position X="11.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAEAAgEAAAAAggISAAAACAAAABAAAACIgCAAAA=</HashCode>
+      <FileName>DTO\Garage\AddGarageDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataAccess.DTO.Garage.AddImageGarageDTO">
+    <Position X="13" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAACAAAAAAA=</HashCode>
+      <FileName>DTO\Garage\AddImageGarageDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataAccess.DTO.Garage.FilterGarage">
+    <Position X="14.75" Y="8.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAACAAAAAAAAAAACAgAAAAAAIAAAAAAAAA=</HashCode>
-      <FileName>DTO\RequestDTO\Garage\FilterGarage.cs</FileName>
+      <FileName>DTO\Garage\FilterGarage.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="DataAccess.DTO.RequestDTO.Garage.FindGarageAroundDTO">
-    <Position X="9.75" Y="3" Width="2" />
+  <Class Name="DataAccess.DTO.Garage.FindGarageAroundDTO">
+    <Position X="16.5" Y="8.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAQAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>DTO\RequestDTO\Garage\FindGarageAroundDTO.cs</FileName>
+      <FileName>DTO\Garage\FindGarageAroundDTO.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="DataAccess.DTO.RequestDTO.Garage.GarageDTO">
-    <Position X="4.25" Y="4.5" Width="1.5" />
+  <Class Name="DataAccess.DTO.Garage.GarageDTO">
+    <Position X="6" Y="10.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAEAAAEAAkEAAAAAgkASAAACAAAAAJAAAAAIgAAAAA=</HashCode>
-      <FileName>DTO\RequestDTO\Garage\GarageDTO.cs</FileName>
+      <HashCode>AAAEAAAEAAkEAAAAAgkASAgACAAAAAJAgAAAIgAAAAg=</HashCode>
+      <FileName>DTO\Garage\GarageDTO.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="DataAccess.DTO.RequestDTO.Garage.SearchGarage">
-    <Position X="2.5" Y="8.5" Width="1.5" />
+  <Class Name="DataAccess.DTO.Garage.ImageGarageDTO">
+    <Position X="9.5" Y="10.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAACAAAAAAAAAABAAgAAAAAAIAAAAAAAAA=</HashCode>
-      <FileName>DTO\RequestDTO\Garage\SearchGarage.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAACQAAAAAAAAACAAAAAAA=</HashCode>
+      <FileName>DTO\Garage\ImageGarageDTO.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="DataAccess.DTO.RequestDTO.Garage.UpdateGarageDTO">
-    <Position X="15.75" Y="6.25" Width="1.75" />
+  <Class Name="DataAccess.DTO.Garage.SearchGarage">
+    <Position X="20" Y="15.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgAAACAAAAAAAAAABCAgAAAAAAIAAAAAAABA=</HashCode>
+      <FileName>DTO\Garage\SearchGarage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataAccess.DTO.Garage.UpdateGarageDTO">
+    <Position X="7.75" Y="24.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAEAAAEAAgEAAAAAggASAAACAAAAABAAAAAIgAAAAA=</HashCode>
-      <FileName>DTO\RequestDTO\Garage\UpdateGarageDTO.cs</FileName>
+      <FileName>DTO\Garage\UpdateGarageDTO.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="DataAccess.DTO.RequestDTO.User.ForgotPassDTO">
-    <Position X="12" Y="2.25" Width="1.5" />
+  <Class Name="DataAccess.DTO.Garage.ViewGarageDTO">
+    <Position X="6" Y="28.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>ABAAAAACAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>DTO\RequestDTO\User\ForgotPassDTO.cs</FileName>
+      <HashCode>AAAEAAAEAAkEAAAAAgkASAgACAAAAAJAgAAAIgAAAAg=</HashCode>
+      <FileName>DTO\Garage\ViewGarageDTO.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="DataAccess.DTO.RequestDTO.UserDTO.LoginModel">
-    <Position X="2.5" Y="6.75" Width="1.5" />
+  <Class Name="DataAccess.DTO.Garage.ViewBrandDTO">
+    <Position X="20" Y="24.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAACAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAA=</HashCode>
-      <FileName>DTO\RequestDTO\User\LoginModel.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAABAAAAAAAAAAAhAAAAAAAAAAAA=</HashCode>
+      <FileName>DTO\Garage\ViewGarageDTO.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="DataAccess.DTO.RequestDTO.UserDTO.UserRegister">
-    <Position X="13.75" Y="2.5" Width="1.5" />
+  <Class Name="DataAccess.DTO.Orders.RequestDTO.AddOrderFromGuestDTO">
+    <Position X="14.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAIAAAAAAAAAAAAAQAQAAAAAAAACAAAAAgAAAAA=</HashCode>
-      <FileName>DTO\RequestDTO\User\UserRegister.cs</FileName>
+      <HashCode>ACAAAEAAAKIAAAAAAAAAQgQAAgAAAAAAAAAAAIAAAAA=</HashCode>
+      <FileName>DTO\Orders\RequestDTO\AddOrderFromGuestDTO.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="DataAccess.DTO.RequestDTO.UserDTO.UserUpdateDTO">
-    <Position X="13.75" Y="4.75" Width="1.5" />
+  <Class Name="DataAccess.DTO.Orders.RequestDTO.AddOrderWithCarDTO">
+    <Position X="16.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAECAAAAAAAQAQAAAAAAAAAEAAAAgAAAAA=</HashCode>
-      <FileName>DTO\RequestDTO\User\UserUpdateDTO.cs</FileName>
+      <HashCode>AAAQAAAAAAIAAAAAAIAAQgAAAAAAIAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DTO\Orders\RequestDTO\AddOrderWithCarDTO.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="DataAccess.DTO.RequestDTO.ChangePasswordDTO">
-    <Position X="15.75" Y="0.5" Width="1.75" />
+  <Class Name="DataAccess.DTO.Orders.RequestDTO.AddOrderWithoutCarDTO">
+    <Position X="18.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAEAAAIIAAAAAAAAAQgQAAgAAAAAAAAAAAIAAAAA=</HashCode>
+      <FileName>DTO\Orders\RequestDTO\AddOrderWithoutCarDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataAccess.DTO.Orders.RequestDTO.DoneOrderDTO">
+    <Position X="7.75" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAQAAAgAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAA=</HashCode>
+      <FileName>DTO\Orders\RequestDTO\DoneOrderDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataAccess.DTO.Orders.ResponseDTO.OrderDetailDTO">
+    <Position X="7.75" Y="15.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAVAEAqAAAAgAAAAARgQACAAAAAAAAAAIgIABCgA=</HashCode>
+      <FileName>DTO\Orders\ResponseDTO\OrderDetailDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataAccess.DTO.Orders.FileOrdersDTO">
+    <Position X="13" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAIAAAA=</HashCode>
+      <FileName>DTO\Orders\FileOrdersDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataAccess.DTO.Orders.GuestOrderDTO">
+    <Position X="7.75" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAUAEAqAAAAgABAIAQgQACgAAAAAAAAAIAIAAAgA=</HashCode>
+      <FileName>DTO\Orders\GuestOrderDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataAccess.DTO.Orders.ImageOrdersDTO">
+    <Position X="11.25" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAAAAAAAAAAAAAAAAAAQAAAAAAAAACAAAAAAA=</HashCode>
+      <FileName>DTO\Orders\ImageOrdersDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataAccess.DTO.Orders.OrdersDTO">
+    <Position X="9.5" Y="15.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAVAEAgAAAAgAABAAQgAACAAAAAAAAAAIAAAAAgA=</HashCode>
+      <FileName>DTO\Orders\OrdersDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataAccess.DTO.Report.AddReportDTO">
+    <Position X="20" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAIAAAAAAAAACAAAAACAAAACAAAAAAA=</HashCode>
+      <FileName>DTO\Report\AddReportDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataAccess.DTO.Report.ImageReportDTO">
+    <Position X="13" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAQAAAACAAAACAAAAAAA=</HashCode>
+      <FileName>DTO\Report\ImageReportDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataAccess.DTO.Report.ReportDTO">
+    <Position X="14.75" Y="15.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAAAAIACAAAAAgAiAAAAACBAAACCAAQAAA=</HashCode>
+      <FileName>DTO\Report\ReportDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataAccess.DTO.Report.ViewReportDTO">
+    <Position X="7.75" Y="28.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAAAAIACAAAAAgACAAAAACBAAACCAAQAAA=</HashCode>
+      <FileName>DTO\Report\ViewReportDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataAccess.DTO.Services.RequestSerivesDTO.AddServiceDTO">
+    <Position X="6" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQAAAAAAAAAAAAABAAAAAAAAAAAAAIAAEAAAA=</HashCode>
+      <FileName>DTO\Services\RequestSerivesDTO\AddServiceDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataAccess.DTO.Services.ServiceDTO">
+    <Position X="11.25" Y="20.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAQAAAAAAAAAAAAABAAAAAAAAAAAAAIAAEAAAA=</HashCode>
+      <FileName>DTO\Services\ServiceDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataAccess.DTO.Staff.AddStaffDTO">
+    <Position X="7.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAECACAAAAAQAQACAAAAAgCEAAAAgACAAA=</HashCode>
+      <FileName>DTO\Staff\AddStaffDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataAccess.DTO.Staff.BlockStaffDTO">
+    <Position X="11.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAA=</HashCode>
+      <FileName>DTO\Staff\BlockStaffDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataAccess.DTO.Staff.LoginStaffDTO">
+    <Position X="20" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEQAAECAAAAAAAQAQAGAAAAAgCEAAAAgACAAA=</HashCode>
+      <FileName>DTO\Staff\LoginStaffDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataAccess.DTO.Staff.StaffDTO">
+    <Position X="13" Y="20.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAAAECACAAAAAQAQACAAAAAgCEAAAAgACAAA=</HashCode>
+      <FileName>DTO\Staff\StaffDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataAccess.DTO.Staff.UpdateStaffDTO">
+    <Position X="9.5" Y="24.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAECACAAAAAQAQAAAAAAAgCEAAAAgACAAA=</HashCode>
+      <FileName>DTO\Staff\UpdateStaffDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataAccess.DTO.Subscription.AddSubcribeDTO">
+    <Position X="9.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAwAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAI=</HashCode>
+      <FileName>DTO\Subscription\AddSubcribeDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataAccess.DTO.Subscription.InvoicesDTO">
+    <Position X="14.75" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAQAAAAAAAAAAAAQAwAAEAAAAAAAAAAAAAAI=</HashCode>
+      <FileName>DTO\Subscription\InvoicesDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataAccess.DTO.Subscription.SubscribeDTO">
+    <Position X="18.25" Y="20.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAwAAAAAAAAAAAAQAAAAAAAAAAEAAAAAAAAI=</HashCode>
+      <FileName>DTO\Subscription\SubscribeDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataAccess.DTO.Subscription.VNPayIPNDTO">
+    <Position X="9.5" Y="28.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAKAFAAAgACAAAACAAJAAABAAAAAAEgAAAAAAAAgA=</HashCode>
+      <FileName>DTO\Subscription\VNPayIPNDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataAccess.DTO.Subscription.VNPayPaymentDTO">
+    <Position X="11.25" Y="28.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABEAIAAAAAgBCIAgAAACAACABACAAAAEgAAAAAAAAAA=</HashCode>
+      <FileName>DTO\Subscription\VNPayPaymentDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataAccess.DTO.Token.RefreshTokenDTO">
+    <Position X="13" Y="15.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAQAAAAAAAAAAAAAAgAAAAAAAAAAAABAAABAAA=</HashCode>
+      <FileName>DTO\Token\RefreshTokenDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataAccess.DTO.Token.TokenInfor">
+    <Position X="20" Y="20.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAEAAAAAA=</HashCode>
+      <FileName>DTO\Token\TokenInfor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataAccess.DTO.User.RequestDTO.ChangePasswordDTO">
+    <Position X="20" Y="4.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAABAAAAAAAEAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>DTO\RequestDTO\ChangePasswordDTO.cs</FileName>
+      <FileName>DTO\User\RequestDTO\ChangePasswordDTO.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="DataAccess.DTO.ResponeModels.User.UserInfor">
-    <Position X="13.75" Y="7" Width="1.5" />
+  <Class Name="DataAccess.DTO.User.RequestDTO.ForgotPassDTO">
+    <Position X="18.25" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAACAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DTO\User\RequestDTO\ForgotPassDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataAccess.DTO.User.RequestDTO.LoginModel">
+    <Position X="18.25" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAA=</HashCode>
+      <FileName>DTO\User\RequestDTO\LoginModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataAccess.DTO.User.RequestDTO.UserRegister">
+    <Position X="14.75" Y="24.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAAAAAAAAQAQAAAAAAAACAAAAAgAAAAA=</HashCode>
+      <FileName>DTO\User\RequestDTO\UserRegister.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataAccess.DTO.User.RequestDTO.UserUpdateDTO">
+    <Position X="18.25" Y="24.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAECAAAAAAAQAQAAAAAAAgAEAAAAgAAAAA=</HashCode>
+      <FileName>DTO\User\RequestDTO\UserUpdateDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataAccess.DTO.User.ResponeModels.UserInfor">
+    <Position X="13" Y="24.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAIEQAAECAAAAAAAQAwAEAAAAAgAEAAAAgAAABA=</HashCode>
-      <FileName>DTO\ResponeModels\User\UserInfor.cs</FileName>
+      <FileName>DTO\User\ResponeModels\UserInfor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataAccess.DTO.User.UsersDTO">
+    <Position X="16.5" Y="24.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIEQAAECAAAAAAAQAwAEAAAAAgCEAAAAgAAABA=</HashCode>
+      <FileName>DTO\User\UsersDTO.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="DataAccess.DTO.BrandDTO">
-    <Position X="8" Y="0.5" Width="1.5" />
+    <Position X="13" Y="4.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAABACAAEAAAA=</HashCode>
       <FileName>DTO\BrandDTO.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="DataAccess.DTO.CarDTO">
-    <Position X="9.75" Y="0.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAACAAAAAIAAAAAAAAQAAAgAAAAAAAAAABAAgIAAAAA=</HashCode>
-      <FileName>DTO\CarDTO.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="DataAccess.DTO.CategoryDTO">
-    <Position X="12" Y="0.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAACAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>DTO\CategoryDTO.cs</FileName>
-    </TypeIdentifier>
-  </Class>
   <Class Name="DataAccess.DTO.CategoryGarageDTO">
-    <Position X="13.75" Y="0.5" Width="1.75" />
+    <Position X="18.25" Y="4.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>gAAAAAASAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>gAAAAAASAAAAAAAAAAAAAAAACCAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>DTO\CategoryGarageDTO.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="DataAccess.DTO.FavoriteListDTO">
-    <Position X="2.5" Y="3" Width="1.5" />
+    <Position X="9.5" Y="8.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAIAAAAAgACAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>DTO\FavoriteListDTO.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="DataAccess.DTO.FeedbackDTO">
-    <Position X="4.25" Y="2.25" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAgAAAAgAAAAAAAgACAAAAAAAgAAAAAAAAAA=</HashCode>
-      <FileName>DTO\FeedbackDTO.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="DataAccess.DTO.FileOrdersDTO">
-    <Position X="6" Y="4.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAABAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAIAAAA=</HashCode>
-      <FileName>DTO\FileOrdersDTO.cs</FileName>
-    </TypeIdentifier>
-  </Class>
   <Class Name="DataAccess.DTO.GarageBrandDTO">
-    <Position X="2.5" Y="4.75" Width="1.5" />
+    <Position X="20" Y="8.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAEAAAAAAAAAACAAAAAAAABAAAAAAAAA=</HashCode>
       <FileName>DTO\GarageBrandDTO.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="DataAccess.DTO.GarageInfoDTO">
-    <Position X="6" Y="6.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAgAAAAAAAgACAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>DTO\GarageInfoDTO.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="DataAccess.DTO.ImageGarageDTO">
-    <Position X="8" Y="4.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAACQAAAAAAAAACAAAAAAA=</HashCode>
-      <FileName>DTO\ImageGarageDTO.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="DataAccess.DTO.ImageOrdersDTO">
-    <Position X="9.75" Y="4.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAABAAAAAAAAAAAAAAAAAAAQAAAAAAAAACAAAAAAA=</HashCode>
-      <FileName>DTO\ImageOrdersDTO.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="DataAccess.DTO.InvoicesDTO">
-    <Position X="12" Y="4" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAgAwAAEAAAAAEAAAAEAAAA=</HashCode>
-      <FileName>DTO\InvoicesDTO.cs</FileName>
-    </TypeIdentifier>
-  </Class>
   <Class Name="DataAccess.DTO.NotificationDTO">
-    <Position X="4.25" Y="8.75" Width="1.5" />
+    <Position X="6" Y="15.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAgAAAAgAAAEAAAAAAAAgAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAgAAAAAAAAAAEAAAAAAAAAQAAAAAAAAAAAA=</HashCode>
       <FileName>DTO\NotificationDTO.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="DataAccess.DTO.OrdersDTO">
-    <Position X="6" Y="8.25" Width="1.75" />
-    <TypeIdentifier>
-      <HashCode>AAACAHAEAgAAAAgAAAAAAgAACAAAAAAAAAAIAAAAAgA=</HashCode>
-      <FileName>DTO\OrdersDTO.cs</FileName>
-    </TypeIdentifier>
-  </Class>
   <Class Name="DataAccess.DTO.PageDTO">
-    <Position X="8" Y="6.5" Width="1.5" />
+    <Position X="11.25" Y="15.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABA=</HashCode>
       <FileName>DTO\PageDTO.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="DataAccess.DTO.RefreshTokenDTO">
-    <Position X="9.75" Y="6.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAABAQAAAAAAAAAAAAAAgAAAAAAAAAAAABAAABAAA=</HashCode>
-      <FileName>DTO\RefreshTokenDTO.cs</FileName>
-    </TypeIdentifier>
-  </Class>
   <Class Name="DataAccess.DTO.RoleNameDTO">
-    <Position X="12" Y="6.5" Width="1.5" />
+    <Position X="16.5" Y="15.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAA=</HashCode>
       <FileName>DTO\RoleNameDTO.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="DataAccess.DTO.ServiceDTO">
-    <Position X="9.75" Y="8.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAACACAAAAAAAAAAAAABAACAAAAAAAAAAIAAEAAAA=</HashCode>
-      <FileName>DTO\ServiceDTO.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="DataAccess.DTO.SubscribeDTO">
-    <Position X="12" Y="8" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAwAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAI=</HashCode>
-      <FileName>DTO\SubscribeDTO.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="DataAccess.DTO.UsersDTO">
-    <Position X="15.75" Y="2.25" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAIEQAAECAAAAAAAQAwAEAAAAAgCEAAAAgAAABA=</HashCode>
-      <FileName>DTO\UsersDTO.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />

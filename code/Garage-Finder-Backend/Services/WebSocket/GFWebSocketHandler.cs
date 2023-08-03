@@ -1,28 +1,9 @@
-﻿using DataAccess.DTO.Chat;
-using DataAccess.DTO;
-using DataAccess.DTO.Token;
-using Newtonsoft.Json;
-using SignalRSwaggerGen.Attributes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.WebSockets;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DataAccess.DTO.Token;
 using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 using Repositories.Interfaces;
-using Services.NotificationService;
-using Services.ChatService;
-using Repositories.Implements.Garage;
-using Repositories.Implements.StaffRepository;
-using System.Text.RegularExpressions;
-using GFData.Models.Entity;
-using Microsoft.AspNetCore.Routing.Matching;
-using Microsoft.AspNetCore.Mvc;
-using System.Net.Sockets;
-using Microsoft.AspNetCore.DataProtection;
-using Microsoft.Extensions.Azure;
+using System.Net.WebSockets;
+using System.Text;
 
 namespace Services.WebSocket
 {
@@ -31,21 +12,14 @@ namespace Services.WebSocket
 
         protected readonly IGarageRepository _garageRepository;
         protected readonly IStaffRepository _staffRepository;
-        //protected readonly WebsocketSend _websocketSend;
         protected readonly WebSocketFunction _webSocketFunction;
 
-        //private readonly IChatService _chatService;
-        //private readonly INotificationService _notificationService;
         public GFWebSocketHandler(WebSocketConnectionManager WebSocketConnectionManager, IHttpContextAccessor httpContextAccessor,
             IGarageRepository garageRepository, IStaffRepository staffRepository,
-            //WebsocketSend websocketSend,
             WebSocketFunction webSocketFunction) : base(WebSocketConnectionManager, httpContextAccessor)
         {
             _garageRepository = garageRepository;
             _staffRepository = staffRepository;
-            //_chatService = chatService;
-            //_notificationService = notificationService;
-            //_websocketSend = websocketSend;
             _webSocketFunction = webSocketFunction;
         }
 

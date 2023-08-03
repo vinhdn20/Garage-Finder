@@ -11,6 +11,8 @@ using Services;
 using Services.WebSocket;
 using Microsoft.Extensions.Options;
 using System.Reflection;
+using Quartz;
+using Services.UserService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -63,9 +65,6 @@ c.AddSecurityRequirement(new OpenApiSecurityRequirement()
             new List<string>()
           }
         });
-
-    c.AddSignalRSwaggerGen(ssgOptions => ssgOptions.ScanAssemblies(Assembly.GetAssembly(typeof(UserGFHub))));
-
 });
 
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
@@ -113,7 +112,7 @@ builder.Services
                 //    // token arrives as string = "client, xxxxxxxxxxxxxxxxxxxxx"
                 //    context.Token = token.Substring(token.IndexOf(' ')).Trim();
                 //}
-                return Task.CompletedTask;
+                //return Task.CompletedTask;
             }
         };
     });
@@ -129,7 +128,20 @@ builder.Services.Configure<TwilioVerifySettings>(builder.Configuration.GetSectio
 
 builder.Services.AddTransient<IPhoneVerifyService, TwilioService>();
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddSignalR();
+builder.Services.AddQuartz(q =>
+{
+    // Use a Scoped container to create jobs.
+    q.UseMicrosoftDependencyInjectionScopedJobFactory();
+    var jobKey = new JobKey("AutoDeleteRToken");
+    q.AddJob<AutoDeleteRToken>(opts => opts.WithIdentity(jobKey));
+
+    q.AddTrigger(opts => opts
+                    .ForJob(jobKey) // link to the AutoDeleteRToken
+                    .WithIdentity("AutoDeleteRToken-trigger") // give the trigger a unique name
+                    .WithCronSchedule("0 0 0 * * *")); // run 0 h each day
+});
+builder.Services.AddQuartzHostedService(
+                    q => q.WaitForJobsToComplete = true);
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -146,7 +158,6 @@ var webSocketOptions = new WebSocketOptions
 };
 
 app.UseWebSockets(webSocketOptions);
-app.MapHub<UserGFHub>("/UserGF");
 app.UseCors("AllowAnyOrigins");
 app.UseAuthentication();
 app.UseAuthorization();

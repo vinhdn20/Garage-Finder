@@ -4,7 +4,6 @@ using DataAccess.DTO.Orders;
 using DataAccess.DTO.Orders.ResponseDTO;
 using GFData.Models.Entity;
 using Mailjet.Client.Resources;
-using Microsoft.AspNetCore.SignalR;
 using Repositories.Interfaces;
 using Services.WebSocket;
 using System;
