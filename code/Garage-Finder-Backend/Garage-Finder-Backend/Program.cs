@@ -138,7 +138,7 @@ builder.Services.AddQuartz(q =>
     q.AddTrigger(opts => opts
                     .ForJob(jobKey) // link to the AutoDeleteRToken
                     .WithIdentity("AutoDeleteRToken-trigger") // give the trigger a unique name
-                    .WithCronSchedule("0 0 0 * * *")); // run 0 h each day
+                    .WithCronSchedule("0 0 0 * * ?")); // run 0 h each day
 });
 builder.Services.AddQuartzHostedService(
                     q => q.WaitForJobsToComplete = true);
