@@ -115,7 +115,7 @@ namespace Services.SubcriptionService
             var invoice = _subscriptionRepository.AddInVoices(new Invoices()
             {
                 DateCreate = DateTime.UtcNow.AddHours(7),
-                ExpirationDate = DateTime.UtcNow.AddHours(7 + sub.Period),
+                ExpirationDate = DateTime.UtcNow.AddHours(7).AddDays(sub.Period),
                 Status = Constants.INVOICE_WAITING,
                 GarageID = garageId,
                 SubscribeID = subscriptionId,
