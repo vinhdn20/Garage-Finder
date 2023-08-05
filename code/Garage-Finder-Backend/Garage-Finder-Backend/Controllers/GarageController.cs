@@ -14,7 +14,9 @@ using Repositories.Implements.Garage;
 using Repositories.Interfaces;
 using Services;
 using Services.GarageService;
+using System.Net.Mail;
 using System.Security.Claims;
+using Twilio.Types;
 
 namespace Garage_Finder_Backend.Controllers
 {
@@ -99,22 +101,20 @@ namespace Garage_Finder_Backend.Controllers
             try
             {
                 var user = User.GetTokenInfor();
-                GarageDTO garage = new GarageDTO()
-                {
-                    AddressDetail = garageUpdate.AddressDetail,
-                    CloseTime = garageUpdate.CloseTime,
-                    DistrictsID = garageUpdate.DistrictsID,
-                    EmailAddress = garageUpdate.EmailAddress,
-                    GarageID = garageUpdate.GarageID,
-                    GarageName = garageUpdate.GarageName,
-                    LatAddress = garageUpdate.LatAddress,
-                    LngAddress = garageUpdate.LngAddress,
-                    OpenTime = garageUpdate.OpenTime,
-                    PhoneNumber = garageUpdate.PhoneNumber,
-                    ProvinceID = garageUpdate.ProvinceID,
-                    Thumbnail = garageUpdate.Thumbnail,
-                    UserID = user.UserID
-                };
+                var garage = garageRepository.GetGaragesByID(garageUpdate.GarageID);
+                garage.AddressDetail = garageUpdate.AddressDetail;
+                garage.CloseTime = garageUpdate.CloseTime;
+                garage.DistrictsID = garageUpdate.DistrictsID;
+                garage.EmailAddress = garageUpdate.EmailAddress;
+                garage.GarageID = garageUpdate.GarageID;
+                garage.GarageName = garageUpdate.GarageName;
+                garage.LatAddress = garageUpdate.LatAddress;
+                garage.LngAddress = garageUpdate.LngAddress;
+                garage.OpenTime = garageUpdate.OpenTime;
+                garage.PhoneNumber = garageUpdate.PhoneNumber;
+                garage.ProvinceID = garageUpdate.ProvinceID;
+                garage.Thumbnail = garageUpdate.Thumbnail;
+                garage.UserID = user.UserID;
                 garageRepository.Update(garage);
                 return Ok("SUCCESS");
             }
