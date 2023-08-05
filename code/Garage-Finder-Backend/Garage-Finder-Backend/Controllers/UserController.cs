@@ -86,44 +86,13 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
-                if (string.IsNullOrEmpty(loginModel.Password))
-                {
-                    return BadRequest("Password is empty");
-                }
-                if (string.IsNullOrEmpty(loginModel.Email))
-                {
-                    return BadRequest("Email is empty");
-                }
-                var usersDTO = _userRepository.Login(loginModel.Email, loginModel.Password);
-                if (usersDTO.Status == Constants.USER_LOCKED)
-                {
-                    return BadRequest("Người dùng đã bị khoá tài khoản!");
-                }
-                var roleName = _roleNameRepository.GetUserRole(usersDTO.RoleID);
-                usersDTO.roleName = roleName;
-                TokenInfor tokenInfor;
-                if (usersDTO.roleName.NameRole == Constants.ROLE_ADMIN)
-                {
-                    tokenInfor = GenerateTokenInfor(usersDTO.UserID, Constants.ROLE_ADMIN);
-                }
-                else
-                {
-                    tokenInfor = GenerateTokenInfor(usersDTO.UserID, Constants.ROLE_USER);
-                }
-
-                var accessToken = _jwtService.GenerateJwt(tokenInfor, roleName, _jwtSettings);
-                usersDTO.AccessToken = accessToken;
-
-
-                var refreshToken = _jwtService.GenerateRefreshToken(_jwtSettings, usersDTO.UserID);
-                _refreshTokenRepository.AddOrUpdateToken(refreshToken);
-                usersDTO.RefreshToken = refreshToken;
+                var userInfor = _userService.Login(loginModel);
                 //SetRefreshToken(refreshToken);
-                return Ok(usersDTO);
+                return Ok(userInfor);
             }
             catch (Exception ex)
             {
-                return NotFound(ex.Message);
+                return BadRequest(ex.Message);
             }
 
         }

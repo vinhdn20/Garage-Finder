@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using DataAccess.DTO.Token;
 using DataAccess.DTO.User;
 using DataAccess.DTO.User.RequestDTO;
 using DataAccess.DTO.User.ResponeModels;
@@ -7,6 +8,7 @@ using GFData.Models.Entity;
 using Mailjet.Client.Resources;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
+using Repositories.Implements.UserRepository;
 using Repositories.Interfaces;
 using Services.PhoneVerifyService;
 using Services.StorageApi;
@@ -25,16 +27,21 @@ namespace Services.UserService
         private readonly JwtService _jwtService = new JwtService();
         private readonly IUsersRepository _userRepository;
         private readonly IPhoneVerifyService _phoneVerifyService;
+        private readonly IRefreshTokenRepository _refreshTokenRepository;
+        private readonly IRoleNameRepository _roleNameRepository;
         private readonly IMapper _mapper;
         #endregion
 
         public UserService(IOptionsSnapshot<JwtSettings> jwtSettings,
-            IUsersRepository usersRepository, IMapper mapper, IPhoneVerifyService phoneVerifyService)
+            IUsersRepository usersRepository, IMapper mapper, IPhoneVerifyService phoneVerifyService,
+            IRefreshTokenRepository refreshTokenRepository, IRoleNameRepository roleNameRepository)
         {
             _jwtSettings = jwtSettings.Value;
             _userRepository = usersRepository;
             _mapper = mapper;
             _phoneVerifyService = phoneVerifyService;
+            _refreshTokenRepository = refreshTokenRepository;
+            _roleNameRepository = roleNameRepository;
         }
 
         public UserInfor Get(int userId)
@@ -164,6 +171,52 @@ namespace Services.UserService
             userDTO.Status = Constants.USER_ACTIVE;
 
             _userRepository.Register(userDTO);
+        }
+
+        public UserInfor Login(LoginModel loginModel)
+        {
+            if (string.IsNullOrEmpty(loginModel.Password))
+            {
+                throw new Exception("Mật khẩu không được để trống");
+            }
+            if (string.IsNullOrEmpty(loginModel.Email))
+            {
+                throw new Exception("Email không được để trống");
+            }
+            var usersDTO = _userRepository.Login(loginModel.Email, loginModel.Password);
+            if (usersDTO.Status == Constants.USER_LOCKED)
+            {
+                throw new Exception("Người dùng đã bị khoá tài khoản!");
+            }
+            var roleName = _roleNameRepository.GetUserRole(usersDTO.RoleID);
+            usersDTO.roleName = roleName;
+            TokenInfor tokenInfor;
+            if (usersDTO.roleName.NameRole == Constants.ROLE_ADMIN)
+            {
+                tokenInfor = GenerateTokenInfor(usersDTO.UserID, Constants.ROLE_ADMIN);
+            }
+            else
+            {
+                tokenInfor = GenerateTokenInfor(usersDTO.UserID, Constants.ROLE_USER);
+            }
+
+            var accessToken = _jwtService.GenerateJwt(tokenInfor, roleName, _jwtSettings);
+            usersDTO.AccessToken = accessToken;
+
+
+            var refreshToken = _jwtService.GenerateRefreshToken(_jwtSettings, usersDTO.UserID);
+            _refreshTokenRepository.AddOrUpdateToken(refreshToken);
+            usersDTO.RefreshToken = refreshToken;
+        }
+
+        private TokenInfor GenerateTokenInfor(int id, string roleName)
+        {
+            TokenInfor tokenInfor = new TokenInfor()
+            {
+                UserID = id,
+                RoleName = roleName
+            };
+            return tokenInfor;
         }
     }
 }
