@@ -207,6 +207,7 @@ namespace Services.UserService
             var refreshToken = _jwtService.GenerateRefreshToken(_jwtSettings, usersDTO.UserID);
             _refreshTokenRepository.AddOrUpdateToken(refreshToken);
             usersDTO.RefreshToken = refreshToken;
+            return usersDTO;
         }
 
         private TokenInfor GenerateTokenInfor(int id, string roleName)
