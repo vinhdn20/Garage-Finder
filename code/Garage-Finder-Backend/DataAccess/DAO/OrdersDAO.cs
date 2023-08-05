@@ -1,6 +1,7 @@
 ﻿using GFData.Data;
 using GFData.Models.Entity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 using System.Security.Cryptography;
 
 namespace DataAccess.DAO
@@ -196,6 +197,32 @@ namespace DataAccess.DAO
             {
                 throw new Exception(e.Message);
             }
+        }
+
+        public void AddOrderWithCar(Orders order, Car car)
+        {
+            using var db = new GFDbContext();
+            var exc = db.Database.CreateExecutionStrategy(); 
+            exc.Execute(() =>
+            {
+                using var transaction = db.Database.BeginTransaction();
+                try
+                {
+                    db.Car.Add(car);
+                    db.SaveChanges();
+                    order.CarID = car.CarID;
+                    int id = GetGFOrderId() + 1;
+                    order.GFOrderID = id;
+                    db.Orders.Add(order);
+                    db.SaveChanges();
+                    transaction.Commit();
+                }
+                catch (Exception e)
+                {
+                    transaction.Rollback();
+                    throw new Exception(e.Message);
+                }
+            });
         }
 
         public void Update(Orders order)

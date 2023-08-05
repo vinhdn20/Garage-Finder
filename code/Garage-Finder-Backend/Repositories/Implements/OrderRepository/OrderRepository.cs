@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DataAccess.DAO;
+using DataAccess.DTO.Car;
 using DataAccess.DTO.Orders;
 using GFData.Models.Entity;
 using Repositories.Interfaces;
@@ -22,6 +23,11 @@ namespace Repositories.Implements.OrderRepository
         public void Add(OrdersDTO order)
         {
             OrdersDAO.Instance.Add(_mapper.Map<OrdersDTO, Orders>(order));
+        }
+
+        public void AddOrderWithCar(OrdersDTO orders, CarDTO car)
+        {
+            OrdersDAO.Instance.AddOrderWithCar(_mapper.Map<OrdersDTO, Orders>(orders), _mapper.Map<CarDTO,Car>(car));
         }
 
         public void Delete(int id)

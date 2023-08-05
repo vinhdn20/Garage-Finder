@@ -329,7 +329,7 @@ namespace Services.OrderService
                 TypeCar = addOrder.TypeCar,
                 UserID = userID
             };
-            var car = _carRepository.SaveCar(carDTO);
+            //var car = _carRepository.SaveCar(carDTO);
             var garage = _garageService.GetById(addOrder.GarageId);
             var brandCar = _brandRepository.GetBrand().Find(x => x.BrandID == addOrder.BrandCarID);
             if (!garage.GarageBrands.Any(x => x.BrandName.Equals(brandCar.BrandName)))
@@ -347,7 +347,7 @@ namespace Services.OrderService
             //Todo: tạo 1 order
             OrdersDTO ordersDTO = new OrdersDTO()
             {
-                CarID = car.CarID,
+                //CarID = car.CarID,
                 GarageID = addOrder.GarageId,
                 TimeCreate = DateTime.UtcNow,
                 Status = Constants.STATUS_ORDER_OPEN,
@@ -357,9 +357,9 @@ namespace Services.OrderService
                 PhoneNumber = addOrder.PhoneNumber,
             };
 
-            _orderRepository.Add(ordersDTO);
+            _orderRepository.AddOrderWithCar(ordersDTO, carDTO);
             //Todo: gửi vào email
-            var user = _usersRepository.GetUserByID(car.UserID);
+            var user = _usersRepository.GetUserByID(userID);
             //_emailService.SendMailAsync(user.EmailAddress, user.Name, "Your order create success!",
             //    $"<h3>Dear {user.Name}, Your order create success!</h3>");
             _notificationService.SendNotificationToStaff(ordersDTO, user.UserID);
