@@ -11,6 +11,7 @@ using Services;
 using Services.PhoneVerifyService;
 using Services.StorageApi;
 using Services.UserService;
+using Twilio.Rest.Trunking.V1;
 
 namespace Garage_Finder_Backend.Controllers
 {
@@ -111,36 +112,15 @@ namespace Garage_Finder_Backend.Controllers
             try
             {
                 var user = User.GetTokenInfor();
-                var userRefreshToken = _refreshTokenRepository.GetRefreshToken(user.UserID);
-                for (int i = 0; i < userRefreshToken.Count; i++)
-                {
-                    if (userRefreshToken[i].Token.Equals(refreshToken))
-                    {
-                        if (userRefreshToken[i].ExpiresDate < DateTime.UtcNow)
-                        {
-                            return Unauthorized("Token expires");
-                        }
-                        else
-                        {
-                            var userDTO = _userRepository.GetUserByID(user.UserID);
-                            var roleName = _roleNameRepository.GetUserRole(userDTO.RoleID);
-
-                            var tokenInfor = GenerateTokenInfor(userDTO.UserID, Constants.ROLE_USER);
-                            string token = _jwtService.GenerateJwt(tokenInfor, roleName, _jwtSettings);
-
-                            var newRefreshToken = _jwtService.GenerateRefreshToken(_jwtSettings, userDTO.UserID);
-                            newRefreshToken.TokenID = userRefreshToken[i].TokenID;
-                            _refreshTokenRepository.AddOrUpdateToken(newRefreshToken);
-                            //SetRefreshToken(newRefreshToken);
-
-                            return Ok(new { token = token, newRefreshToken });
-                        }
-                    }
-                }
-                return Unauthorized("Invalid refresh token");
+                var token = _userService.RefreshToken(user.UserID, refreshToken);
+                return Ok(token);
 
             }
-            catch (Exception ex)
+            catch (UnauthorizedAccessException ex)
+            {
+                return Unauthorized(ex.Message);
+            }
+            catch(Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -164,7 +144,7 @@ namespace Garage_Finder_Backend.Controllers
             try
             {
                 var user = User.GetTokenInfor();
-                _refreshTokenRepository.DeleteRefreshToken(user.UserID);
+                _userService.Logout(user.UserID);
                 return Ok();
             }
             catch (Exception ex)
@@ -179,19 +159,12 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
-                if (_phoneVerifyService.VerifyPhoneNumber(forgotPassModel.verifyCode, forgotPassModel.phoneNumber).Result)
-                {
-                    var userDTO = _userRepository.GetUsersByPhone(forgotPassModel.phoneNumber);
-                    userDTO.Password = forgotPassModel.newPassword;
-                    _userRepository.Update(userDTO);
-                    return Ok();
-                }
-                return StatusCode(500, "Can't verify code");
-
+                _userService.ForgotPassword(forgotPassModel);
+                return Ok();
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex.Message);
+                return BadRequest(ex.Message);
             }
         }
 

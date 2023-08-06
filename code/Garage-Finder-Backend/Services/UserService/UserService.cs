@@ -273,5 +273,52 @@ namespace Services.UserService
                 return userInfor;
             }
         }
+
+        public dynamic RefreshToken(int userId, string refreshToken)
+        {
+            var userRefreshToken = _refreshTokenRepository.GetRefreshToken(userId);
+            for (int i = 0; i < userRefreshToken.Count; i++)
+            {
+                if (userRefreshToken[i].Token.Equals(refreshToken))
+                {
+                    if (userRefreshToken[i].ExpiresDate < DateTime.UtcNow)
+                    {
+                        throw new UnauthorizedAccessException("Token expires");
+                    }
+                    else
+                    {
+                        var userDTO = _userRepository.GetUserByID(userId);
+                        var roleName = _roleNameRepository.GetUserRole(userDTO.RoleID);
+
+                        var tokenInfor = GenerateTokenInfor(userDTO.UserID, Constants.ROLE_USER);
+                        string token = _jwtService.GenerateJwt(tokenInfor, roleName, _jwtSettings);
+
+                        var newRefreshToken = _jwtService.GenerateRefreshToken(_jwtSettings, userDTO.UserID);
+                        newRefreshToken.TokenID = userRefreshToken[i].TokenID;
+                        _refreshTokenRepository.AddOrUpdateToken(newRefreshToken);
+                        //SetRefreshToken(newRefreshToken);
+                        return (new { token = token, newRefreshToken });
+                    }
+                }
+            }
+            throw new UnauthorizedAccessException("Invalid refresh token");
+        }
+
+        public void Logout(int userId)
+        {
+            _refreshTokenRepository.DeleteRefreshToken(userId);
+        }
+
+        public void ForgotPassword(ForgotPassDTO forgotPassModel)
+        {
+            if (_phoneVerifyService.VerifyPhoneNumber(forgotPassModel.verifyCode, forgotPassModel.phoneNumber).Result)
+            {
+                var userDTO = _userRepository.GetUsersByPhone(forgotPassModel.phoneNumber);
+                userDTO.Password = forgotPassModel.newPassword;
+                _userRepository.Update(userDTO);
+                return;
+            }
+            throw new Exception("Can't verify code");
+        }
     }
 }
