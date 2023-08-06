@@ -34,6 +34,20 @@ namespace DataAccess.DAO
             }
         }
 
+        public List<RefreshToken> GetAll()
+        {
+            List<RefreshToken> refreshs = null;
+            try
+            {
+                var db = new GFDbContext();
+                refreshs = db.RefreshToken.ToList();
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            return refreshs;
+        }
         public List<RefreshToken> GetRefreshTokenByUserID(int userID)
         {
             List<RefreshToken> refreshs = null;
