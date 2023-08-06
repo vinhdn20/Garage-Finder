@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Repositories.Implements.UserRepository;
 using Repositories.Interfaces;
+using Services.GgService;
 using Services.PhoneVerifyService;
 using Services.StorageApi;
 using System;
@@ -218,6 +219,59 @@ namespace Services.UserService
                 RoleName = roleName
             };
             return tokenInfor;
+        }
+
+        public UserInfor LoginGG(string accessToken)
+        {
+            dynamic objUserInfor = GoogleService.GetUserInforByAccessTokenAsync(accessToken).Result;
+            string email = objUserInfor.email;
+            var usersDTO = _userRepository.GetAll().Find(x => x.EmailAddress.Equals(email));
+            if (usersDTO != null)
+            {
+                var userInfor = _mapper.Map<UsersDTO, UserInfor>(usersDTO);
+                var roleName = _roleNameRepository.GetUserRole(userInfor.RoleID);
+                var tokenInfor = GenerateTokenInfor(usersDTO.UserID, Constants.ROLE_USER);
+                var gfAccessToken = _jwtService.GenerateJwt(tokenInfor, roleName, _jwtSettings);
+                userInfor.AccessToken = gfAccessToken;
+                userInfor.roleName = roleName;
+
+                var refreshToken = _jwtService.GenerateRefreshToken(_jwtSettings, userInfor.UserID);
+                _refreshTokenRepository.AddOrUpdateToken(refreshToken);
+                userInfor.RefreshToken = refreshToken;
+                //SetRefreshToken(refreshToken);
+                if (userInfor.Status == Constants.USER_LOCKED)
+                {
+                    throw new Exception("User is locked");
+                }
+                else
+                {
+                    return userInfor;
+                }
+            }
+            else
+            {
+                var userDTO = new UsersDTO()
+                {
+                    EmailAddress = email,
+                    RoleID = Constants.ROLE_USER_ID,
+                    Name = objUserInfor.given_name,
+                    Status = Constants.USER_ACTIVE
+                };
+                _userRepository.Register(userDTO);
+                usersDTO = _userRepository.GetAll().Find(x => x.EmailAddress.Equals(email));
+                var userInfor = _mapper.Map<UsersDTO, UserInfor>(usersDTO);
+                var roleName = _roleNameRepository.GetUserRole(userInfor.RoleID);
+                var tokenInfor = GenerateTokenInfor(usersDTO.UserID, Constants.ROLE_USER);
+                var gfAccessToken = _jwtService.GenerateJwt(tokenInfor, roleName, _jwtSettings);
+                userInfor.AccessToken = gfAccessToken;
+                userInfor.roleName = roleName;
+
+                var refreshToken = _jwtService.GenerateRefreshToken(_jwtSettings, userInfor.UserID);
+                _refreshTokenRepository.AddOrUpdateToken(refreshToken);
+                userInfor.RefreshToken = refreshToken;
+                //SetRefreshToken(refreshToken);
+                return userInfor;
+            }
         }
     }
 }
