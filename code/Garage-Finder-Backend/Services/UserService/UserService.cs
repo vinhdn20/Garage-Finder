@@ -274,9 +274,10 @@ namespace Services.UserService
             }
         }
 
-        public dynamic RefreshToken(int userId, string refreshToken)
+        public dynamic RefreshToken(string refreshToken)
         {
-            var userRefreshToken = _refreshTokenRepository.GetRefreshToken(userId);
+            var refreshTokens = _refreshTokenRepository.GetAll();
+            var userRefreshToken = refreshTokens.FindAll(x => x.Token == refreshToken);
             for (int i = 0; i < userRefreshToken.Count; i++)
             {
                 if (userRefreshToken[i].Token.Equals(refreshToken))
@@ -287,7 +288,7 @@ namespace Services.UserService
                     }
                     else
                     {
-                        var userDTO = _userRepository.GetUserByID(userId);
+                        var userDTO = _userRepository.GetUserByID(userRefreshToken[i].UserID);
                         var roleName = _roleNameRepository.GetUserRole(userDTO.RoleID);
 
                         var tokenInfor = GenerateTokenInfor(userDTO.UserID, Constants.ROLE_USER);

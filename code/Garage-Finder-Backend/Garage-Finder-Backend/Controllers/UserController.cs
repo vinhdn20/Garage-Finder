@@ -106,13 +106,13 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpPost("refresh-token")]
-        [Authorize(Roles = $"{Constants.ROLE_USER}")]
+        //[Authorize(Roles = $"{Constants.ROLE_USER}")]
         public IActionResult RefreshToken([FromBody] string refreshToken)
         {
             try
             {
-                var user = User.GetTokenInfor();
-                var token = _userService.RefreshToken(user.UserID, refreshToken);
+                //var user = User.GetTokenInfor();
+                var token = _userService.RefreshToken(refreshToken);
                 return Ok(token);
 
             }

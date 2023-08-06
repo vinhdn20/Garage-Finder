@@ -18,7 +18,7 @@ namespace Services.UserService
         bool SendPhoneCode(string phoneNumber);
         UserInfor Get(int userId);
         void ChangePassword(int userId, string oldPassword, string newPassword);
-        dynamic RefreshToken(int userId, string refreshToken);
+        dynamic RefreshToken(string refreshToken);
         void ForgotPassword(ForgotPassDTO forgotPassModel);
     }
 }

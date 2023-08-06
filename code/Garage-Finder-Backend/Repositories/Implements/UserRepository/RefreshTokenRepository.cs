@@ -42,5 +42,12 @@ namespace Repositories.Implements.UserRepository
         {
             RefreshTokenDAO.Instance.DeleteRefreshToKenExpired();
         }
+        
+        public List<RefreshTokenDTO> GetAll()
+        {
+            List<RefreshTokenDTO> refreshTokens = new List<RefreshTokenDTO>();
+            RefreshTokenDAO.Instance.GetAll().ForEach(x => refreshTokens.Add(_mapper.Map<RefreshToken, RefreshTokenDTO>(x)));
+            return refreshTokens;
+        }
     }
 }
