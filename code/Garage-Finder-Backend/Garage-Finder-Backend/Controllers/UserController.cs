@@ -1,24 +1,16 @@
-﻿using Garage_Finder_Backend.Services.AuthService;
-using Garage_Finder_Backend.Services;
+﻿using AutoMapper;
+using DataAccess.DTO.Token;
+using DataAccess.DTO.User.RequestDTO;
+using Garage_Finder_Backend.Services.AuthService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
 using Repositories.Interfaces;
 using RestSharp;
-using Services.GgService;
+using Services;
 using Services.PhoneVerifyService;
 using Services.StorageApi;
-using Azure.Storage.Blobs;
-using System.Net.Mail;
 using Services.UserService;
-using AutoMapper;
-using DataAccess.DTO.User.RequestDTO;
-using DataAccess.DTO.User.ResponeModels;
-using DataAccess.DTO.User;
-using DataAccess.DTO.Token;
-using Services;
 
 namespace Garage_Finder_Backend.Controllers
 {
@@ -103,59 +95,12 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
-                dynamic objUserInfor = GoogleService.GetUserInforByAccessTokenAsync(accessToken).Result;
-                string email = objUserInfor.email;
-                var usersDTO = _userRepository.GetAll().Find(x => x.EmailAddress.Equals(email));
-                if (usersDTO != null)
-                {
-                    var userInfor = _mapper.Map<UsersDTO, UserInfor>(usersDTO);
-                    var roleName = _roleNameRepository.GetUserRole(userInfor.RoleID);
-                    var tokenInfor = GenerateTokenInfor(usersDTO.UserID, Constants.ROLE_USER);
-                    var gfAccessToken = _jwtService.GenerateJwt(tokenInfor, roleName, _jwtSettings);
-                    userInfor.AccessToken = gfAccessToken;
-                    userInfor.roleName = roleName;
-
-                    var refreshToken = _jwtService.GenerateRefreshToken(_jwtSettings, userInfor.UserID);
-                    _refreshTokenRepository.AddOrUpdateToken(refreshToken);
-                    userInfor.RefreshToken = refreshToken;
-                    //SetRefreshToken(refreshToken);
-                    if (userInfor.Status == Constants.USER_LOCKED)
-                    {
-                        return BadRequest("User is locked");
-                    }
-                    else
-                    {
-                        return Ok(userInfor);
-                    }
-                }
-                else
-                {
-                    var userDTO = new UsersDTO()
-                    {
-                        EmailAddress = email,
-                        RoleID = Constants.ROLE_USER_ID,
-                        Name = objUserInfor.given_name,
-                        Status = Constants.USER_ACTIVE
-                    };
-                    _userRepository.Register(userDTO);
-                    usersDTO = _userRepository.GetAll().Find(x => x.EmailAddress.Equals(email));
-                    var userInfor = _mapper.Map<UsersDTO, UserInfor>(usersDTO);
-                    var roleName = _roleNameRepository.GetUserRole(userInfor.RoleID);
-                    var tokenInfor = GenerateTokenInfor(usersDTO.UserID, Constants.ROLE_USER);
-                    var gfAccessToken = _jwtService.GenerateJwt(tokenInfor, roleName, _jwtSettings);
-                    userInfor.AccessToken = gfAccessToken;
-                    userInfor.roleName = roleName;
-
-                    var refreshToken = _jwtService.GenerateRefreshToken(_jwtSettings, userInfor.UserID);
-                    _refreshTokenRepository.AddOrUpdateToken(refreshToken);
-                    userInfor.RefreshToken = refreshToken;
-                    //SetRefreshToken(refreshToken);
-                    return Ok(userDTO);
-                }
+                var userInfor = _userService.LoginGG(accessToken);
+                return Ok(userInfor);
             }
             catch (Exception ex)
             {
-                return NotFound(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
 

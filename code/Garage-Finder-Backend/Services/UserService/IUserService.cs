@@ -11,6 +11,7 @@ namespace Services.UserService
     public interface IUserService
     {
         UserInfor Login(LoginModel loginModel);
+        UserInfor LoginGG(string accessToken);
         void Register(UserRegister registerUser);
         void UpdateUser(UserUpdateDTO usersDTO, int userID);
         bool SendPhoneCode(string phoneNumber);
