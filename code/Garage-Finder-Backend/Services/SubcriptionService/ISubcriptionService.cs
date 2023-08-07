@@ -18,5 +18,6 @@ namespace Services.SubcriptionService
         void Block(int subId);
         void UnBlock(int subId);
         public List<InvoicesDTO> GetInvoicesByGarageId(int userId, int garageId);
+        public List<ViewInvoicesDTO> GetAllInvoices();
     }
 }

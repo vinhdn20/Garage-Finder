@@ -52,5 +52,9 @@ namespace Repositories.Implements
         {
             SubcriptionDAO.Instance.Update(subscribe);
         }
+        public List<Invoices> GetAllInvoices()
+        {
+            return InvoicesDAO.Instance.GetAllInvoices();
+        }
     }
 }
