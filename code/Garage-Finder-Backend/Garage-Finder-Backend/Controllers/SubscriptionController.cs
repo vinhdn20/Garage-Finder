@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
+using Repositories.Implements.UserRepository;
 using Repositories.Interfaces;
 using Services;
 using Services.SubcriptionService;
@@ -14,11 +15,11 @@ namespace Garage_Finder_Backend.Controllers
     public class SubscriptionController : Controller
     {
         private readonly ISubcriptionService _subcriptionService;
-        private readonly IUsersRepository usersRepository;
+        private readonly IUsersRepository _usersRepository;
         public SubscriptionController(ISubcriptionService subcriptionService, IUsersRepository usersRepository)
         {
             _subcriptionService = subcriptionService;
-            this.usersRepository = usersRepository;
+            _usersRepository = usersRepository;
         }
         [HttpGet("getAll")]
         public IActionResult GetAll()
@@ -164,6 +165,7 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
+
                 if (!CheckAdmin())
                 {
                     return Unauthorized("Bạn không phải là admin của web");
@@ -178,11 +180,10 @@ namespace Garage_Finder_Backend.Controllers
                 return BadRequest(e.Message);
             }
         }
-
         private bool CheckAdmin()
         {
             var user = User.GetTokenInfor();
-            var userDTO = usersRepository.GetUserByID(user.UserID);
+            var userDTO = _usersRepository.GetUserByID(user.UserID);
             if (!userDTO.roleName.NameRole.Equals(Constants.ROLE_ADMIN))
             {
                 return false;
