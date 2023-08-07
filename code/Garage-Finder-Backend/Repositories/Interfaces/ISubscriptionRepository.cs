@@ -16,6 +16,7 @@ namespace Repositories.Interfaces
         List<Invoices> GetInvoicesByGarageId(int garageId);
         void UpdateInvoices(Invoices invoices);
         void AddSubcribe(Subscribe subscribe);
+        public List<Invoices> GetAllInvoices();
         void UpdateSubribe(Subscribe subscribe);
     }
 }

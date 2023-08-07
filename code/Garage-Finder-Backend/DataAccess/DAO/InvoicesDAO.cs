@@ -95,5 +95,21 @@ namespace DataAccess.DAO
                 throw new Exception(e.Message + "|" + e.InnerException);
             }
         }
+
+        public List<Invoices> GetAllInvoices()
+        {
+            try
+            {
+                using (var context = new GFDbContext())
+                {
+                    var invoice = context.Invoices.ToList();
+                    return invoice;
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message + "|" + e.InnerException);
+            }
+        }
     }
 }

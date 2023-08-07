@@ -217,5 +217,27 @@ namespace Services.SubcriptionService
             sub.Status = Constants.OPEN_SUBCRIPTION;
             _subscriptionRepository.UpdateSubribe(sub);
         }
+
+        public List<ViewInvoicesDTO> GetAllInvoices()
+        {
+           
+
+            var invoices = _subscriptionRepository.GetAllInvoices();
+            List<ViewInvoicesDTO> viewInvoices = new List<ViewInvoicesDTO>();
+            foreach (var invoice in invoices) 
+            {
+                var subs = _subscriptionRepository.GetById(invoice.SubscribeID);
+                var garage = _garageRepository.GetGaragesByID(invoice.GarageID);
+                var invoiceDTO = _mapper.Map<ViewInvoicesDTO>(invoice);
+                invoiceDTO.GarageName = garage.GarageName;
+                invoiceDTO.GaragePhone = garage.PhoneNumber;
+                invoiceDTO.GarageEmail = garage.EmailAddress;
+                invoiceDTO.GarageAddress = garage.AddressDetail;
+                invoiceDTO.Name = subs.Name;
+                invoiceDTO.Status = invoice.Status;
+                viewInvoices.Add(invoiceDTO);
+            }
+            return viewInvoices;
+        }
     }
 }

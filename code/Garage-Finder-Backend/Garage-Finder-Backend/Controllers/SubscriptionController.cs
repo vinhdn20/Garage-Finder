@@ -146,5 +146,23 @@ namespace Garage_Finder_Backend.Controllers
                 return BadRequest(e.Message);
             }
         }
+
+        [HttpGet("GetAllInvoice")]
+        [Authorize(Roles = $"{Constants.ROLE_ADMIN}")]
+        public IActionResult GetAllInvoice()
+        {
+            try
+            {
+                
+                var invoices = _subcriptionService.GetAllInvoices();
+
+                return Ok(invoices);
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(e.Message);
+            }
+        }
     }
 }
