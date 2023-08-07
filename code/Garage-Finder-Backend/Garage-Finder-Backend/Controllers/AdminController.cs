@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Repositories.Interfaces;
 using Services;
+using Services.AdminService;
+using Services.GarageService;
 
 namespace Garage_Finder_Backend.Controllers
 {
@@ -10,15 +12,15 @@ namespace Garage_Finder_Backend.Controllers
     [ApiController]
     public class AdminController : ControllerBase
     {
-        private readonly IGarageRepository garageRepository;
-        private readonly IAdminRepository adminRepository;
+        private readonly IGarageService garageService;
+        private readonly IAdminService adminService;
         private readonly IUsersRepository usersRepository;
 
-        public AdminController(IGarageRepository garageRepository, IAdminRepository adminRepository,
+        public AdminController(IGarageService garageService, IAdminService adminService,
             IUsersRepository usersRepository)
         {
-            this.garageRepository = garageRepository;
-            this.adminRepository = adminRepository;
+            this.garageService = garageService;
+            this.adminService = adminService;
             this.usersRepository = usersRepository;
         }
 
@@ -32,7 +34,7 @@ namespace Garage_Finder_Backend.Controllers
                 {
                     return Unauthorized("Bạn không phải là admin của web");
                 }
-                var result = adminRepository.GetAllUser();
+                var result = adminService.GetAllUser();
                 if (!string.IsNullOrEmpty(keyword.KeyWord))
                 {
                     result = result.Where(g => g.Name.ToLower().Contains(keyword.KeyWord.ToLower())).ToList();
@@ -51,7 +53,7 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
-                var result = adminRepository.GetAllUser().Count();
+                var result = adminService.GetAllUser().Count();
                 return Ok(result);
             }
             catch (Exception e)
@@ -71,7 +73,7 @@ namespace Garage_Finder_Backend.Controllers
                 {
                     return Unauthorized("Bạn không phải là admin của web");
                 }
-                var garages = garageRepository.GetGarages();
+                var garages = adminService.GetGarages();
                 if (!string.IsNullOrEmpty(keyword.KeyWord))
                 {
                     garages = garages.Where(g => g.GarageName.ToLower().Contains(keyword.KeyWord.ToLower())).ToList();
@@ -91,7 +93,7 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
-                var result = garageRepository.GetGarages().Count();
+                var result = adminService.GetGarages().Count();
                 return Ok(result);
             }
             catch (Exception e)
@@ -112,7 +114,7 @@ namespace Garage_Finder_Backend.Controllers
                 {
                     return Unauthorized("Bạn không phải là admin của web");
                 }
-                adminRepository.SetStatusGarage(garage);
+                adminService.SetStatusGarage(garage);
                 return Ok();
             }
             catch (Exception e)
@@ -132,7 +134,7 @@ namespace Garage_Finder_Backend.Controllers
                 {
                     return Unauthorized("Bạn không phải là admin của web");
                 }
-                adminRepository.SetStatusUser(user);
+                adminService.SetStatusUser(user);
                 return Ok();
             }
             catch (Exception e)

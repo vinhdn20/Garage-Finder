@@ -30,7 +30,7 @@ namespace Repositories
             services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
             services.AddScoped<ICarRepository, CarRepository>();
             services.AddScoped<IServiceRepository, ServiceRepository>();
-            services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<IOderService, OrderRepository>();
             services.AddScoped<IRoleNameRepository, RoleNameRepository>();
             services.AddScoped<IGarageRepository, GarageRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();

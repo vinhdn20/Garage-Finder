@@ -18,7 +18,7 @@ namespace Services.OrderService
     public class OrderService : IOrderService
     {
         #region variable
-        private readonly IOrderRepository _orderRepository;
+        private readonly IOderService _orderRepository;
         private readonly ICarRepository _carRepository;
         private readonly ICategoryGarageRepository _categoryGarageRepository;
         private readonly IPhoneVerifyService _phoneVerifyService;
@@ -35,7 +35,7 @@ namespace Services.OrderService
         private readonly IMapper _mapper;
         #endregion
 
-        public OrderService(IOrderRepository orderRepository, ICarRepository carRepository,
+        public OrderService(IOderService orderRepository, ICarRepository carRepository,
             ICategoryGarageRepository categoryGarageRepository, IPhoneVerifyService phoneVerifyService,
             IGuestOrderRepository guestOrderRepository, IEmailService emailService, IUsersRepository usersRepository,
             IGarageRepository garageRepository,IBrandRepository brandRepository, IMapper mapper,

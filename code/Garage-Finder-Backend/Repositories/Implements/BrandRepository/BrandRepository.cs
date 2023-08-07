@@ -30,7 +30,8 @@ namespace Repositories.Implements.BrandRepository
 
         public List<BrandDTO> GetBrand()
         {
-            return BrandDAO.Instance.GetBrand().Select(m => _mapper.Map<Brand, BrandDTO>(m)).ToList();
+            var result = BrandDAO.Instance.GetBrand().Select(m => _mapper.Map<Brand, BrandDTO>(m)).ToList();
+            return result;
         }
 
         public void Update(BrandDTO brandDTO)

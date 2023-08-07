@@ -13,7 +13,11 @@ using Repositories.Implements.CategoryRepository;
 using Repositories.Implements.Garage;
 using Repositories.Interfaces;
 using Services;
+using Services.CategoryGarageService;
+using Services.CategoryService;
+using Services.GarageBrandService;
 using Services.GarageService;
+using Services.ImageGarageService;
 using System.Net.Mail;
 using System.Security.Claims;
 using Twilio.Types;
@@ -25,21 +29,21 @@ namespace Garage_Finder_Backend.Controllers
     public class GarageController : Controller
     {
         private readonly IGarageRepository garageRepository;
-        private readonly IGarageBrandRepository garageBrandRepository;
-        private readonly ICategoryGarageRepository categoryGarageRepository;
-        private readonly IImageGarageRepository imageGarageRepository;
+        private readonly IGarageBrandService garageBrandService;
+        private readonly ICategoryGarageService categoryGarageService;
+        private readonly IImageGarageService imageGarageService;
         private readonly IGarageService garageService;
-        private readonly ICategoryRepository categoryRepository;
-        public GarageController(IGarageRepository garageRepository, IGarageBrandRepository garageBrandRepository,
-            ICategoryGarageRepository categoryGarageRepository, IImageGarageRepository imageGarageRepository,
-            IGarageService garageService, ICategoryRepository categoryRepository)
+        private readonly ICategoryService categoryService;
+        public GarageController(IGarageRepository garageRepository, IGarageBrandService garageBrandService,
+            ICategoryGarageService categoryGarageService, IImageGarageService imageGarageService,
+            IGarageService garageService, ICategoryService categoryService)
         {
             this.garageRepository = garageRepository;
-            this.garageBrandRepository = garageBrandRepository;
-            this.categoryGarageRepository = categoryGarageRepository;
-            this.imageGarageRepository = imageGarageRepository;
+            this.garageBrandService = garageBrandService;
+            this.categoryGarageService = categoryGarageService;
+            this.imageGarageService = imageGarageService;
             this.garageService = garageService;
-            this.categoryRepository = categoryRepository;
+            this.categoryService = categoryService;
         }
         [HttpGet("GetAll")]
         public IActionResult GetAll()
@@ -51,7 +55,7 @@ namespace Garage_Finder_Backend.Controllers
                 {
                     foreach (var cate in garage.CategoryGarages)
                     {
-                        cate.CategoryName = categoryRepository.GetCategory().Where(x => x.CategoryID == cate.CategoryID).SingleOrDefault().CategoryName;
+                        cate.CategoryName = categoryService.GetCategory().Where(x => x.CategoryID == cate.CategoryID).SingleOrDefault().CategoryName;
                     }
                 }
                 return Ok(garages);
@@ -178,7 +182,7 @@ namespace Garage_Finder_Backend.Controllers
             {
                 foreach (var cate in garage.CategoryGarages)
                 {
-                    cate.CategoryName = categoryGarageRepository.GetById(cate.CategoryGarageID).CategoryName;
+                    cate.CategoryName = categoryGarageService.GetById(cate.CategoryGarageID).CategoryName;
                 }
             }
             // Trả về kết quả
@@ -193,7 +197,7 @@ namespace Garage_Finder_Backend.Controllers
             {
                 foreach (var cate in garage.CategoryGarages)
                 {
-                    cate.CategoryName = categoryRepository.GetCategory().Where(x => x.CategoryID == cate.CategoryID).SingleOrDefault().CategoryName;
+                    cate.CategoryName = categoryService.GetCategory().Where(x => x.CategoryID == cate.CategoryID).SingleOrDefault().CategoryName;
                 }
             }
             return Ok(garages);
@@ -211,7 +215,7 @@ namespace Garage_Finder_Backend.Controllers
                 {
                     foreach (var cate in garage.CategoryGarages)
                     {
-                        cate.CategoryName = categoryRepository.GetCategory().Where(x => x.CategoryID == cate.CategoryID).SingleOrDefault().CategoryName;
+                        cate.CategoryName = categoryService.GetCategory().Where(x => x.CategoryID == cate.CategoryID).SingleOrDefault().CategoryName;
                     }
                 }
                 return Ok(garages);
@@ -232,7 +236,7 @@ namespace Garage_Finder_Backend.Controllers
             {
                 foreach (var garage in garageBrandsDTO)
                 {
-                    garageBrandRepository.Add(garage);
+                    garageBrandService.Add(garage);
                 }
                 return Ok("SUCCESS");
             }
@@ -252,7 +256,7 @@ namespace Garage_Finder_Backend.Controllers
                 //{
                 //    garageBrandRepository.Delete(id);
                 //}
-                garageBrandRepository.Delete(id);
+                garageBrandService.Delete(id);
                 return Ok();
             }
             catch (Exception ex)
@@ -276,7 +280,7 @@ namespace Garage_Finder_Backend.Controllers
                         GarageID = cate.GarageID,
                         CategoryID = cate.CategoryID
                     };
-                    categoryGarageRepository.Add(categoryGarageDTO);
+                    categoryGarageService.Add(categoryGarageDTO);
                 }
 
                 return Ok("SUCCESS");
@@ -293,7 +297,7 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
-                categoryGarageRepository.Remove(id);
+                categoryGarageService.Remove(id);
                 return Ok();
             }
             catch (Exception ex)
@@ -318,7 +322,7 @@ namespace Garage_Finder_Backend.Controllers
                         GarageID= image.GarageID,
                         ImageLink = image.ImageLink,
                     };
-                    imageGarageRepository.AddImageGarage(imageDTO);
+                    imageGarageService.AddImageGarage(imageDTO);
                 }
                 return Ok();
             }
@@ -338,7 +342,7 @@ namespace Garage_Finder_Backend.Controllers
                 //{
                 //    imageGarageRepository.RemoveImageGarage(id);
                 //}
-                imageGarageRepository.RemoveImageGarage(id);
+                imageGarageService.RemoveImageGarage(id);
                 return Ok();
             }
             catch (Exception ex)

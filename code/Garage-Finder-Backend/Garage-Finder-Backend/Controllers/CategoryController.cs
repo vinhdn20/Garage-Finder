@@ -1,6 +1,7 @@
 ﻿using DataAccess.DTO.Category;
 using Microsoft.AspNetCore.Mvc;
 using Repositories.Interfaces;
+using Services.CategoryService;
 
 namespace Garage_Finder_Backend.Controllers
 {
@@ -8,19 +9,17 @@ namespace Garage_Finder_Backend.Controllers
     [ApiController]
     public class CategoryController : ControllerBase
     {
-        private readonly ICategoryRepository categoryRepository;
-        private readonly IOrderRepository orderRepository;
+        private readonly ICategoryService _categoryService;
 
-        public CategoryController(ICategoryRepository categoryRepository, IOrderRepository orderRepository)
+        public CategoryController(ICategoryService categoryService)
         {
-            this.categoryRepository = categoryRepository;
-            this.orderRepository = orderRepository;
+            _categoryService = categoryService;
         }
 
         [HttpGet("GetAll")]
         public IActionResult GetAll()
         {
-            return Ok(categoryRepository.GetCategory());
+            return Ok(_categoryService.GetCategory());
         }
 
         [HttpPost("Add")]
@@ -28,7 +27,7 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
-                categoryRepository.Add(category);
+                _categoryService.Add(category);
 
                 return Ok("Success");
             }
@@ -43,7 +42,7 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
-                categoryRepository.Update(category);
+                _categoryService.Update(category);
 
                 return Ok("Success");
             }
@@ -58,7 +57,7 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
-                categoryRepository.Delete(id);
+                _categoryService.Delete(id);
                 return Ok("SUCCESS");
             }
             catch (Exception e)
