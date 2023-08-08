@@ -1,6 +1,7 @@
 ﻿using DataAccess.DTO;
 using Microsoft.AspNetCore.Mvc;
 using Repositories.Interfaces;
+using Services.BrandService;
 
 namespace Garage_Finder_Backend.Controllers
 {
@@ -8,17 +9,17 @@ namespace Garage_Finder_Backend.Controllers
     [ApiController]
     public class BrandController : ControllerBase
     {
-        private readonly IBrandRepository brandRepository;
+        private readonly IBrandService brandService;
 
-        public BrandController(IBrandRepository brandRepository)
+        public BrandController(IBrandService brandService)
         {
-            this.brandRepository = brandRepository;
+            this.brandService = brandService;
         }
 
         [HttpGet("GetAll")]
         public IActionResult GetAll()
         {
-            return Ok(brandRepository.GetBrand());
+            return Ok(brandService.GetBrand());
         }
 
         [HttpPost("Add")]
@@ -26,7 +27,7 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
-                brandRepository.Add(brand);
+                brandService.Add(brand);
 
                 return Ok("Success");
             }
@@ -41,7 +42,7 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
-                brandRepository.Update(brand);
+                brandService.Update(brand);
 
                 return Ok("Success");
             }
@@ -56,7 +57,7 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
-                brandRepository.Delete(id);
+                brandService.Delete(id);
                 return Ok("SUCCESS");
             }
             catch (Exception e)

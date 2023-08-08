@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Repositories.Interfaces;
 using Services;
+using Services.CarService;
 using System.Security.Claims;
 
 namespace Garage_Finder_Backend.Controllers
@@ -16,14 +17,14 @@ namespace Garage_Finder_Backend.Controllers
     [ApiController]
     public class CarController : ControllerBase
     {
-        private readonly ICarRepository carRepository;
-        private readonly IOrderRepository orderRepository;
+        private readonly ICarService _carService;
+        private readonly IOderService _oderService;
         private readonly IMapper mapper;
-        public CarController(ICarRepository carRepository, IMapper mapper, IOrderRepository orderRepository)
+        public CarController(ICarService carService, IMapper mapper, IOderService oderService)
         {
-            this.carRepository = carRepository;
+            this._carService = carService;
             this.mapper = mapper;
-            this.orderRepository = orderRepository;
+            this._oderService = oderService;
         }
 
         //[HttpGet("GetAll")]
@@ -46,7 +47,7 @@ namespace Garage_Finder_Backend.Controllers
             var user = User.GetTokenInfor();
             try
             {
-                return Ok(carRepository.GetCarsByUser(user.UserID));
+                return Ok(_carService.GetCarsByUser(user.UserID));
             }
             catch (Exception e)
             {
@@ -61,7 +62,7 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
-                return Ok(carRepository.GetCarById(id));
+                return Ok(_carService.GetCarById(id));
             }
             catch (Exception e)
             {
@@ -82,7 +83,7 @@ namespace Garage_Finder_Backend.Controllers
                 }
                 CarDTO carDTO = mapper.Map<AddCarDTO, CarDTO>(car);
                 carDTO.UserID = user.UserID;
-                carDTO = carRepository.SaveCar(carDTO);
+                carDTO = _carService.SaveCar(carDTO);
 
                 return Ok("SUCCESS");
             }
@@ -105,7 +106,7 @@ namespace Garage_Finder_Backend.Controllers
                 }
                 CarDTO carDTO = mapper.Map<UpdateCarDTO, CarDTO>(car);
                 carDTO.UserID = user.UserID;
-                carRepository.UpdateCar(carDTO);
+                _carService.UpdateCar(carDTO);
                 return Ok("SUCCESS");
             }
             catch (Exception e)
@@ -122,11 +123,11 @@ namespace Garage_Finder_Backend.Controllers
             try
             {
                 var user = User.GetTokenInfor();
-                if(orderRepository.GetAllOrdersByUserId(user.UserID).Any(x => x.CarID == id))
+                if(_oderService.GetAllOrdersByUserId(user.UserID).Any(x => x.CarID == id))
                 {
                     throw new Exception("The car cannot be deleted. This car has been ordered");
                 }
-                carRepository.DeleteCar(id);
+                _carService.DeleteCar(id);
                 return Ok("SUCCESS");
             }
             catch (Exception e)

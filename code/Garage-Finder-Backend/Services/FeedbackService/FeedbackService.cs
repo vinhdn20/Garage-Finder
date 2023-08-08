@@ -14,11 +14,11 @@ namespace Services.FeedbackService
     public class FeedbackService : IFeedbackService
     {
         private readonly IFeedbackRepository _feedbackRepository;
-        private readonly IOrderRepository _orderRepository;
+        private readonly IOderService _orderRepository;
         private readonly ICarRepository _carRepository;
         private readonly IUsersRepository _usersRepository;
         private readonly IMapper _mapper;
-        public FeedbackService(IFeedbackRepository feedbackRepository, IOrderRepository orderRepository,
+        public FeedbackService(IFeedbackRepository feedbackRepository, IOderService orderRepository,
             IMapper mapper, IUsersRepository usersRepository, ICarRepository carRepository) 
         {
             _feedbackRepository = feedbackRepository;

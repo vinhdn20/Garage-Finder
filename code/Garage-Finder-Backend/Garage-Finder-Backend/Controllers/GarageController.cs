@@ -13,7 +13,11 @@ using Repositories.Implements.CategoryRepository;
 using Repositories.Implements.Garage;
 using Repositories.Interfaces;
 using Services;
+using Services.CategoryGarageService;
+using Services.CategoryService;
+using Services.GarageBrandService;
 using Services.GarageService;
+using Services.ImageGarageService;
 using System.Net.Mail;
 using System.Security.Claims;
 using Twilio.Types;
@@ -24,34 +28,32 @@ namespace Garage_Finder_Backend.Controllers
     [ApiController]
     public class GarageController : Controller
     {
-        private readonly IGarageRepository garageRepository;
-        private readonly IGarageBrandRepository garageBrandRepository;
-        private readonly ICategoryGarageRepository categoryGarageRepository;
-        private readonly IImageGarageRepository imageGarageRepository;
+        private readonly IGarageBrandService garageBrandService;
+        private readonly ICategoryGarageService categoryGarageService;
+        private readonly IImageGarageService imageGarageService;
         private readonly IGarageService garageService;
-        private readonly ICategoryRepository categoryRepository;
-        public GarageController(IGarageRepository garageRepository, IGarageBrandRepository garageBrandRepository,
-            ICategoryGarageRepository categoryGarageRepository, IImageGarageRepository imageGarageRepository,
-            IGarageService garageService, ICategoryRepository categoryRepository)
+        private readonly ICategoryService categoryService;
+        public GarageController(IGarageBrandService garageBrandService,
+            ICategoryGarageService categoryGarageService, IImageGarageService imageGarageService,
+            IGarageService garageService, ICategoryService categoryService)
         {
-            this.garageRepository = garageRepository;
-            this.garageBrandRepository = garageBrandRepository;
-            this.categoryGarageRepository = categoryGarageRepository;
-            this.imageGarageRepository = imageGarageRepository;
+            this.garageBrandService = garageBrandService;
+            this.categoryGarageService = categoryGarageService;
+            this.imageGarageService = imageGarageService;
             this.garageService = garageService;
-            this.categoryRepository = categoryRepository;
+            this.categoryService = categoryService;
         }
         [HttpGet("GetAll")]
         public IActionResult GetAll()
         {
             try
             {
-                var garages = garageRepository.GetGarages().Where(g => g.Status == Constants.GARAGE_ACTIVE);
+                var garages = garageService.GetGarages().Where(g => g.Status == Constants.GARAGE_ACTIVE);
                 foreach (var garage in garages)
                 {
                     foreach (var cate in garage.CategoryGarages)
                     {
-                        cate.CategoryName = categoryRepository.GetCategory().Where(x => x.CategoryID == cate.CategoryID).SingleOrDefault().CategoryName;
+                        cate.CategoryName = categoryService.GetCategory().Where(x => x.CategoryID == cate.CategoryID).SingleOrDefault().CategoryName;
                     }
                 }
                 return Ok(garages);
@@ -67,7 +69,7 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
-                var result = garageRepository.GetGarages().Where(g => g.Status== Constants.GARAGE_ACTIVE).Count();
+                var result = garageService.GetGarages().Where(g => g.Status== Constants.GARAGE_ACTIVE).Count();
                 return Ok(result);
             }
             catch (Exception e)
@@ -101,7 +103,7 @@ namespace Garage_Finder_Backend.Controllers
             try
             {
                 var user = User.GetTokenInfor();
-                var garage = garageRepository.GetGaragesByID(garageUpdate.GarageID);
+                var garage = garageService.GetGaragesByID(garageUpdate.GarageID);
                 garage.AddressDetail = garageUpdate.AddressDetail;
                 garage.CloseTime = garageUpdate.CloseTime;
                 garage.DistrictsID = garageUpdate.DistrictsID;
@@ -115,7 +117,7 @@ namespace Garage_Finder_Backend.Controllers
                 garage.ProvinceID = garageUpdate.ProvinceID;
                 garage.Thumbnail = garageUpdate.Thumbnail;
                 garage.UserID = user.UserID;
-                garageRepository.Update(garage);
+                garageService.Update(garage);
                 return Ok("SUCCESS");
             }
             catch (Exception e)
@@ -130,7 +132,7 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
-                garageRepository.DeleteGarage(id);
+                garageService.DeleteGarage(id);
                 return Ok("SUCCESS");
             }
             catch (Exception e)
@@ -145,7 +147,7 @@ namespace Garage_Finder_Backend.Controllers
         public IActionResult SearchGarage([FromBody] SearchGarage searchGarage)
         {
             // Lấy danh sách garage từ nguồn dữ liệu
-            var garages = garageRepository.GetGarages().Where(g => g.Status == Constants.GARAGE_ACTIVE);
+            var garages = garageService.GetGarages().Where(g => g.Status == Constants.GARAGE_ACTIVE);
 
             if (!string.IsNullOrEmpty(searchGarage.keyword))
             {
@@ -178,27 +180,27 @@ namespace Garage_Finder_Backend.Controllers
             {
                 foreach (var cate in garage.CategoryGarages)
                 {
-                    cate.CategoryName = categoryGarageRepository.GetById(cate.CategoryGarageID).CategoryName;
+                    cate.CategoryName = categoryGarageService.GetById(cate.CategoryGarageID).CategoryName;
                 }
             }
             // Trả về kết quả
             return Ok(garages);
         }
 
-        [HttpPost("GetByPage")]
+       /* [HttpPost("GetByPage")]
         public IActionResult GetByPage([FromBody] PageDTO p)
         {
-            var garages = garageRepository.GetByPage(p);
+            var garages = garageService.GetByPage(p);
             foreach (var garage in garages)
             {
                 foreach (var cate in garage.CategoryGarages)
                 {
-                    cate.CategoryName = categoryRepository.GetCategory().Where(x => x.CategoryID == cate.CategoryID).SingleOrDefault().CategoryName;
+                    cate.CategoryName = categoryService.GetCategory().Where(x => x.CategoryID == cate.CategoryID).SingleOrDefault().CategoryName;
                 }
             }
             return Ok(garages);
         }
-
+*/
         [HttpGet("GetByUser")]
         [Authorize(Roles = Constants.ROLE_USER)]
         public IActionResult GetByUser()
@@ -206,12 +208,12 @@ namespace Garage_Finder_Backend.Controllers
             try
             {
                 var user = User.GetTokenInfor();
-                var garages = garageRepository.GetGarageByUser(user.UserID);
+                var garages = garageService.GetGarageByUser(user.UserID);
                 foreach (var garage in garages)
                 {
                     foreach (var cate in garage.CategoryGarages)
                     {
-                        cate.CategoryName = categoryRepository.GetCategory().Where(x => x.CategoryID == cate.CategoryID).SingleOrDefault().CategoryName;
+                        cate.CategoryName = categoryService.GetCategory().Where(x => x.CategoryID == cate.CategoryID).SingleOrDefault().CategoryName;
                     }
                 }
                 return Ok(garages);
@@ -232,7 +234,7 @@ namespace Garage_Finder_Backend.Controllers
             {
                 foreach (var garage in garageBrandsDTO)
                 {
-                    garageBrandRepository.Add(garage);
+                    garageBrandService.Add(garage);
                 }
                 return Ok("SUCCESS");
             }
@@ -252,7 +254,7 @@ namespace Garage_Finder_Backend.Controllers
                 //{
                 //    garageBrandRepository.Delete(id);
                 //}
-                garageBrandRepository.Delete(id);
+                garageBrandService.Delete(id);
                 return Ok();
             }
             catch (Exception ex)
@@ -276,7 +278,7 @@ namespace Garage_Finder_Backend.Controllers
                         GarageID = cate.GarageID,
                         CategoryID = cate.CategoryID
                     };
-                    categoryGarageRepository.Add(categoryGarageDTO);
+                    categoryGarageService.Add(categoryGarageDTO);
                 }
 
                 return Ok("SUCCESS");
@@ -293,7 +295,7 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
-                categoryGarageRepository.Remove(id);
+                categoryGarageService.Remove(id);
                 return Ok();
             }
             catch (Exception ex)
@@ -318,7 +320,7 @@ namespace Garage_Finder_Backend.Controllers
                         GarageID= image.GarageID,
                         ImageLink = image.ImageLink,
                     };
-                    imageGarageRepository.AddImageGarage(imageDTO);
+                    imageGarageService.AddImageGarage(imageDTO);
                 }
                 return Ok();
             }
@@ -338,7 +340,7 @@ namespace Garage_Finder_Backend.Controllers
                 //{
                 //    imageGarageRepository.RemoveImageGarage(id);
                 //}
-                imageGarageRepository.RemoveImageGarage(id);
+                imageGarageService.RemoveImageGarage(id);
                 return Ok();
             }
             catch (Exception ex)
@@ -367,7 +369,7 @@ namespace Garage_Finder_Backend.Controllers
         [HttpPost("GetByFilter")]
         public ActionResult GetGarages([FromBody] FilterGarage filterGarage)
         {
-            List<GarageDTO> filteredGarages = garageRepository.GetGarages();
+            List<GarageDTO> filteredGarages = garageService.GetGarages();
             List<GarageDTO> filteredByProvince = new List<GarageDTO>();
             List<GarageDTO> filteredByDistricts = new List<GarageDTO>();
             List<GarageDTO> filteredByCategory = new List<GarageDTO>();
@@ -400,7 +402,7 @@ namespace Garage_Finder_Backend.Controllers
             if (filterGarage.provinceID is null && filterGarage.districtsID is null &&
                 filterGarage.categoriesID is null && filterGarage.brandsID is null)
             {
-                filteredGarages = garageRepository.GetGarages();
+                filteredGarages = garageService.GetGarages();
             }
 
             return Ok(filteredGarages);

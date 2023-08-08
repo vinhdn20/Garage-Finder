@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Repositories.Interfaces;
 using Services;
+using Services.FavoriteListService;
 using System.Security.Claims;
 
 namespace Garage_Finder_Backend.Controllers
@@ -15,11 +16,11 @@ namespace Garage_Finder_Backend.Controllers
     [ApiController]
     public class FavoriteListController : ControllerBase
     {
-        private readonly IFavoriteListRepository favoriteListRepository;
+        private readonly IFavoriteListService _favoriteListService;
 
-        public FavoriteListController(IFavoriteListRepository favoriteListRepository)
+        public FavoriteListController(IFavoriteListService favoriteListService)
         {
-            this.favoriteListRepository = favoriteListRepository;
+            this._favoriteListService = favoriteListService;
         }
 
 
@@ -30,7 +31,7 @@ namespace Garage_Finder_Backend.Controllers
             try
             {   
                 var user = User.GetTokenInfor();
-                return Ok(favoriteListRepository.GetListByUser(user.UserID));
+                return Ok(_favoriteListService.GetListByUser(user.UserID));
             }
             catch (Exception e)
             {
@@ -46,7 +47,7 @@ namespace Garage_Finder_Backend.Controllers
             try
             {
                 var user = User.GetTokenInfor();
-                var listFV = favoriteListRepository.GetListByUser(user.UserID);
+                var listFV = _favoriteListService.GetListByUser(user.UserID);
                 if(listFV.Any(x => x.GarageID == garageId))
                 {
                     return BadRequest("Already contain garage");
@@ -56,7 +57,7 @@ namespace Garage_Finder_Backend.Controllers
                     GarageID = garageId,
                     UserID = user.UserID
                 };
-                favoriteListRepository.Add(favoriteList);
+                _favoriteListService.Add(favoriteList);
 
                 return Ok("SUCCESS");
             }
@@ -74,7 +75,7 @@ namespace Garage_Finder_Backend.Controllers
             try
             {
                 var user = User.GetTokenInfor();
-                favoriteListRepository.Delete(garageId, user.UserID);
+                _favoriteListService.Delete(garageId, user.UserID);
                 return Ok("SUCCESS");
             }
             catch (Exception e)

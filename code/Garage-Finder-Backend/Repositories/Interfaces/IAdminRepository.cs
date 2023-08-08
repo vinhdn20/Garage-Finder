@@ -12,12 +12,6 @@ namespace Repositories.Interfaces
     {
         public List<UserAdminDTO> GetAllUser();
         public List<GarageDTO> GetGarages();
-        public void BanUser(int id);
-        public void UnBanUser(int id);
-        public void BanGarage(int id);
-        public void UnBanGarage(int id);
-        public void AcceptGarage(int id);
-        public void DeniedGarage(int id);
         public void SetStatusGarage(StatusGarageDTO garage);
         public void SetStatusUser(StatusUserDTO user);
     }

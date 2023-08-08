@@ -22,16 +22,18 @@ namespace Services.GarageService
         private readonly ICategoryRepository _categoryRepository;
         private readonly IBrandRepository _brandRepository;
         private readonly ISubscriptionRepository _subcriptionRepository;
+        private readonly IFeedbackRepository _feedbackRepository;
         private readonly IMapper _mapper;
         public GarageService(IGarageRepository garageRepository, IMapper mapper,
             ICategoryRepository categoryRepository, IBrandRepository brandRepository,
-            ISubscriptionRepository subcriptionRepository)
+            ISubscriptionRepository subcriptionRepository, IFeedbackRepository feedbackRepository)
         {
             _garageRepository = garageRepository;
             _mapper = mapper;
             _categoryRepository = categoryRepository;
             _brandRepository = brandRepository;
             _subcriptionRepository = subcriptionRepository;
+            _feedbackRepository = feedbackRepository;
         }
         public void Add(AddGarageDTO addGarage, int userID)
         {
@@ -99,6 +101,25 @@ namespace Services.GarageService
             return result;
         }
 
+        public GarageDTO GetGaragesByID(int id)
+        {
+            var garage = _garageRepository.GetGarages().FirstOrDefault();
+
+            var feedbacks = _feedbackRepository.GetListByGarage(garage.GarageID);
+            if (feedbacks.Count() == 0)
+            {
+                garage.Star = 0;
+                garage.FeedbacksNumber = 0;
+                return garage;
+            }
+            double sum = feedbacks.Sum(x => x.Star);
+            int count = feedbacks.Count();
+            garage.Star = sum / count;
+            garage.FeedbacksNumber = count;
+
+            return garage;
+        }
+
         public List<GarageDTO> GetGarageSuggest()
         {
             var garages = _garageRepository.GetGarages();
@@ -115,6 +136,55 @@ namespace Services.GarageService
                 }
             }
             return result;
+        }
+
+        public void DeleteGarage(int id)
+        {
+            _garageRepository.DeleteGarage(id);
+        }
+
+        public List<GarageDTO> GetGarages()
+        {
+            var garages = _garageRepository.GetGarages().ToList();
+            foreach (var gara in garages)
+            {
+                var feedbacks = _feedbackRepository.GetListByGarage(gara.GarageID);
+                if (feedbacks.Count() == 0)
+                {
+                    gara.Star = 0;
+                    gara.FeedbacksNumber = 0;
+                    continue;
+                }
+                double sum = feedbacks.Sum(x => x.Star);
+                int count = feedbacks.Count();
+                gara.Star = sum / count;
+                gara.FeedbacksNumber = count;
+            }
+            return garages;
+        }
+
+        public List<GarageDTO> GetGarageByUser(int id)
+        {
+            var garages = _garageRepository.GetGarageByUser(id).ToList();
+            foreach (var gara in garages)
+            {
+                var feedbacks = _feedbackRepository.GetListByGarage(gara.GarageID);
+                if (feedbacks.Count() == 0)
+                {
+                    gara.Star = 0;
+                    gara.FeedbacksNumber = 0;
+                    continue;
+                }
+                double sum = feedbacks.Sum(x => x.Star);
+                int count = feedbacks.Count();
+                gara.Star = sum / count;
+            }
+            return garages;
+        }
+
+        public void Update(GarageDTO garage)
+        {
+            _garageRepository.Update(garage);
         }
     }
 }

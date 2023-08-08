@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Repositories.Interfaces
 {
-    public interface IOrderRepository
+    public interface IOderService
     {
         List<OrdersDTO> GetAllOrders();
         List<OrdersDTO> GetAllOrdersByUserId(int id);

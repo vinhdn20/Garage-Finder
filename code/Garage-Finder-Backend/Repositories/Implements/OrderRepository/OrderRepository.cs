@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Repositories.Implements.OrderRepository
 {
-    public class OrderRepository : IOrderRepository
+    public class OrderRepository : IOderService
     {
         private readonly IMapper _mapper;
         public OrderRepository(IMapper mapper)

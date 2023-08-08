@@ -1,4 +1,5 @@
-﻿using DataAccess.DTO.User.RequestDTO;
+﻿using DataAccess.DTO.User;
+using DataAccess.DTO.User.RequestDTO;
 using DataAccess.DTO.User.ResponeModels;
 using System;
 using System.Collections.Generic;
@@ -20,5 +21,6 @@ namespace Services.UserService
         void ChangePassword(int userId, string oldPassword, string newPassword);
         dynamic RefreshToken(string refreshToken);
         void ForgotPassword(ForgotPassDTO forgotPassModel);
+        public UsersDTO GetUserByID(int id);
     }
 }
