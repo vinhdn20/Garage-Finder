@@ -28,6 +28,7 @@ namespace Garage_Finder_Backend.Controllers
         private readonly IPhoneVerifyService _phoneVerifyService;
         private readonly IStorageCloud _storageCloud;
         private readonly IUserService _userService;
+        private readonly IConfiguration _configuration;
         #endregion
 
         public UserController(IOptionsSnapshot<JwtSettings> jwtSettings, IRefreshTokenService refreshTokenService,
