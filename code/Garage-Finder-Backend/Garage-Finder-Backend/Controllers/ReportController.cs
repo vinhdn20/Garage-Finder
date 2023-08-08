@@ -4,6 +4,7 @@ using Repositories.Interfaces;
 using Services;
 using DataAccess.DTO.Report;
 using Services.ReportService;
+using Services.UserService;
 
 namespace Garage_Finder_Backend.Controllers
 {
@@ -12,11 +13,11 @@ namespace Garage_Finder_Backend.Controllers
     public class ReportController : ControllerBase
     {
         private readonly IReportService reportService;
-        private readonly IUsersRepository usersRepository;
-        public ReportController(IReportService reportService, IUsersRepository usersRepository)
+        private readonly IUserService _userService;
+        public ReportController(IReportService reportService, IUserService userService)
         {
             this.reportService = reportService;
-            this.usersRepository = usersRepository;
+            this._userService = userService;
         }
         [HttpGet("GetListReport")]
         [Authorize]
@@ -77,7 +78,7 @@ namespace Garage_Finder_Backend.Controllers
         private bool CheckAdmin()
         {
             var user = User.GetTokenInfor();
-            var userDTO = usersRepository.GetUserByID(user.UserID);
+            var userDTO = _userService.GetUserByID(user.UserID);
             if (!userDTO.roleName.NameRole.Equals(Constants.ROLE_ADMIN))
             {
                 return false;

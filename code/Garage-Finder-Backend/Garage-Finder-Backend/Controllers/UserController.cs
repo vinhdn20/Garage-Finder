@@ -9,6 +9,7 @@ using Repositories.Interfaces;
 using RestSharp;
 using Services;
 using Services.PhoneVerifyService;
+using Services.RefreshTokenService;
 using Services.StorageApi;
 using Services.UserService;
 using Twilio.Rest.Trunking.V1;
@@ -22,8 +23,7 @@ namespace Garage_Finder_Backend.Controllers
         #region Properties
         private readonly JwtSettings _jwtSettings;
         private readonly JwtService _jwtService = new JwtService();
-        private readonly IUsersRepository _userRepository;
-        private readonly IRefreshTokenRepository _refreshTokenRepository;
+        private readonly IRefreshTokenService _refreshTokenService;
         private readonly IRoleNameRepository _roleNameRepository;
         private readonly IPhoneVerifyService _phoneVerifyService;
         private readonly IStorageCloud _storageCloud;
@@ -32,14 +32,12 @@ namespace Garage_Finder_Backend.Controllers
         private readonly IMapper _mapper;
         #endregion
 
-        public UserController(IOptionsSnapshot<JwtSettings> jwtSettings,
-            IUsersRepository usersRepository, IRefreshTokenRepository refreshTokenRepository,
+        public UserController(IOptionsSnapshot<JwtSettings> jwtSettings, IRefreshTokenService refreshTokenService,
             IRoleNameRepository roleNameRepository, IPhoneVerifyService phoneVerifyService, IStorageCloud storageCloud,
             IConfiguration configuration, IUserService userService, IMapper mapper)
         {
             _jwtSettings = jwtSettings.Value;
-            _userRepository = usersRepository;
-            _refreshTokenRepository = refreshTokenRepository;
+            _refreshTokenService = refreshTokenService;
             _roleNameRepository = roleNameRepository;
             _phoneVerifyService = phoneVerifyService;
             _storageCloud = storageCloud;

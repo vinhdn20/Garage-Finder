@@ -14,6 +14,7 @@ using Services.GarageService;
 using Services.ImageGarageService;
 using Services.NotificationService;
 using Services.OrderService;
+using Services.RefreshTokenService;
 using Services.ReportService;
 using Services.ServiceService;
 using Services.StaffService;
@@ -53,6 +54,7 @@ namespace Services
             services.AddTransient<IGarageBrandService, GarageBrandService.GarageBrandService>();
             services.AddTransient<ICategoryGarageService, CategoryGarageService.CategoryGarageService>();
             services.AddTransient<IImageGarageService, ImageGarageService.ImageGarageService>();
+            services.AddTransient<IRefreshTokenService, RefreshTokenService.RefreshTokenService>();
             services.AddTransient<WebSocketFunction>();
             services.AddTransient<WebsocketSend>();
             services.AddWebSocketService();

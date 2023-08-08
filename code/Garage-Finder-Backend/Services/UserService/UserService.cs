@@ -321,5 +321,10 @@ namespace Services.UserService
             }
             throw new Exception("Can't verify code");
         }
+
+        public UsersDTO GetUserByID(int id)
+        {
+            return _userRepository.GetUserByID(id);
+        }
     }
 }

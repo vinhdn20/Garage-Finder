@@ -5,6 +5,7 @@ using Repositories.Interfaces;
 using Services;
 using Services.AdminService;
 using Services.GarageService;
+using Services.UserService;
 
 namespace Garage_Finder_Backend.Controllers
 {
@@ -14,14 +15,13 @@ namespace Garage_Finder_Backend.Controllers
     {
         private readonly IGarageService garageService;
         private readonly IAdminService adminService;
-        private readonly IUsersRepository usersRepository;
+        private readonly IUserService _userService;
 
-        public AdminController(IGarageService garageService, IAdminService adminService,
-            IUsersRepository usersRepository)
+        public AdminController(IGarageService garageService, IAdminService adminService, IUserService userService)
         {
             this.garageService = garageService;
             this.adminService = adminService;
-            this.usersRepository = usersRepository;
+            this._userService = userService;
         }
 
         [HttpPost("GetUsers")]
@@ -147,7 +147,7 @@ namespace Garage_Finder_Backend.Controllers
         private bool CheckAdmin()
         {
             var user = User.GetTokenInfor();
-            var userDTO = usersRepository.GetUserByID(user.UserID);
+            var userDTO = _userService.GetUserByID(user.UserID);
             if (!userDTO.roleName.NameRole.Equals(Constants.ROLE_ADMIN))
             {
                 return false;

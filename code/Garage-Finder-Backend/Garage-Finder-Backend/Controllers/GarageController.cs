@@ -28,17 +28,15 @@ namespace Garage_Finder_Backend.Controllers
     [ApiController]
     public class GarageController : Controller
     {
-        private readonly IGarageRepository garageRepository;
         private readonly IGarageBrandService garageBrandService;
         private readonly ICategoryGarageService categoryGarageService;
         private readonly IImageGarageService imageGarageService;
         private readonly IGarageService garageService;
         private readonly ICategoryService categoryService;
-        public GarageController(IGarageRepository garageRepository, IGarageBrandService garageBrandService,
+        public GarageController(IGarageBrandService garageBrandService,
             ICategoryGarageService categoryGarageService, IImageGarageService imageGarageService,
             IGarageService garageService, ICategoryService categoryService)
         {
-            this.garageRepository = garageRepository;
             this.garageBrandService = garageBrandService;
             this.categoryGarageService = categoryGarageService;
             this.imageGarageService = imageGarageService;
@@ -50,7 +48,7 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
-                var garages = garageRepository.GetGarages().Where(g => g.Status == Constants.GARAGE_ACTIVE);
+                var garages = garageService.GetGarages().Where(g => g.Status == Constants.GARAGE_ACTIVE);
                 foreach (var garage in garages)
                 {
                     foreach (var cate in garage.CategoryGarages)
@@ -71,7 +69,7 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
-                var result = garageRepository.GetGarages().Where(g => g.Status== Constants.GARAGE_ACTIVE).Count();
+                var result = garageService.GetGarages().Where(g => g.Status== Constants.GARAGE_ACTIVE).Count();
                 return Ok(result);
             }
             catch (Exception e)
@@ -105,7 +103,7 @@ namespace Garage_Finder_Backend.Controllers
             try
             {
                 var user = User.GetTokenInfor();
-                var garage = garageRepository.GetGaragesByID(garageUpdate.GarageID);
+                var garage = garageService.GetGaragesByID(garageUpdate.GarageID);
                 garage.AddressDetail = garageUpdate.AddressDetail;
                 garage.CloseTime = garageUpdate.CloseTime;
                 garage.DistrictsID = garageUpdate.DistrictsID;
@@ -119,7 +117,7 @@ namespace Garage_Finder_Backend.Controllers
                 garage.ProvinceID = garageUpdate.ProvinceID;
                 garage.Thumbnail = garageUpdate.Thumbnail;
                 garage.UserID = user.UserID;
-                garageRepository.Update(garage);
+                garageService.Update(garage);
                 return Ok("SUCCESS");
             }
             catch (Exception e)
@@ -134,7 +132,7 @@ namespace Garage_Finder_Backend.Controllers
         {
             try
             {
-                garageRepository.DeleteGarage(id);
+                garageService.DeleteGarage(id);
                 return Ok("SUCCESS");
             }
             catch (Exception e)
@@ -149,7 +147,7 @@ namespace Garage_Finder_Backend.Controllers
         public IActionResult SearchGarage([FromBody] SearchGarage searchGarage)
         {
             // Lấy danh sách garage từ nguồn dữ liệu
-            var garages = garageRepository.GetGarages().Where(g => g.Status == Constants.GARAGE_ACTIVE);
+            var garages = garageService.GetGarages().Where(g => g.Status == Constants.GARAGE_ACTIVE);
 
             if (!string.IsNullOrEmpty(searchGarage.keyword))
             {
@@ -189,10 +187,10 @@ namespace Garage_Finder_Backend.Controllers
             return Ok(garages);
         }
 
-        [HttpPost("GetByPage")]
+       /* [HttpPost("GetByPage")]
         public IActionResult GetByPage([FromBody] PageDTO p)
         {
-            var garages = garageRepository.GetByPage(p);
+            var garages = garageService.GetByPage(p);
             foreach (var garage in garages)
             {
                 foreach (var cate in garage.CategoryGarages)
@@ -202,7 +200,7 @@ namespace Garage_Finder_Backend.Controllers
             }
             return Ok(garages);
         }
-
+*/
         [HttpGet("GetByUser")]
         [Authorize(Roles = Constants.ROLE_USER)]
         public IActionResult GetByUser()
@@ -210,7 +208,7 @@ namespace Garage_Finder_Backend.Controllers
             try
             {
                 var user = User.GetTokenInfor();
-                var garages = garageRepository.GetGarageByUser(user.UserID);
+                var garages = garageService.GetGarageByUser(user.UserID);
                 foreach (var garage in garages)
                 {
                     foreach (var cate in garage.CategoryGarages)
@@ -371,7 +369,7 @@ namespace Garage_Finder_Backend.Controllers
         [HttpPost("GetByFilter")]
         public ActionResult GetGarages([FromBody] FilterGarage filterGarage)
         {
-            List<GarageDTO> filteredGarages = garageRepository.GetGarages();
+            List<GarageDTO> filteredGarages = garageService.GetGarages();
             List<GarageDTO> filteredByProvince = new List<GarageDTO>();
             List<GarageDTO> filteredByDistricts = new List<GarageDTO>();
             List<GarageDTO> filteredByCategory = new List<GarageDTO>();
@@ -404,7 +402,7 @@ namespace Garage_Finder_Backend.Controllers
             if (filterGarage.provinceID is null && filterGarage.districtsID is null &&
                 filterGarage.categoriesID is null && filterGarage.brandsID is null)
             {
-                filteredGarages = garageRepository.GetGarages();
+                filteredGarages = garageService.GetGarages();
             }
 
             return Ok(filteredGarages);
