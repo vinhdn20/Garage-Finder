@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
+using Repositories.Implements.UserRepository;
+using Repositories.Interfaces;
 using Services;
 using Services.SubcriptionService;
 using Twilio.TwiML.Voice;
@@ -13,9 +15,11 @@ namespace Garage_Finder_Backend.Controllers
     public class SubscriptionController : Controller
     {
         private readonly ISubcriptionService _subcriptionService;
-        public SubscriptionController(ISubcriptionService subcriptionService)
+        private readonly IUsersRepository _usersRepository;
+        public SubscriptionController(ISubcriptionService subcriptionService, IUsersRepository usersRepository)
         {
             _subcriptionService = subcriptionService;
+            _usersRepository = usersRepository;
         }
         [HttpGet("getAll")]
         public IActionResult GetAll()
@@ -32,11 +36,15 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpPost("add")]
-        [Authorize(Roles = $"{Constants.ROLE_ADMIN}")]
+        [Authorize]
         public IActionResult Add(AddSubcribeDTO addSubcribe)
         {
             try
             {
+                if (!CheckAdmin())
+                {
+                    return Unauthorized("Bạn không phải là admin của web");
+                }
                 _subcriptionService.Add(addSubcribe);
                 return Ok("SUCCESS");
             }
@@ -47,11 +55,15 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpPost("update")]
-        [Authorize(Roles = $"{Constants.ROLE_ADMIN}")]
+        [Authorize]
         public IActionResult Update(SubscribeDTO subscribe)
         {
             try
             {
+                if (!CheckAdmin())
+                {
+                    return Unauthorized("Bạn không phải là admin của web");
+                }
                 _subcriptionService.Update(subscribe);
                 return Ok("SUCCESS");
             }
@@ -148,12 +160,16 @@ namespace Garage_Finder_Backend.Controllers
         }
 
         [HttpGet("GetAllInvoice")]
-        [Authorize(Roles = $"{Constants.ROLE_ADMIN}")]
+        [Authorize]
         public IActionResult GetAllInvoice()
         {
             try
             {
-                
+
+                if (!CheckAdmin())
+                {
+                    return Unauthorized("Bạn không phải là admin của web");
+                }
                 var invoices = _subcriptionService.GetAllInvoices();
 
                 return Ok(invoices);
@@ -163,6 +179,16 @@ namespace Garage_Finder_Backend.Controllers
 
                 return BadRequest(e.Message);
             }
+        }
+        private bool CheckAdmin()
+        {
+            var user = User.GetTokenInfor();
+            var userDTO = _usersRepository.GetUserByID(user.UserID);
+            if (!userDTO.roleName.NameRole.Equals(Constants.ROLE_ADMIN))
+            {
+                return false;
+            }
+            return true;
         }
     }
 }

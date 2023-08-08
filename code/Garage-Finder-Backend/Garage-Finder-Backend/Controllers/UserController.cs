@@ -27,9 +27,7 @@ namespace Garage_Finder_Backend.Controllers
         private readonly IRoleNameRepository _roleNameRepository;
         private readonly IPhoneVerifyService _phoneVerifyService;
         private readonly IStorageCloud _storageCloud;
-        private readonly IConfiguration _configuration;
         private readonly IUserService _userService;
-        private readonly IMapper _mapper;
         #endregion
 
         public UserController(IOptionsSnapshot<JwtSettings> jwtSettings, IRefreshTokenService refreshTokenService,
@@ -43,7 +41,6 @@ namespace Garage_Finder_Backend.Controllers
             _storageCloud = storageCloud;
             _configuration = configuration;
             _userService = userService;
-            _mapper = mapper;
         }
 
         [HttpGet("get")]
