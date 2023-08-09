@@ -102,7 +102,7 @@ namespace Services.NotificationService
                 var garage = _garageRepository.GetGaragesByID(garageId);
                 message = $"Garage {garage.GarageName} đã hoàn thành đơn của bạn";
             }
-            return message;
+            return message.convertToUTF8();
         }
 
         private string GetStaffMessage(string status, string userName)
@@ -116,7 +116,7 @@ namespace Services.NotificationService
             {
                 message = $"Đơn của {userName} đã bị hủy";
             }
-            return message;
+            return message.convertToUTF8();
         }
 
         public void SendNotificationToStaff(GuestOrderDTO orderDetail)

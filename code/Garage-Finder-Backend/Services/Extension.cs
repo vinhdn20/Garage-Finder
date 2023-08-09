@@ -71,5 +71,12 @@ namespace Services
             string temp = s.Normalize(NormalizationForm.FormD);
             return regex.Replace(temp, String.Empty).Replace('\u0111', 'd').Replace('\u0110', 'D');
         }
+
+        public static string convertToUTF8(this string s)
+        {
+            byte[] bytes = Encoding.Default.GetBytes(s);
+            var newString = Encoding.UTF8.GetString(bytes);
+            return newString;
+        }
     }
 }
