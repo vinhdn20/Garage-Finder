@@ -71,6 +71,7 @@ namespace Services.NotificationService
                 UserID = userId
             }; 
             NotificationDTO notificationDTO = _mapper.Map<NotificationDTO>(notification);
+            _notifcationRepository.AddUserNotification(notification);
             //_hubContext.Clients.User(userId.ToString()).SendAsync("Notify", notificationDTO);
 
             _webSocketHandler.SendAsync(userId.ToString(), "Notify", notificationDTO);
