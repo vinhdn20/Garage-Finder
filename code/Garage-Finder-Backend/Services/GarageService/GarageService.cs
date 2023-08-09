@@ -157,7 +157,7 @@ namespace Services.GarageService
                 }
                 double sum = feedbacks.Sum(x => x.Star);
                 int count = feedbacks.Count();
-                gara.Star = sum / count;
+                gara.Star = Math.Round(sum / count,1);
                 gara.FeedbacksNumber = count;
             }
             return garages;
