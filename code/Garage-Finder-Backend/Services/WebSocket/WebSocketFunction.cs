@@ -26,7 +26,7 @@ namespace Services.WebSocket
             _chatService = chatService;
         }
 
-        private void ReadAllNotification(TokenInfor user)
+        public void ReadAllNotification(TokenInfor user)
         {
             _notificationService.ReadAllNotification(user.UserID, user.RoleName);
         }
