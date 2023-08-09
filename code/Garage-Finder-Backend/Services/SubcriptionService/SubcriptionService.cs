@@ -24,7 +24,7 @@ namespace Services.SubcriptionService
         private readonly IGarageRepository _garageRepository;
         private readonly IMapper _mapper;
         public SubcriptionService(IConfiguration configuration, ISubscriptionRepository subscriptionRepository,
-            IGarageRepository garageRepository, IMapper mapper) 
+            IGarageRepository garageRepository, IMapper mapper)
         {
             _config = configuration;
             _subscriptionRepository = subscriptionRepository;
@@ -50,12 +50,12 @@ namespace Services.SubcriptionService
         public void Update(SubscribeDTO subscribeDTO)
         {
             var sub = _mapper.Map<Subscribe>(subscribeDTO);
-            var subDB= _subscriptionRepository.GetAllSubscribe().Find(x => x.SubscribeID == subscribeDTO.SubscribeID);
-            if(subDB is null)
+            var subDB = _subscriptionRepository.GetAllSubscribe().Find(x => x.SubscribeID == subscribeDTO.SubscribeID);
+            if (subDB is null)
             {
                 throw new Exception("Không tìm thấy gói đăng ký");
             }
-            if(!sub.Status.Equals(Constants.OPEN_SUBCRIPTION) && !sub.Status.Equals(Constants.DELETE_SUBCRIPTION))
+            if (!sub.Status.Equals(Constants.OPEN_SUBCRIPTION) && !sub.Status.Equals(Constants.DELETE_SUBCRIPTION))
             {
                 throw new Exception("Status không hợp lệ. Status phải là open hoặc block");
             }
@@ -65,7 +65,7 @@ namespace Services.SubcriptionService
         public void Block(int subId)
         {
             var sub = _subscriptionRepository.GetById(subId);
-            if(sub == null)
+            if (sub == null)
             {
                 throw new Exception("Không thể tìm gói thành viên");
             }
@@ -97,7 +97,7 @@ namespace Services.SubcriptionService
                 throw new Exception("Authorize exception");
             }
 
-            var invoices =_subscriptionRepository.GetInvoicesByGarageId(garageId);
+            var invoices = _subscriptionRepository.GetInvoicesByGarageId(garageId);
             //Tắt tạm
             //if(invoices.Any(x => x.ExpirationDate > DateTime.UtcNow.AddHours(7) && x.Status.Equals(Constants.INVOICE_PAID)))
             //{
@@ -105,12 +105,12 @@ namespace Services.SubcriptionService
             //}
             var api = _config["VNPay:VNPayAPI"];
             var sub = _subscriptionRepository.GetById(subscriptionId);
-            if(sub.Status.Equals(Constants.DELETE_SUBCRIPTION))
+            if (sub.Status.Equals(Constants.DELETE_SUBCRIPTION))
             {
                 throw new Exception("Gói đăng ký không còn hiệu lực");
             }
             var garage = _garageRepository.GetGaragesByID(garageId);
-            
+
             var amount = Convert.ToInt32(sub.Price * 100);
             var invoice = _subscriptionRepository.AddInVoices(new Invoices()
             {
@@ -133,9 +133,9 @@ namespace Services.SubcriptionService
                 vnp_Version = _config["VNPay:API_Version"]
             };
 
-            Dictionary<string,string> requestData = new Dictionary<string, string>();
+            Dictionary<string, string> requestData = new Dictionary<string, string>();
             requestData.Add("vnp_Amount", vNPay.vnp_Amount.ToString());
-            if(vNPay.vnp_BankCode != null)
+            if (vNPay.vnp_BankCode != null)
             {
                 requestData.Add("vnp_BankCode", vNPay.vnp_BankCode.ToString());
             }
@@ -179,7 +179,7 @@ namespace Services.SubcriptionService
 
         public List<InvoicesDTO> GetInvoicesByGarageId(int userId, int garageId)
         {
-            if(!ValidationGarageOwner(garageId, userId))
+            if (!ValidationGarageOwner(garageId, userId))
             {
                 throw new Exception("Authorize exception");
             }
@@ -191,7 +191,7 @@ namespace Services.SubcriptionService
             {
                 InvoicesDTO invoicesDTO = _mapper.Map<InvoicesDTO>(invoice);
                 var sub = subs.Find(x => x.SubscribeID == invoice.SubscribeID);
-                invoicesDTO = _mapper.Map(sub,invoicesDTO);
+                invoicesDTO = _mapper.Map(sub, invoicesDTO);
                 viewInvoices.Add(invoicesDTO);
             }
             return viewInvoices;
@@ -220,11 +220,11 @@ namespace Services.SubcriptionService
 
         public List<ViewInvoicesDTO> GetAllInvoices()
         {
-           
+
 
             var invoices = _subscriptionRepository.GetAllInvoices();
             List<ViewInvoicesDTO> viewInvoices = new List<ViewInvoicesDTO>();
-            foreach (var invoice in invoices) 
+            foreach (var invoice in invoices)
             {
                 var subs = _subscriptionRepository.GetById(invoice.SubscribeID);
                 var garage = _garageRepository.GetGaragesByID(invoice.GarageID);
@@ -238,6 +238,19 @@ namespace Services.SubcriptionService
                 viewInvoices.Add(invoiceDTO);
             }
             return viewInvoices;
+        }
+
+        public double GetIncome()
+        {
+            var invoices = _subscriptionRepository.GetAllInvoices().Where(x => x.Status == Constants.INVOICE_PAID);
+            double income = 0;
+            List<ViewInvoicesDTO> viewInvoices = new List<ViewInvoicesDTO>();
+            foreach (var invoice in invoices)
+            {
+                var subs = _subscriptionRepository.GetById(invoice.SubscribeID);
+                income = income + subs.Price;
+            }
+            return income;
         }
     }
 }

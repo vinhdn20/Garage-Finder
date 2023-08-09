@@ -180,6 +180,28 @@ namespace Garage_Finder_Backend.Controllers
                 return BadRequest(e.Message);
             }
         }
+
+        [HttpGet("GetIncome")]
+        [Authorize]
+        public IActionResult GetIncome()
+        {
+            try
+            {
+
+                if (!CheckAdmin())
+                {
+                    return Unauthorized("Bạn không phải là admin của web");
+                }
+                double income = _subcriptionService.GetIncome();
+
+                return Ok(income);
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(e.Message);
+            }
+        }
         private bool CheckAdmin()
         {
             var user = User.GetTokenInfor();
