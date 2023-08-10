@@ -22,11 +22,12 @@ namespace Services.NotificationService
         private readonly IGarageRepository _garageRepository;
         private readonly IStaffRepository _staffRepository;
         private readonly IUsersRepository _userRepository;
+        private readonly ICarRepository _carRepository;
         private readonly WebsocketSend _webSocketHandler;
         private readonly IMapper _mapper;
         public NotificationService(INotifcationRepository notifcationRepository,
             IGarageRepository garageRepository, IUsersRepository usersRepository, IMapper mapper,
-            IStaffRepository staffRepository, WebsocketSend gFWebSocket)
+            IStaffRepository staffRepository, WebsocketSend gFWebSocket, ICarRepository carRepository)
         {
             _notifcationRepository = notifcationRepository;
             _garageRepository = garageRepository;
@@ -34,6 +35,7 @@ namespace Services.NotificationService
             _mapper = mapper;
             _staffRepository = staffRepository;
             _webSocketHandler = gFWebSocket;
+            _carRepository = carRepository;
         }
 
         public void SendNotificationToStaff(OrdersDTO order, int userId)
@@ -71,18 +73,19 @@ namespace Services.NotificationService
         public void SendNotificatioToUser(OrdersDTO order, int userId)
         {
             string message = GetUserMessage(order.Status, order.GarageID);
+            var id = _carRepository.GetCarById(order.CarID).UserID;
             Notification notification = new Notification()
             {
                 DateTime = DateTime.UtcNow,
                 IsRead = false,
                 Content = message,
-                UserID = userId
+                UserID = id
             }; 
             NotificationDTO notificationDTO = _mapper.Map<NotificationDTO>(notification);
             _notifcationRepository.AddUserNotification(notification);
             //_hubContext.Clients.User(userId.ToString()).SendAsync("Notify", notificationDTO);
 
-            _webSocketHandler.SendAsync(userId.ToString(), "Notify", notificationDTO);
+            _webSocketHandler.SendAsync(id.ToString(), "Notify", notificationDTO);
         }
 
         private string GetUserMessage(string status, int garageId)
