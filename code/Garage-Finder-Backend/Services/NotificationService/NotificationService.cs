@@ -53,7 +53,15 @@ namespace Services.NotificationService
                 notification.StaffId = staff.StaffId;
                 _notifcationRepository.AddStaffNotification(notification);
             }
-
+            var id = _garageRepository.GetGaragesByID(order.GarageID).UserID;
+            Notification notiUser = new Notification()
+            {
+                DateTime = DateTime.UtcNow,
+                IsRead = false,
+                Content = message,
+                UserID = id
+            };
+            _notifcationRepository.AddUserNotification(notiUser);
             NotificationDTO notificationDTO = _mapper.Map<NotificationDTO>(notification);
             //_hubContext.Clients.Group($"Garage-{order.GarageID}").SendAsync("Notify", notificationDTO);
 
