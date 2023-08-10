@@ -92,7 +92,7 @@ namespace Services.OrderService
                 }
                 list.Add(o);
             }
-            return list;
+            return list.OrderByDescending(x => x.TimeCreate).ToList();
         }
 
         public OrderDetailDTO GetOrderByGFID(int gfid, int userId)
@@ -196,7 +196,7 @@ namespace Services.OrderService
                 }
                 list.Add(o);
             }
-            return list;
+            return list.OrderByDescending(x => x.TimeCreate).ToList();
         }
 
         public void AddOrderWithCar(AddOrderWithCarDTO addOrder)

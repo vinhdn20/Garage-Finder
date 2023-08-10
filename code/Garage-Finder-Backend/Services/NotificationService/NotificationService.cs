@@ -158,14 +158,26 @@ namespace Services.NotificationService
             if (roleName.Equals(Constants.ROLE_USER))
             {
                 var userNotify = _notifcationRepository.GetNotificationsByUserId(userId);
-                userNotify.ForEach(x => notify.Add(_mapper.Map<NotificationDTO>(x)));
+                //userNotify.ForEach(x => notify.Add(_mapper.Map<NotificationDTO>(x)));
+                foreach (var noti in userNotify)
+                {
+                    noti.DateTime = noti.DateTime.AddHours(7);
+                    var addNoti = _mapper.Map<NotificationDTO>(noti);
+                    notify.Add(addNoti);
+                }
             }
             else if (roleName.Equals(Constants.ROLE_STAFF))
             {
                 var userNotify = _notifcationRepository.GetNotificationsByStaffId(userId);
-                userNotify.ForEach(x => notify.Add(_mapper.Map<NotificationDTO>(x)));
+                //userNotify.ForEach(x => notify.Add(_mapper.Map<NotificationDTO>(x)));
+                foreach (var noti in userNotify)
+                {
+                    noti.DateTime = noti.DateTime.AddHours(7);
+                    var addNoti = _mapper.Map<NotificationDTO>(noti);
+                    notify.Add(addNoti);
+                }
             }
-            return notify;
+            return notify.OrderByDescending(x => x.DateTime).ToList();
         }
 
         public void ReadAllNotification(int userId, string roleName)

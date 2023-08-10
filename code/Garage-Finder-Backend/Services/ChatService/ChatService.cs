@@ -227,7 +227,7 @@ namespace Services.ChatService
                 roomDTO.LinkImage = garage.Thumbnail;
                 roomList.Add(roomDTO);
             }
-            return roomList;
+            return roomList.OrderByDescending(x => x.DateTime).ToList();
         }
 
         public List<RoomDTO> GetListRoomByGarageId(int userId, int garageId)
@@ -267,7 +267,7 @@ namespace Services.ChatService
                 roomDTO.Name = user.Name;
                 roomList.Add(roomDTO);
             }
-            return roomList;
+            return roomList.OrderByDescending(x => x.DateTime).ToList();
         }
 
         public void SendMessageToUser(int senderUserId, int recieverUserId, string content)
