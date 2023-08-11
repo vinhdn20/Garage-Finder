@@ -516,7 +516,7 @@ namespace Services.OrderService
             else
             {
                 var gorder = _guestOrderRepository.GetOrderByGFId(GFId);
-                if (!CheckGarageCanAcceptOrReject(userId, gorder))
+                if (!CheckGarageCanCancelOrDone(userId, gorder))
                 {
                     throw new Exception("Can not cancel the order");
                 }
