@@ -47,7 +47,7 @@ namespace Services.PhoneVerifyService
         {
             try
             {
-                return true;
+                //return true;
                 phoneNumber = ChangePhoneToVNPhone(phoneNumber);
                 var verification = await VerificationCheckResource.CreateAsync(
                     to: phoneNumber,
