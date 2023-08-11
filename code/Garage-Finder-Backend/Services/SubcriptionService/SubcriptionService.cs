@@ -99,10 +99,10 @@ namespace Services.SubcriptionService
 
             var invoices = _subscriptionRepository.GetInvoicesByGarageId(garageId);
             //Tắt tạm
-            //if(invoices.Any(x => x.ExpirationDate > DateTime.UtcNow.AddHours(7) && x.Status.Equals(Constants.INVOICE_PAID)))
-            //{
-            //    return new OkObjectResult("Bạn đã đăng ký gói thành viên");
-            //}
+            if (invoices.Any(x => x.ExpirationDate > DateTime.UtcNow.AddHours(7) && x.Status.Equals(Constants.INVOICE_PAID)))
+            {
+                return new OkObjectResult("Bạn đã đăng ký gói thành viên");
+            }
             var api = _config["VNPay:VNPayAPI"];
             var sub = _subscriptionRepository.GetById(subscriptionId);
             if (sub.Status.Equals(Constants.DELETE_SUBCRIPTION))
