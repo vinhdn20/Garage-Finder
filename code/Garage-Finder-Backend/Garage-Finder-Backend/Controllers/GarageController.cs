@@ -104,6 +104,10 @@ namespace Garage_Finder_Backend.Controllers
             {
                 var user = User.GetTokenInfor();
                 var garage = garageService.GetGaragesByID(garageUpdate.GarageID);
+                if(garage == null)
+                {
+                    return NotFound("Không tìm thấy garage");
+                }
                 garage.AddressDetail = garageUpdate.AddressDetail;
                 garage.CloseTime = garageUpdate.CloseTime;
                 garage.DistrictsID = garageUpdate.DistrictsID;

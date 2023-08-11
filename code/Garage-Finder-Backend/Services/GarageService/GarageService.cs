@@ -103,8 +103,8 @@ namespace Services.GarageService
 
         public GarageDTO GetGaragesByID(int id)
         {
-            var garage = _garageRepository.GetGarages().FirstOrDefault();
-
+            var garage = _garageRepository.GetGarages().Find(x => x.GarageID == id);
+            if (garage == null) return null;
             var feedbacks = _feedbackRepository.GetListByGarage(garage.GarageID);
             if (feedbacks.Count() == 0)
             {
