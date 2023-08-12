@@ -5,6 +5,7 @@ using DataAccess.DTO.Orders;
 using DataAccess.DTO.Orders.RequestDTO;
 using DataAccess.DTO.Orders.ResponseDTO;
 using GFData.Models.Entity;
+using Newtonsoft.Json;
 using Repositories.Interfaces;
 using Services.EmailService;
 using Services.GarageService;
@@ -391,12 +392,13 @@ namespace Services.OrderService
                 {
                     categoryText += "," + category[i].CategoryName;
                 }
+                var address = (string)(JsonConvert.DeserializeObject<dynamic>(garage.AddressDetail).label);
                 _emailService.SendMailAsync(user.EmailAddress, user.Name, "Lịch đặt của bạn đã được xác nhận!",
                 $"<h1>Lịch đặt của bạn đã được {garage.GarageName} xác nhận</h1><br/>" +
                 $"Garage: {garage.GarageName}<br/>" +
                 $"Loại dịch vụ: {categoryText}<br/>" +
                 $"Thời gian: {order.TimeCreate}<br/>" +
-                $"Địa điểm: {garage.AddressDetail}<br/>" +
+                $"Địa điểm: {address}<br/>" +
                 $"Quý khách vui lòng mang xe đến đúng thời gian đặt lịch<br/><br/>" +
                 $"{garage.GarageName} chân thành cảm ơn quý khách !");
             }
@@ -423,11 +425,12 @@ namespace Services.OrderService
                 {
                     categoryText += "," + category[i].CategoryName;
                 }
+                var address = (string)(JsonConvert.DeserializeObject<dynamic>(garage.AddressDetail).label);
                 _emailService.SendMailAsync(gorder.Email, gorder.Name, "Lịch đặt của bạn đã được xác nhận!",
                 $"<h1>Lịch đặt của bạn đã được{garage.GarageName} xác nhận</h1><br/>" +
                 $"Garage: {garage.GarageName}<br/>" +
                 $"Loại dịch vụ: {categoryText}<br/>Thời gian: {gorder.TimeCreate}<br/>" +
-                $"Địa điểm: {garage.AddressDetail}<br/>" +
+                $"Địa điểm: {address}<br/>" +
                 $"Quý khách vui lòng mang xe đến đúng thời gian đặt lịch<br/><br/>" +
                 $"{garage.GarageName} chân thành cảm ơn quý khách !");
             }
@@ -459,12 +462,13 @@ namespace Services.OrderService
                 {
                     categoryText += "," + category[i].CategoryName;
                 }
+                var address = (string)(JsonConvert.DeserializeObject<dynamic>(garage.AddressDetail).label);
                 _emailService.SendMailAsync(user.EmailAddress, user.Name, "Lịch đặt của bạn đã bị từ chối!",
                 $"<h1>Lịch đặt của bạn đã bị {garage.GarageName} từ chối</h1><br/>" +
                 $"Garage: {garage.GarageName}<br/>" +
                 $"Loại dịch vụ: {categoryText}<br/>" +
                 $"Thời gian: {order.TimeCreate}<br/>" +
-                $"Địa điểm: {garage.AddressDetail}");
+                $"Địa điểm: {address}");
             }
             else
             {
@@ -490,12 +494,13 @@ namespace Services.OrderService
                 {
                     categoryText += "," + category[i].CategoryName;
                 }
+                var address = (string)(JsonConvert.DeserializeObject<dynamic>(garage.AddressDetail).label);
                 _emailService.SendMailAsync(gorder.Email, gorder.Name, "Lịch đặt của bạn đã bị từ chối!",
                 $"<h1>Lịch đặt của bạn đã bị {garage.GarageName} từ chối</h1><br/>" +
                 $"Garage: {garage.GarageName}<br/>" +
                 $"Loại dịch vụ: {categoryText}<br/>" +
                 $"Thời gian: {gorder.TimeCreate}<br/>" +
-                $"Địa điểm: {garage.AddressDetail}");
+                $"Địa điểm: {address}");
             }
         }
 
