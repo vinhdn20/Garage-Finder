@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GFData.Migrations
 {
     [DbContext(typeof(GFDbContext))]
-    [Migration("20230802130314_garagefinder")]
-    partial class garagefinder
+    [Migration("20230812100950_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -530,36 +530,6 @@ namespace GFData.Migrations
                     b.HasIndex("UserID");
 
                     b.ToTable("Message");
-                });
-
-            modelBuilder.Entity("GFData.Models.Entity.MessageToUser", b =>
-                {
-                    b.Property<int>("MessageID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MessageID"), 1L, 1);
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("DateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("ReceiverUserID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SenderUserID")
-                        .HasColumnType("int");
-
-                    b.HasKey("MessageID");
-
-                    b.HasIndex("ReceiverUserID");
-
-                    b.HasIndex("SenderUserID");
-
-                    b.ToTable("MessageToUsers");
                 });
 
             modelBuilder.Entity("GFData.Models.Entity.Notification", b =>
@@ -1253,25 +1223,6 @@ namespace GFData.Migrations
                     b.Navigation("Users");
                 });
 
-            modelBuilder.Entity("GFData.Models.Entity.MessageToUser", b =>
-                {
-                    b.HasOne("GFData.Models.Entity.Users", "Receiver")
-                        .WithMany()
-                        .HasForeignKey("ReceiverUserID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("GFData.Models.Entity.Users", "Sender")
-                        .WithMany("MessageToUser")
-                        .HasForeignKey("SenderUserID")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Receiver");
-
-                    b.Navigation("Sender");
-                });
-
             modelBuilder.Entity("GFData.Models.Entity.Notification", b =>
                 {
                     b.HasOne("GFData.Models.Entity.Users", "User")
@@ -1539,8 +1490,6 @@ namespace GFData.Migrations
                     b.Navigation("Cars");
 
                     b.Navigation("FavoriteList");
-
-                    b.Navigation("MessageToUser");
 
                     b.Navigation("Messages");
 

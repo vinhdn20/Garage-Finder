@@ -96,37 +96,5 @@ namespace Garage_Finder_Backend.Controllers
                 return BadRequest(e.Message);
             }
         }
-
-        [HttpPost("sendMessageToUser")]
-        [Authorize(Roles = $"{Constants.ROLE_USER}, {Constants.ROLE_STAFF}")]
-        public IActionResult SendMessageToUser(SendChatToUser sendChat)
-        {
-            try
-            {
-                var user = User.GetTokenInfor();
-                _chatService.SendMessageToUser(user.UserID, sendChat.ToUserId, sendChat.Content);
-                return Ok("success");
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
-        }
-
-        [HttpGet("getMessageWithUser/{userId}")]
-        [Authorize(Roles = $"{Constants.ROLE_USER}, {Constants.ROLE_STAFF}")]
-        public IActionResult GetMessageWithUser(int userId)
-        {
-            try
-            {
-                var user = User.GetTokenInfor();
-                var result = _chatService.GetMessageWithUser(user.UserID, userId);
-                return Ok(result);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
-        }
     }
 }

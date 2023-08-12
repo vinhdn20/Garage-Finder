@@ -205,40 +205,5 @@ namespace DataAccess.DAO
                 throw new Exception(e.Message + "\n" + e.InnerException.Message);
             }
         }
-
-        public List<MessageToUser> GetMessageToUsers(int senderUserId, int receiveUserId)
-        {
-            try
-            {
-                List<MessageToUser> messages = new List<MessageToUser>();
-                using (var context = new GFDbContext())
-                {
-                    messages = context.MessageToUsers.Where(x => x.SenderUserID == senderUserId && 
-                                                        x.ReceiverUserID == receiveUserId).ToList();
-                    context.SaveChanges();
-                }
-                return messages;
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message + "\n" + e.InnerException.Message);
-            }
-        }
-
-        public void SendMessageToUser(MessageToUser messageToUser)
-        {
-            try
-            {
-                using (var context = new GFDbContext())
-                {
-                    context.MessageToUsers.Add(messageToUser);
-                    context.SaveChanges();
-                }
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message + "\n" + e.InnerException.Message);
-            }
-        }
     }
 }

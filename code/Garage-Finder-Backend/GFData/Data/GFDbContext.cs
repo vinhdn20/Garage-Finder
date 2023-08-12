@@ -60,7 +60,6 @@ namespace GFData.Data
         public virtual DbSet<StaffMessage> StaffMessages { get; set; }
         public virtual DbSet<Subscribe> Subscribes { get; set; }
         public virtual DbSet<Invoices> Invoices { get; set; }
-        public virtual DbSet<MessageToUser> MessageToUsers { get; set; }
         public virtual DbSet<ImageReport>? ImageReport { get; set; }
         public virtual DbSet<Report>? Report { get; set; }
 
@@ -85,11 +84,6 @@ namespace GFData.Data
             .HasForeignKey(c => c.StaffId)
             .OnDelete(DeleteBehavior.NoAction);
 
-            optionsBuilder.Entity<MessageToUser>()
-            .HasOne(p => p.Sender)
-            .WithMany(u => u.MessageToUser)
-            .HasForeignKey(c => c.SenderUserID)
-            .OnDelete(DeleteBehavior.NoAction);
 
             optionsBuilder.Entity<RoomChat>()
             .HasOne(p => p.Users)
