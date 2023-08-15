@@ -130,7 +130,7 @@ namespace Services.GarageService
                 {
                     cate.CategoryName = _categoryRepository.GetCategory().Where(x => x.CategoryID == cate.CategoryID).SingleOrDefault().CategoryName;
                 }
-                if (_subcriptionRepository.GetInvoicesByGarageId(garage.GarageID).Any(x => x.ExpirationDate > DateTime.UtcNow.AddHours(7)))
+                if (_subcriptionRepository.GetInvoicesByGarageId(garage.GarageID).Any(x => x.ExpirationDate > DateTime.UtcNow.AddHours(7) && x.Status.Equals(Constants.INVOICE_PAID)))
                 {
                     result.Add(garage);
                 }

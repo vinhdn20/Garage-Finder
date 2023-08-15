@@ -94,7 +94,7 @@ namespace Services.SubcriptionService
         {
             if (!ValidationGarageOwner(garageId, userId))
             {
-                throw new Exception("Authorize exception");
+                throw new Exception("Bạn không phải là chủ của garage");
             }
 
             var invoices = _subscriptionRepository.GetInvoicesByGarageId(garageId);
@@ -181,7 +181,7 @@ namespace Services.SubcriptionService
         {
             if (!ValidationGarageOwner(garageId, userId))
             {
-                throw new Exception("Authorize exception");
+                throw new Exception("Bạn không phải là chủ của garage");
             }
 
             var invoices = _subscriptionRepository.GetInvoicesByGarageId(garageId);
