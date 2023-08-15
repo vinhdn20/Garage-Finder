@@ -98,7 +98,6 @@ namespace Services.SubcriptionService
             }
 
             var invoices = _subscriptionRepository.GetInvoicesByGarageId(garageId);
-            //Tắt tạm
             if (invoices.Any(x => x.ExpirationDate > DateTime.UtcNow.AddHours(7) && x.Status.Equals(Constants.INVOICE_PAID)))
             {
                 throw new Exception("Bạn đã đăng ký gói thành viên");
@@ -110,7 +109,18 @@ namespace Services.SubcriptionService
                 throw new Exception("Gói đăng ký không còn hiệu lực");
             }
             var garage = _garageRepository.GetGaragesByID(garageId);
-
+            if (garage.Status.Equals(Constants.GARAGE_WAITING))
+            {
+                throw new Exception("Xin lỗi! Garage này chưa được hệ thống kiểm duyệt");
+            }
+            else if (garage.Status.Equals(Constants.GARAGE_LOCKED))
+            {
+                throw new Exception("Xin lỗi! Garage này đã bị khóa");
+            }
+            else if(garage.Status.Equals(Constants.GARAGE_DENIED))
+            {
+                throw new Exception("Xin lỗi! Garage này đã bị hệ thống từ chối duyệt");
+            }
             var amount = Convert.ToInt32(sub.Price * 100);
             var invoice = _subscriptionRepository.AddInVoices(new Invoices()
             {
