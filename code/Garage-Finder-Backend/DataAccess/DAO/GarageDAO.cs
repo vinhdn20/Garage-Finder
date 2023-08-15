@@ -30,7 +30,7 @@ namespace DataAccess.DAO
             }
         }
 
-        public List<Garage> GetGarages()
+        public List<Garage> GetGaragesAvailable()
         {
             var listGarage = new List<Garage>();
             try
@@ -78,6 +78,72 @@ namespace DataAccess.DAO
                 throw new Exception(e.Message);
             }
             return listGarage;
+        }
+
+        public List<Garage> GetAllGarages()
+        {
+            var listGarage = new List<Garage>();
+            try
+            {
+                using (var context = new GFDbContext())
+                {
+                    listGarage = (from garage in context.Garage
+                                  select new Garage
+                                  {
+                                      GarageID = garage.GarageID,
+                                      AddressDetail = garage.AddressDetail,
+                                      OpenTime = garage.OpenTime,
+                                      CloseTime = garage.CloseTime,
+                                      DistrictsID = garage.DistrictsID,
+                                      EmailAddress = garage.EmailAddress,
+                                      GarageName = garage.GarageName,
+                                      LatAddress = garage.LatAddress,
+                                      LngAddress = garage.LngAddress,
+                                      Thumbnail = garage.Thumbnail,
+                                      PhoneNumber = garage.PhoneNumber,
+                                      ProvinceID = garage.ProvinceID,
+                                      Status = garage.Status,
+                                      UserID = garage.UserID,
+                                      ImageGarages = (from imageGarage in context.ImageGarage
+                                                      where imageGarage.GarageID == garage.GarageID
+                                                      select imageGarage).ToList(),
+                                      //CategoryGarages = context.CategoryGarage.Where(x => x.GarageID == garage.GarageID).ToList(),
+                                      CategoryGarages = (from cateGara in context.CategoryGarage
+                                                         where cateGara.GarageID == garage.GarageID
+                                                         select new CategoryGarage
+                                                         {
+                                                             CategoryGarageID = cateGara.CategoryGarageID,
+                                                             CategoryID = cateGara.CategoryID,
+                                                             GarageID = garage.GarageID,
+                                                             Services = context.Service
+                                                                 .Where(x => x.CategoryGarageID == cateGara.CategoryGarageID).ToList()
+                                                         }).ToList(),
+                                      GarageBrands = context.GarageBrand.Where(x => x.GarageID == garage.GarageID).ToList()
+                                  }).ToList();
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            return listGarage;
+        }
+        public Garage GetGarageByID(int id)
+        {
+
+            Garage garage = null;
+            try
+            {
+                using (var context = new GFDbContext())
+                {
+                    garage = context.Garage.FirstOrDefault(x => x.GarageID == id);
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            return garage;
         }
 
         public List<Garage> GetByUserID(int userID)

@@ -103,7 +103,7 @@ namespace Services.GarageService
 
         public GarageDTO GetGaragesByID(int id)
         {
-            var garage = _garageRepository.GetGarages().Find(x => x.GarageID == id);
+            var garage = _garageRepository.GetGaragesAvailable().Find(x => x.GarageID == id);
             if (garage == null) return null;
             var feedbacks = _feedbackRepository.GetListByGarage(garage.GarageID);
             if (feedbacks.Count() == 0)
@@ -122,7 +122,7 @@ namespace Services.GarageService
 
         public List<GarageDTO> GetGarageSuggest()
         {
-            var garages = _garageRepository.GetGarages();
+            var garages = _garageRepository.GetGaragesAvailable();
             var result = new List<GarageDTO>();
             foreach (var garage in garages)
             {
@@ -145,7 +145,7 @@ namespace Services.GarageService
 
         public List<GarageDTO> GetGarages()
         {
-            var garages = _garageRepository.GetGarages().ToList();
+            var garages = _garageRepository.GetGaragesAvailable().ToList();
             foreach (var gara in garages)
             {
                 var feedbacks = _feedbackRepository.GetListByGarage(gara.GarageID);

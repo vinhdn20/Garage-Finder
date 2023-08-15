@@ -26,7 +26,7 @@ namespace Repositories.Implements.AdminRepository
 
         public List<GarageDTO> GetGarages()
         {
-            return GarageDAO.Instance.GetGarages().Select(p => _mapper.Map<GFData.Models.Entity.Garage, GarageDTO>(p)).ToList();
+            return GarageDAO.Instance.GetGaragesAvailable().Select(p => _mapper.Map<GFData.Models.Entity.Garage, GarageDTO>(p)).ToList();
         }
         public List<UserAdminDTO> GetAllUser()
         {

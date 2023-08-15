@@ -224,10 +224,12 @@ namespace Services.SubcriptionService
 
             var invoices = _subscriptionRepository.GetAllInvoices();
             List<ViewInvoicesDTO> viewInvoices = new List<ViewInvoicesDTO>();
+            var garages = _garageRepository.GetAllGarges();
             foreach (var invoice in invoices)
             {
                 var subs = _subscriptionRepository.GetById(invoice.SubscribeID);
-                var garage = _garageRepository.GetGaragesByID(invoice.GarageID);
+                //var garage = _garageRepository.GetGaragesByID(invoice.GarageID);
+                var garage = garages.Find(x => x.GarageID == invoice.GarageID);
                 var invoiceDTO = _mapper.Map<ViewInvoicesDTO>(invoice);
                 invoiceDTO.GarageName = garage.GarageName;
                 invoiceDTO.GaragePhone = garage.PhoneNumber;

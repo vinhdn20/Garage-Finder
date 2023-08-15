@@ -16,7 +16,8 @@ namespace Repositories.Interfaces
             List<GarageBrandDTO> garageBrandDTOs, List<CategoryGarageDTO> categoryGarageDTOs,
             List<ImageGarageDTO> imageGarageDTOs);
         void Update(GarageDTO garage);
-        List<GarageDTO> GetGarages();
+        List<GarageDTO> GetGaragesAvailable();
+        List<GarageDTO> GetAllGarges();
         void DeleteGarage(int id);
         public GarageDTO GetGaragesByID(int id);
         public List<GarageDTO> GetByPage(PageDTO p);
