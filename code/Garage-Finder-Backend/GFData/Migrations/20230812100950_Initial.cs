@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace GFData.Migrations
 {
-    public partial class GarageFinder : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -154,33 +154,6 @@ namespace GFData.Migrations
                         principalTable: "User",
                         principalColumn: "UserID",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "MessageToUsers",
-                columns: table => new
-                {
-                    MessageID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    SenderUserID = table.Column<int>(type: "int", nullable: false),
-                    ReceiverUserID = table.Column<int>(type: "int", nullable: false),
-                    DateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_MessageToUsers", x => x.MessageID);
-                    table.ForeignKey(
-                        name: "FK_MessageToUsers_User_ReceiverUserID",
-                        column: x => x.ReceiverUserID,
-                        principalTable: "User",
-                        principalColumn: "UserID",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_MessageToUsers_User_SenderUserID",
-                        column: x => x.SenderUserID,
-                        principalTable: "User",
-                        principalColumn: "UserID");
                 });
 
             migrationBuilder.CreateTable(
@@ -920,16 +893,6 @@ namespace GFData.Migrations
                 column: "UserID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MessageToUsers_ReceiverUserID",
-                table: "MessageToUsers",
-                column: "ReceiverUserID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_MessageToUsers_SenderUserID",
-                table: "MessageToUsers",
-                column: "SenderUserID");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Notification_UserID",
                 table: "Notification",
                 column: "UserID");
@@ -1077,9 +1040,6 @@ namespace GFData.Migrations
 
             migrationBuilder.DropTable(
                 name: "Message");
-
-            migrationBuilder.DropTable(
-                name: "MessageToUsers");
 
             migrationBuilder.DropTable(
                 name: "Notification");

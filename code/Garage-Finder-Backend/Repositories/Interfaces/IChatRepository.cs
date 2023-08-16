@@ -14,10 +14,8 @@ namespace Repositories.Interfaces
         List<RoomChat> GetRoomByUser(int userId);
         List<StaffMessage> GetStaffMessages(int roomId);
         List<Message> GetMessages(int roomId);
-        List<MessageToUser> GetMessagesToUsers(int senderUserId, int receiveUserId);
         void StaffSendMessage(StaffMessage message, int userId);
         void UserSendMessage(Message message, int garageId);
         RoomChat CreateRoomChat(RoomChat room);
-        void SendMessageToUsers(MessageToUser messageToUser);
     }
 }

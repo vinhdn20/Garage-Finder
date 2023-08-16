@@ -60,15 +60,5 @@ namespace Services.WebSocket
         {
             _chatService.SendToGarage(user.UserID, sendChat);
         }
-
-        public void SendMessageToUser(TokenInfor user, SendChatToUser sendChat)
-        {
-            _chatService.SendMessageToUser(user.UserID, sendChat.ToUserId, sendChat.Content);
-        }
-
-        public List<ChatDTO> GetMessageWithUser(TokenInfor user, int userId)
-        {
-            return _chatService.GetMessageWithUser(user.UserID, userId);
-        }
     }
 }

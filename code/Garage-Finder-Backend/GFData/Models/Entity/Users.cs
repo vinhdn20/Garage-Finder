@@ -33,7 +33,6 @@ namespace GFData.Models.Entity
 
         public ICollection<Notification> Notifications { get; set; }
         public ICollection<Message> Messages { get; set; }
-        public ICollection<MessageToUser> MessageToUser { get; set; }
         public ICollection<RoomChat> RoomChat { get; set; }
         public ICollection<Report> Reports { get; set; }
     }
