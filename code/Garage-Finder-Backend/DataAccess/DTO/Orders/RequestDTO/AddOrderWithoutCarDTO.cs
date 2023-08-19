@@ -9,7 +9,6 @@ namespace DataAccess.DTO.Orders.RequestDTO
     public class AddOrderWithoutCarDTO
     {
         public int GarageId { get; set; }
-        public string Name { get; set; }
         public string PhoneNumber { get; set; }
         public string VerificationCode { get; set; }
         public int BrandCarID { get; set; }
