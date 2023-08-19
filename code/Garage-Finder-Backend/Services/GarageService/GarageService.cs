@@ -37,6 +37,7 @@ namespace Services.GarageService
         }
         public void Add(AddGarageDTO addGarage, int userID)
         {
+            addGarage.PhoneNumber = addGarage.PhoneNumber.Replace(" ", string.Empty);
             if (!addGarage.PhoneNumber.IsValidPhone())
             {
                 throw new Exception("Phone number not valid");
