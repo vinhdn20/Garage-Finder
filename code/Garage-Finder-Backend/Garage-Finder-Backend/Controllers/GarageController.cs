@@ -151,7 +151,7 @@ namespace Garage_Finder_Backend.Controllers
         public IActionResult SearchGarage([FromBody] SearchGarage searchGarage)
         {
             // Lấy danh sách garage từ nguồn dữ liệu
-            var garages = garageService.GetGarages().Where(g => g.Status == Constants.GARAGE_ACTIVE);
+            var garages = garageService.GetGarages().Where(g => g.Status == Constants.GARAGE_ACTIVE).ToList();
 
             if (!string.IsNullOrEmpty(searchGarage.keyword))
             {
@@ -187,8 +187,12 @@ namespace Garage_Finder_Backend.Controllers
                     cate.CategoryName = categoryGarageService.GetById(cate.CategoryGarageID).CategoryName;
                 }
             }
+            SearchGarageDTO result = new SearchGarageDTO();
+            result.garages = garages;
+            result.Total = garages.Count();
+            
             // Trả về kết quả
-            return Ok(garages);
+            return Ok(result);
         }
 
        /* [HttpPost("GetByPage")]
