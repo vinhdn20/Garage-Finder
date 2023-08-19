@@ -38,7 +38,7 @@ namespace Services
 
         public static bool IsValidPhone(this string phone)
         {
-            Regex rx = new Regex(@"\b(0)(3|5|7|8|9)+([0-9]{8})\b");
+            Regex rx = new Regex(@"\b(0)(2|3|5|7|8|9)+([0-9]{8})\b");
             return rx.IsMatch(phone);   
         }
 
