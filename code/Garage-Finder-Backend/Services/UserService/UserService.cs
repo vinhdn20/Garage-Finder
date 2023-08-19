@@ -90,6 +90,7 @@ namespace Services.UserService
         {
             try
             {
+                phoneNumber = phoneNumber.Replace(" ", string.Empty);
                 if (!phoneNumber.IsValidPhone())
                 {
                     throw new Exception("Phone number is not valid");

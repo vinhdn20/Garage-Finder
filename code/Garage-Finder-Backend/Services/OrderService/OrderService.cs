@@ -202,6 +202,7 @@ namespace Services.OrderService
 
         public void AddOrderWithCar(AddOrderWithCarDTO addOrder)
         {
+            addOrder.PhoneNumber = addOrder.PhoneNumber.Replace(" ", string.Empty);
             if (!addOrder.PhoneNumber.IsValidPhone())
             {
                 throw new Exception("Phone number is not valid");
@@ -255,6 +256,7 @@ namespace Services.OrderService
 
         public void AddOrderFromGuest(AddOrderFromGuestDTO addOrder)
         {
+            addOrder.PhoneNumber = addOrder.PhoneNumber.Replace(" ", string.Empty);
             if (!addOrder.PhoneNumber.IsValidPhone())
             {
                 throw new Exception("Phone number is not valid");
@@ -308,6 +310,7 @@ namespace Services.OrderService
 
         public void AddOrderWithoutCar(AddOrderWithoutCarDTO addOrder, int userID)
         {
+            addOrder.PhoneNumber = addOrder.PhoneNumber.Replace(" ", string.Empty);
             if (!addOrder.PhoneNumber.IsValidPhone())
             {
                 throw new Exception("Phone number is not valid");
