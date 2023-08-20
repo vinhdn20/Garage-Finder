@@ -93,7 +93,7 @@ namespace Services.UserService
                 phoneNumber = phoneNumber.Replace(" ", string.Empty);
                 if (!phoneNumber.IsValidPhone())
                 {
-                    throw new Exception("Phone number is not valid");
+                    throw new Exception("Số điện thoại không đúng định dạng");
                 }
                 //var user = _userRepository.GetUsersByPhone(phoneNumber);
                 //if(user == null)
@@ -122,17 +122,17 @@ namespace Services.UserService
                     user = _userRepository.GetUserByID(userId);
                     if (user == null)
                     {
-                        throw new Exception("Can't find user");
+                        throw new Exception("Không tìm thấy tài khoản");
                     }
                 }
                 catch (Exception)
                 {
-                    throw new Exception("Can't find user");
+                    throw new Exception("Không tìm thấy tài khoản");
                 }
 
                 if (string.IsNullOrWhiteSpace(oldPassword) || string.IsNullOrEmpty(newPassword))
                 {
-                    throw new Exception("Password is null");
+                    throw new Exception("Mật khẩu không được để trống");
                 }
 
                 try
@@ -141,7 +141,7 @@ namespace Services.UserService
                 }
                 catch (Exception)
                 {
-                    throw new Exception("Old password is not correct");
+                    throw new Exception("Mật khẩu cũ không đúng");
                 }
 
                 user.Password = newPassword;
@@ -242,7 +242,7 @@ namespace Services.UserService
                 //SetRefreshToken(refreshToken);
                 if (userInfor.Status == Constants.USER_LOCKED)
                 {
-                    throw new Exception("User is locked");
+                    throw new Exception("Tài khoản đã bị khóa");
                 }
                 else
                 {
@@ -285,7 +285,7 @@ namespace Services.UserService
                 {
                     if (userRefreshToken[i].ExpiresDate < DateTime.UtcNow)
                     {
-                        throw new UnauthorizedAccessException("Token expires");
+                        throw new UnauthorizedAccessException("Token đã hết hạn");
                     }
                     else
                     {
@@ -313,6 +313,10 @@ namespace Services.UserService
 
         public void ForgotPassword(ForgotPassDTO forgotPassModel)
         {
+            if (!forgotPassModel.phoneNumber.IsValidPhone())
+            {
+                throw new Exception("Số điện thoại không đúng định dạng");
+            }
             if (_phoneVerifyService.VerifyPhoneNumber(forgotPassModel.verifyCode, forgotPassModel.phoneNumber).Result)
             {
                 var userDTO = _userRepository.GetUsersByPhone(forgotPassModel.phoneNumber);
@@ -320,7 +324,7 @@ namespace Services.UserService
                 _userRepository.Update(userDTO);
                 return;
             }
-            throw new Exception("Can't verify code");
+            throw new Exception("Mã xác thực không đúng");
         }
 
         public UsersDTO GetUserByID(int id)

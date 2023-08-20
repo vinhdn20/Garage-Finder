@@ -40,12 +40,12 @@ namespace Services.GarageService
             addGarage.PhoneNumber = addGarage.PhoneNumber.Replace(" ", string.Empty);
             if (!addGarage.PhoneNumber.IsValidPhone())
             {
-                throw new Exception("Phone number not valid");
+                throw new Exception("Số điện thoại không đúng định dạng");
             }
 
             if (!addGarage.EmailAddress.IsValidEmail())
             {
-                throw new Exception("Email not valid");
+                throw new Exception("Email không đúng định dạng");
             }
             var garargeDTO = _mapper.Map<AddGarageDTO, GarageDTO>(addGarage);
             garargeDTO.UserID = userID;

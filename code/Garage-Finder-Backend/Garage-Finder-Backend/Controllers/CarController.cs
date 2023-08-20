@@ -79,7 +79,7 @@ namespace Garage_Finder_Backend.Controllers
                 var user = User.GetTokenInfor();
                 if (!car.LicensePlates.IsValidLicensePlates())
                 {
-                    throw new Exception("License Plates not valid");
+                    throw new Exception("Vui lòng nhập biển số theo định dạng Mã tỉnh - Mã huyện - Thứ tự đăng kí xe");
                 }
                 CarDTO carDTO = mapper.Map<AddCarDTO, CarDTO>(car);
                 carDTO.UserID = user.UserID;
@@ -102,7 +102,7 @@ namespace Garage_Finder_Backend.Controllers
                 var user = User.GetTokenInfor(); 
                 if (!car.LicensePlates.IsValidLicensePlates())
                 {
-                    throw new Exception("License Plates not valid");
+                    throw new Exception("Vui lòng nhập biển số theo định dạng Mã tỉnh - Mã huyện - Thứ tự đăng kí xe");
                 }
                 CarDTO carDTO = mapper.Map<UpdateCarDTO, CarDTO>(car);
                 carDTO.UserID = user.UserID;
@@ -125,7 +125,7 @@ namespace Garage_Finder_Backend.Controllers
                 var user = User.GetTokenInfor();
                 if(_oderService.GetAllOrdersByUserId(user.UserID).Any(x => x.CarID == id))
                 {
-                    throw new Exception("The car cannot be deleted. This car has been ordered");
+                    throw new Exception("Xe này đã sử dụng dịch vụ trên hệ thống vì vậy bạn không thể xóa xe này.");
                 }
                 _carService.DeleteCar(id);
                 return Ok("SUCCESS");

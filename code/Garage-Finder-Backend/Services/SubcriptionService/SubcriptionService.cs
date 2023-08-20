@@ -94,7 +94,7 @@ namespace Services.SubcriptionService
         {
             if (!ValidationGarageOwner(garageId, userId))
             {
-                throw new Exception("Bạn không phải là chủ của garage");
+                throw new Exception("Không thể mua gói. Bạn không phải là chủ garage này.");
             }
 
             var invoices = _subscriptionRepository.GetInvoicesByGarageId(garageId);
@@ -191,7 +191,7 @@ namespace Services.SubcriptionService
         {
             if (!ValidationGarageOwner(garageId, userId))
             {
-                throw new Exception("Bạn không phải là chủ của garage");
+                throw new Exception("Không thể lấy thông tin hóa đơn. Bạn không phải là chủ garage này.");
             }
 
             var invoices = _subscriptionRepository.GetInvoicesByGarageId(garageId);
@@ -222,7 +222,7 @@ namespace Services.SubcriptionService
             var sub = _subscriptionRepository.GetById(subId);
             if (sub == null)
             {
-                throw new Exception("Can not find subscription");
+                throw new Exception("Không tìm thấy gói đăng ký");
             }
             sub.Status = Constants.OPEN_SUBCRIPTION;
             _subscriptionRepository.UpdateSubribe(sub);
