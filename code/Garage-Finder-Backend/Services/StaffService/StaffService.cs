@@ -45,21 +45,21 @@ namespace Services.StaffService
         {
             if(!ValidationGarageOwner(addStaff.GarageID, userId))
             {
-                throw new Exception("Authorize exception!");
+                throw new Exception("Bạn không phải chủ sỡ hữu của garage này!");
             }
             var staffs = _staffRepository.GetByGarageId(addStaff.GarageID);
             if(staffs.Any(x => x.EmployeeId.Equals(addStaff.EmployeeId)))
             {
-                throw new Exception("Employee id already exist");
+                throw new Exception("Mã nhân viên đã tồn tại");
             }
             var allStaff = _staffRepository.GetAll();
             if (allStaff.Any(x => x.EmailAddress.Equals(addStaff.EmailAddress)))
             {
-                throw new Exception("EmailAddress already exist");
+                throw new Exception("Email đã tồn tại");
             }
             if (allStaff.Any(x => x.PhoneNumber.Equals(addStaff.PhoneNumber)))
             {
-                throw new Exception("PhoneNumber already exist");
+                throw new Exception("Số điện thoại đã tồn tại");
             }
             Staff staff = _mapper.Map<Staff>(addStaff);
             var staffAdd = _staffRepository.AddStaff(staff);
@@ -71,7 +71,7 @@ namespace Services.StaffService
             var staff = _staffRepository.GetById(id);
             if (!ValidationGarageOwner(staff.GarageID, userId))
             {
-                throw new Exception("Authorize exception!");
+                throw new Exception("Bạn không phải chủ sỡ hữu của garage này!");
             }
             _staffRepository.DeleteStaff(id);
         }
@@ -80,7 +80,7 @@ namespace Services.StaffService
         {
             if (!ValidationGarageOwner(id, userId))
             {
-                throw new Exception("Authorize exception!");
+                throw new Exception("Bạn không phải chủ sỡ hữu của garage này!");
             }
             var staffList = _staffRepository.GetByGarageId(id);
             var results = staffList.Select(x => _mapper.Map<StaffDTO>(x)).ToList();
@@ -91,18 +91,18 @@ namespace Services.StaffService
         {
             if (!loginModel.Email.IsValidEmail())
             {
-                throw new Exception("Email not valid");
+                throw new Exception("Email không đúng định dạng");
             }
 
             var staff = _staffRepository.Login(loginModel.Email, loginModel.Password);
             if(staff == null)
             {
-                throw new Exception("Account not found");
+                throw new Exception("Không tìm thấy tài khoản");
             }
 
             if (staff.Status is not null && staff.Status.Equals(Constants.BLOCK_STAFF))
             {
-                throw new Exception("Account is block");
+                throw new Exception("Tài khoản đã bị khóa");
             }
             LoginStaffDTO loginStaff = _mapper.Map<LoginStaffDTO>(staff);
             var tokenInfor = GenerateTokenInfor(staff.StaffId, Constants.ROLE_STAFF);
@@ -125,14 +125,14 @@ namespace Services.StaffService
                 {
                     if (userRefreshToken[i].ExpiresDate < DateTime.UtcNow)
                     {
-                        throw new Exception("Token expires");
+                        throw new Exception("Token đã hết hạn");
                     }
                     else
                     {
                         var userDTO = _staffRepository.GetById(userId);
                         if (userDTO.Status is not null && userDTO.Status.Equals(Constants.BLOCK_STAFF))
                         {
-                            throw new Exception("Account is block");
+                            throw new Exception("Tài khoản đã bị khóa");
                         }
                         var tokenInfor = GenerateTokenInfor(userDTO.StaffId, Constants.ROLE_STAFF);
                         string token = _jwtService.GenerateJwtForStaff(tokenInfor, _jwtSettings);
@@ -144,7 +144,7 @@ namespace Services.StaffService
                     }
                 }
             }
-            throw new Exception("Invalid refresh token");
+            throw new Exception("Token không hợp lệ");
 
         }
 

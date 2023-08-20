@@ -205,12 +205,12 @@ namespace Services.OrderService
             addOrder.PhoneNumber = addOrder.PhoneNumber.Replace(" ", string.Empty);
             if (!addOrder.PhoneNumber.IsValidPhone())
             {
-                throw new Exception("Phone number is not valid");
+                throw new Exception("Số điện thoại không đúng định dạng");
             }
 
             if (!_phoneVerifyService.VerifyPhoneNumber(addOrder.VerificationCode, addOrder.PhoneNumber).Result)
             {
-                throw new Exception("Verification code not correct");
+                throw new Exception("Mã xác thực không đúng");
             }
             var car = _carRepository.GetCarById(addOrder.carId);
             if(car == null)
@@ -259,16 +259,20 @@ namespace Services.OrderService
             addOrder.PhoneNumber = addOrder.PhoneNumber.Replace(" ", string.Empty);
             if (!addOrder.PhoneNumber.IsValidPhone())
             {
-                throw new Exception("Phone number is not valid");
+                throw new Exception("Số điện thoại không đúng định dạng");
+            }
+            if (!addOrder.LicensePlates.IsValidLicensePlates())
+            {
+                throw new Exception("Vui lòng nhập biển số theo định dạng Mã tỉnh - Mã huyện - Thứ tự đăng kí xe");
             }
 
             if (!addOrder.Email.IsValidEmail())
             {
-                throw new Exception("Email is not valid");
+                throw new Exception("Email không đúng định dạng");
             }
             if (!_phoneVerifyService.VerifyPhoneNumber(addOrder.VerificationCode, addOrder.PhoneNumber).Result)
             {
-                throw new Exception("Verification code not correct");
+                throw new Exception("Mã xác thực không đúng");
             }
             var garage = _garageService.GetById(addOrder.GarageId);
             var brandCar = _brandRepository.GetBrand().Find(x => x.BrandID == addOrder.BrandCarID);
@@ -313,16 +317,16 @@ namespace Services.OrderService
             addOrder.PhoneNumber = addOrder.PhoneNumber.Replace(" ", string.Empty);
             if (!addOrder.PhoneNumber.IsValidPhone())
             {
-                throw new Exception("Phone number is not valid");
+                throw new Exception("Số điện thoại không đúng định dạng");
             }
             if (!_phoneVerifyService.VerifyPhoneNumber(addOrder.VerificationCode, addOrder.PhoneNumber).Result)
             {
-                throw new Exception("Verification code not correct");
+                throw new Exception("Mã xác thực không đúng");
             }
 
             if (!addOrder.LicensePlates.IsValidLicensePlates())
             {
-                throw new Exception("License Plates not valid");
+                throw new Exception("Vui lòng nhập biển số theo định dạng Mã tỉnh - Mã huyện - Thứ tự đăng kí xe");
             }
 
             addOrder.CategoryGargeId.ForEach(x => CheckCategoryExits(x));

@@ -31,7 +31,7 @@ namespace Services.ServiceService
             var categoryGarage = _categoryGarageRepository.GetById(serviceDTO.CategoryGarageID);
             if(!CheckCategoryOwner(categoryGarage, userId))
             {
-                throw new Exception("Authorize exception.");
+                throw new Exception("Không thể thêm dịch vụ.");
             }
             ServiceDTO service = _mapper.Map<ServiceDTO>(serviceDTO);
             return _serviceRepository.SaveService(service);
@@ -42,7 +42,7 @@ namespace Services.ServiceService
             var service = _serviceRepository.GetServiceById(id);
             if (!CheckServiceOwner(service, userId))
             {
-                throw new Exception("Authorize exception");
+                throw new Exception("Không thể thêm dịch vụ.");
             }
             _serviceRepository.DeleteService(id);
         }
@@ -52,7 +52,7 @@ namespace Services.ServiceService
             var categoryGarage = _categoryGarageRepository.GetById(id);
             if(categoryGarage == null)
             {
-                throw new Exception($"Can not find category garage {id}");
+                throw new Exception($"Không thể thêm dịch vụ.");
             }
             var service = _serviceRepository.GetServicesByCategoryGarage(id);
             return service;
@@ -68,13 +68,13 @@ namespace Services.ServiceService
             var oldService = _serviceRepository.GetServiceById(service.ServiceID);
             if (!CheckServiceOwner(oldService, userId))
             {
-                throw new Exception("Authorize exception");
+                throw new Exception("Không thể thêm dịch vụ.");
             }
 
             var categoryGarage = _categoryGarageRepository.GetById(service.CategoryGarageID);
             if (!CheckCategoryOwner(categoryGarage, userId))
             {
-                throw new Exception("Authorize exception! You are now the owner off categoryGarage");
+                throw new Exception("Không thể thêm dịch vụ.");
             }
             _serviceRepository.UpdateService(service);
         }
@@ -83,7 +83,7 @@ namespace Services.ServiceService
         {
             if(service == null)
             {
-                throw new Exception($"Can not find service {service.ServiceID}");
+                throw new Exception($"Không tìm thấy dịch vụ");
             }
             var categoryGarage = _categoryGarageRepository.GetById(service.CategoryGarageID);
             return CheckCategoryOwner(categoryGarage, userId);
@@ -93,7 +93,7 @@ namespace Services.ServiceService
         {
             if(categoryGarageDTO == null)
             {
-                throw new Exception($"Can not find categorygarage {categoryGarageDTO.CategoryGarageID}");
+                throw new Exception($"Không tìm thấy hạng mục");
             }
             var garages = _garageRepository.GetGarageByUser(userId);
             if (!garages.Any(x => x.GarageID == categoryGarageDTO.GarageID))

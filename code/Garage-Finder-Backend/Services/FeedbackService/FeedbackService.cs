@@ -32,7 +32,7 @@ namespace Services.FeedbackService
         {
             if(addFeedback.Star > 5 || addFeedback.Star < 1)
             {
-                throw new Exception("Star not valid");
+                throw new Exception("Số sao không được lớn hơn 5 và bé hơn 1");
             }
             
             var orders = _orderRepository.GetAllOrdersByUserId(userId);
@@ -52,7 +52,7 @@ namespace Services.FeedbackService
             }
             if (feebbacks.Count >= orders.Count)
             {
-                throw new Exception("Can not add order");
+                throw new Exception("Đã quá số lượt đánh giá có thể.");
             }
             Feedback feedback = new Feedback() 
             {
@@ -97,7 +97,7 @@ namespace Services.FeedbackService
             }
             else
             {
-                throw new Exception("can not find order");
+                throw new Exception("Không tìm thấy lịch đặt này trong lịch sử sửa chữa");
             }
         }
     }
