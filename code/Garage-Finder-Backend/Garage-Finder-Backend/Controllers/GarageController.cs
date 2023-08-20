@@ -150,6 +150,7 @@ namespace Garage_Finder_Backend.Controllers
         [HttpPost("GetByKeyWord")]
         public IActionResult SearchGarage([FromBody] SearchGarage searchGarage)
         {
+            SearchGarageDTO result = new SearchGarageDTO();
             // Lấy danh sách garage từ nguồn dữ liệu
             var garages = garageService.GetGarages().Where(g => g.Status == Constants.GARAGE_ACTIVE).ToList();
 
@@ -178,6 +179,7 @@ namespace Garage_Finder_Backend.Controllers
                 garages = garages.Where(g => g.GarageBrands.Any(c => searchGarage.brandsID.Any(x => x == c.BrandID))).ToList();
             }
 
+            result.Total = garages.Count();
             garages = garages.Skip((searchGarage.pageNumber - 1) * searchGarage.pageSize).Take(searchGarage.pageSize).ToList();
 
             foreach (var garage in garages)
@@ -187,9 +189,7 @@ namespace Garage_Finder_Backend.Controllers
                     cate.CategoryName = categoryGarageService.GetById(cate.CategoryGarageID).CategoryName;
                 }
             }
-            SearchGarageDTO result = new SearchGarageDTO();
             result.garages = garages;
-            result.Total = garages.Count();
             
             // Trả về kết quả
             return Ok(result);
