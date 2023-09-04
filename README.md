@@ -1,7 +1,7 @@
 # Garage-Finder
 ## Introduction
 Đây là 1 project đồ án làm về 1 hệ thống gợi ý chỗ bão dưỡng, sửa xe.  \
-Slide thuyết trình về project: https://www.canva.com/design/DAFrzctReBY/62BQQzQqDab7md9T1PCIfQ/edit?utm_content=DAFrzctReBY&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
+Slide thuyết trình về project: https://www.canva.com/design/DAFrzctReBY/62BQQzQqDab7md9T1PCIfQ/edit?utm_content=DAFrzctReBY&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton  \
 Đây là trang chủ của web: https://garagefinder.me/  \
 Đây là link api: https://garage-finder-2.azurewebsites.net/swagger/index.html  \
 Frontend: react  \
